@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glass Tab Bar &amp; Segmented Control</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  /* Page scaffold — NOT extracted */
+  body { margin:0; padding:12px; background:var(--background); font-family:var(--font-sans); color:var(--text-primary); }
+  a { text-decoration:none; }
+  .row { position:relative; z-index:1; display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+  .label { width:92px; flex-shrink:0; padding-top:10px; font-size:11px; font-weight:600; letter-spacing:.08em; color:var(--text-tertiary); white-space:nowrap; }
+  .divider { position:relative; z-index:1; border:none; border-top:1px solid var(--border); margin:4px 0 16px; }
+  .blob { position:fixed; border-radius:var(--radius-pill); filter:blur(90px); pointer-events:none; z-index:0; }
+  .b-aqua { width:340px; height:340px; left:-120px; top:-110px; background:var(--info); opacity:.32; }
+  .b-violet { width:380px; height:380px; right:-110px; top:70px; background:var(--primary); opacity:.30; }
+  .b-amber { width:360px; height:360px; left:42%; bottom:-150px; background:var(--warning); opacity:.22; }
+
+  /* @component-css-start */
+  /* Component definitions — extracted to components.css by deterministic script */
+  .b-win { flex:1; min-width:0; border:1px solid var(--glass-border); border-radius:var(--radius-md); overflow:hidden; background:var(--glass-window-fill); -webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)); box-shadow:var(--shadow-5); }
+  .b-strip { display:flex; align-items:flex-end; gap:2px; padding:6px 10px 0; border-bottom:1px solid var(--glass-border); }
+  .b-tab { display:inline-flex; align-items:center; gap:8px; min-width:100px; height:34px; padding:0 14px; border:1px solid transparent; border-radius:10px 10px 0 0; font-size:13px; font-weight:500; color:var(--text-tertiary); white-space:nowrap; transition:background .15s,color .15s,border-color .15s; }
+  .b-tab span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .b-tab svg { flex-shrink:0; }
+  .b-tab:not(.on):hover { background:var(--glass-control-fill); color:var(--text-secondary); }
+  .b-tab.on { height:36px; margin-bottom:-1px; color:var(--text-primary); font-weight:600; background:var(--glass-panel-fill); border-color:var(--glass-border); border-bottom-color:var(--glass-panel-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); }
+  .b-x { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; margin-left:2px; border-radius:var(--radius-pill); color:var(--text-tertiary); opacity:0; transition:opacity .15s,background .15s,color .15s; }
+  .b-tab:hover .b-x, .b-tab.on .b-x { opacity:1; }
+  .b-tab.on .b-x { color:var(--text-secondary); }
+  .b-x:hover { background:var(--muted); color:var(--text-primary); }
+  .b-add { flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; margin:0 2px 3px 6px; border-radius:var(--radius-control); color:var(--text-tertiary); transition:background .15s,color .15s; }
+  .b-add:hover { background:var(--glass-control-fill); color:var(--text-primary); }
+  .b-pane { padding:16px; background:var(--glass-panel-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); }
+  .b-ln { height:8px; border-radius:var(--radius-pill); background:var(--muted); margin-bottom:10px; }
+  .b-ln:last-child { margin-bottom:0; } .b-ln.w2 { width:72%; } .b-ln.w3 { width:46%; }
+  .seg { position:relative; display:flex; flex-shrink:0; width:200px; height:36px; padding:3px; border:1px solid var(--glass-border); border-radius:var(--radius-pill); background:var(--glass-control-fill); -webkit-backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)); box-shadow:var(--shadow-1); }
+  .seg-thumb { position:absolute; left:3px; top:3px; bottom:3px; width:calc(50% - 3px); border-radius:var(--radius-pill); background:var(--surface-control); box-shadow:var(--shadow-2); }
+  .seg-i { position:relative; z-index:1; flex:1; display:inline-flex; align-items:center; justify-content:center; height:100%; border-radius:var(--radius-pill); font-size:13px; font-weight:600; color:var(--text-tertiary); transition:background .15s,color .15s; }
+  .seg-i.on { color:var(--primary-foreground); }
+  .seg-i:not(.on):hover { background:var(--muted); color:var(--text-secondary); }
+  .side { flex-shrink:0; display:flex; flex-direction:column; gap:4px; width:208px; padding:6px; border:1px solid var(--glass-border); border-radius:var(--radius-md); background:var(--glass-sidebar-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); }
+  .s-tab { position:relative; display:flex; align-items:center; gap:10px; height:36px; padding:0 12px 0 14px; border-radius:var(--radius-control); font-size:13px; font-weight:500; color:var(--text-tertiary); white-space:nowrap; transition:background .15s,color .15s; }
+  .s-tab svg { flex-shrink:0; }
+  .s-tab:not(.on):hover { background:var(--glass-control-fill); color:var(--text-secondary); }
+  .s-tab.on { color:var(--text-primary); font-weight:600; background:color-mix(in srgb,var(--primary) 22%,transparent); }
+  .s-tab.on svg { color:var(--primary); }
+  .s-tab.on::before { content:""; position:absolute; left:4px; top:10px; bottom:10px; width:2px; border-radius:var(--radius-pill); background:var(--primary); }
+  .s-badge { margin-left:auto; min-width:18px; height:18px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); background:var(--primary); color:var(--primary-foreground); font-size:11px; font-weight:600; }
+  /* @component-css-end */
+</style>
+</head>
+<body>
+<div class="blob b-aqua"></div><div class="blob b-violet"></div><div class="blob b-amber"></div>
+
+<div class="row" data-evidence-sample="browser-tabs">
+  <span class="label">浏览器标签</span>
+  <div class="b-win">
+    <div class="b-strip">
+      <a class="b-tab on" href="#">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.2"/><path d="M1.8 8h12.4M8 1.8c1.8 1.9 1.8 10.5 0 12.4M8 1.8c-1.8 1.9-1.8 10.5 0 12.4"/></svg>
+        <span>新标签页</span>
+        <span class="b-x"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></span>
+      </a>
+      <a class="b-tab" href="#">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.2"/><path d="M1.8 8h12.4M8 1.8c1.8 1.9 1.8 10.5 0 12.4M8 1.8c-1.8 1.9-1.8 10.5 0 12.4"/></svg>
+        <span>课件</span>
+        <span class="b-x"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></span>
+      </a>
+      <a class="b-tab" href="#">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.2"/><path d="M1.8 8h12.4M8 1.8c1.8 1.9 1.8 10.5 0 12.4M8 1.8c-1.8 1.9-1.8 10.5 0 12.4"/></svg>
+        <span>测验</span>
+        <span class="b-x"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></span>
+      </a>
+      <a class="b-add" href="#" aria-label="新标签页"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 3.5v9M3.5 8h9"/></svg></a>
+    </div>
+    <div class="b-pane">
+      <div class="b-ln"></div>
+      <div class="b-ln w2"></div>
+      <div class="b-ln w3"></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="row">
+  <span class="label">分段 · 侧栏</span>
+  <div class="seg" data-evidence-sample="segmented-chat-work">
+    <span class="seg-thumb"></span>
+    <a class="seg-i on" href="#">Chat</a>
+    <a class="seg-i" href="#">Work</a>
+  </div>
+  <nav class="side" data-evidence-sample="side-tabs">
+    <a class="s-tab on" href="#">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="2" y="3.5" width="8.6" height="9" rx="2"/><path d="M10.6 6.3l3.4-2v7.4l-3.4-2z"/></svg>
+      <span>视频</span>
+    </a>
+    <a class="s-tab" href="#">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="2.5" y="4.4" width="7.6" height="7.6" rx="1.8"/><path d="M6.4 2.6h5.2a1.8 1.8 0 011.8 1.8v5.2"/></svg>
+      <span>画布</span>
+    </a>
+    <a class="s-tab" href="#">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5.5 4.5h8M5.5 8h8M5.5 11.5h5.5"/><circle cx="2.6" cy="4.5" r=".7" fill="currentColor"/><circle cx="2.6" cy="8" r=".7" fill="currentColor"/><circle cx="2.6" cy="11.5" r=".7" fill="currentColor"/></svg>
+      <span>测验</span>
+      <span class="s-badge">4</span>
+    </a>
+  </nav>
+</div>
+</body>
+</html>

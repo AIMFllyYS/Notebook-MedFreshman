@@ -20,7 +20,7 @@ import {
   type CloudSyncStores,
 } from "./engine.ts";
 import { __resetCloudSyncStatusForTests, getCloudSyncStatus } from "./status.ts";
-import { SCHEMA_SYNC_KINDS, type ChatSessionSyncPayload } from "./types.ts";
+import { SCHEMA_SYNC_KINDS, type ChatProjectSyncPayload, type ChatSessionSyncPayload } from "./types.ts";
 import { __setSyncLimitsForTests } from "./payload.ts";
 import { setCloudSyncEnabled, isCloudSyncEnabled } from "./schedule.ts";
 import { markSessionStreaming } from "./streamingSessions.ts";
@@ -52,6 +52,7 @@ function createMemoryStores() {
   const documents = new Map<string, StoredDocument>();
   const notes = new Map<string, UserNote>();
   const cards = new Map<string, ReviewCard>();
+  const projects = new Map<string, ChatProjectSyncPayload>();
   const stores: CloudSyncStores = {
     listSessionMetas: () => [...sessions.values()].map((row) => row.meta),
     loadSession: async (id) => sessions.get(id) ?? null,
@@ -89,6 +90,14 @@ function createMemoryStores() {
     getCard: (id) => cards.get(id) ?? null,
     applyCard: (card) => {
       cards.set(card.id, card);
+    },
+    listProjectIds: () => [...projects.keys()],
+    getProject: (id) => projects.get(id) ?? null,
+    applyProject: (project) => {
+      projects.set(project.id, project);
+    },
+    forgetProject: (id) => {
+      projects.delete(id);
     },
     forgetCard: (id) => {
       cards.delete(id);

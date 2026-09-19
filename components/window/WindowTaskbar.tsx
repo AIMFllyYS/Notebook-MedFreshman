@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { Plus, Upload, BookOpen, Layers, FileDigit, MonitorPlay } from "lucide-react";
+import { Plus, Upload, BookOpen, Layers, FileDigit, FolderTree, MonitorPlay } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { createAndOpenNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
@@ -14,7 +14,15 @@ import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
 import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
+import { localPathOf, recordImport } from "@/lib/stores/imports";
+import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useAppMode } from "@/lib/stores/appMode";
+import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
+import { openProjectFiles } from "@/lib/project/openProjectFiles";
+import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import AgentDockTabs from "@/components/window/AgentDockTabs";
 
 interface WindowTaskbarProps {
   host: "topbar" | "content-tab" | "right-panel";
@@ -66,7 +74,8 @@ function AddMenuDivider() {
   return <div className="my-1 border-t border-[var(--line)]" data-menu-divider="" />;
 }
 
-function AddContentButton() {
+export function AddContentButton({ showUrlField = true }: { showUrlField?: boolean } = {}) {
+  const agentMode = useAppMode((s) => s.mode === "agent");
   const [open, setOpen] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
@@ -84,6 +93,14 @@ function AddContentButton() {
       right: Math.max(8, window.innerWidth - rect.right),
     });
   };
+
+  // 附属菜单优先于承载它的面板：Esc 先关菜单，不误关左侧面板。
+  useOverlayRegistration({
+    id: "window-taskbar-add-menu",
+    open,
+    onClose: () => setOpen(false),
+    priority: 62,
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -105,6 +122,18 @@ function AddContentButton() {
 
   const handleFiles = async (files: File[]) => {
     const { attachments, errors } = await filesToAttachments(files, { maxFileSize: MAX_LOCAL_FILE_SIZE });
+    // 从加号菜单进来的文件也算「本地导入」：我的资产 → 文件 能按路径找回它。
+    for (const file of files) {
+      if (file.type.startsWith("image/")) continue;
+      recordImport({
+        kind: "file",
+        name: file.name,
+        sizeBytes: file.size,
+        mimeType: file.type || undefined,
+        absPath: localPathOf(file),
+        source: "window-taskbar",
+      });
+    }
     attachments.forEach((attachment, index) => {
       const originalName = isImagePreview(attachment) ? attachment.file.name : attachment.name;
       const kind = previewKind(attachment);
@@ -118,6 +147,21 @@ function AddContentButton() {
     });
     if (errors.length > 0) setFileError(errors[0]);
     setOpen(false);
+  };
+
+  /**
+   * 「项目文件」入口：项目是归属，所以先确定落在哪个项目——
+   * 有选中项目就用它；没有则用最近有对话的项目；一个都没有才建一个（名字可改）。
+   */
+  const openProjectFilesEntry = () => {
+    const history = useChatHistory.getState();
+    let projectId = history.activeProjectId;
+    if (!projectId) {
+      const recent = recentProjects(buildProjectViews(history.folders, history.sessionsMeta))[0];
+      projectId = recent?.id ?? history.createFolder("我的项目");
+      history.setActiveProject(projectId);
+    }
+    openProjectFiles(projectId);
   };
 
   return (
@@ -164,6 +208,26 @@ function AddContentButton() {
           style={{ position: "fixed", top: menuPosition.top, right: menuPosition.right }}
           className="window-taskbar-add-menu z-[12000] w-64 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-2 shadow-xl"
         >
+          {agentMode && (
+            <>
+              <div role="group" aria-label="项目" data-menu-group="project-files">
+                <button
+                  type="button"
+                  role="menuitem"
+                  data-testid="add-menu-project-files"
+                  onClick={() => {
+                    openProjectFilesEntry();
+                    setOpen(false);
+                  }}
+                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+                >
+                  <FolderTree size={14} className="text-[var(--md-sys-color-primary)]" />
+                  <span><strong className="font-semibold">项目文件</strong><small className="ml-1 text-[var(--ink-soft)]">本地索引 + 切片</small></span>
+                </button>
+              </div>
+              <AddMenuDivider />
+            </>
+          )}
           <div role="group" aria-label="打开面板" data-menu-group="open-panels">
             <button
               type="button"
@@ -236,8 +300,12 @@ function AddContentButton() {
               <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
             </button>
           </div>
-          <AddMenuDivider />
-          <OpenUrlField onOpened={() => setOpen(false)} />
+          {showUrlField && (
+            <>
+              <AddMenuDivider />
+              <OpenUrlField onOpened={() => setOpen(false)} />
+            </>
+          )}
           <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">笔记、闪卡、长文本和演示都从本机仓库打开，不会重新生成。</p>
         </div>,
         document.body,
@@ -247,12 +315,8 @@ function AddContentButton() {
   );
 }
 
-export function partitionTaskbarWindows(
-  windows: ManagedWindow[],
-  host: WindowTaskbarProps["host"],
-  width: number,
-) {
-  void host;
+/** 按可用宽度把窗口分成「直接显示」和「收进溢出菜单」两段（与挂载位置无关）。 */
+export function partitionTaskbarWindows(windows: ManagedWindow[], width: number) {
   if (windows.length === 0) return { visible: [] as ManagedWindow[], overflow: [] as ManagedWindow[] };
   const maxWidth = Math.max(0, width);
   if (maxWidth < ICON_SLOT) return { visible: [] as ManagedWindow[], overflow: windows };
@@ -268,6 +332,12 @@ export function partitionTaskbarWindows(
 
 export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   const windows = useWindowManager((state) => state.windows);
+  const activeSessionId = useActiveChatSessionId();
+  // 右栏标签条按会话隔离（与 RightPanel 同一套判定）；顶栏任务栏是 Studio 的，不筛。
+  const dockWindows = useMemo(
+    () => (host === "right-panel" ? filterWindowsForSession(windows, activeSessionId) : windows),
+    [activeSessionId, host, windows],
+  );
   const { minimizeWindow, restoreWindow } = useWindowManager();
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(0);
@@ -284,9 +354,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
     return () => observer.disconnect();
   }, []);
 
-  const { visible, overflow } = useMemo(() => {
-    return partitionTaskbarWindows(windows, host, width);
-  }, [host, width, windows]);
+  const { visible, overflow } = useMemo(() => partitionTaskbarWindows(windows, width), [width, windows]);
 
   const toggle = (id: string) => {
     const win = useWindowManager.getState().windows.find((item) => item.id === id);
@@ -305,6 +373,10 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   };
 
   const activeTooltip = tooltip && windows.some((win) => win.id === tooltip.win.id) ? tooltip : null;
+
+  if (host === "right-panel") {
+    return <AgentDockTabs windows={dockWindows} addContent={<AddContentButton />} />;
+  }
 
   return (
     <div className="flex min-w-0 flex-1 items-center gap-1">

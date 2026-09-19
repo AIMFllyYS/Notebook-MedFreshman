@@ -17,6 +17,8 @@ import type { ProposeMemoryInput, ProposeMemoryOutput } from "@/lib/ai/agent/too
 import type { CommitNotesInput, CommitNotesOutput } from "@/lib/ai/agent/tools/commitNotes/types";
 import type { CommitFlashcardsInput, CommitFlashcardsOutput } from "@/lib/ai/agent/tools/commitFlashcards/types";
 import type { UpdateUserNoteInput, UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
+import type { GetProjectFilesInput, GetProjectFilesOutput } from "@/lib/ai/agent/tools/getProjectFiles/types";
+import type { ReadProjectSlicesInput, ReadProjectSlicesOutput } from "@/lib/ai/agent/tools/readProjectSlices/types";
 
 /** 供 UIMessage<…, StudyTools> 使用的 UITools 形状（type alias 才能满足 Record 约束）。 */
 export type StudyTools = {
@@ -39,6 +41,8 @@ export type StudyTools = {
   commitNotes: { input: CommitNotesInput; output: CommitNotesOutput };
   commitFlashcards: { input: CommitFlashcardsInput; output: CommitFlashcardsOutput };
   updateUserNote: { input: UpdateUserNoteInput; output: UpdateUserNoteOutput };
+  getProjectFiles: { input: GetProjectFilesInput; output: GetProjectFilesOutput };
+  readProjectSlices: { input: ReadProjectSlicesInput; output: ReadProjectSlicesOutput };
 };
 
 export type StudyToolName = keyof StudyTools;
@@ -63,4 +67,6 @@ export const STUDY_TOOL_NAMES: readonly StudyToolName[] = [
   "commitNotes",
   "commitFlashcards",
   "updateUserNote",
+  "getProjectFiles",
+  "readProjectSlices",
 ];

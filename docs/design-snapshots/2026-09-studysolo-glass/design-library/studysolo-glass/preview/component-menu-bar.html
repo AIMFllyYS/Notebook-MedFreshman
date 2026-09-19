@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mac Menu Bar &amp; Menus — StudySolo Glass</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  /* Page scaffold — NOT extracted */
+  body { margin:0; padding:12px; background:var(--background); font-family:var(--font-sans); color:var(--text-primary); overflow-x:hidden; }
+  .blob { position:fixed; border-radius:var(--radius-full); filter:blur(90px); pointer-events:none; z-index:0; }
+  .blob-aqua { width:340px; height:340px; top:-90px; left:-70px; background:color-mix(in srgb,var(--info) 55%,transparent); }
+  .blob-violet { width:380px; height:380px; top:30px; right:-130px; background:color-mix(in srgb,var(--primary) 50%,transparent); }
+  .blob-amber { width:300px; height:300px; bottom:-110px; left:32%; background:color-mix(in srgb,var(--warning) 42%,transparent); }
+  .stage { position:relative; z-index:1; }
+  .story { position:relative; width:100%; }
+  .story-label { display:block; font-size:var(--font-size-caption); font-weight:var(--font-weight-caption); color:var(--text-tertiary); margin:0 0 8px 2px; }
+  .divider { border:none; border-top:1px solid var(--border); margin:18px 0; }
+
+  /* @component-css-start */
+  /* Component definitions — extracted to components.css by deterministic script */
+  .menu-scene { position:relative; height:232px; margin:0 -12px; }
+  .menubar { height:28px; display:flex; align-items:center; gap:2px; padding:0 12px; font-size:13px; background:var(--glass-sidebar-fill); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); border-bottom:1px solid var(--glass-border); }
+  .brand { font-weight:700; padding:0 8px; white-space:nowrap; }
+  .mtitle { padding:3px 10px; border-radius:6px; color:var(--text-primary); text-decoration:none; white-space:nowrap; transition:background .15s; }
+  .mtitle:hover { background:var(--glass-control-fill); }
+  .mtitle.is-open { background:var(--glass-control-fill); box-shadow:inset 0 0 0 1px var(--glass-border); }
+  .status { margin-left:auto; display:flex; align-items:center; gap:14px; color:var(--text-secondary); }
+  .status svg { width:15px; height:15px; display:block; }
+  .nsmenu { position:absolute; top:32px; left:140px; z-index:3; width:220px; padding:6px; border-radius:var(--radius-control); background:var(--glass-popover-fill); backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)); border:1px solid var(--glass-border); box-shadow:var(--shadow-4); }
+  .ns-head { padding:4px 10px 6px; font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--text-tertiary); }
+  .mi { display:flex; align-items:center; gap:8px; height:28px; padding:0 10px; border-radius:6px; font-size:13px; color:var(--text-primary); text-decoration:none; white-space:nowrap; transition:background .15s; }
+  .mi svg { width:16px; height:16px; flex-shrink:0; color:var(--text-secondary); }
+  .mi .kbd { margin-left:auto; font-size:12px; color:var(--text-tertiary); }
+  .mi .caret { margin-left:auto; display:flex; color:var(--text-tertiary); }
+  .mi .caret svg { width:14px; height:14px; color:var(--text-tertiary); }
+  .mi .check { margin-left:auto; display:flex; }
+  .mi .check svg { width:15px; height:15px; color:var(--primary); }
+  .mi:hover, .mi.is-hover { background:color-mix(in srgb,var(--color-primary) 18%,transparent); }
+  .mi.is-disabled { opacity:.35; pointer-events:none; }
+  .sep { height:1px; margin:6px; background:var(--border); }
+  .popover { width:300px; margin-left:40px; padding:12px; border-radius:var(--radius-panel); background:var(--glass-popover-fill); backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)); border:1px solid var(--glass-border); box-shadow:var(--shadow-3); }
+  .pop-title { padding:2px 4px 10px; font-size:13px; font-weight:600; }
+  .searchbox { display:flex; align-items:center; gap:8px; height:var(--size-button-sm); padding:0 10px; margin-bottom:6px; border-radius:var(--radius-control); background:var(--glass-control-fill); border:1px solid var(--glass-border); font-size:13px; }
+  .searchbox svg { width:14px; height:14px; flex-shrink:0; color:var(--text-tertiary); }
+  .searchbox .ph { color:var(--text-tertiary); white-space:nowrap; }
+  .searchbox .kbd { margin-left:auto; font-size:12px; color:var(--text-tertiary); }
+  .pick { display:flex; align-items:center; gap:10px; height:34px; padding:0 10px; border-radius:var(--radius-control); font-size:13px; color:var(--text-primary); text-decoration:none; white-space:nowrap; transition:background .15s; }
+  .pick .dot { width:8px; height:8px; flex-shrink:0; border-radius:var(--radius-full); background:var(--success); box-shadow:0 0 0 3px color-mix(in srgb,var(--success) 22%,transparent); }
+  .pick .check { margin-left:auto; display:flex; }
+  .pick .check svg { width:15px; height:15px; color:var(--primary); }
+  .pick svg { width:15px; height:15px; flex-shrink:0; }
+  .pick:hover { background:color-mix(in srgb,var(--color-primary) 14%,transparent); }
+  .pick.is-muted { color:var(--text-tertiary); }
+  .pick.is-muted svg { color:var(--text-tertiary); }
+  /* @component-css-end */
+</style>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-export" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.5 10.5L12 15l4.5-4.5"/><path d="M5 20h14"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v2.6M12 18.9v2.6M21.5 12h-2.6M5.1 12H2.5M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8M18.7 18.7l-1.8-1.8M7.1 7.1L5.3 5.3"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13.5l9 5 9-5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/></symbol>
+</svg>
+<div class="blob blob-aqua"></div>
+<div class="blob blob-violet"></div>
+<div class="blob blob-amber"></div>
+<div class="stage">
+  <div class="story">
+    <span class="story-label">系统菜单栏与 NSMenu 下拉</span>
+    <div class="menu-scene" data-evidence-sample="system-bar">
+      <div class="menubar">
+        <span class="brand">StudySolo</span>
+        <a class="mtitle" href="#">文件</a>
+        <a class="mtitle is-open" href="#">编辑</a>
+        <a class="mtitle" href="#">显示</a>
+        <a class="mtitle" href="#">帮助</a>
+        <span class="status">
+          <svg><use href="#i-sliders"/></svg>
+          <svg><use href="#i-search"/></svg>
+        </span>
+      </div>
+      <div class="nsmenu" data-evidence-sample="dropdown-nsmenu item-states">
+        <div class="ns-head">对话</div>
+        <a class="mi" href="#"><svg><use href="#i-plus"/></svg>新对话<span class="kbd">⌘N</span></a>
+        <a class="mi is-hover" href="#"><svg><use href="#i-search"/></svg>搜索…<span class="kbd">⌘K</span></a>
+        <div class="sep"></div>
+        <a class="mi is-checked" href="#"><svg><use href="#i-gear"/></svg>设置<span class="check"><svg><use href="#i-check"/></svg></span></a>
+        <a class="mi is-disabled" href="#"><svg><use href="#i-export"/></svg>导出 PDF</a>
+        <a class="mi" href="#"><svg><use href="#i-layers"/></svg>模型<span class="caret"><svg><use href="#i-caret"/></svg></span></a>
+      </div>
+    </div>
+  </div>
+  <hr class="divider">
+  <div class="story" data-evidence-sample="inspector-popover">
+    <span class="story-label">检查器弹出层 · 模型</span>
+    <div class="popover">
+      <div class="pop-title">模型</div>
+      <div class="searchbox"><svg><use href="#i-search"/></svg><span class="ph">搜索…</span><span class="kbd">⌘K</span></div>
+      <a class="pick" href="#"><span class="dot"></span>SOLO Auto Model<span class="check"><svg><use href="#i-check"/></svg></span></a>
+      <a class="pick" href="#">Doubao-Seed</a>
+      <a class="pick is-muted" href="#"><svg><use href="#i-gear"/></svg>设置</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

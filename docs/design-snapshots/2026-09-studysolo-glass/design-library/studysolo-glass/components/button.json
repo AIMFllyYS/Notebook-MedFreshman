@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 2,
+  "slug": "button",
+  "name": "Glass Button",
+  "category": "actions",
+  "sourceKind": "from-scratch",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    { "type": "button", "evidence": "Primary action control across dialogs, composer, window toolbars" },
+    { "type": "icon-button", "evidence": "Circular glass icon buttons in reference player (bell, settings, shuffle)" },
+    { "type": "toggle-button", "evidence": "Thinking-mode / tool toggles in chat composer" }
+  ],
+  "variantDimensions": [
+    { "name": "variant", "values": ["primary", "glass", "ghost", "icon", "danger"] },
+    { "name": "size", "values": ["sm", "md", "lg"] },
+    { "name": "shape", "values": ["rounded", "pill", "circle"] },
+    { "name": "state", "values": ["default", "hover", "active", "disabled", "selected"] }
+  ],
+  "representativeVariants": [
+    {
+      "id": "primary-dark",
+      "whySelected": "Signature control: in dark theme primary is a pure-white elevated button with soft shadow (the play button in reference)",
+      "traits": { "background": "var(--color-primary-foreground-inverted)", "color": "var(--color-neutral-900)", "radius": "var(--radius-pill)", "shadow": "var(--shadow-3)", "height": "var(--size-height-md)" },
+      "childrenDigest": "label text, optional leading icon"
+    },
+    {
+      "id": "glass-md",
+      "whySelected": "Default translucent glass button used for most secondary actions",
+      "traits": { "background": "var(--glass-control-fill)", "border": "1px solid var(--glass-border)", "highlight": "inset 0 1px 0 var(--glass-highlight)", "blur": "var(--glass-blur-thin)", "radius": "var(--radius-control)", "height": "var(--size-height-md)" },
+      "childrenDigest": "optional icon + label"
+    },
+    {
+      "id": "icon-circle",
+      "whySelected": "40px circular glass icon button — top-bar bell/settings and player transport language",
+      "traits": { "width": "40px", "height": "40px", "radius": "var(--radius-pill)", "background": "var(--glass-control-fill)", "border": "1px solid var(--glass-border)" },
+      "childrenDigest": "single 20px lucide-style stroke icon"
+    },
+    {
+      "id": "states",
+      "whySelected": "Glass interaction feedback must stay subtle: brighten fill on hover, scale 0.97 on press",
+      "traits": { "hover": "fill alpha +0.04", "active": "scale(0.97)", "disabled": "opacity 0.4, no blur change", "selected": "white/20 fill + border" },
+      "childrenDigest": "same children across states"
+    }
+  ],
+  "anatomy": ["root <button>", "optional leading icon slot", "label", "optional trailing icon / caret", "keyboard-shortcut hint (menu actions)"],
+  "structurePatterns": [
+    "Icon + label horizontally centered, gap var(--space-2)",
+    "All buttons share the glass six-pack: translucent fill, hairline border, top inset highlight, backdrop blur+saturate, soft shadow, large radius",
+    "Focus-visible: 2px ring via --color-primary at 55% alpha, 2px offset"
+  ],
+  "usageHints": {
+    "priorityHint": "high",
+    "do": "Use one primary per view; prefer glass variant for parallel actions; circle icon for toolbars",
+    "avoid": "Never stack blur on more than 2 overlapping button layers; never use heavy drop shadows on glass buttons"
+  },
+  "doNotInvent": ["Do not invent gradient-filled buttons", "No neon glow", "No square corners"],
+  "unknowns": ["Exact pressed duration token resolved at motion phase"],
+  "keyInsightSeed": "White in dark, ink in light — the primary button is the one opaque moment in a translucent world."
+}

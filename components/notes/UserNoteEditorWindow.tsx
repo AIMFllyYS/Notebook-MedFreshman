@@ -28,6 +28,7 @@ import {
 import { DURATION, EASE } from "@/lib/motion";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
+import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
 
 type EditorMode = "source" | "wysiwyg" | "split";
 
@@ -50,7 +51,10 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   const agentOpen = useUserNotes((s) => s.noteAgentOpenIds.includes(noteId));
   const agentSessionId = useUserNotes((s) => s.noteAgentSessionById[noteId]);
   const windowId = userNoteWindowId(noteId);
-  const isFront = useWindowManager((s) => shouldMountHeavyEditor(s.activeWindowId, windowId));
+  const activeWindowId = useWindowManager((s) => s.activeWindowId);
+  const { presentation, visible } = useManagedWindowSurface(windowId);
+  // 只在最前的笔记窗挂重编辑器；Agent 右栏还要求它真的在展示（没最小化、右栏没收起）。
+  const isFront = shouldMountHeavyEditor(activeWindowId, windowId) && (presentation !== "dock" || visible);
   const [mode, setMode] = useState<EditorMode>("wysiwyg");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [tocOpen, setTocOpen] = useState(true);

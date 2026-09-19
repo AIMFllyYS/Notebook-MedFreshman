@@ -27,6 +27,8 @@ import { createProposeMemoryTool } from "@/lib/ai/agent/tools/proposeMemory/tool
 import { createCommitNotesTool } from "@/lib/ai/agent/tools/commitNotes/tool";
 import { createCommitFlashcardsTool } from "@/lib/ai/agent/tools/commitFlashcards/tool";
 import { createUpdateUserNoteTool } from "@/lib/ai/agent/tools/updateUserNote/tool";
+import { createGetProjectFilesTool } from "@/lib/ai/agent/tools/getProjectFiles/tool";
+import { createReadProjectSlicesTool } from "@/lib/ai/agent/tools/readProjectSlices/tool";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
 import { PLAN_MODE_WRITE_TOOL_SET } from "@/lib/ai/agent/planMode";
@@ -110,6 +112,8 @@ export function buildStudyTools(
     commitNotes: createCommitNotesTool(),
     commitFlashcards: createCommitFlashcardsTool(),
     updateUserNote: createUpdateUserNoteTool(ctx),
+    getProjectFiles: createGetProjectFilesTool(ctx),
+    readProjectSlices: createReadProjectSlicesTool(ctx, runtime),
   } satisfies Record<StudyToolName, unknown>;
 
   // 稳定工具在前；enableSearch / useSkill 易变，追加在末尾，失效范围可解释。
@@ -128,6 +132,9 @@ export function buildStudyTools(
     "getArtifact",
     "proposeMemory",
     "updateUserNote",
+    // 项目文件：目录与切片都随请求体上行，工具本身恒定暴露（catalog 空时给引导文案）。
+    "getProjectFiles",
+    "readProjectSlices",
   ];
   if (opts.memoryCommit === "note") names.push("commitNotes");
   if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");

@@ -1,8 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import clsx from "clsx";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
 
 export interface DocumentOutlineItem {
   id: string;
@@ -56,11 +58,21 @@ function OutlineNav({
   );
 }
 
-function Stage({ toolbar, children }: { toolbar?: ReactNode; children: ReactNode }) {
+function Stage({
+  toolbar,
+  children,
+  navToggle,
+}: {
+  toolbar?: ReactNode;
+  children: ReactNode;
+  /** Agent 里的列表收起/展开把手：贴在目录列那一侧的正文边缘上。 */
+  navToggle?: ReactNode;
+}) {
   return (
     <div className="document-workspace-stage">
       {toolbar ? <div className="document-workspace-toolbar">{toolbar}</div> : null}
       <div className="document-workspace-body">{children}</div>
+      {navToggle}
     </div>
   );
 }
@@ -134,6 +146,12 @@ export default function DocumentWorkspace({
   /** 左侧列表下方的文件夹树（学年 → 学科），默认约 1/4 高，可上下拖。 */
   folderTree?: ReactNode;
 }) {
+  // Agent 右栏窄：目录列改挂右侧，并且可以整个收起来，把宽度让给正文。
+  const agentSurface = useIsAgentSurface();
+  const [navCollapsed, setNavCollapsed] = useState(false);
+  const showNav = !(agentSurface && navCollapsed);
+  const navSide = agentSurface ? "right" : "left";
+
   const nav = (
     <OutlineNav
       outline={outline}
@@ -144,13 +162,43 @@ export default function DocumentWorkspace({
     />
   );
   const left = <LeftPane nav={nav} folderTree={folderTree} />;
-  const stage = <Stage toolbar={toolbar}>{children}</Stage>;
+  const navToggle = agentSurface ? (
+    <button
+      type="button"
+      data-no-drag
+      data-testid="document-workspace-nav-toggle"
+      aria-label={showNav ? `收起${outlineLabel}` : `展开${outlineLabel}`}
+      title={showNav ? `收起${outlineLabel}` : `展开${outlineLabel}`}
+      aria-expanded={showNav}
+      onClick={() => setNavCollapsed((value) => !value)}
+      className="document-workspace-nav-toggle"
+    >
+      {showNav ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+    </button>
+  ) : null;
+  const stage = (
+    <Stage toolbar={toolbar} navToggle={navToggle}>
+      {children}
+    </Stage>
+  );
 
   if (!resizable) {
     return (
-      <div className="note-citation-layout document-workspace">
-        {left}
-        {stage}
+      <div
+        className={clsx("note-citation-layout document-workspace", agentSurface && "is-agent")}
+        data-nav-side={navSide}
+      >
+        {agentSurface ? (
+          <>
+            {stage}
+            {showNav ? left : null}
+          </>
+        ) : (
+          <>
+            {left}
+            {stage}
+          </>
+        )}
       </div>
     );
   }
@@ -159,24 +207,34 @@ export default function DocumentWorkspace({
     <PanelGroup
       direction="horizontal"
       autoSaveId="document-workspace"
-      className="note-citation-layout document-workspace is-resizable"
+      className={clsx("note-citation-layout document-workspace is-resizable", agentSurface && "is-agent")}
+      data-nav-side={navSide}
     >
-      <Panel defaultSize={24} minSize={14} maxSize={48} className="min-h-0 min-w-0">
-        <div className="flex h-full min-h-0 min-w-0 flex-col">{left}</div>
-      </Panel>
-      <PanelResizeHandle
-        data-no-drag
-        data-testid="document-workspace-resize-handle"
-        className="document-workspace-resize-handle group relative outline-none"
-      >
-        <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
-        <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-data-[resize-handle-state=drag]:opacity-100">
-          <span className="block h-7 w-1 rounded-full bg-[var(--md-sys-color-primary)]/50" />
-        </span>
-      </PanelResizeHandle>
-      <Panel defaultSize={76} minSize={36} className="min-h-0 min-w-0">
+      {!agentSurface && (
+        <Panel id="document-workspace-nav" order={1} defaultSize={24} minSize={14} maxSize={48} className="min-h-0 min-w-0">
+          <div className="flex h-full min-h-0 min-w-0 flex-col">{left}</div>
+        </Panel>
+      )}
+      {(!agentSurface || showNav) && (
+        <PanelResizeHandle
+          data-no-drag
+          data-testid="document-workspace-resize-handle"
+          className="document-workspace-resize-handle group relative outline-none"
+        >
+          <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
+          <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-data-[resize-handle-state=drag]:opacity-100">
+            <span className="block h-7 w-1 rounded-full bg-[var(--md-sys-color-primary)]/50" />
+          </span>
+        </PanelResizeHandle>
+      )}
+      <Panel id="document-workspace-stage" order={2} defaultSize={agentSurface ? 100 : 76} minSize={36} className="min-h-0 min-w-0">
         <div className="flex h-full min-h-0 min-w-0 flex-col">{stage}</div>
       </Panel>
+      {agentSurface && showNav && (
+        <Panel id="document-workspace-nav" order={3} defaultSize={26} minSize={16} maxSize={48} className="min-h-0 min-w-0">
+          <div className="flex h-full min-h-0 min-w-0 flex-col">{left}</div>
+        </Panel>
+      )}
     </PanelGroup>
   );
 }

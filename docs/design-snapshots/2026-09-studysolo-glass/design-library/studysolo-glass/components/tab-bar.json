@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "slug": "tab-bar",
+  "name": "Glass Tab Bar & Segmented Control",
+  "category": "navigation",
+  "sourceKind": "from-scratch",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    { "type": "browser-tabs", "evidence": "Right-side embedded browser 'New tab' strip in Codex reference" },
+    { "type": "segmented-control", "evidence": "Chat / Work mode switch at top of Agent column" },
+    { "type": "sidebar-tabs", "evidence": "Right-panel mode tabs and tool tab strips in the product" }
+  ],
+  "variantDimensions": [
+    { "name": "variant", "values": ["browser-tabs", "segmented", "side-tabs"] },
+    { "name": "state", "values": ["active", "inactive", "hover", "closing"] }
+  ],
+  "representativeVariants": [
+    {
+      "id": "browser-tabs",
+      "whySelected": "Safari/Chrome-like tab strip over glass: active tab reads as a raised opaque pane",
+      "traits": { "tabRadius": "10px 10px 0 0", "activeBackground": "var(--glass-panel-fill)", "inactiveBackground": "transparent", "height": "36px", "blur": "var(--glass-blur-base)" },
+      "childrenDigest": "favicon/globe icon, truncated title, close × on hover; trailing '+' ghost icon button"
+    },
+    {
+      "id": "segmented-chat-work",
+      "whySelected": "Agent mode switch — pill track with a sliding glass/white thumb",
+      "traits": { "trackRadius": "var(--radius-pill)", "trackBackground": "var(--glass-control-fill)", "thumbRadius": "var(--radius-pill)", "thumbBackground": "var(--color-primary-foreground-inverted, #ffffff)", "thumbShadow": "var(--shadow-2)", "height": "36px" },
+      "childrenDigest": "two equal segments 'Chat' and 'Work' with optional icons; active label dark on thumb, inactive muted"
+    },
+    {
+      "id": "side-tabs",
+      "whySelected": "Utility panel sections and tool strips (Quiz/Video/Canvas style) as vertical/horizontal glass tabs",
+      "traits": { "active": "primary-tinted fill + 2px leading indicator or wash", "inactive": "transparent, muted label" },
+      "childrenDigest": "icon + label, optional badge count"
+    }
+  ],
+  "anatomy": ["tab strip / segmented track", "tab(s)", "leading icon", "label", "badge/count", "close button", "new-tab affordance", "sliding thumb (segmented)"],
+  "structurePatterns": [
+    "Active browser tab is the MOST opaque element in the strip and connects to content with a continuous top corner",
+    "Segmented thumb moves with a 220ms spring; label color cross-fades",
+    "Tabs share a hairline bottom edge that the active tab visually breaks",
+    "Min tab width 100px, titles truncate with ellipsis at 16ch"
+  ],
+  "usageHints": {
+    "priorityHint": "medium",
+    "do": "Keep tab strip chrome lighter than content; reserve deep blur for popovers/windows",
+    "avoid": "Never underline segmented controls; the thumb alone signals selection"
+  },
+  "doNotInvent": ["No skeuomorphic folder tabs", "No drop shadows per inactive tab"],
+  "unknowns": ["Tab overflow / many-tab compression pattern deferred"],
+  "keyInsightSeed": "Active tab rises toward the user; the segmented thumb is a little white pill floating in a glass track."
+}

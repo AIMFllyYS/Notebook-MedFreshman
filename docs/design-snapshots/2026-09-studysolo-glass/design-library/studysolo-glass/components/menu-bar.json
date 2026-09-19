@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 2,
+  "slug": "menu-bar",
+  "name": "Mac Menu Bar & Menus",
+  "category": "navigation",
+  "sourceKind": "from-scratch",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    { "type": "menu-bar", "evidence": "Top system menu strip (app name, File Edit View Help) seen in Codex reference screenshot" },
+    { "type": "dropdown-menu/NSMenu", "evidence": "Existing AnchoredMenu, model picker, overflow menus" },
+    { "type": "popover-inspector", "evidence": "Right-side panels like the model list in user's screenshot" }
+  ],
+  "variantDimensions": [
+    { "name": "variant", "values": ["system-bar", "dropdown", "inspector-popover", "context-menu"] },
+    { "name": "state", "values": ["closed", "open", "item-hover", "item-checked", "disabled"] }
+  ],
+  "representativeVariants": [
+    {
+      "id": "system-bar",
+      "whySelected": "Desktop Electron top strip: translucent, 28px tall, spans the screen",
+      "traits": { "height": "28px", "background": "var(--glass-sidebar-fill)", "blur": "var(--glass-blur-base)", "borderBottom": "1px solid var(--glass-border)", "font": "13px" },
+      "childrenDigest": "bold app name; menu titles File/Edit/View/Help with open-state pill; right cluster: status icons, window controls"
+    },
+    {
+      "id": "dropdown-nsmenu",
+      "whySelected": "Native-feeling menu: compact rows, right-aligned shortcuts, checkmarks, submenu arrow",
+      "traits": { "minWidth": "200px", "radius": "10px", "background": "var(--glass-popover-fill)", "blur": "var(--glass-blur-deep)", "padding": "6px", "shadow": "var(--shadow-4)" },
+      "childrenDigest": "section header (11px uppercase muted); rows: 16px icon + label + flex spacer + shortcut kbd / check / caret; separators 1px hairline with 6px margins"
+    },
+    {
+      "id": "inspector-popover",
+      "whySelected": "Right-side rich popover (model list, settings) — menu chrome wrapping custom content",
+      "traits": { "width": "280-360px", "radius": "var(--radius-panel)", "background": "var(--glass-popover-fill)", "header": "search field + title" },
+      "childrenDigest": "collapsible groups, selectable list rows with trailing check, status dots, footer action"
+    },
+    {
+      "id": "item-states",
+      "whySelected": "Menu item hover is the classic macOS blue wash; in glass theme a primary-tinted translucent wash",
+      "traits": { "hover": "background color-mix(in srgb, var(--color-primary) 18%, transparent); radius 6px", "checked": "trailing primary check icon", "disabled": "opacity 0.35" },
+      "childrenDigest": "row content unchanged"
+    }
+  ],
+  "anatomy": ["bar or popover root", "menu title buttons (bar)", "menu items", "leading icon", "label", "trailing slot (shortcut/check/submenu caret)", "section headers", "separators"],
+  "structurePatterns": [
+    "Menu rows are 28px tall (24px compact), padded 10px horizontal, 6px radius wash",
+    "Shortcut text 12px in muted-foreground; check and caret share the trailing slot",
+    "Open animation: dropdown-in 120ms (opacity + translateY(-4px) + scale 0.98)",
+    "Bar menus toggle a subtle glass pill on the open parent"
+  ],
+  "usageHints": {
+    "priorityHint": "high",
+    "do": "Right-align shortcuts; disable items rather than hiding; keep menus keyboard navigable",
+    "avoid": "No mega-menu cards inside NSMenu; rich content goes in inspector-popover"
+  },
+  "doNotInvent": ["No ribbon toolbars", "No colored menu chrome"],
+  "unknowns": ["Submenu flyout positioning handled by AnchoredMenu primitive"],
+  "keyInsightSeed": "Menus are the densest glass: small rows, exact 28px rhythm, one tinted wash for hover."
+}

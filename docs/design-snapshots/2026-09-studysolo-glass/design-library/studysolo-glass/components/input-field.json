@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "slug": "input-field",
+  "name": "Glass Input Field",
+  "category": "forms",
+  "sourceKind": "from-scratch",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    { "type": "search-input", "evidence": "Top search pill 'Search for songs, artists...' in reference; global course/note/chat search in product" },
+    { "type": "text-field", "evidence": "Forms, rename dialogs, URL bar" },
+    { "type": "chat-composer", "evidence": "Large Codex-style multiline composer card with toolbar + send button" }
+  ],
+  "variantDimensions": [
+    { "name": "variant", "values": ["search-pill", "text-field", "composer"] },
+    { "name": "state", "values": ["rest", "focus", "filled", "disabled"] },
+    { "name": "size", "values": ["md", "lg"] }
+  ],
+  "representativeVariants": [
+    {
+      "id": "search-pill",
+      "whySelected": "Dominant top-bar form in reference and in macOS toolbars",
+      "traits": { "height": "var(--size-height-lg)", "radius": "var(--radius-pill)", "background": "var(--glass-control-fill)", "border": "1px solid var(--glass-border)", "paddingX": "var(--space-4)" },
+      "childrenDigest": "leading 18px search icon, placeholder, trailing kbd badge (⌘K)"
+    },
+    {
+      "id": "text-field-focus",
+      "whySelected": "Focus state is where glass deepens — fill becomes more opaque, hairline brightens",
+      "traits": { "radius": "var(--radius-control)", "focusBorder": "color-mix primary 45%", "focusFill": "alpha +0.08", "focusRing": "0 0 0 3px primary/20" },
+      "childrenDigest": "floating label, value, clear button"
+    },
+    {
+      "id": "composer",
+      "whySelected": "The Agent hero control — large rounded glass card modeled on Codex composer",
+      "traits": { "radius": "20px", "background": "var(--glass-panel-fill)", "border": "1px solid var(--glass-border)", "highlight": "inset 0 1px 0 var(--glass-highlight)", "blur": "var(--glass-blur-base)", "shadow": "var(--shadow-2)", "minHeight": "120px" },
+      "childrenDigest": "auto-growing textarea; bottom toolbar: mode chip (Full access), project picker, plugins, model menu, mic; circular primary send button on the right"
+    }
+  ],
+  "anatomy": ["glass wrapper", "leading icon (search)", "<input>/<textarea>", "placeholder", "trailing accessory cluster: clear / kbd / mic / send", "focus ring overlay"],
+  "structurePatterns": [
+    "Placeholder and icons use muted-foreground at ~60% contrast",
+    "Composer toolbar items are ghost icon buttons 28-32px; send is the only primary control",
+    "Caret color uses --color-primary"
+  ],
+  "usageHints": {
+    "priorityHint": "high",
+    "do": "Deepen the glass on focus rather than drawing a heavy border; keep composer as the visually heaviest surface in the chat column",
+    "avoid": "No inset inner shadow; do not put saturated borders at rest"
+  },
+  "doNotInvent": ["No material-style underline-only inputs", "No gradient borders"],
+  "unknowns": ["Voice input waveform affordance deferred"],
+  "keyInsightSeed": "Inputs are shallow glass at rest and deepen on focus — the interface leans toward attention."
+}

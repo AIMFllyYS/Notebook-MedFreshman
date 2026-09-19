@@ -14,6 +14,10 @@ import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { FlashcardCatalogItem, UserNoteCatalogItem } from "@/lib/ai/agent/tools/memoryCatalog";
 import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerIntent";
+import type {
+  ProjectFileCatalogItem,
+  ProjectSlicePayload,
+} from "@/lib/ai/agent/tools/projectFiles/types";
 
 export interface ChatRequestBodySettings {
   customApiGroups: CustomApiGroup[];
@@ -31,6 +35,9 @@ export interface ChatRequestBodySettings {
   noteWindowAgent?: boolean;
   userNotes?: UserNoteCatalogItem[];
   flashcards?: FlashcardCatalogItem[];
+  /** 项目文件目录（索引）与本轮携带的切片正文；没有项目时为 undefined。 */
+  projectFiles?: ProjectFileCatalogItem[];
+  projectSlices?: ProjectSlicePayload[];
   maxToolRounds?: number;
   planMode?: boolean;
   forcedTool?: ComposerForcedTool;
@@ -67,6 +74,8 @@ export interface ChatRequestBody {
   noteWindowAgent?: boolean;
   userNotes?: UserNoteCatalogItem[];
   flashcards?: FlashcardCatalogItem[];
+  projectFiles?: ProjectFileCatalogItem[];
+  projectSlices?: ProjectSlicePayload[];
   maxToolRounds?: number;
   planMode?: boolean;
   forcedTool?: ComposerForcedTool;
@@ -128,6 +137,8 @@ export function buildChatRequestBody(
     noteWindowAgent: settings.noteWindowAgent,
     userNotes: settings.userNotes ?? [],
     flashcards: settings.flashcards ?? [],
+    projectFiles: settings.projectFiles ?? [],
+    projectSlices: settings.projectSlices ?? [],
     maxToolRounds: settings.maxToolRounds,
     planMode: settings.planMode,
     forcedTool: settings.forcedTool,

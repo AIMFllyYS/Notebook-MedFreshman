@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "headBoilerplate": "<link rel=\"stylesheet\" href=\"../../colors_and_type.css\">",
+  "corePreviewComponents": [
+    {
+      "slug": "button",
+      "reason": "fixed slot \"button\"; semantic=button:0.75; policy=fixed-slots-first",
+      "evidenceFile": "components/button.json",
+      "priority": 1,
+      "slot": "button"
+    },
+    {
+      "slug": "menu-bar",
+      "reason": "fixed slot \"menu\"; semantic=menu-bar:0.75; policy=fixed-slots-first",
+      "evidenceFile": "components/menu-bar.json",
+      "priority": 2,
+      "slot": "menu"
+    },
+    {
+      "slug": "glass-panel",
+      "reason": "fixed slot \"card\"; semantic=surface/card:0.75; policy=fixed-slots-first",
+      "evidenceFile": "components/glass-panel.json",
+      "priority": 3,
+      "slot": "card"
+    },
+    {
+      "slug": "input-field",
+      "reason": "fallback after fixed slots; semantic=search-input:0.75; policy=fixed-slots-first",
+      "evidenceFile": "components/input-field.json",
+      "priority": 4
+    },
+    {
+      "slug": "mac-window",
+      "reason": "fallback after fixed slots; semantic=window/titlebar:0.75; policy=fixed-slots-first",
+      "evidenceFile": "components/mac-window.json",
+      "priority": 5
+    }
+  ],
+  "supportEvidenceComponents": [
+    {
+      "slug": "tab-bar",
+      "reason": "fixed slot \"tabs\"; semantic=browser-tabs:0.75; policy=fixed-slots-first",
+      "evidenceFile": "components/tab-bar.json",
+      "priority": 6,
+      "slot": "tabs"
+    }
+  ],
+  "allowedComponents": [
+    "button",
+    "menu-bar",
+    "glass-panel",
+    "input-field",
+    "mac-window",
+    "tab-bar"
+  ],
+  "screenBlueprints": [
+    {
+      "name": null,
+      "componentSlugs": [],
+      "role": "primary"
+    },
+    {
+      "name": null,
+      "componentSlugs": [],
+      "role": "secondary"
+    },
+    {
+      "name": null,
+      "componentSlugs": [],
+      "role": "secondary"
+    }
+  ],
+  "productContext": {
+    "kitType": "dashboard",
+    "productType": "SaaS Desktop Workspace — macOS-style study workspace with an embedded AI Agent (Electron + Next.js)",
+    "dominantCopy": [],
+    "pageNames": [],
+    "selectedFrameNames": []
+  },
+  "selectionPolicy": "fixed-slots-first",
+  "slotAssignments": [
+    {
+      "slot": "button",
+      "slug": "button",
+      "reason": "semantic"
+    },
+    {
+      "slot": "menu",
+      "slug": "menu-bar",
+      "reason": "name"
+    },
+    {
+      "slot": "card",
+      "slug": "glass-panel",
+      "reason": "name"
+    },
+    {
+      "slot": "tabs",
+      "slug": "tab-bar",
+      "reason": "name",
+      "preferredSupport": true
+    }
+  ],
+  "missingFixedSlots": [
+    "navigation",
+    "tag",
+    "table"
+  ],
+  "fallbackComponents": [
+    "input-field",
+    "mac-window"
+  ],
+  "needsNarrative": false,
+  "forbiddenInventedComponents": [],
+  "lowConfidence": false,
+  "warnings": [
+    "missing-fixed-slot:navigation",
+    "missing-fixed-slot:tag",
+    "missing-fixed-slot:table"
+  ]
+}

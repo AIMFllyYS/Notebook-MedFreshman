@@ -22,7 +22,9 @@ describe("settings apiKey persist", () => {
       setItem.call(this, key, value);
     });
     vi.resetModules();
-    const { useSettings: loaded } = await import('./settings');
+    const { useSettings: loaded, hydrateSettings: hydrateLoaded } = await import('./settings');
+    // 本机设置现在只在根组件水合后应用，配置迁移/恢复同样走 hydrateSettings()。
+    hydrateLoaded();
     expect(loaded.getState().customApiGroups).toEqual([group]);
     expect(loaded.getState().selectedModelId).toBe('custom:upgrade:my-model');
     expect(loaded.getState().settingsLoadWarning).toBeTruthy();
@@ -34,18 +36,21 @@ describe("settings apiKey persist", () => {
   it('wrapped upgrade config with a null selection still loads groups and survives reload', async () => {
     localStorage.setItem(SETTINGS_LS_KEY, JSON.stringify({ state: { selectedModelId: null, customApiGroups: [{ id: 'wrapped', name: '旧分组', baseUrl: '', apiKey: 'key', models: ['model-a'] }] } }));
     vi.resetModules();
-    const { useSettings: loaded } = await import('./settings');
+    const { useSettings: loaded, hydrateSettings: hydrateLoaded } = await import('./settings');
+    hydrateLoaded();
     expect(loaded.getState().customApiGroups[0].models[0].id).toBe('model-a');
     expect(loaded.getState().customApiGroups[0].apiKey).toBe('key');
     vi.resetModules();
-    const { useSettings: reloaded } = await import('./settings');
+    const { useSettings: reloaded, hydrateSettings: hydrateReloaded } = await import('./settings');
+    hydrateReloaded();
     expect(reloaded.getState().customApiGroups[0].apiKey).toBe('key');
   });
 
   it('malformed settings cannot be overwritten by a model selection', async () => {
     localStorage.setItem(SETTINGS_LS_KEY, '{broken');
     vi.resetModules();
-    const { useSettings: loaded } = await import('./settings');
+    const { useSettings: loaded, hydrateSettings: hydrateLoaded } = await import('./settings');
+    hydrateLoaded();
     loaded.getState().setSelectedModelId('auto');
     expect(localStorage.getItem(SETTINGS_LS_KEY)).toBe('{broken');
     expect(loaded.getState().settingsLoadWarning).toBeTruthy();
@@ -57,7 +62,8 @@ describe("settings apiKey persist", () => {
     const save = vi.fn(async () => {});
     (window as unknown as { desktop: unknown }).desktop = { isElectron: true, secrets: { load: () => new Promise((resolve) => { complete = resolve; }), save } };
     vi.resetModules();
-    const { useSettings: loaded } = await import('./settings');
+    const { useSettings: loaded, hydrateSettings: hydrateLoaded } = await import('./settings');
+    hydrateLoaded();
     await Promise.resolve();
     loaded.getState().updateApiGroup('desktop', { apiKey: 'new-key' });
     complete({ v: 1, groups: { desktop: 'old-key' }, capability: {} });
@@ -101,7 +107,8 @@ describe("settings apiKey persist", () => {
     );
     localStorage.removeItem(API_SECRETS_LS_KEY);
     vi.resetModules();
-    const { useSettings: loadSettings } = await import("@/lib/stores/settings");
+    const { useSettings: loadSettings, hydrateSettings: hydrateLoaded } = await import("@/lib/stores/settings");
+    hydrateLoaded();
     expect(loadSettings.getState().capabilityEndpoints.webSearchApiKey).toBe(legacyKey);
     const settingsRaw = localStorage.getItem(SETTINGS_LS_KEY) ?? "";
     expect(settingsRaw).not.toContain(legacyKey);
@@ -111,7 +118,8 @@ describe("settings apiKey persist", () => {
     expect(secretsRaw.length).toBeGreaterThan(0);
 
     vi.resetModules();
-    const { useSettings: reloadSettings } = await import("@/lib/stores/settings");
+    const { useSettings: reloadSettings, hydrateSettings: hydrateReloaded } = await import("@/lib/stores/settings");
+    hydrateReloaded();
     expect(reloadSettings.getState().capabilityEndpoints.webSearchApiKey).toBe(legacyKey);
     expect(localStorage.getItem(SETTINGS_LS_KEY) ?? "").not.toContain(legacyKey);
   });
@@ -130,7 +138,8 @@ describe("settings apiKey persist", () => {
     expect(raw.blockForeignSelectionAssistants).toBe(true);
 
     vi.resetModules();
-    const { useSettings: reloaded } = await import("@/lib/stores/settings");
+    const { useSettings: reloaded, hydrateSettings: hydrateReloaded } = await import("@/lib/stores/settings");
+    hydrateReloaded();
     expect(reloaded.getState().maxToolRounds).toBe(12);
     expect(reloaded.getState().quizModelId).toBe("deepseek/deepseek-v4.1-flash");
     expect(reloaded.getState().selectionAssistantEnabled).toBe(false);
@@ -146,7 +155,8 @@ describe("settings apiKey persist", () => {
 
     localStorage.setItem(SETTINGS_LS_KEY, '{broken');
     vi.resetModules();
-    const { useSettings: loaded, getSettingsPersistGeneration: genAfterLoad } = await import("./settings");
+    const { useSettings: loaded, getSettingsPersistGeneration: genAfterLoad, hydrateSettings: hydrateLoaded } = await import("./settings");
+    hydrateLoaded();
     const blocked = genAfterLoad();
     loaded.getState().setGlobalContext("should-not-write");
     expect(genAfterLoad()).toBe(blocked);
@@ -160,7 +170,8 @@ describe("settings apiKey persist", () => {
     expect(raw.showRightPanelTabBar).toBe(false);
     expect(raw.pinChatHeader).toBe(true);
     vi.resetModules();
-    const { useSettings: reloaded } = await import("@/lib/stores/settings");
+    const { useSettings: reloaded, hydrateSettings: hydrateReloaded } = await import("@/lib/stores/settings");
+    hydrateReloaded();
     expect(reloaded.getState().showRightPanelTabBar).toBe(false);
     expect(reloaded.getState().pinChatHeader).toBe(true);
   });

@@ -65,6 +65,12 @@ yarn-error.log*
 # Temporary files
 tmp/
 
+# 根目录下划线前缀的一次性抓取/导出产物（云盘列目录、课表 JSON、临时脚本、_tmp_* 工作目录）。
+# 约定：绝不允许这些临时文件进入版本库。
+/_*
+# 云盘/飞书下载清单等临时文本导出
+/download.txt
+
 # Source files copied for ingest (extracted markdown goes to content/_raw or content/)
 content/_raw-src/
 tmp_*
@@ -100,3 +106,6 @@ docs/plans/**/verify/
 
 # local lecture-ingest visual acceptance screenshots (never committed)
 .accept_shots/
+
+# Supabase CLI 的临时态（db query/push 会写 project ref 与版本号，不是真相源）
+supabase/.temp/

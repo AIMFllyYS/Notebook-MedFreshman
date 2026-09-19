@@ -85,7 +85,7 @@ function windowFixture(id: string): ManagedWindow {
 
 test("taskbar overflow does not show fixed fallback icons before width is available", () => {
   const windows = ["one", "two", "three"].map(windowFixture);
-  const { visible, overflow } = partitionTaskbarWindows(windows, "topbar", 0);
+  const { visible, overflow } = partitionTaskbarWindows(windows, 0);
 
   assert.equal(visible.length, 0);
   assert.deepEqual(overflow.map((win) => win.id), ["one", "two", "three"]);
@@ -93,7 +93,7 @@ test("taskbar overflow does not show fixed fallback icons before width is availa
 
 test("taskbar overflow uses the full measured host width before collapsing", () => {
   const windows = ["one", "two", "three", "four", "five", "six"].map(windowFixture);
-  const { visible, overflow } = partitionTaskbarWindows(windows, "topbar", 128);
+  const { visible, overflow } = partitionTaskbarWindows(windows, 128);
 
   assert.deepEqual(visible.map((win) => win.id), ["one", "two", "three"]);
   assert.deepEqual(overflow.map((win) => win.id), ["four", "five", "six"]);
@@ -101,7 +101,7 @@ test("taskbar overflow uses the full measured host width before collapsing", () 
 
 test("taskbar overflow reserves room for the overflow menu when icons exceed capacity", () => {
   const windows = ["one", "two", "three", "four"].map(windowFixture);
-  const { visible, overflow } = partitionTaskbarWindows(windows, "content-tab", 96);
+  const { visible, overflow } = partitionTaskbarWindows(windows, 96);
 
   assert.deepEqual(visible.map((win) => win.id), ["one", "two"]);
   assert.deepEqual(overflow.map((win) => win.id), ["three", "four"]);

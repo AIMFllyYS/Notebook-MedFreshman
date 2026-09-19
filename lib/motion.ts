@@ -52,6 +52,27 @@ export const collapseVariants: Variants = {
 };
 
 /**
+ * 网格 / 列表「重排」用的弹簧：切换标签时卡片互相挪位要丝滑，但不能拖尾晃动，
+ * 所以刚度偏高（420）、阻尼足（36）、质量轻（0.7）。framer-motion 的 layout 动画读它。
+ */
+export const LAYOUT_REFLOW: Transition = {
+  type: "spring",
+  stiffness: 420,
+  damping: 36,
+  mass: 0.7,
+};
+
+/**
+ * 卡片进/出：只做「淡 + 微缩」，位移完全交给 layout 动画。
+ * 两套位移一起上会互抢，看起来就是抖。
+ */
+export const cardSwapVariants: Variants = {
+  initial: { opacity: 0, scale: 0.98 },
+  animate: { opacity: 1, scale: 1, transition: tr(DURATION.fast) },
+  exit: { opacity: 0, scale: 0.98, transition: tr(DURATION.instant, EASE.standard) },
+};
+
+/**
  * 方向感 Tab 面板切换：根据新旧 Tab index 的差值决定滑入/滑出方向。
  * @param dir  1 = 向右切换（新 Tab 在右侧），-1 = 向左切换
  */

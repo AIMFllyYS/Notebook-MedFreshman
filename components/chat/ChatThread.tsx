@@ -248,6 +248,9 @@ export default function ChatThread({
         ) : (
           <>
             <div
+              // 定宽容器：虚拟行（position:absolute; width:100%）以它为基准。
+              // Agent 中央对话靠这个类把正文收进可读宽度居中（见 globals.css 的 --agent-chat-max）。
+              className="chat-messages-sizer"
               style={{
                 height: totalSize,
                 width: '100%',

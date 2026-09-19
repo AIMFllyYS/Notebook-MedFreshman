@@ -5,11 +5,11 @@ import type { FullscreenTarget } from "@/lib/constants/layout";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useResizable } from "@/lib/hooks/useResizable";
-import { useWestResizable } from "@/lib/hooks/useWestResizable";
 import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
+import type { ManagedWindowPresentation } from "@/lib/window/presentation";
 
 export type { FullscreenTarget };
 
@@ -23,6 +23,10 @@ export interface UseManagedWindowChromeOptions {
   overlayId?: string;
   registerOverlay?: boolean;
   onResize?: (size: WindowSize) => void;
+  presentation?: Exclude<ManagedWindowPresentation, "pending">;
+  interactive?: boolean;
+  /** 焦点在右栏之外的输入框时抑制前台 Esc，避免打字时关掉右侧文档。 */
+  escapeSuppressed?: boolean;
 }
 
 /**
@@ -38,12 +42,17 @@ export function useManagedWindowChrome({
   overlayId,
   registerOverlay = true,
   onResize,
+  presentation = "floating",
+  interactive = true,
+  escapeSuppressed = false,
 }: UseManagedWindowChromeOptions) {
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === windowId));
   const { bringToFront, commitGeometry, minimizeWindow } = useWindowManager();
+  const isDock = presentation === "dock";
+  const isSheet = presentation === "sheet";
 
   const { elRef, onPointerDown } = useDraggable((dx, dy) => {
-    if (isAgentWorkspace()) return;
+    if (isAgentWorkspace() || isDock) return;
     const current = useWindowManager.getState().windows.find((w) => w.id === windowId);
     if (!current) return;
     commitGeometry(windowId, {
@@ -63,34 +72,26 @@ export function useManagedWindowChrome({
     minSize,
   );
 
-  const onWestResizeStart = useWestResizable(
-    elRef,
-    (geom) => {
-      commitGeometry(windowId, geom);
-      onResize?.(geom.size);
-    },
-    { minW: minSize.minW },
-  );
-
-  useFullscreenTrack(windowId, managed?.fullscreen ?? false, fullscreenTarget);
+  useFullscreenTrack(windowId, !isDock && !isSheet && (managed?.fullscreen ?? false), fullscreenTarget);
 
   useOverlayRegistration({
     id: overlayId ?? windowId,
-    open: registerOverlay && !!managed,
+    open: registerOverlay && !!managed && interactive && !escapeSuppressed,
     onClose,
     priority: overlayPriority,
   });
 
   const toggleFullscreen = useCallback(() => {
+    // dock 的全屏入口在右栏标签条上（面板级全屏）；sheet 覆盖整页，也没有浮窗全屏。
+    if (isDock || isSheet) return;
     toggleManagedWindowFullscreen(windowId, fullscreenTarget);
-  }, [fullscreenTarget, windowId]);
+  }, [fullscreenTarget, isDock, isSheet, windowId]);
 
   return {
     managed,
     elRef,
     onPointerDown,
     onResizeStart,
-    onWestResizeStart,
     toggleFullscreen,
     bringToFront,
     minimizeWindow,

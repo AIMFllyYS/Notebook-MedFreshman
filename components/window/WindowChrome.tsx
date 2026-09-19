@@ -18,8 +18,8 @@ interface WindowChromeProps {
   externalLinkLabel?: string;
   onExternalLink?: () => void;
   actions?: ReactNode;
-  className?: string;
   bodyClassName?: string;
+  surface?: "floating" | "dock" | "sheet";
 }
 
 function TrafficButton({
@@ -64,38 +64,68 @@ export default function WindowChrome({
   externalLinkLabel,
   onExternalLink,
   actions,
-  className,
   bodyClassName,
+  surface = "floating",
 }: WindowChromeProps) {
+  const compactSurface = surface === "dock" || surface === "sheet";
+  const dockSurface = surface === "dock";
+  // dock 窗口的标题、关闭、收起、扩展都已由右栏标签条承担：这一行只在有业务动作/外链时才出现。
+  const showHeader = !dockSurface || Boolean(actions) || Boolean(showExternalLink);
   return (
-    <div className={clsx("flex h-full min-h-0 flex-col overflow-hidden", className)}>
-      <div
-        onPointerDown={isFullscreen ? undefined : onDragStart}
+    <div className="flex h-full min-h-0 flex-col overflow-hidden">
+      {showHeader && <div
+        onPointerDown={compactSurface || isFullscreen ? undefined : onDragStart}
         className={clsx(
-          "window-chrome-header relative flex min-h-8 shrink-0 items-center justify-center border-b border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-high)] px-3",
-          isFullscreen ? "cursor-default" : "cursor-grab",
+          "window-chrome-header relative flex min-h-8 shrink-0 items-center justify-center border-b border-[var(--line-soft)] px-3",
+          dockSurface ? "bg-[var(--bg-panel)]" : "bg-[var(--md-sys-color-surface-container-high)]",
+          compactSurface || isFullscreen ? "cursor-default" : "cursor-grab",
         )}
         style={{ userSelect: "none", touchAction: "none" }}
       >
-        <div className="absolute left-3 top-1/2 z-10 flex -translate-y-1/2 items-center gap-2">
-          <TrafficButton tone="close" title="关闭" onClick={onClose}>
-            <X size={9} strokeWidth={3} />
-          </TrafficButton>
-          <TrafficButton tone="minimize" title="最小化" onClick={onMinimize}>
-            <Minus size={9} strokeWidth={3} />
-          </TrafficButton>
-          <TrafficButton tone="fullscreen" title={isFullscreen ? "还原" : "全屏"} onClick={onFullscreen}>
-            {isFullscreen ? <Minimize2 size={8} strokeWidth={3} /> : <Maximize2 size={8} strokeWidth={3} />}
-          </TrafficButton>
-        </div>
+        {!dockSurface && <div className="absolute left-3 top-1/2 z-10 flex shrink-0 -translate-y-1/2 items-center gap-1">
+          {compactSurface ? (
+            <button
+              type="button"
+              data-no-drag
+              onClick={onClose}
+              title="关闭"
+              className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)] hover:text-[var(--md-sys-color-error)]"
+            >
+              <X size={15} />
+            </button>
+          ) : (
+            <>
+              <TrafficButton tone="close" title="关闭" onClick={onClose}>
+                <X size={9} strokeWidth={3} />
+              </TrafficButton>
+              <TrafficButton tone="minimize" title="最小化" onClick={onMinimize}>
+                <Minus size={9} strokeWidth={3} />
+              </TrafficButton>
+              <TrafficButton tone="fullscreen" title={isFullscreen ? "还原" : "全屏"} onClick={onFullscreen}>
+                {isFullscreen ? <Minimize2 size={8} strokeWidth={3} /> : <Maximize2 size={8} strokeWidth={3} />}
+              </TrafficButton>
+            </>
+          )}
+        </div>}
 
-        <div className="pointer-events-none absolute inset-x-24 top-1/2 flex min-w-0 -translate-y-1/2 items-center justify-center gap-1.5 text-[13px] font-semibold text-[var(--md-sys-color-on-surface)]">
+        {!dockSurface && <div className="pointer-events-none absolute inset-x-24 top-1/2 flex min-w-0 -translate-y-1/2 items-center justify-center gap-1.5 text-[13px] font-semibold text-[var(--md-sys-color-on-surface)]">
           {icon && <span className="shrink-0 text-[var(--md-sys-color-primary)]">{icon}</span>}
           <span className="min-w-0 truncate">{title}</span>
-        </div>
+        </div>}
 
-        <div className="absolute right-3 top-1/2 z-10 flex -translate-y-1/2 items-center justify-end gap-1">
-          {actions}
+        <div className={clsx(
+          "z-10 flex items-center justify-end gap-1",
+          dockSurface ? "w-full" : "absolute right-3 top-1/2 max-w-[calc(100%-6rem)] -translate-y-1/2",
+        )}>
+          {/* 窄栏里业务 actions 可能比内容区还宽：让它们自己横向滚动，窗口控制按钮始终可点。 */}
+          {actions ? (
+            <div
+              data-testid="window-chrome-actions"
+              className="hide-scrollbar flex min-w-0 items-center gap-1 overflow-x-auto"
+            >
+              {actions}
+            </div>
+          ) : null}
           {showExternalLink && (
             <button
               type="button"
@@ -103,7 +133,7 @@ export default function WindowChrome({
               onClick={onExternalLink}
               title={externalLinkLabel || "在新标签页打开"}
               className={clsx(
-                "press flex h-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]",
+                "press flex h-7 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]",
                 externalLinkLabel
                   ? "gap-1 px-2 text-[12px] font-medium text-[var(--md-sys-color-on-surface)]"
                   : "w-7",
@@ -114,7 +144,7 @@ export default function WindowChrome({
             </button>
           )}
         </div>
-      </div>
+      </div>}
       <div className={clsx("min-h-0 flex-1", bodyClassName)}>{children}</div>
     </div>
   );

@@ -1,13 +1,10 @@
-import { type FullscreenTarget } from "@/lib/constants/layout";
+import { resolveFullscreenRect, type FullscreenTarget } from "@/lib/constants/layout";
 import { useWindowManager, type WindowPoint, type WindowSize } from "@/lib/hooks/useWindowManager";
 import { useSettings } from "@/lib/hooks/useSettings";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
-import { isAgentWorkspace } from "@/lib/stores/workspace";
-import { resolveWorkspaceFullscreenRect } from "@/lib/workspace/agentDock";
 
 function defaultTargetFor(win: ManagedWindow): FullscreenTarget {
   if (win.type === "billing-dashboard") return "viewport";
-  if (isAgentWorkspace()) return "right";
   if (win.type === "artifact-viewer") return useSettings.getState().artifactFullscreenTarget;
   return "notes";
 }
@@ -15,6 +12,9 @@ function defaultTargetFor(win: ManagedWindow): FullscreenTarget {
 /**
  * 红绿灯与键盘快捷键共用：记下还原几何，再按 fullscreenTarget 铺满。
  * `preExpand` 存在窗口记录上，避免 hook ref 与快捷键各记一份。
+ *
+ * Agent 右栏不走这里：dock 窗口的「扩展」由 `AgentDockHost` 的面板几何负责
+ * （见 `useManagedWindowChrome.toggleFullscreen`），所以本函数只在浮窗形态下被调用。
  */
 export function toggleManagedWindowFullscreen(windowId: string, target?: FullscreenTarget): void {
   const wm = useWindowManager.getState();
@@ -33,7 +33,7 @@ export function toggleManagedWindowFullscreen(windowId: string, target?: Fullscr
   wm.updateWindow(windowId, {
     preExpand: { pos: current.pos, size: current.size } satisfies { pos: WindowPoint; size: WindowSize },
   });
-  const rect = resolveWorkspaceFullscreenRect(resolved);
+  const rect = resolveFullscreenRect(resolved);
   if (rect && rect.width > 0 && rect.height > 0) {
     wm.commitGeometry(windowId, {
       pos: { x: rect.left, y: rect.top },

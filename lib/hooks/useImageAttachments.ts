@@ -23,6 +23,7 @@ import {
 } from "@/lib/ai/imageUtils";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { getModelInfoWithCustom, modelAcceptsImageInput } from "@/lib/ai/models";
+import { localPathOf, recordImport, type ImportSource } from "@/lib/stores/imports";
 import type { ChatAttachment } from "@/lib/types/chat";
 
 export interface UseImageAttachmentsResult {
@@ -58,7 +59,12 @@ export interface UseImageAttachmentsResult {
   clearError: () => void;
 }
 
-export function useImageAttachments(): UseImageAttachmentsResult {
+/**
+ * @param options.importSource 记「本地导入记录」时标注来源（我的资产 → 文件/网址）。
+ *   只记非图片：图片是对话附件，记进来会把资产页刷满。
+ */
+export function useImageAttachments(options?: { importSource?: ImportSource }): UseImageAttachmentsResult {
+  const importSource = options?.importSource ?? "composer";
   const [attachments, setAttachments] = useState<AttachmentPreview[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
@@ -108,8 +114,20 @@ export function useImageAttachments(): UseImageAttachmentsResult {
       if (newOnes.length > 0) {
         setAttachments((prev) => [...prev, ...newOnes]);
       }
+      // 本地导入记录：只存路径与元数据，资产页「文件 / 网址」两栏据此显示（不上云）。
+      for (const file of acceptedFiles) {
+        if (file.type.startsWith("image/")) continue;
+        recordImport({
+          kind: "file",
+          name: file.name,
+          sizeBytes: file.size,
+          mimeType: file.type || undefined,
+          absPath: localPathOf(file),
+          source: importSource,
+        });
+      }
     },
-    [checkVisionSupport],
+    [checkVisionSupport, importSource],
   );
 
   const remove = useCallback((idx: number) => {

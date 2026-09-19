@@ -6,10 +6,10 @@ import type { UserNote } from "@/lib/notes/userNote";
 import type { ReviewCard } from "@/lib/review/types";
 
 /** 本 loop 实际上行的 kind。settings / skill 留到以后，且永远不带 apiKey。 */
-export const CLOUD_SYNC_KINDS = ["chat-session", "artifact", "document", "user-note", "review-card"] as const;
+export const CLOUD_SYNC_KINDS = ["chat-session", "artifact", "document", "user-note", "review-card", "chat-project"] as const;
 export type CloudSyncKind = (typeof CLOUD_SYNC_KINDS)[number];
 
-export const SCHEMA_SYNC_KINDS = ["chat-session", "artifact", "settings", "skill", "document", "user-note", "review-card"] as const;
+export const SCHEMA_SYNC_KINDS = ["chat-session", "artifact", "settings", "skill", "document", "user-note", "review-card", "chat-project"] as const;
 
 export const SYNC_TABLE = "sync_documents";
 
@@ -23,6 +23,8 @@ export const MAX_DOCUMENT_BYTES = Math.round(2.5 * 1024 * 1024);
 export const MAX_CHAT_SESSION_BYTES = 5 * 1024 * 1024;
 export const MAX_USER_NOTE_BYTES = 2 * 1024 * 1024;
 export const MAX_REVIEW_CARD_BYTES = 256 * 1024;
+/** 项目只是一行名字 + 时间戳；32 KB 足够，也避免有人往里塞别的东西。 */
+export const MAX_CHAT_PROJECT_BYTES = 32 * 1024;
 export const MAX_NOTES_POOL_BYTES = 20 * 1024 * 1024;
 export const MAX_FLASHCARDS_POOL_BYTES = 20 * 1024 * 1024;
 export const MAX_USER_SYNC_BYTES = 48 * 1024 * 1024;
@@ -33,6 +35,7 @@ export const KIND_SIZE_LIMIT: Record<CloudSyncKind, number> = {
   document: MAX_DOCUMENT_BYTES,
   "user-note": MAX_USER_NOTE_BYTES,
   "review-card": MAX_REVIEW_CARD_BYTES,
+  "chat-project": MAX_CHAT_PROJECT_BYTES,
 };
 
 export const KIND_QUOTA_POOL: Partial<Record<CloudSyncKind, SyncQuotaPool>> = {
@@ -55,6 +58,15 @@ export type ArtifactSyncPayload = Pick<Artifact, "id" | "title" | "html" | "stat
 export type DocumentSyncPayload = StoredDocument;
 export type UserNoteSyncPayload = UserNote;
 export type ReviewCardSyncPayload = ReviewCard;
+
+/** 对话项目（会话分组的名字）：跨设备可见的最小负载，不含成员列表。 */
+export interface ChatProjectSyncPayload {
+  id: string;
+  name: string;
+  createdAt: number;
+  updatedAt: number;
+  system?: "note" | "floating";
+}
 
 export interface SyncDocumentRow {
   kind: CloudSyncKind;

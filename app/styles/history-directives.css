@@ -70,7 +70,7 @@
   gap: 0.5em;
   margin-bottom: 0.8em;
   padding-bottom: 0.6em;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--ink);
@@ -161,7 +161,7 @@
   gap: 0.8em;
   padding: 0.8em 1em;
   background: var(--md-sys-color-surface-container);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
 }
 .event-card-title-row {
   display: flex;
@@ -226,7 +226,7 @@
 }
 .event-card-body {
   padding: 0.8em 1em 1em;
-  border-top: 1px solid var(--md-sys-color-outline-variant);
+  border-top: 1px solid var(--line-soft);
 }
 .event-card-body > :last-child {
   margin-bottom: 0;
@@ -297,7 +297,7 @@
 .compare-table-header {
   padding: 0.7em 1em;
   background: var(--md-sys-color-surface-container);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--ink);
@@ -403,7 +403,7 @@
 .history-map-header {
   padding: 0.7em 1em;
   background: var(--md-sys-color-surface-container);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--ink);
@@ -446,7 +446,7 @@
   padding: 0.6em 1em;
   font-size: 0.85rem;
   color: var(--ink-soft);
-  border-top: 1px solid var(--md-sys-color-outline-variant);
+  border-top: 1px solid var(--line-soft);
 }
 
 /* ── 历史学科标签（行内） ───────────────────────────────────── */

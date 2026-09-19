@@ -1,0 +1,164 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { test } from "node:test";
+import { join } from "node:path";
+
+const root = process.cwd();
+
+function readFile(path: string) {
+  return readFileSync(join(root, path), "utf8");
+}
+
+test("侧边栏开关在顶栏左上角；中间不再浮「展开对话栏」", () => {
+  const appShell = readFile("components/layout/AppShell.tsx");
+  const agentShell = readFile("components/layout/AgentShell.tsx");
+  // 顶栏那个开关不再对 Agent 隐藏（以前是 {!agentMode && <button …>}）
+  assert.doesNotMatch(appShell, /\{!agentMode && <button[\s\S]{0,120}toggleSidebar/);
+  assert.match(appShell, /data-testid="sidebar-toggle"/);
+  assert.match(appShell, /onClick=\{toggleSidebar\}/);
+  // 中间那块不再有悬浮展开按钮，也没有第二个入口
+  assert.doesNotMatch(agentShell, /展开对话栏/);
+  assert.doesNotMatch(agentShell, /PanelLeftOpen/);
+});
+
+test("左栏收起过程中内容冻结：定宽包裹 + 外层裁剪 + 不记录收起中的宽度", () => {
+  const agentShell = readFile("components/layout/AgentShell.tsx");
+  const globals = readFile("app/globals.css");
+  assert.match(agentShell, /--agent-left-content-width/);
+  assert.match(agentShell, /if \(!leftDragging && !sidebarCollapsed && width >= 80\) lastWideWidthRef\.current = width;/);
+  assert.match(agentShell, /style=\{\{ width: "var\(--agent-left-content-width, 100%\)" \}\}/);
+  assert.match(agentShell, /className="relative h-full min-h-0 overflow-hidden"/);
+  assert.match(globals, /\[data-agent-slot="conversations"\] \{\s*overflow: hidden;/);
+  // 拖拽期的骨架屏已经不需要（内容不动了），别再盖一层
+  assert.doesNotMatch(agentShell, /leftDragging && <ChatSkeleton/);
+});
+
+test("Agent 深色配色 B-A-A：左栏 B、中间与右栏 A，浅色不变", () => {
+  const globals = readFile("app/globals.css");
+  const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
+  assert.match(globals, /:root \{\s*\n\s*--agent-sidebar-bg: var\(--md-sys-color-surface-container-lowest\);/);
+  assert.match(globals, /:root \{\s*\n\s*--agent-sidebar-bg[\s\S]{0,120}--agent-content-bg: var\(--md-sys-color-surface-container-low\);/);
+  assert.match(globals, /html:not\(\[data-theme="light"\]\) \[data-agent-shell\] \{/);
+  assert.match(globals, /--agent-sidebar-bg: var\(--md-sys-color-surface-container-low\);/);
+  assert.match(globals, /--agent-content-bg: var\(--bg-panel\);/);
+  assert.match(globals, /\[data-agent-shell\] \[data-agent-slot="main"\],\s*\n\[data-agent-shell\] \.chat-panel \{/);
+  // 左栏背景走变量（浅色仍是原来那档），不再是写死的 lowest
+  assert.match(sidebar, /background: "var\(--agent-sidebar-bg, var\(--md-sys-color-surface-container-lowest\)\)"/);
+  assert.match(readFile("components/agent/AgentAssetsPage.tsx"), /bg-\[var\(--agent-content-bg,var\(--md-sys-color-surface-container-low\)\)\]/);
+  assert.match(readFile("components/agent/AgentAssetDetail.tsx"), /bg-\[var\(--agent-content-bg,var\(--md-sys-color-surface-container-low\)\)\]/);
+});
+
+test("非对话页点新对话 / 点会话要跳回 /agent", () => {
+  const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
+  assert.match(sidebar, /const onChatRoute = pathname === "\/agent";/);
+  assert.match(sidebar, /if \(!onChatRoute\) router\.push\("\/agent"\);\s*\n\s*\}, \[onChatRoute, router\]\);/);
+  // 三个入口都要先回对话页：新对话、点会话、项目菜单里的「在此新建对话」（走 handleNewChat）
+  const newChat = sidebar.indexOf("const handleNewChat = useCallback(");
+  const select = sidebar.indexOf("const handleSelect = useCallback(");
+  assert.ok(newChat > 0 && select > newChat);
+  assert.match(sidebar.slice(newChat, newChat + 600), /goToChat\(\);/);
+  assert.match(sidebar.slice(select, select + 700), /goToChat\(\);/);
+});
+
+test("删除项目同样二次确认（与删除对话一致）", () => {
+  const menu = readFile("components/agent/AgentPanelMenu.tsx");
+  const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
+  assert.match(menu, /data-testid="project-delete-confirm"/);
+  assert.match(menu, /删除项目后，里面的对话会退回 Recents（对话本身不删）。/);
+  assert.match(menu, /onClick=\{\(\) => onRequestDeleteProject\(target\.folder\.id\)\}/);
+  assert.match(menu, /onClick=\{\(\) => onConfirmDeleteProject\(target\.folder\.id\)\}/);
+  // 菜单不再直接删：动作里没有 deleteProject 了
+  assert.doesNotMatch(menu, /actions\.deleteProject/);
+  assert.match(sidebar, /const handleDeleteProject = useCallback\(/);
+  assert.match(sidebar, /onRequestDeleteProject=\{setPendingDeleteProjectId\}/);
+});
+
+test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，默认收起", () => {
+  const manager = readFile("lib/stores/windowManager.ts");
+  assert.match(manager, /sessionId\?: string \| null;/);
+  assert.match(manager, /export function setWindowSessionProvider\(provider: \(\(\) => string \| null\) \| null\): void \{/);
+  assert.match(manager, /sessionId: input\.sessionId \?\? sessionProvider\?\.\(\) \?\? null,/);
+
+  const scope = readFile("lib/window/sessionScope.ts");
+  assert.match(scope, /export function windowBelongsToSession\(/);
+  assert.match(scope, /if \(!windowSessionId\) return true;/);
+
+  // 四处消费同一判定：ManagedWindow 可见性 / RightPanel / WindowTaskbar / AgentDockHost
+  assert.match(readFile("lib/window/useManagedWindowSurface.ts"), /windowBelongsToSession\(windowSessionId, activeSessionId\)/);
+  assert.match(readFile("components/layout/RightPanel.tsx"), /dockWindows = useMemo\(/);
+  assert.match(readFile("components/window/WindowTaskbar.tsx"), /filterWindowsForSession\(windows, activeSessionId\)/);
+  assert.match(readFile("components/window/AgentDockHost.tsx"), /filterWindowsForSession\(windows, activeSessionId\)/);
+
+  // 默认收起，且不再从 localStorage 恢复
+  const ui = readFile("lib/stores/ui.ts");
+  assert.match(ui, /agentDockCollapsed: true,/);
+  assert.doesNotMatch(ui, /updates\.agentDockCollapsed = agentDock;/);
+  // 每个对话一份记忆的钩子挂在 AgentShell 上
+  assert.match(readFile("components/layout/AgentShell.tsx"), /useAgentDockPerSession\(\);/);
+  assert.match(readFile("lib/hooks/useAgentDockPerSession.ts"), /rememberAgentDockState\(previous, snapshotRef\.current\)/);
+});
+
+test("Agent 中央对话：不贴满左右面板（空隙 + 可读宽度居中）", () => {
+  const globals = readFile("app/globals.css");
+  const thread = readFile("components/chat/ChatThread.tsx");
+  // 两个变量挂在 agent 外壳的对话面板上
+  assert.match(globals, /\[data-agent-shell\] \.chat-panel \{\s*\n\s*--agent-chat-inline: clamp\(20px, 2\.6vw, 44px\);/);
+  assert.match(globals, /--agent-chat-max: 920px;/);
+  // 消息流两侧留白（!important 盖住「有跳转点时内联的 18px」）
+  assert.match(globals, /\[data-agent-shell\] \.chat-messages \{\s*\n\s*padding-left: var\(--agent-chat-inline\) !important;/);
+  assert.match(globals, /padding-right: var\(--agent-chat-inline\) !important;/);
+  // 虚拟行的定宽容器收进可读宽度并居中
+  assert.match(globals, /\[data-agent-shell\] \.chat-messages-sizer \{\s*\n\s*width: min\(100%, var\(--agent-chat-max\)\) !important;\s*\n\s*margin-inline: auto;/);
+  assert.match(thread, /className="chat-messages-sizer"/);
+  // 输入框与正文同宽同中线；欢迎页那份自带居中，排除掉
+  assert.match(globals, /\[data-agent-shell\] \.chat-panel:not\(\.chat-panel--welcome\) \.chat-input-container \{/);
+  assert.match(globals, /inset-inline: var\(--agent-chat-inline\);/);
+  assert.match(globals, /max-width: var\(--agent-chat-max\);/);
+  // 「跟随最新输出」按钮贴正文栏右下角
+  assert.match(globals, /\[data-agent-shell\] \.chat-scroll-btn \{\s*\n\s*right: max\(12px, calc\(\(100% - var\(--agent-chat-max\)\) \/ 2 \+ 2px\)\);/);
+  // 只作用于 Agent 外壳：Studio/浮窗的 .chat-messages 不受影响
+  assert.doesNotMatch(globals, /^\s*\.chat-messages \{\s*\n\s*padding-left: var\(--agent-chat-inline/m);
+});
+
+test("骨架懒加载：资产页与详情页都压约 1 秒最小时长", () => {
+  const hook = readFile("lib/hooks/useMinimumSkeleton.ts");
+  const page = readFile("components/agent/AgentAssetsPage.tsx");
+  const detail = readFile("components/agent/AgentAssetDetail.tsx");
+  assert.match(hook, /durationMs = 900/);
+  assert.match(hook, /return !ready \|\| elapsedAt === null;/);
+  // 定时器回调里 setState（不是 effect 体内同步 setState），才过得了 react-hooks/set-state-in-effect
+  assert.match(hook, /setTimeout\(\(\) => setElapsedAt\(Date\.now\(\)\), durationMs\)/);
+  assert.match(page, /const showSkeleton = useMinimumSkeleton\(\{ ready: assets !== null \}\);/);
+  assert.match(detail, /const showSkeleton = useMinimumSkeleton\(\{ ready: assets !== null \}\);/);
+  assert.match(detail, /data-testid="asset-detail-skeleton"/);
+});
+
+test("切标签的卡片重排动画：layout + popLayout + 尊重减少动态效果", () => {
+  const page = readFile("components/agent/AgentAssetsPage.tsx");
+  const motion = readFile("lib/motion.ts");
+  // 共享弹簧：刚度/阻尼写在 lib/motion.ts，组件不写魔法数字
+  assert.match(motion, /export const LAYOUT_REFLOW: Transition = \{/);
+  assert.match(motion, /export const cardSwapVariants: Variants = \{/);
+  assert.match(page, /import \{ LAYOUT_REFLOW, cardSwapVariants \} from "@\/lib\/motion";/);
+  // 卡片外层 motion.div 带 layout，进出场由 AnimatePresence 接管；popLayout 让退场的先脱离文档流
+  assert.match(page, /<AnimatePresence initial=\{false\} mode="popLayout">/);
+  assert.match(page, /data-testid=\{`asset-cell-\$\{item\.kind\}-\$\{item\.id\}`\}/);
+  assert.match(page, /layout=\{!reducedMotion\}/);
+  assert.match(page, /const reducedMotion = useReducedMotion\(\);/);
+  // 网格与列表两个容器也参与 layout，容器尺寸变化同样动画
+  const gridBlock = page.slice(page.indexOf("data-testid=\"assets-grid\"") - 400, page.indexOf("data-testid=\"assets-grid\""));
+  assert.match(gridBlock, /<motion\.div[\s\S]*layout=\{!reducedMotion\}/);
+  assert.doesNotMatch(page, /visible\.map\(\(item\) => \(\s*<AgentAssetCard/);
+});
+
+test("资产页：卡片更大 + 骨架按视图 + 加载期 aria-busy", () => {
+  const card = readFile("components/agent/AgentAssetCard.tsx");
+  const page = readFile("components/agent/AgentAssetsPage.tsx");
+  assert.match(card, /h-\[188px\] flex-col gap-2\.5 rounded-2xl/);
+  // 卡片左右再拉宽：网格最小列宽 208 → 260（1440 下从 4 列变 3 列，单卡更舒展）
+  assert.match(page, /minmax\(260px,1fr\)\)\] gap-4/);
+  assert.doesNotMatch(page, /minmax\(208px/);
+  assert.match(page, /data-testid="assets-skeleton"/);
+  assert.match(page, /aria-label="资产加载中"/);
+  assert.match(page, /aria-busy=\{showSkeleton \|\| undefined\}/);
+});

@@ -21,6 +21,8 @@ import { selectEditingUserNote } from '@/lib/notes/applyUserNoteAgent';
 import { collectFlashcardCatalog, collectUserNoteCatalog } from '@/lib/ai/agent/tools/memoryCatalog';
 import { useUserNotes } from '@/lib/stores/userNotes';
 import { useReviewCards } from '@/lib/stores/reviewCards';
+import { useProjectFiles, listProjectFiles } from '@/lib/stores/projectFiles';
+import { buildProjectCatalog, buildProjectSliceBodies, planCarry } from '@/lib/project/catalog';
 
 const EMPTY_MESSAGES: ChatMessage[] = [];
 export function useChat(chatContext: ChatContext, options?: ChatOptions, overrides?: {
@@ -103,6 +105,18 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const flashcards = isNoteWindow
       ? []
       : collectFlashcardCatalog(cardsState.order.map((id) => cardsState.byId[id]).filter(Boolean));
+    // 项目文件：主对话且选了项目时才带。目录（索引）永远带；正文按携带计划带
+    // （项目不大默认全带，超预算才只带用户勾的片）。
+    const activeProjectId = useChatHistory.getState().activeProjectId;
+    const projectFileList = activeProjectId
+      ? listProjectFiles(useProjectFiles.getState(), activeProjectId)
+      : [];
+    const projectFiles = isNoteWindow || !activeProjectId
+      ? []
+      : buildProjectCatalog(projectFileList, activeProjectId).files;
+    const projectSlices = isNoteWindow || !activeProjectId
+      ? []
+      : buildProjectSliceBodies(projectFileList, planCarry(projectFileList, activeProjectId), activeProjectId).payloads;
     void (async () => {
       let stalled = false;
       try {
@@ -117,6 +131,8 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
               noteWindowAgent: isNoteWindow,
               userNotes,
               flashcards,
+              projectFiles,
+              projectSlices,
               maxToolRounds: settings.maxToolRounds,
               planMode: sendOptions?.planMode,
               forcedTool: sendOptions?.forcedTool,

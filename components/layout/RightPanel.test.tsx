@@ -1,6 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useStore } from "@/lib/stores/ui";
 import { useSettings } from "@/lib/hooks/useSettings";
 
@@ -70,12 +71,30 @@ describe("RightPanel layout flags", () => {
     expect(screen.queryByRole("button", { name: "收起右侧面板" })).not.toBeInTheDocument();
   });
 
-  it("Agent 模式隐藏 AI tab，并把最小化窗列表放到右栏", () => {
-    render(<RightPanel hideAiTab showWindowDock />);
+  it("Agent 右栏没有任何内置栏目，只留窗口坞和收起按钮", () => {
+    render(<RightPanel hideBuiltinTabs showWindowDock />);
     expect(screen.queryByRole("button", { name: "AI 对话" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "动画讲解" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "动画讲解" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "可交互" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "浏览器" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "浏览器设置" })).not.toBeInTheDocument();
     expect(screen.getByTestId("window-taskbar-host")).toHaveTextContent("right-panel");
     expect(screen.getByRole("button", { name: "收起右侧面板" })).toBeInTheDocument();
+  });
+
+  it("右栏收起内置栏目时，store 里的 rightTab 停在 video 也不会挂动画讲解", () => {
+    useStore.setState({ rightTab: "video" });
+    render(<RightPanel hideBuiltinTabs showWindowDock />);
+    expect(screen.queryByTestId("dynamic-tab")).not.toBeInTheDocument();
+  });
+
+  it("收起按钮默认收起当前档位，传入 onCollapse 时以它为准", async () => {
+    const onCollapse = vi.fn();
+    useStore.setState({ rightCollapsedByProfile: { full: false, article: true, reference: false } });
+    render(<RightPanel onCollapse={onCollapse} />);
+    await userEvent.click(screen.getByRole("button", { name: "收起右侧面板" }));
+    expect(onCollapse).toHaveBeenCalledTimes(1);
+    expect(useStore.getState().rightCollapsedByProfile.full).toBe(false);
   });
 
   it("当前 tab 不在允许列表时回退到列表首项", async () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit, Heart, Layers, Sparkles } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit, FolderTree, Heart, Layers, Sparkles } from "lucide-react";
 import { AgentQuizIcon } from "@/components/icons/AgentIcons";
 import FileTypeIcon, { resolveFileGlyphKind } from "@/components/icons/file-types/FileTypeIcon";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
@@ -58,5 +58,6 @@ export function WindowTypeIcon({
   if (type === "quiz-explain") return <AgentQuizIcon size={size} />;
   if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={size} />;
   if (type === "source-preview") return <Globe size={size} />;
+  if (type === "project-files") return <FolderTree size={size} />;
   return <MonitorPlay size={size} />;
 }

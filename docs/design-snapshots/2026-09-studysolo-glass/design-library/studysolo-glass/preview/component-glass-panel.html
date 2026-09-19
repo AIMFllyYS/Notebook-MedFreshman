@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glass Panel</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body{margin:0;padding:12px;background:var(--background);font-family:var(--font-sans);color:var(--foreground);-webkit-font-smoothing:antialiased}
+.row{display:flex;gap:8px;align-items:stretch;position:relative;z-index:1}
+.label{flex:0 0 92px;padding-top:12px;font-size:var(--font-size-caption);font-weight:var(--font-weight-caption);color:var(--text-tertiary);white-space:nowrap}
+.divider{border:0;border-top:1px solid var(--border);margin:12px 0;position:relative;z-index:1}
+.ambient{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--background);pointer-events:none}
+.blob{position:absolute;border-radius:var(--radius-full);filter:blur(110px)}
+.blob-aqua{width:440px;height:440px;top:-130px;left:-90px;background:var(--info-300);opacity:.42}
+.blob-violet{width:480px;height:480px;bottom:-170px;left:38%;background:var(--primary-400);opacity:.40}
+.blob-amber{width:400px;height:400px;top:12%;right:-110px;background:var(--warning-300);opacity:.38}
+.noise{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(1100px 560px at 18% -10%,var(--glass-noise),transparent 60%),radial-gradient(900px 520px at 108% 28%,var(--glass-noise),transparent 62%),linear-gradient(180deg,var(--glass-noise),transparent 32%)}
+
+/* @component-css-start */
+.glass-window{position:relative;flex:1;min-width:0;isolation:isolate;border-radius:var(--radius-window);border:1px solid var(--glass-border);box-shadow:var(--shadow-5);overflow:hidden}
+.glass-window::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--glass-window-fill);-webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate));backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate))}
+.glass-window::after{content:"";position:absolute;inset:0 0 auto;height:55%;border-radius:inherit;background:linear-gradient(180deg,var(--glass-highlight),transparent 65%);pointer-events:none}
+.titlebar{display:flex;align-items:center;gap:var(--space-3);height:44px;padding:0 var(--space-5);border-bottom:1px solid var(--glass-border)}
+.traffic{display:flex;gap:8px;flex-shrink:0}
+.traffic i{width:var(--size-traffic-light);height:var(--size-traffic-light);border-radius:var(--radius-full);flex-shrink:0}
+.traffic i:nth-child(1){background:var(--accent)}
+.traffic i:nth-child(2){background:var(--warning)}
+.traffic i:nth-child(3){background:var(--success)}
+.titlebar .t{font-size:var(--font-size-body);font-weight:600;color:var(--text-on-glass)}
+.window-body{position:relative;height:214px}
+.glass-card{position:absolute;top:16px;left:16px;right:16px;bottom:16px;border-radius:var(--radius-panel);background:var(--glass-panel-fill);border:1px solid var(--glass-border);box-shadow:var(--shadow-3);padding:var(--space-4)}
+.glass-card h4{margin:6px 0 0;font-size:var(--font-size-h4);font-weight:var(--font-weight-h4);color:var(--text-on-glass)}
+.cap{display:block;font-size:var(--font-size-caption);font-weight:var(--font-weight-caption);color:var(--text-tertiary);white-space:nowrap}
+.glass-popover{position:absolute;right:20px;bottom:20px;width:172px;border-radius:14px;background:var(--glass-popover-fill);border:1px solid var(--glass-border);box-shadow:var(--shadow-4);padding:10px var(--space-3)}
+.mini-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.mini-dot{width:8px;height:8px;border-radius:var(--radius-full);flex-shrink:0;background:var(--primary)}
+.mini-row:nth-of-type(3) .mini-dot{background:var(--info)}
+.mini-bar{height:8px;border-radius:var(--radius-sm);background:var(--glass-control-fill);flex:1;min-width:0}
+.mini-bar.s{flex:0 0 44px}
+.window-foot{display:flex;align-items:center;height:34px;padding:0 var(--space-5);border-top:1px solid var(--glass-border)}
+.glass-sidebar{flex:1;min-width:0;border-radius:var(--radius-panel);background:var(--glass-sidebar-fill);border:1px solid var(--glass-border);box-shadow:var(--shadow-2);overflow:hidden}
+.nav{display:flex;align-items:center;height:42px;padding:0 var(--space-5);border-top:1px solid var(--glass-border);font-size:var(--font-size-body);color:var(--text-secondary);text-decoration:none;transition:background var(--duration-fast) var(--ease-standard),color var(--duration-fast)}
+.nav:first-child{border-top:0}
+.nav:hover{background:var(--muted)}
+.nav.active{background:color-mix(in srgb,var(--primary) 18%,transparent);color:var(--primary);font-weight:600}
+/* @component-css-end */
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true">
+<span class="blob blob-aqua"></span>
+<span class="blob blob-violet"></span>
+<span class="blob blob-amber"></span>
+</div>
+<div class="noise" aria-hidden="true"></div>
+
+<div class="row">
+<span class="label">elevation</span>
+<section class="glass-window" data-evidence-sample="window">
+<div class="titlebar"><span class="traffic"><i></i><i></i><i></i></span><span class="t">智能讲解</span></div>
+<div class="window-body">
+<div class="glass-card" data-evidence-sample="card">
+<span class="cap">card</span><h4>今日课堂</h4>
+</div>
+<div class="glass-popover" data-evidence-sample="popover">
+<span class="cap">popover</span>
+<div class="mini-row"><span class="mini-dot"></span><span class="mini-bar"></span></div>
+<div class="mini-row"><span class="mini-dot"></span><span class="mini-bar s"></span></div>
+</div>
+</div>
+<div class="window-foot"><span class="cap">window</span></div>
+</section>
+</div>
+
+<hr class="divider">
+
+<div class="row">
+<span class="label">pane</span>
+<aside class="glass-sidebar" data-evidence-sample="pane-sidebar">
+<a class="nav active" href="#">今日课堂</a>
+<a class="nav" href="#">复习</a>
+<a class="nav" href="#">Agent</a>
+</aside>
+</div>
+</body>
+</html>

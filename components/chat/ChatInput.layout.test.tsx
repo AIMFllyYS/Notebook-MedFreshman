@@ -89,6 +89,8 @@ describe('floating transparent composer', () => {
     const onInset = vi.fn();
     const { container, unmount } = render(<ChatInput {...props} onComposerInsetChange={onInset} />);
     expect(observe).toHaveBeenCalledWith(container.querySelector('.chat-input-container'));
+    // 输入框也挂了一个 observer：左右栏宽度变化时要重新量行高（空态必须还是一行）
+    expect(observe).toHaveBeenCalledWith(container.querySelector('textarea'));
     expect(onInset).toHaveBeenLastCalledWith(122);
     height = 212;
     act(() => resize?.([], {} as ResizeObserver));
@@ -97,7 +99,8 @@ describe('floating transparent composer', () => {
     fireEvent(window, new Event('resize'));
     expect(onInset).toHaveBeenLastCalledWith(274);
     unmount();
-    expect(disconnect).toHaveBeenCalledOnce();
+    // 容器 observer + 输入框 observer 各自断开
+    expect(disconnect).toHaveBeenCalledTimes(2);
     expect(onInset).not.toHaveBeenCalledWith(0); // StrictMode cleanup 不让保留区塌陷。
   });
 
@@ -118,7 +121,9 @@ describe('floating transparent composer', () => {
 
   it('CSS contract anchors a transparent dock and stages compact toolbar controls without clipping narrow surfaces', () => {
     const css = readFileSync(resolve(process.cwd(), 'app/styles/prose.css'), 'utf8');
-    const rule = (selector: string) => css.match(new RegExp(`${selector.replaceAll('.', '\\.')}\\s*\\{([^}]+)\\}`))?.[1] ?? '';
+    // 只认「行首就是这条选择器」的基础规则：覆盖写法（如 .chat-panel--welcome .chat-input-container）
+    // 或 @media 里的同名规则都可能排在前面，按子串取第一条会读到覆盖内容。
+    const rule = (selector: string) => css.match(new RegExp(`(?:^|\\n)[ \\t]*${selector.replaceAll('.', '\\.')}\\s*\\{([^}]+)\\}`))?.[1] ?? '';
     const dock = rule('.chat-input-container');
     expect(dock).toContain('position: absolute');
     expect(dock).toContain('background: transparent');

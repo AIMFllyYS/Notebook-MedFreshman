@@ -4,6 +4,10 @@ import userEvent from "@testing-library/user-event";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useAppMode } from "@/lib/stores/appMode";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { useOverlayStack } from "@/lib/keyboard/useOverlayStack";
+import { useStore } from "@/lib/stores/ui";
 
 const WIN_ID = "test-managed-window";
 
@@ -34,9 +38,25 @@ function mountNotesPanel(rect: { left: number; top: number; width: number; heigh
   return el;
 }
 
+function mountDockHost() {
+  const host = document.createElement("div");
+  host.dataset.testid = "agent-dock-content";
+  document.body.appendChild(host);
+  useAgentDockRuntime.setState({ contentHost: host });
+  // 右栏现在**默认收起**（产品口径：Agent 打开时不先弹一块面板）。
+  // 这里要验的是「停靠形态怎么渲染」，所以显式把右栏打开。
+  useStore.setState({ agentDockCollapsed: false });
+  return host;
+}
+
 afterEach(() => {
   cleanup();
+  useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+  useAgentDockRuntime.setState({ contentHost: null, openRequest: 0, dockGlobal: false });
+  // 回到产品默认：右栏收起。
+  useStore.setState({ agentDockCollapsed: true });
+  useOverlayStack.setState({ stack: [] });
   document.getElementById(NOTES_PANEL_ID)?.remove();
   vi.unstubAllGlobals();
 });
@@ -175,6 +195,166 @@ describe("ManagedWindow", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("payload")).not.toBeInTheDocument();
+    });
+  });
+
+  it("portals the same business body into the Agent dock without using floating geometry", async () => {
+    useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
+    const host = mountDockHost();
+    openTestWindow();
+    render(
+      <ManagedWindow windowId={WIN_ID} title="文档查看器" onClose={() => {}}>
+        <span>shared document body</span>
+      </ManagedWindow>,
+    );
+
+    await waitFor(() => {
+      const surface = host.querySelector('[data-surface="dock"]') as HTMLElement | null;
+      expect(surface).not.toBeNull();
+      expect(surface).toHaveStyle({ display: "flex", width: "100%", height: "100%" });
+      expect(surface).toHaveTextContent("shared document body");
+      expect(document.body.querySelector('[data-surface="floating"]')).toBeNull();
+    });
+  });
+
+  it("keeps inactive dock bodies mounted while showing only the active tab", async () => {
+    useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
+    const host = mountDockHost();
+    const secondId = "second-managed-window";
+    openTestWindow();
+    useWindowManager.getState().openWindow({
+      id: secondId,
+      type: "source-preview",
+      title: "第二个窗",
+      pos: { x: 60, y: 60 },
+      size: { width: 480, height: 360 },
+      data: { url: "https://example.com/second", title: "第二个窗" },
+    });
+    render(
+      <>
+        <ManagedWindow windowId={WIN_ID} title="第一个窗" onClose={() => {}}>
+          <span>first body</span>
+        </ManagedWindow>
+        <ManagedWindow windowId={secondId} title="第二个窗" onClose={() => {}}>
+          <span>second body</span>
+        </ManagedWindow>
+      </>,
+    );
+
+    await waitFor(() => {
+      expect(host).toHaveTextContent("first body");
+      expect(host).toHaveTextContent("second body");
+      expect(host.querySelector('[data-surface="dock"][data-window-active]')).toHaveTextContent("second body");
+      const surfaces = host.querySelectorAll('[data-surface="dock"]');
+      expect(surfaces).toHaveLength(2);
+      expect((surfaces[0] as HTMLElement).style.display).toBe("none");
+      expect((surfaces[1] as HTMLElement).style.display).toBe("flex");
+    });
+
+    act(() => {
+      useWindowManager.getState().bringToFront(WIN_ID);
+    });
+
+    await waitFor(() => {
+      const active = host.querySelector('[data-surface="dock"][data-window-active]');
+      expect(active).toHaveTextContent("first body");
+      expect(active).not.toHaveTextContent("second body");
+    });
+  });
+
+  it("does not answer the foreground Esc while the user is typing outside the dock", async () => {
+    useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
+    const host = mountDockHost();
+    openTestWindow();
+    render(
+      <>
+        <textarea data-testid="outside-chat-input" />
+        <ManagedWindow windowId={WIN_ID} title="文档" onClose={() => {}}>
+          <button type="button" data-testid="dock-inner">
+            正文
+          </button>
+        </ManagedWindow>
+      </>,
+    );
+
+    await waitFor(() => expect(host.querySelector('[data-surface="dock"]')).not.toBeNull());
+    await waitFor(() =>
+      expect(useOverlayStack.getState().stack.map((entry) => entry.id)).toContain(WIN_ID),
+    );
+
+    await act(async () => screen.getByTestId("outside-chat-input").focus());
+    await waitFor(() =>
+      expect(useOverlayStack.getState().stack.map((entry) => entry.id)).not.toContain(WIN_ID),
+    );
+
+    await act(async () => screen.getByTestId("dock-inner").focus());
+    await waitFor(() =>
+      expect(useOverlayStack.getState().stack.map((entry) => entry.id)).toContain(WIN_ID),
+    );
+  });
+
+  it("returns focus to the trigger when a mobile sheet closes", async () => {
+    vi.stubGlobal("matchMedia", () => ({
+      matches: true,
+      media: "(max-width: 767px)",
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }));
+    useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
+    openTestWindow();
+    render(
+      <>
+        <button type="button" data-testid="sheet-trigger">
+          打开
+        </button>
+        <ManagedWindow windowId={WIN_ID} title="移动文档" onClose={() => {}}>
+          <span>mobile body</span>
+        </ManagedWindow>
+      </>,
+    );
+
+    const trigger = screen.getByTestId("sheet-trigger");
+    await act(async () => trigger.focus());
+    await waitFor(() => expect(document.body.querySelector('[data-surface="sheet"]')).not.toBeNull());
+
+    await act(async () => {
+      useWindowManager.getState().closeWindow(WIN_ID);
+    });
+
+    await waitFor(() => expect(document.body.querySelector('[data-surface="sheet"]')).toBeNull());
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it("uses a mobile sheet when Agent has no desktop dock host and does not expose floating controls", async () => {
+    vi.stubGlobal("matchMedia", () => ({
+      matches: true,
+      media: "(max-width: 767px)",
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }));
+    useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
+    openTestWindow();
+    render(
+      <ManagedWindow windowId={WIN_ID} title="移动文档" onClose={() => {}}>
+        <span>mobile body</span>
+      </ManagedWindow>,
+    );
+
+    await waitFor(() => {
+      const surface = document.body.querySelector('[data-surface="sheet"]') as HTMLElement | null;
+      expect(surface).not.toBeNull();
+      expect(surface).toHaveTextContent("mobile body");
+      expect(surface?.style.position).toBe("fixed");
+      expect(screen.queryByTitle("收起当前标签")).not.toBeInTheDocument();
+      expect(screen.queryByTitle("扩展窗口")).not.toBeInTheDocument();
     });
   });
 });
