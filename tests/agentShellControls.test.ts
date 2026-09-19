@@ -98,6 +98,28 @@ test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，默认�
   assert.match(readFile("lib/hooks/useAgentDockPerSession.ts"), /rememberAgentDockState\(previous, snapshotRef\.current\)/);
 });
 
+test("Agent 中央对话：不贴满左右面板（空隙 + 可读宽度居中）", () => {
+  const globals = readFile("app/globals.css");
+  const thread = readFile("components/chat/ChatThread.tsx");
+  // 两个变量挂在 agent 外壳的对话面板上
+  assert.match(globals, /\[data-agent-shell\] \.chat-panel \{\s*\n\s*--agent-chat-inline: clamp\(20px, 2\.6vw, 44px\);/);
+  assert.match(globals, /--agent-chat-max: 920px;/);
+  // 消息流两侧留白（!important 盖住「有跳转点时内联的 18px」）
+  assert.match(globals, /\[data-agent-shell\] \.chat-messages \{\s*\n\s*padding-left: var\(--agent-chat-inline\) !important;/);
+  assert.match(globals, /padding-right: var\(--agent-chat-inline\) !important;/);
+  // 虚拟行的定宽容器收进可读宽度并居中
+  assert.match(globals, /\[data-agent-shell\] \.chat-messages-sizer \{\s*\n\s*width: min\(100%, var\(--agent-chat-max\)\) !important;\s*\n\s*margin-inline: auto;/);
+  assert.match(thread, /className="chat-messages-sizer"/);
+  // 输入框与正文同宽同中线；欢迎页那份自带居中，排除掉
+  assert.match(globals, /\[data-agent-shell\] \.chat-panel:not\(\.chat-panel--welcome\) \.chat-input-container \{/);
+  assert.match(globals, /inset-inline: var\(--agent-chat-inline\);/);
+  assert.match(globals, /max-width: var\(--agent-chat-max\);/);
+  // 「跟随最新输出」按钮贴正文栏右下角
+  assert.match(globals, /\[data-agent-shell\] \.chat-scroll-btn \{\s*\n\s*right: max\(12px, calc\(\(100% - var\(--agent-chat-max\)\) \/ 2 \+ 2px\)\);/);
+  // 只作用于 Agent 外壳：Studio/浮窗的 .chat-messages 不受影响
+  assert.doesNotMatch(globals, /^\s*\.chat-messages \{\s*\n\s*padding-left: var\(--agent-chat-inline/m);
+});
+
 test("骨架懒加载：资产页与详情页都压约 1 秒最小时长", () => {
   const hook = readFile("lib/hooks/useMinimumSkeleton.ts");
   const page = readFile("components/agent/AgentAssetsPage.tsx");

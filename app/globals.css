@@ -914,6 +914,46 @@ html:not([data-theme="light"]) [data-agent-shell] {
 [data-agent-slot="conversations"] {
   overflow: hidden;
 }
+/* ─────────────────────────────────────────────────────────────
+   Agent 中央对话的「呼吸空隙」
+   - 不贴满左右面板：两侧始终留 --agent-chat-inline（20–44px，随窗口宽度微调）；
+   - 宽屏时正文收进 --agent-chat-max（920px）居中 —— 这是 Codex 那种「一栏」的观感，
+     行长不会拉到一整屏；窄屏时这两条各自退化成「只有空隙」，不会挤压内容。
+   - 只作用于 Agent 外壳：Studio 右栏、划词浮窗、笔记窗的对话完全不受影响。
+   - 注：改完这套变量若浏览器里没生效，先去看 /_next/static/chunks/*.css 是否已包含 --agent-chat-max：
+     Turbopack 的 CSS chunk 偶尔不会随内容失效（本仓库已踩过两次），重启 dev server 即可。
+   ───────────────────────────────────────────────────────────── */
+[data-agent-shell] .chat-panel {
+  --agent-chat-inline: clamp(20px, 2.6vw, 44px);
+  --agent-chat-max: 920px;
+}
+/* 消息流两侧留白。!important 是为了盖住「有跳转点时会内联写成 18px」的 padding-right —— 
+   那 18px 在 Codex 式留白下反而会把右间隙吃掉。 */
+[data-agent-shell] .chat-messages {
+  padding-left: var(--agent-chat-inline) !important;
+  padding-right: var(--agent-chat-inline) !important;
+}
+/* 虚拟行的定宽容器：宽屏收进可读宽度并居中（行是 width:100% 的绝对定位子元素，跟着它走）。 */
+[data-agent-shell] .chat-messages-sizer {
+  width: min(100%, var(--agent-chat-max)) !important;
+  margin-inline: auto;
+}
+/* 加载 / 报错这两条横幅也跟着正文走同一条中线。 */
+[data-agent-shell] .chat-messages > .chat-loading,
+[data-agent-shell] .chat-messages > .chat-error {
+  width: min(100%, var(--agent-chat-max));
+  margin-inline: auto;
+}
+/* 输入框：与正文同宽同中线（欢迎页那份自带 780px 居中，不动它）。 */
+[data-agent-shell] .chat-panel:not(.chat-panel--welcome) .chat-input-container {
+  inset-inline: var(--agent-chat-inline);
+  max-width: var(--agent-chat-max);
+  margin-inline: auto;
+}
+/* 「跟随最新输出」按钮：贴在正文栏右下角，而不是甩到面板最边上。 */
+[data-agent-shell] .chat-scroll-btn {
+  right: max(12px, calc((100% - var(--agent-chat-max)) / 2 + 2px));
+}
 
 /* ─────────────────────────────────────────────────────────────
    Mobile Optimization
