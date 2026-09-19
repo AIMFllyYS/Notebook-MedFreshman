@@ -131,10 +131,10 @@ console errors: 仅探针自己制造的 500 与未登录的 401
 | 门 | 结果 |
 |---|---|
 | `npx tsc --noEmit` | 0 |
-| `pnpm run test:unit` | **1374 pass / 0 fail**（本轮 +45） |
-| `pnpm run test:react` | **148 文件 / 574 pass**（本轮 +4 文件 / +21 用例） |
+| `pnpm run test:unit` | **1385 pass / 0 fail**（阶段落地 +45，BUG 修复轮再 +11） |
+| `pnpm run test:react` | **149 文件 / 578 pass**（+4 文件 / +25 用例） |
 | `npx eslint .` | 0 error（warning 90，基线 91） |
-| `npx knip` | 未用文件 3 / 未用导出 14 / 未用类型 1 —— 与基线一致（本次新增的导出都有消费者） |
+| `npx knip` | 未用文件 3 / 未用导出 14 / 未用类型 1 —— 与基线一致（两轮新增的导出都有消费者） |
 | `pnpm run check:encoding` | 3575 个 Markdown 全部合法 UTF-8 |
 | `git diff --check` | 0 |
 
@@ -142,8 +142,8 @@ console errors: 仅探针自己制造的 500 与未登录的 401
 
 ```
 npx tsc --noEmit                 → 0
-pnpm run test:unit               → tests 1374 / pass 1374 / fail 0
-pnpm run test:react              → Test Files 148 passed / Tests 574 passed
+pnpm run test:unit               → tests 1385 / pass 1385 / fail 0
+pnpm run test:react              → Test Files 149 passed / Tests 578 passed
 npx eslint .                     → 0 errors, 90 warnings（基线 91）
 npx knip --no-progress           → Unused files 3 / exports 14 / types 1（与基线一致）
 pnpm run check:encoding          → 3575 个 Markdown 均为合法 UTF-8
@@ -156,6 +156,99 @@ git diff --check                 → 0
 `components/layout/AgentShell.test.tsx`（5）、`components/layout/AgentConversationSidebar.test.tsx`（8）、
 `components/agent/AgentAssetsPage.test.tsx`（6）、`components/agent/AgentAssetDetail.test.tsx`（3）、
 `components/project/ProjectFilesWindow.test.tsx`（3）、`components/chat/composer/ProjectPickerChip.test.tsx`（5）。
+
+
+## 附六 · 七个 BUG 的深度修复（2026-09-20，第二轮）
+
+### 1. 侧边栏开关归位到顶栏左上角（与 Studio 同款）
+
+**根因**：顶栏那个开合按钮被 `{!agentMode && <button …>}` 挡掉了；Agent 只能先在左栏头部收起、再用**中间浮出来的**「展开对话栏」按钮打开。
+
+**改法**：
+- `AppShell` 顶栏按钮对两种模式都渲染，加 `data-testid="sidebar-toggle"` 与 `aria-label/aria-pressed`（位置与 Studio 完全一致：LOGO 左侧）；
+- `AgentShell` 删掉悬浮按钮与 `PanelLeftOpen` 依赖；「展开回到上次拖到的宽度」改由 `[sidebarCollapsed]` 那次翻转来记（`pendingLeftRestoreRef`）——收起动作现在来自顶栏。
+
+**实测**：开关在 `x=12,y=8`；点它收起 → 面板 319→0；再点 → 回到 319；中间不存在 `[aria-label="展开对话栏"]`。
+
+### 2. 在「我的资产」等页面点新对话 / 点对话没反应
+
+**根因**：`handleNewChat` / `handleSelect` 只改 store（切会话、建会话），**不导航**；人还站在 `/agent/assets`，中央区当然不会变成对话。
+
+**改法**：左栏加 `goToChat()`（`pathname !== "/agent"` 时 `router.push("/agent")`），三条入口都先走它：新对话、点会话（含划词会话）、项目菜单「在此新建对话」。
+
+**实测**：在 `/agent/assets` 点「新对话」→ pathname 变 `/agent`；点会话行 → 先回 `/agent` 再切会话。
+
+### 3. 右侧工作区按对话隔离，且默认收起
+
+**根因**：`agentDockCollapsed` 是全局单值（还从 localStorage 恢复），窗口列表也是全局一份 —— A 对话开的文档会出现在 B 的右栏里。
+
+**改法**（三层）：
+1. **窗口带归属**：`ManagedWindow.sessionId` 在 `openWindow` 时由外壳注入的 `setWindowSessionProvider` 打标（不直接 import chatHistory，避免 windowManager → chatHistory → artifacts → windowManager 的循环依赖）；
+2. **只有当前对话的窗口可见**：判定收敛到 `lib/window/sessionScope.ts`，四处消费同一函数 —— `useManagedWindowSurface`（可见性/可交互）、`RightPanel`（活动窗口与空态）、`WindowTaskbar`（右栏标签条）、`AgentDockHost`（自动选活动窗口）；未打标的窗口始终可见（Studio 打开的老窗口不受影响）；
+3. **每个对话一份记忆**：`lib/window/agentDockSession.ts`（内存表）+ `useAgentDockPerSession`（挂在 AgentShell）。切会话或离开对话页时记下「收起？全屏？在看哪个窗口」，切回来按记忆恢复；没有记忆（新对话、刷新后）→ 默认收起。非对话页（资产/定时/插件）强制收起且**不覆盖**记忆 —— 从资产页回来看到的仍是离开时的样子。
+
+另外：`agentDockCollapsed` 初始值改 `true`，`hydrateLayout` 不再从 localStorage 恢复它（否则刷新后又弹出来）。
+
+**实测**（Playwright 真点）：冷启动右栏宽 0；A 对话开笔记窗 → 宽 288 + 1 标签；切到 B → 宽 0、0 标签、看不到 A 的窗口；切回 A → 宽 288 + 同一标签。
+
+### 4. 收起时内容不跟着重排（只让面板真实变窄）
+
+**根因**：左栏内容宽度 = 面板宽度，收起动画逐帧变窄 → 文字每帧重排（之前只在**拖拽**期盖骨架屏遮丑，顶栏按钮那一路根本没有遮）。
+
+**改法**：内容包一层定宽容器，宽度取 `max(当前面板宽, 最近一次舒适宽)`（写进 `--agent-left-content-width`，由 ResizeObserver 更新），外层 `aside` 加 `overflow: hidden`。收起于是变成**裁切**而不是重排：文字不动、面板真实变窄。同时把「拖拽中不记录舒适宽度」扩成「拖拽中 + 收起中都不记录」—— 否则收起动画会把冻结宽度本身越缩越小（第一版实测缩到了 82px）。
+
+**实测**：收起前 面板 319 / 内容 319；收起后 面板 0 / **内容仍 319**；展开回 319。
+
+### 5. 深色配色 A-B-A → B-A-A
+
+**实测原值**（深色）：左栏 `#0c0e13`（lowest）、中间 `#191c20`（low）、右栏 `#131318`（`--bg-panel`）。
+
+**改法**：新增两个变量；浅色下等于各自原来的颜色（浅色**零变化**），深色下在 `[data-agent-shell]` 里改成：
+
+```css
+:root { --agent-sidebar-bg: …-lowest; --agent-content-bg: …-low; }
+html:not([data-theme="light"]) [data-agent-shell] {
+  --agent-sidebar-bg: var(--md-sys-color-surface-container-low); /* 左栏 = 原中间色（B） */
+  --agent-content-bg: var(--bg-panel);                          /* 中间 = 面板色（A） */
+}
+```
+
+左栏背景改读变量；中间列（`[data-agent-slot="main"]`、`.chat-panel`）与两个页面组件（资产页 / 详情页）统一读 `--agent-content-bg`；右栏本来就是面板色，不动。
+
+**实测**：左栏 `rgb(25,28,32)`、中间与右栏都是 `rgb(19,19,24)` —— 正好 B-A-A。
+
+### 6. 删除项目二次确认
+
+**根因**：会话删除有二次确认，项目删除是「点了就删」。
+
+**改法**：`AgentPanelMenu` 增加 `pendingDeleteProjectId` 与确认块（`data-testid="project-delete-confirm"`，文案写明「里面的对话会退回 Recents（对话本身不删）」）；菜单动作里的 `deleteProject` 去掉，改由确认块回调；左栏加 `handleDeleteProject`。
+
+**测试**：RTL 断言「第一次点不调 deleteFolder、确认后才调用」；契约测试锁住确认块文案与两个回调。
+
+### 7. 资产页：卡片更大、默认收起右栏、骨架跟上视图
+
+**改法**：
+- 卡片 132→188 高、图标 36→44，圆角 / 字号 / 内距一起放大；网格列宽 176→208、间距 12→16；
+- 页面内距 `px-4 py-3` → `px-5 py-4`；
+- 骨架从「4 根细条」换成为**按当前视图**渲染的骨架（橱窗 8 张卡片骨架 / 列表 10 行骨架），加载期给 `aria-busy`；
+- 右栏默认收起：由第 3 条的「非对话页强制收起」覆盖（资产 / 定时 / 插件都吃到）。
+
+**实测**：冷开 `/agent/assets` 抓得到 `[data-testid="assets-skeleton"]`（aria-label=资产加载中）；卡片实测 188 高、列宽 258（4 列）。
+
+### 本轮新增 / 更新的测试
+
+| 文件 | 覆盖 |
+|---|---|
+| `tests/agentShellControls.test.ts`（新，7 项） | 七条的源码契约：顶栏开关、冻结点、B-A-A 变量、跳转、二次确认、会话隔离四处消费、骨架 |
+| `lib/window/sessionScope.test.ts`（新，4 项） | 窗口归属判定与筛选 |
+| `lib/window/agentDockSession.test.ts`（新，1 项） | 每对话记忆表 |
+| `lib/hooks/useAgentDockPerSession.test.tsx`（新，3 项） | 默认收起 / A-B 互不干扰 / 非对话页不强占记忆 |
+| `components/layout/AgentShell.test.tsx` | 改为断言「中间没有展开按钮」+ 内容定宽容器 |
+| `components/layout/AgentConversationSidebar.test.tsx` | 新增「非对话页点新对话/会话要跳回」；项目删除改二次确认 |
+| `components/window/ManagedWindow.test.tsx` | 停靠用例显式打开右栏（默认已改为收起） |
+
+**本轮门（末次全量）**：`tsc` 0 · `test:unit` 1385/0 · `test:react` 149 文件 / 578 通过 · `eslint` 0 error / 90 warning ·
+`knip` 3/14/1（基线） · `check:encoding` 3575 合法 · 浏览器验收 13/13 + 6/6 PASS。
 
 ## 运维待办
 
