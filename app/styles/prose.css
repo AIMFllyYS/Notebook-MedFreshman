@@ -2165,37 +2165,16 @@
 @media (prefers-reduced-motion: reduce) {
   [data-surface="sheet"] { animation: none !important; }
 }
-/* Agent 左侧工作区面板：覆盖式弹出，最高点与顶栏平齐，不占用布局列。 */
-.agent-left-panel-scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  padding: 0;
-  border: 0;
-  background: rgba(0, 0, 0, 0.32);
-  cursor: default;
+/* Agent 右侧工作区整列：与顶栏并列、通到窗口最顶；展开时从左侧拉出。 */
+.agent-dock-column {
+  animation: agent-dock-column-in 200ms var(--ease-out, ease-out) both;
 }
-.agent-left-panel {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 71;
-  display: flex;
-  height: 100dvh;
-  width: min(320px, 88vw);
-  min-height: 0;
-  flex-direction: column;
-  background: var(--md-sys-color-surface-container-lowest);
-  border-right: 1px solid var(--md-sys-color-outline-variant);
-  box-shadow: 18px 0 48px rgba(0, 0, 0, 0.28);
-  animation: agent-left-panel-in 180ms var(--ease-out, ease-out) both;
-}
-@keyframes agent-left-panel-in {
-  from { opacity: 0; transform: translateX(-18px); }
+@keyframes agent-dock-column-in {
+  from { opacity: 0.4; transform: translateX(-24px); }
   to { opacity: 1; transform: translateX(0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .agent-left-panel { animation: none; }
+  .agent-dock-column { animation: none; }
 }
 .agent-settings-dialog {
   position: relative;

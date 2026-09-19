@@ -385,3 +385,42 @@ AppShell 在 `app/layout.tsx` 里包住所有路由，因此每条路由都会�
    未纳入本次改造。
 3. 计划模式的 `planMode*/agentPlanMode` 字段目前不在 `Persisted` 里，`readPlanModeGate` 实际恒为默认值；
    已顺带改成水合安全的写法，等设置页补上这些字段后无需再改。
+
+---
+
+# 附三：按用户逐条纠正重做外壳（左右彻底捋清）
+
+用户明确指出上一轮把左右搞反了，并给出 5 条权威口径：
+
+| # | 口径 | 处置 |
+|---|---|---|
+| 1 | 右侧面板**通到窗口最顶**（比顶栏高、与顶栏最上沿平齐），**从左侧拉出** | 右侧工作区改为顶层布局里与「顶栏 + 主区」并列的一列；实测 `y=0, h=900`（视口 900），左边界 951，顶栏只覆盖 x=0..950 |
+| 2 | **顶栏最右按钮控制右侧面板**（此前被我接成了左侧导航） | `data-testid="agent-dock-toggle"`，aria-label「展开/收起右侧工作区」，改的是 `rightCollapsedByProfile` |
+| 3 | 左侧导航栏**结构固定**，可自由压缩、可收起 | 删除上一轮的 `AgentLeftPanel` 覆盖式抽屉与 `agentPanelOpen`；左栏恢复为 PanelGroup 常驻列（`agent-conversations`，14%–40% 可拖、可收起），板块仍是 新对话 / 我的资产 / 正常对话 / 划词助手对话 |
+| 4 | 动画讲解 / 可交互 / 浏览器**在 Agent 里必须没有** | `RightPanel` 新增 `hideBuiltinTabs`：Agent 右侧工作区不再渲染内置栏目，收藏夹与浏览器设置一并消失 |
+| 5 | **Agent 输出的东西进右侧面板** | 右侧工作区只承载 ManagedWindow（文档/产物/网页）；实测新建笔记落在右栏列内 |
+
+## 结构调整
+
+- 新增 `components/layout/AgentDockColumn.tsx`：右侧工作区整列（`data-agent-slot="windows"` + `#right-panel` + `AgentDockHost > RightPanel hideAiTab hideBuiltinTabs showWindowDock`）。
+- `AppShell` 新增 Agent 专用桌面外壳（`isAgentRoute`）：`PanelGroup[ 主列(顶栏 + children) | 拖拽条 | 右栏 ]`，`autoSaveId="studysolo-agent-shell-v1"`；右栏扩展控制器（`registerPanelControls`）与 store→面板同步 effect 都搬到这里。
+- `AgentWorkspace` 回到「左对话栏 + 中央对话」，不再持有右侧窗坞；恢复「展开对话栏」按钮。
+- `AgentConversationSidebar` 的收起按钮恢复控制左栏折叠（`setSidebarCollapsed`），标题回到「对话」。
+- CSS：删掉左侧抽屉样式，新增 `.agent-dock-column` 从左侧拉出的进入动画（尊重 reduced motion）。
+
+## 本轮浏览器实测发现并修掉的真实缺陷
+
+新外壳最初漏掉了业务窗口挂载层（`DeferredWindowLayers` 等），右栏会出现**"有标签没正文"**：
+新建笔记后只出现 tab、`[data-surface]` 为空。已在 Agent 外壳补回 `DeferredWindowLayers / AgentSettingsOverlay / LoginOverlay / PipPlayer / ToastHost`，
+复测 `[data-surface="dock"]` 正常挂载在 `#agent-dock-content` 下。
+
+## 验证
+
+- 新增浏览器脚本 `flow8.py`：10 项断言全通过（通顶几何、顶栏按钮控制右栏、左栏常驻与板块、内置栏目消失、Agent 输出落位），截图 `40-agent-shell.png` / `41-dock-collapsed.png` / `42-agent-output-in-dock.png`。
+- 回归：`flow1.py` 的 21 项 dock 断言无失败；`pnpm run test:react` 144 文件 / 538 通过；`pnpm run test:unit` 1311 通过；
+  `tsc` 与 `git diff --check` 通过；`pnpm run lint:eslint` 0 error / 92 warning（与基线一致）；`pnpm run build` 通过（1337 页）。
+- 同步更新 `tests/appModeChrome.test.ts` 与 `AgentWorkspace.test.tsx` 对新结构的断言。
+
+## 说明
+
+上一轮提交（`2881da61`）里的左侧覆盖面板方案已按本轮口径整体替换；`flow7.py` 是旧外壳的脚本，已不再适用。

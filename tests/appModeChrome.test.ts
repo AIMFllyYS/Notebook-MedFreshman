@@ -54,25 +54,28 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
 
   assert.match(agentPage, /from "@\/components\/layout\/AgentWorkspace"/);
   assert.match(classPage, /from "@\/components\/layout\/ClassPlaceholder"/);
-  // 左栏不再常驻：由 AgentLeftPanel 以覆盖式面板承载，AgentWorkspace 只保留主对话 + 右侧窗坞。
-  assert.match(workspace, /data-agent-slot="windows"/);
+  // 左对话栏是常驻列（可收起），右侧工作区是顶层外壳里与顶栏并列、通到窗口最顶的一列。
+  assert.match(workspace, /data-agent-slot="conversations"/);
   assert.match(workspace, /data-agent-slot="main"/);
-  assert.doesNotMatch(workspace, /data-agent-slot="conversations"/);
-  assert.match(workspace, /AgentLeftPanel/);
+  assert.doesNotMatch(workspace, /data-agent-slot="windows"/);
+  assert.match(workspace, /AgentConversationSidebar/);
   assert.match(workspace, /components\/chat\/ChatPanel/);
   assert.doesNotMatch(workspace, /next\/dynamic/);
   assert.match(workspace, /if \(isMobile\)/);
-  const leftPanel = readWorkspaceFile("components/layout/AgentLeftPanel.tsx");
-  assert.match(leftPanel, /AgentConversationSidebar/);
-  assert.match(leftPanel, /agent-left-panel/);
-  assert.match(workspace, /hideAiTab/);
-  assert.match(workspace, /showWindowDock/);
-  assert.match(workspace, /展开右侧面板/);
+  assert.match(workspace, /展开对话栏/);
+  const dockColumn = readWorkspaceFile("components/layout/AgentDockColumn.tsx");
+  assert.match(dockColumn, /data-agent-slot="windows"/);
+  assert.match(dockColumn, /hideAiTab/);
+  assert.match(dockColumn, /hideBuiltinTabs/);
+  assert.match(dockColumn, /showWindowDock/);
+  assert.match(appShell, /AgentDockColumn/);
+  assert.match(appShell, /isAgentRoute/);
+  assert.match(appShell, /agent-dock-toggle|展开右侧工作区/);
   const sidebar = readWorkspaceFile("components/layout/AgentConversationSidebar.tsx");
   assert.match(sidebar, /from "\.\/LeftDock"/);
   assert.match(sidebar, /正常对话/);
   assert.match(sidebar, /划词助手对话/);
-  assert.match(appShell, /hideWindowTaskbar=\{resolvedMode === "agent"\}/);
+  assert.match(appShell, /hideWindowTaskbar/);
   assert.match(placeholder, /开发中/);
 
   const settings = readWorkspaceFile("components/layout/MobileSettingsPanel.tsx");

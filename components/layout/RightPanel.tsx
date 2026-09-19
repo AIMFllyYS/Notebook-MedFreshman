@@ -106,9 +106,12 @@ class RightPanelTabBoundary extends Component<
 export default function RightPanel({
   hideAiTab = false,
   showWindowDock = false,
+  hideBuiltinTabs = false,
 }: {
   hideAiTab?: boolean;
   showWindowDock?: boolean;
+  /** Agent 工作区里不出现动画讲解/可交互/浏览器这些内置栏目（连同收藏夹与浏览器设置一起隐藏）。 */
+  hideBuiltinTabs?: boolean;
 } = {}) {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
@@ -124,10 +127,10 @@ export default function RightPanel({
   const activeSurface = useAgentDockRuntime((s) => s.active);
   const registerContentHost = useAgentDockRuntime((s) => s.registerContentHost);
   const showRightPanelTabBar = useSettings((s) => s.showRightPanelTabBar);
-  const visibleRightTabs = ALL_RIGHT_TABS.filter(
-    (t) => rightTabs.includes(t.id) && !(hideAiTab && t.id === "ai"),
-  );
-  const showBrowserChrome = rightTabs.includes("browser");
+  const visibleRightTabs = hideBuiltinTabs
+    ? []
+    : ALL_RIGHT_TABS.filter((t) => rightTabs.includes(t.id) && !(hideAiTab && t.id === "ai"));
+  const showBrowserChrome = !hideBuiltinTabs && rightTabs.includes("browser");
   const showTabBar = showRightPanelTabBar !== false;
   const showChrome = showTabBar || showWindowDock;
   const agentFallbackTab = hideAiTab ? visibleRightTabs[0]?.id : undefined;

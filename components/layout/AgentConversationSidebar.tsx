@@ -72,7 +72,8 @@ export default function AgentConversationSidebar({
   const renameFolder = useChatHistory((s) => s.renameFolder);
   const deleteFolder = useChatHistory((s) => s.deleteFolder);
   const moveSessionToFolder = useChatHistory((s) => s.moveSessionToFolder);
-  const setAgentPanelOpen = useStore((s) => s.setAgentPanelOpen);
+  const isCollapsed = useStore((s) => s.sidebarCollapsed);
+  const setCollapsed = useStore((s) => s.setSidebarCollapsed);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [quotaOpen, setQuotaOpen] = useState(false);
   const [confirmId, setConfirmId] = useState<string | null>(null);
@@ -247,7 +248,7 @@ export default function AgentConversationSidebar({
             color: "var(--md-sys-color-outline)",
           }}
         >
-          工作区
+          对话
         </span>
         <div className="ml-auto flex items-center gap-0.5">
           <button
@@ -262,9 +263,9 @@ export default function AgentConversationSidebar({
           <AddContentButton showUrlField={false} />
           <button
             type="button"
-            onClick={() => setAgentPanelOpen(false)}
-            title="收起面板"
-            aria-label="收起面板"
+            onClick={() => setCollapsed(!isCollapsed)}
+            title={isCollapsed ? "展开侧边栏" : "折叠侧边栏"}
+            aria-label={isCollapsed ? "展开侧边栏" : "折叠侧边栏"}
             className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
           >
             <PanelLeftClose size={15} />
