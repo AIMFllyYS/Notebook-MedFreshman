@@ -5,12 +5,10 @@ import type { FullscreenTarget } from "@/lib/constants/layout";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useResizable } from "@/lib/hooks/useResizable";
-import { useWestResizable } from "@/lib/hooks/useWestResizable";
 import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
-import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import type { ManagedWindowPresentation } from "@/lib/window/presentation";
 
 export type { FullscreenTarget };
@@ -50,7 +48,6 @@ export function useManagedWindowChrome({
 }: UseManagedWindowChromeOptions) {
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === windowId));
   const { bringToFront, commitGeometry, minimizeWindow } = useWindowManager();
-  const togglePanelExpand = useAgentDockRuntime((state) => state.togglePanelExpand);
   const isDock = presentation === "dock";
   const isSheet = presentation === "sheet";
 
@@ -75,15 +72,6 @@ export function useManagedWindowChrome({
     minSize,
   );
 
-  const onWestResizeStart = useWestResizable(
-    elRef,
-    (geom) => {
-      commitGeometry(windowId, geom);
-      onResize?.(geom.size);
-    },
-    { minW: minSize.minW },
-  );
-
   useFullscreenTrack(windowId, !isDock && !isSheet && (managed?.fullscreen ?? false), fullscreenTarget);
 
   useOverlayRegistration({
@@ -94,20 +82,16 @@ export function useManagedWindowChrome({
   });
 
   const toggleFullscreen = useCallback(() => {
-    if (isDock) {
-      togglePanelExpand();
-      return;
-    }
-    if (isSheet) return;
+    // dock 的全屏入口在右栏标签条上（面板级全屏）；sheet 覆盖整页，也没有浮窗全屏。
+    if (isDock || isSheet) return;
     toggleManagedWindowFullscreen(windowId, fullscreenTarget);
-  }, [fullscreenTarget, isDock, isSheet, togglePanelExpand, windowId]);
+  }, [fullscreenTarget, isDock, isSheet, windowId]);
 
   return {
     managed,
     elRef,
     onPointerDown,
     onResizeStart,
-    onWestResizeStart,
     toggleFullscreen,
     bringToFront,
     minimizeWindow,

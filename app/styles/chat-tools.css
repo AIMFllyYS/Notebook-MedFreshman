@@ -276,6 +276,7 @@
 }
 
 .document-workspace-stage {
+  position: relative;
   display: flex;
   min-width: 0;
   min-height: 0;
@@ -284,13 +285,46 @@
   overflow: hidden;
 }
 
+/* Agent 右栏：目录列挂到右侧，分隔线跟着换边。 */
+.document-workspace[data-nav-side="right"] .note-citation-sidebar {
+  border-right: none;
+  border-left: 1px solid var(--line-soft);
+}
+
+/* 目录列的收起/展开把手：贴在正文那一侧的边缘，不与业务工具栏抢位置。 */
+.document-workspace-nav-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid var(--line-soft);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  background: var(--bg-panel);
+  color: var(--ink-soft);
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+
+.document-workspace-nav-toggle:hover {
+  opacity: 1;
+  color: var(--md-sys-color-primary);
+}
+
 .document-workspace-toolbar {
   display: flex;
   height: 32px;
   flex-shrink: 0;
   align-items: center;
   gap: 6px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   background: var(--md-sys-color-surface-container-low);
   padding: 0 10px;
   font-size: 12px;
@@ -403,7 +437,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   padding: 8px;
-  border-right: 1px solid var(--md-sys-color-outline-variant);
+  border-right: 1px solid var(--line-soft);
   background: var(--md-sys-color-surface-container);
 }
 
@@ -452,7 +486,7 @@
   flex-shrink: 0;
   height: 28px;
   padding: 0 8px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   background: var(--md-sys-color-surface-container-low);
   color: var(--md-sys-color-outline);
   font-size: 11px;
@@ -590,7 +624,7 @@
   height: auto;
   min-height: 32px;
   padding: 6px 12px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   background: var(--md-sys-color-surface-container-low);
 }
 
@@ -760,7 +794,7 @@ mark.citation-flash {
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   background: var(--md-sys-color-surface-container-low);
 }
 
@@ -833,7 +867,7 @@ mark.citation-flash {
   height: 100%;
   flex-direction: column;
   background: var(--md-sys-color-surface-container-low);
-  border-right: 1px solid var(--md-sys-color-outline-variant);
+  border-right: 1px solid var(--line-soft);
 }
 
 .user-note-toc-head {
@@ -843,7 +877,7 @@ mark.citation-flash {
   justify-content: space-between;
   gap: 8px;
   padding: 7px 8px 7px 12px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   color: var(--ink-soft);
   font-size: 12px;
   font-weight: 650;
@@ -940,7 +974,7 @@ mark.citation-flash {
   height: 100%;
   flex-direction: column;
   background: var(--md-sys-color-surface-container-lowest);
-  border-left: 1px solid var(--md-sys-color-outline-variant);
+  border-left: 1px solid var(--line-soft);
 }
 
 .note-agent-panel-head {
@@ -950,7 +984,7 @@ mark.citation-flash {
   justify-content: space-between;
   gap: 8px;
   padding: 7px 10px 7px 14px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   color: var(--ink-soft);
   font-size: 12px;
   font-weight: 650;
@@ -1276,7 +1310,7 @@ mark.citation-flash {
 .user-note-stage-head {
   flex-shrink: 0;
   padding: 12px 20px 10px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .user-note-stage-title {
@@ -1521,7 +1555,7 @@ mark.citation-flash {
     overflow-x: auto;
     overflow-y: hidden;
     border-right: none;
-    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    border-bottom: 1px solid var(--line-soft);
   }
   .note-citation-nav-item {
     min-width: 9.5rem;

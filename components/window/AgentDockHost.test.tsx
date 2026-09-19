@@ -12,9 +12,10 @@ function reset() {
   useStore.setState({
     layoutProfile: "full",
     rightCollapsedByProfile: { full: false, article: true, reference: false },
+    agentDockCollapsed: false,
   });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
-  useAgentDockRuntime.setState({ contentHost: null, active: null, collapsed: false, openRequest: 0, panelControls: null });
+  useAgentDockRuntime.setState({ contentHost: null, openRequest: 0, dockGlobal: false });
 }
 
 afterEach(reset);
@@ -22,7 +23,7 @@ afterEach(reset);
 describe("AgentDockHost", () => {
   it("does not undo an intentional collapse when existing windows are present", async () => {
     useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
-    useStore.setState({ rightCollapsedByProfile: { full: true, article: true, reference: false } });
+    useStore.setState({ agentDockCollapsed: true });
     useWindowManager.getState().openWindow({
       id: "existing-window",
       type: "source-preview",
@@ -33,16 +34,40 @@ describe("AgentDockHost", () => {
     });
     render(<AgentDockHost><div>内容</div></AgentDockHost>);
 
-    await waitFor(() => expect(useStore.getState().rightCollapsedByProfile.full).toBe(true));
+    await waitFor(() => expect(useStore.getState().agentDockCollapsed).toBe(true));
   });
 
   it("expands a collapsed dock when new content asks for it, even without managed windows", async () => {
     useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
-    useStore.setState({ rightCollapsedByProfile: { full: true, article: true, reference: false } });
+    useStore.setState({ agentDockCollapsed: true });
     render(<AgentDockHost><div>内容</div></AgentDockHost>);
 
     act(() => useAgentDockRuntime.getState().requestOpen());
 
-    await waitFor(() => expect(useStore.getState().rightCollapsedByProfile.full).toBe(false));
+    await waitFor(() => expect(useStore.getState().agentDockCollapsed).toBe(false));
+  });
+
+  it("hands the active slot back to the top window when the active one is gone", async () => {
+    useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
+    useWindowManager.getState().openWindow({
+      id: "low",
+      type: "source-preview",
+      title: "低层",
+      pos: { x: 0, y: 0 },
+      size: { width: 400, height: 300 },
+      data: { url: "https://example.com", title: "低层" },
+    });
+    useWindowManager.getState().openWindow({
+      id: "high",
+      type: "source-preview",
+      title: "高层",
+      pos: { x: 0, y: 0 },
+      size: { width: 400, height: 300 },
+      data: { url: "https://example.com", title: "高层" },
+    });
+    useWindowManager.setState({ activeWindowId: null });
+    render(<AgentDockHost><div>内容</div></AgentDockHost>);
+
+    await waitFor(() => expect(useWindowManager.getState().activeWindowId).toBe("high"));
   });
 });

@@ -7,7 +7,7 @@ import path from "node:path";
 import { getSubjectMeta, subjectName } from "@/lib/content-data/subjects.registry";
 import { describeSubjectsByYear } from "@/lib/content-data/subjectsTable";
 import { ACADEMIC_YEAR_LABELS, isAcademicYearId } from "@/lib/constants/academic-year";
-import type { ChatContext } from "@/lib/types/chat";
+import { isPageBoundContext, type ChatContext } from "@/lib/types/chat";
 
 const PROMPT_ROOT = path.join(process.cwd(), "lib", "ai", "prompts");
 
@@ -56,8 +56,12 @@ export function buildSystemPrompt(ctx: ChatContext): string {
 /**
  * 当前定位行（轻量、易变，必须放在 system 末尾）。
  * 换页改 itemId/主题；换学年改学年字段。失效范围止于这一行及之后的参考材料。
+ *
+ * Agent 的通用对话不绑定页面（分类/内容项为空）：这时没有「当前位置」可言，
+ * 整行不输出——否则会拼出「分类： ｜ 内容项：」这种残行，等于把空章节当成上下文。
  */
 export function buildLocationLine(ctx: ChatContext): string {
+  if (!isPageBoundContext(ctx)) return "";
   const year = isAcademicYearId(ctx.academicYear)
     ? ACADEMIC_YEAR_LABELS[ctx.academicYear]
     : ctx.academicYear;

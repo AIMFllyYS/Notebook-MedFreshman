@@ -2,7 +2,7 @@ import type { ContextManager, BuildContextResult, BuildContextOptions } from './
 import { closeReferenceMaterials, getMaxTokens } from './types';
 import { assembleReference, pickReferenceTier, summarizePageMarkdown } from './referenceTiers';
 import { DEFAULT_MODEL_ID, type CustomApiGroup } from '@/lib/ai/models';
-import type { ChatContext } from '@/lib/types/chat';
+import { isPageBoundContext, type ChatContext } from '@/lib/types/chat';
 import { contentTree } from '@/lib/content-data/manifest';
 import { getContentItem } from '@/lib/content-data';
 import { readContentMarkdown } from '@/lib/content/loader';
@@ -48,16 +48,19 @@ export class FullContextManager implements ContextManager {
   ): Promise<BuildContextResult> {
     const maxTokens = getMaxTokens(this.model, this.customGroups);
     const outline = buildTreeSummary();
-    const pageContent = readContentMarkdown(
-      chatContext.subjectId,
-      chatContext.categoryId,
-      chatContext.itemId,
-    );
-    const item = getContentItem(
-      chatContext.subjectId as SubjectId,
-      chatContext.categoryId as CategoryId,
-      chatContext.itemId,
-    );
+    // Agent 的通用对话不绑定当前章节：只给课程目录（教材大纲），不注入任何页正文/摘要。
+    // 引用内容由用户在输入框里显式注入（引用笔记 / 附件），不靠「默认打开的那一页」。
+    const pageBound = isPageBoundContext(chatContext);
+    const pageContent = pageBound
+      ? readContentMarkdown(chatContext.subjectId, chatContext.categoryId, chatContext.itemId)
+      : null;
+    const item = pageBound
+      ? getContentItem(
+          chatContext.subjectId as SubjectId,
+          chatContext.categoryId as CategoryId,
+          chatContext.itemId,
+        )
+      : undefined;
     const title = item?.title ?? chatContext.currentTopic;
     const summary = pageContent ? summarizePageMarkdown(pageContent, title) : "";
     const full = pageContent ? `## 当前内容：${title}\n${pageContent}` : "";
@@ -100,6 +103,7 @@ export class FullContextManager implements ContextManager {
 
   private collectSources(chatContext: ChatContext): string[] {
     const sources: string[] = [];
+    if (!isPageBoundContext(chatContext)) return sources;
     const item = getContentItem(
       chatContext.subjectId as SubjectId,
       chatContext.categoryId as CategoryId,

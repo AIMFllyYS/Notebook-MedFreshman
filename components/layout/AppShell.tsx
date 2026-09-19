@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { PanelTopClose, PanelTopOpen, PanelRightOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { PANEL_PRESETS } from "@/lib/constants/panelPresets";
 import AgentDockColumn from "./AgentDockColumn";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
@@ -33,6 +34,7 @@ import {
 } from "@/lib/constants/app-mode";
 import { useAppMode } from "@/lib/stores/appMode";
 import { hydrateSettings } from "@/lib/stores/settings";
+import { useBrowserFullscreen } from "@/lib/hooks/useBrowserFullscreen";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
 import ModeSwitcher from "./ModeSwitcher";
@@ -57,6 +59,15 @@ const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredW
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const AgentSettingsOverlay = dynamic(() => import("@/components/chat/AgentSettingsOverlay"), { ssr: false });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
+
+/** 分栏缓动时长（唯一真相源是 globals.css 的 `--duration-pane`，这里只是读出来给定时器用）。 */
+function paneDurationMs(): number {
+  if (typeof window === "undefined") return 1000;
+  const raw = getComputedStyle(document.documentElement).getPropertyValue("--duration-pane").trim();
+  const value = Number.parseFloat(raw);
+  if (!Number.isFinite(value)) return 1000;
+  return raw.endsWith("ms") ? value : value * 1000;
+}
 
 function TopBar({
   subjectId,
@@ -83,25 +94,14 @@ function TopBar({
   const toggleTopBar = useStore((s) => s.toggleTopBar);
   const sidebarShortcutEnabled = useKeyboardSettings((s) => s.isEnabled("global.toggleSidebar"));
 
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const { isFullscreen, toggleFullscreen } = useBrowserFullscreen();
 
-  useEffect(() => {
-    const onChange = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", onChange);
-    return () => document.removeEventListener("fullscreenchange", onChange);
-  }, []);
-
-  const toggleFullscreen = useCallback(async () => {
-    try {
-      if (document.fullscreenElement) {
-        await document.exitFullscreen();
-      } else {
-        await document.documentElement.requestFullscreen();
-      }
-    } catch {
-      /* ignore */
-    }
-  }, []);
+  /**
+   * Agent 顶栏是**控件条**（网页全屏 + 右侧工作区开关），它自己没有「收起顶栏」入口，
+   * 所以不能沿用 Studio 那个会落盘的收起态：从 Studio 收着顶栏切到 Agent，
+   * h-0 会把这两个键一起吃掉——既没有面板开关，也没有全屏入口（Esc 之外无路可回）。
+   */
+  const barCollapsed = !agentMode && topBarCollapsed;
 
   const subject = getSubject(subjectId);
   const category = getCategory(subjectId, categoryId);
@@ -110,9 +110,10 @@ function TopBar({
   return (
     <header
       data-topbar
+      data-agent-bar={agentMode ? "true" : undefined}
       className={clsx(
         "flex shrink-0 items-center gap-3 bg-[var(--bg-panel)] px-3 transition-all duration-300 ease-out overflow-hidden",
-        topBarCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line)]",
+        barCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line-soft)]",
       )}
     >
       {!agentMode && <button
@@ -160,7 +161,7 @@ function TopBar({
 
       <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-1">
         {!topBarCollapsed && !agentMode && (
-          <div className="mr-1 flex min-w-0 flex-1 items-center justify-end gap-1 border-r border-[var(--line)] pr-2">
+          <div className="mr-1 flex min-w-0 flex-1 items-center justify-end gap-1 border-r border-[var(--line-soft)] pr-2">
             <GlobalSearchButton />
             {!hideWindowTaskbar && <WindowTaskbar host="topbar" />}
           </div>
@@ -175,9 +176,16 @@ function TopBar({
             {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
           </button>
         )}
+        {/* 网页全屏（F11）。Studio 里它在顶栏右端；Agent 里它落在**中间对话顶部**、
+            紧贴「右侧工作区开关」左侧——两个控制同一块面板的键挨在一起，才找得到。
+            它与右栏那个「全屏」（面板接管工作区）是两回事，所以图标必须一眼分得开：
+            这里用四角 Maximize / Minimize，右栏用对角箭头 Maximize2 / Minimize2。 */}
         <button
           onClick={toggleFullscreen}
           title={isFullscreen ? "退出全屏" : "全屏"}
+          aria-label={isFullscreen ? "退出全屏" : "全屏"}
+          aria-pressed={isFullscreen}
+          data-testid="browser-fullscreen"
           className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
@@ -225,16 +233,40 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const rightPersistReadyRef = useRef(false);
   const [, startTransition] = useTransition();
   const [isResizing, setIsResizing] = useState(false);
+  /** 首帧布局写回（档位恢复 / autoSaveId）不算「拉出」，稳定后再让分栏参与缓动。 */
+  const [panelMotionReady, setPanelMotionReady] = useState(false);
   const handleDragging = useCallback((dragging: boolean) => setIsResizing(dragging), []);
 
   const routeLayout = useMemo(() => resolveRouteLayout(pathname), [pathname]);
   const route = routeLayout.route;
   /** 只有 /agent 这一条路由用 Agent 专用外壳（左对话栏 + 中央对话 + 通顶的右侧工作区）。 */
   const isAgentRoute = !isMobile && appModeFromPathname(pathname) === "agent";
-  const agentLayoutProfile = useStore((s) => s.layoutProfile);
-  const agentDockCollapsed = useStore((s) => s.rightCollapsedByProfile[s.layoutProfile] ?? false);
+  const agentDockCollapsed = useStore((s) => s.agentDockCollapsed);
+  const setAgentDockCollapsed = useStore((s) => s.setAgentDockCollapsed);
+  const agentDockGlobal = useAgentDockRuntime((s) => s.dockGlobal);
   const agentDockRef = useRef<ImperativePanelHandle>(null);
-  const registerPanelControls = useAgentDockRuntime((s) => s.registerPanelControls);
+  /**
+   * 右栏开合是否允许回写 store / localStorage。
+   * 分栏库在挂载应用「上次保存的收起布局」时，会误报一次 onExpand（实测 ~164ms），
+   * 那一下会把用户上次的「收起」改写成展开，刷新后右栏自己弹回来。
+   * 用户不可能在 500ms 内拖动分隔线，所以先关掉回写窗口，等布局稳定再接受面板事件。
+   */
+  const dockPersistReadyRef = useRef(false);
+  /**
+   * 右栏宽度正在变化（拖拽 / 收起展开动画）。
+   * 窄宽度下右栏的标签与业务正文会被响应式压成竖排单字，很难看；这期间盖一层骨架屏，
+   * 顺带把过渡期每帧的正文重排省掉（骨架只跑 transform/opacity）。
+   */
+  const [dockBusy, setDockBusy] = useState(false);
+  const dockBusyTimerRef = useRef<number | null>(null);
+  const markDockBusy = useCallback((ms: number) => {
+    if (dockBusyTimerRef.current !== null) window.clearTimeout(dockBusyTimerRef.current);
+    setDockBusy(true);
+    dockBusyTimerRef.current = window.setTimeout(() => {
+      dockBusyTimerRef.current = null;
+      setDockBusy(false);
+    }, ms);
+  }, []);
   const setActiveRoute = useStore((s) => s.setActiveRoute);
   const setTocData = useStore((s) => s.setTocData);
   const rightCollapsedByProfile = useStore((s) => s.rightCollapsedByProfile);
@@ -243,6 +275,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const rightCollapsed = routeLayout.showRightPanel
     ? rightCollapsedByProfile[routeLayout.profile]
     : false;
+  /** Studio 档位预设（agent 之外的现值集合，行为与改造前完全一致）。 */
+  const studioPreset = routeLayout.showRightPanel
+    ? PANEL_PRESETS[`studio:${routeLayout.profile}` as "studio:full" | "studio:article" | "studio:reference"]
+    : PANEL_PRESETS["studio:no-right"];
 
   // 顶栏开关 / 面板自身收起按钮改的是 store，这里把它同步到分栏面板上。
   useEffect(() => {
@@ -255,29 +291,24 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     } catch {
       // 首帧还没有几何信息
     }
-  }, [agentDockCollapsed, isAgentRoute]);
+  }, [agentDockCollapsed, isAgentRoute, markDockBusy]);
 
   useEffect(() => {
-    if (!isAgentRoute) return;
-    registerPanelControls({
-      collapse: () => agentDockRef.current?.collapse(),
-      expand: () => agentDockRef.current?.expand(),
-      toggleExpand: () => {
-        const panel = agentDockRef.current;
-        if (!panel) return;
-        try {
-          if (panel.isCollapsed()) {
-            panel.expand();
-            return;
-          }
-          panel.resize(panel.getSize() < 45 ? 46 : 34);
-        } catch {
-          // react-resizable-panels 在首帧还没有几何信息，下一次用户操作会重试
-        }
-      },
-    });
-    return () => registerPanelControls(null);
-  }, [isAgentRoute, registerPanelControls]);
+    const persistId = window.setTimeout(() => {
+      dockPersistReadyRef.current = true;
+    }, 500);
+    return () => window.clearTimeout(persistId);
+  }, []);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setPanelMotionReady(true);
+      // 预绘制用的「硬收拢」CSS 只在挂载前生效（见 globals.css）：挂载后交给分栏库的
+      // flex 内联样式，这样收起/展开才会走同一条横向缓动，而不是被 max-width 瞬间掐断。
+      document.documentElement.setAttribute("data-panels-ready", "true");
+    }, 120);
+    return () => window.clearTimeout(id);
+  }, []);
 
   useLayoutEffect(() => {
     hydrateLayout();
@@ -424,9 +455,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (isAgentRoute) {
     return (
       <KeyboardShortcutProvider>
-      <div className="flex h-screen overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-app-mode={resolvedMode} data-subject={activeSubjectId} data-layout-profile={agentLayoutProfile} data-agent-shell>
+      {/* Agent 外壳不挂 `data-layout-profile`：那是 Studio 内容页档位的语义，右栏开合有自己的 data 属性。 */}
+      <div className="flex h-screen overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-panels-ready={panelMotionReady || undefined} data-app-mode={resolvedMode} data-subject={activeSubjectId} data-agent-global={agentDockGlobal ? "true" : undefined} data-agent-shell>
         <PanelGroup direction="horizontal" autoSaveId="studysolo-agent-shell-v1" className="h-full min-h-0 w-full">
-          <Panel id="agent-shell-main" order={1} minSize={36}>
+          <Panel id="agent-shell-main" order={1} defaultSize={100 - PANEL_PRESETS.agent.right} minSize={36}>
             <div className="flex h-full min-h-0 flex-col">
               <TopBar
                 subjectId={route?.subjectId ?? DEFAULT_SUBJECT}
@@ -435,14 +467,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 hideWindowTaskbar
                 agentMode
                 dockOpen={!agentDockCollapsed}
-                onToggleDock={() => setRightCollapsedForProfile(agentLayoutProfile, !agentDockCollapsed)}
+                onToggleDock={() => {
+                  markDockBusy(paneDurationMs() + 80);
+                  setAgentDockCollapsed(!agentDockCollapsed);
+                }}
               />
               <div className="min-h-0 flex-1">{children}</div>
             </div>
           </Panel>
           <PanelResizeHandle
             onDragging={handleDragging}
-            className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]"
+            className="group relative w-px bg-[var(--line-soft)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]"
           >
             <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
@@ -455,13 +490,21 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             order={2}
             collapsible
             collapsedSize={0}
-            defaultSize={agentDockCollapsed ? 0 : 34}
+            defaultSize={agentDockCollapsed ? 0 : PANEL_PRESETS.agent.right}
             minSize={20}
             maxSize={58}
-            onCollapse={() => setRightCollapsedForProfile(agentLayoutProfile, true)}
-            onExpand={() => setRightCollapsedForProfile(agentLayoutProfile, false)}
+            onCollapse={() => {
+              markDockBusy(paneDurationMs() + 80);
+              if (!dockPersistReadyRef.current) return;
+              setAgentDockCollapsed(true);
+            }}
+            onExpand={() => {
+              markDockBusy(paneDurationMs() + 80);
+              if (!dockPersistReadyRef.current) return;
+              setAgentDockCollapsed(false);
+            }}
           >
-            <AgentDockColumn />
+            <AgentDockColumn busy={dockBusy || isResizing} />
           </Panel>
         </PanelGroup>
         {/* 业务窗口/全局浮层必须与 Studio 一样挂在这个壳里，否则右栏会出现"有标签没正文"。 */}
@@ -480,7 +523,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // ── Desktop layout (unchanged) ─────────────────────────────
   return (
     <KeyboardShortcutProvider>
-    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-layout-profile={routeLayout.profile}>
+    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-panels-ready={panelMotionReady || undefined} data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-layout-profile={routeLayout.profile}>
       <TopBar
         subjectId={route?.subjectId ?? DEFAULT_SUBJECT}
         categoryId={route?.categoryId ?? "detail"}
@@ -506,7 +549,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             collapsible
             collapsedSize={0}
             minSize={13}
-            defaultSize={19}
+            defaultSize={studioPreset.left}
             maxSize={34}
             onCollapse={() => {
               if (!sidebarPersistReadyRef.current) return;
@@ -520,14 +563,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <SubjectSidebar />
           </Panel>
 
-          <PanelResizeHandle onDragging={handleDragging} className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
+          <PanelResizeHandle onDragging={handleDragging} className="group relative w-px bg-[var(--line-soft)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
             <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
               <span className="block h-7 w-1 rounded-full bg-[var(--accent)]/40" />
             </span>
           </PanelResizeHandle>
 
-          <Panel id="notes" order={2} minSize={32} defaultSize={routeLayout.showRightPanel ? 50 : 81}>
+          <Panel id="notes" order={2} minSize={32} defaultSize={routeLayout.showRightPanel ? studioPreset.center : PANEL_PRESETS["studio:no-right"].center}>
             <div className="relative h-full w-full">
               {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
               <div id={NOTES_PANEL_ID} className="h-full w-full">
@@ -552,7 +595,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
           {routeLayout.showRightPanel && (
             <>
-              <PanelResizeHandle onDragging={handleDragging} className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
+              <PanelResizeHandle onDragging={handleDragging} className="group relative w-px bg-[var(--line-soft)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
                 <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
                 <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
                   <span className="block h-7 w-1 rounded-full bg-[var(--accent)]/40" />
@@ -566,7 +609,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 collapsible
                 collapsedSize={0}
                 minSize={22}
-                defaultSize={rightCollapsed ? 0 : 31}
+                defaultSize={rightCollapsed ? 0 : studioPreset.rightExpanded}
                 onCollapse={() => {
                   if (!rightPersistReadyRef.current) return;
                   startTransition(() => setRightCollapsedForProfile(routeLayout.profile, true));

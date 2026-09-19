@@ -10,9 +10,7 @@ import { useUserNotes } from "@/lib/stores/userNotes";
 import { userNoteWindowId } from "@/lib/notes/userNote";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
-import { useAppMode } from "@/lib/stores/appMode";
-import { isAgentWorkspace } from "@/lib/stores/workspace";
-import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
 
 const MilkdownNoteEditor = dynamic(() => import("@/components/notes/MilkdownNoteEditor"), {
   ssr: false,
@@ -27,12 +25,9 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   const closeEditor = useUserNotes((s) => s.closeEditor);
   const windowId = userNoteWindowId(noteId);
   const activeWindowId = useWindowManager((s) => s.activeWindowId);
-  const appMode = useAppMode((s) => s.mode);
-  const dockActive = useAgentDockRuntime((s) => s.active);
-  const dockCollapsed = useAgentDockRuntime((s) => s.collapsed);
-  const agent = appMode === "agent" || isAgentWorkspace();
-  const isFront = shouldMountHeavyEditor(activeWindowId, windowId) &&
-    (!agent || (dockActive?.kind === "managed" && dockActive.id === windowId && !dockCollapsed));
+  const { presentation, visible } = useManagedWindowSurface(windowId);
+  // 只在最前的笔记窗挂重编辑器；Agent 右栏还要求它真的在展示（没最小化、右栏没收起）。
+  const isFront = shouldMountHeavyEditor(activeWindowId, windowId) && (presentation !== "dock" || visible);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleClose = useCallback(() => closeEditor(noteId), [closeEditor, noteId]);

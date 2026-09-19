@@ -21,7 +21,7 @@
   justify-content: space-between;
   padding: 6px 12px;
   background: var(--md-sys-color-surface-container-high);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
 }
 .code-block-lang {
   font-size: 11px;

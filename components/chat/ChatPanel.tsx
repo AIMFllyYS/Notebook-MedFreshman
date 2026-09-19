@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
-import { AgentAlertIcon, AgentPlusIcon } from '@/components/icons/AgentIcons';
+import { AgentAlertIcon, AgentInfoIcon, AgentPlusIcon } from '@/components/icons/AgentIcons';
 import { clearCloudSyncMessage, useCloudSyncStatus } from '@/lib/sync/status';
 import { useAutoHideChatHeader } from '@/lib/hooks/useAutoHideChatHeader';
 import { useChat } from '@/lib/hooks/useChat';
@@ -21,15 +21,26 @@ import ChatInput from '@/components/chat/ChatInput';
 import { ImageLightbox } from '@/components/shared/ImageLightbox';
 import ChatPanelHeader from '@/components/chat/ChatPanelHeader';
 import ChatEmptyState from '@/components/chat/ChatEmptyState';
+import { AgentWelcomeExamples, AgentWelcomeGreeting } from '@/components/chat/AgentWelcome';
 import ChatHistoryOverlay from '@/components/chat/ChatHistoryOverlay';
 import type { ChatContext, ChatOptions } from '@/lib/types/chat';
 import type { SendMessageOptions } from '@/lib/chat/sendMessage';
 
 interface ChatPanelProps {
   chatContext: ChatContext;
+  /**
+   * 不渲染顶部导航行（AI 助教标题 / 设置 / 历史 / 新对话）。
+   * Agent 中央对话用它：这些入口左侧对话栏已经全都有了，两套并存只会重复。
+   */
+  hideHeader?: boolean;
+  /**
+   * 空对话时的版式。'classic'（默认）保持原来的居中占位卡（Studio 右侧 AI、手机端 AI），
+   * 'agent' 走 Agent 的欢迎页：问候语在上、输入框居中、示例清单在下，输入框不贴底。
+   */
+  emptyLayout?: 'classic' | 'agent';
 }
 
-const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
+const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, emptyLayout = 'classic' }) => {
   const [chatOptions] = useState<ChatOptions>({
     enableThinking: false,
     enableSearch: false,
@@ -39,7 +50,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const outbound = useStore((s) => s.outbound);
   const clearOutbound = useStore((s) => s.clearOutbound);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
-  const createSession = useChatHistory((s) => s.createSession);
+  const startNewChat = useChatHistory((s) => s.startNewChat);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -75,6 +86,32 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     return () => stopGeneration();
   }, [stopGeneration]);
 
+  /**
+   * 「点了新建对话、但其实已经站在一条空白新对话里」→ 轻反馈：聚焦输入框 + 一行提示。
+   * 用 store 订阅而不是 effect 里读值再 setState——后者正是 react-hooks/set-state-in-effect 拦的写法。
+   */
+  const [blankHint, setBlankHint] = useState(false);
+  const [focusSignal, setFocusSignal] = useState(0);
+  const blankHintTimerRef = useRef<number | null>(null);
+  useEffect(() => {
+    let seen = useChatHistory.getState().blankChatPulse;
+    const unsubscribe = useChatHistory.subscribe((state) => {
+      if (state.blankChatPulse === seen) return;
+      seen = state.blankChatPulse;
+      setBlankHint(true);
+      setFocusSignal((n) => n + 1);
+      if (blankHintTimerRef.current !== null) window.clearTimeout(blankHintTimerRef.current);
+      blankHintTimerRef.current = window.setTimeout(() => {
+        blankHintTimerRef.current = null;
+        setBlankHint(false);
+      }, 2000);
+    });
+    return () => {
+      unsubscribe();
+      if (blankHintTimerRef.current !== null) window.clearTimeout(blankHintTimerRef.current);
+    };
+  }, []);
+
   useEffect(() => {
     if (!chatReady || isLoading || !outbound?.content.trim()) return;
     let cancelled = false;
@@ -93,12 +130,24 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const handleFollowUpClick = useCallback((question: string) => sendMessage(question), [sendMessage]);
   const handleNewChat = () => {
     stopGeneration();
-    createSession(chatContext);
+    // 已经在新对话里就复用它，不再落第二条（连点不会刷出一堆空会话）
+    startNewChat(chatContext);
     useTokenTracker.getState().resetSession();
   };
   const subjectName = subjectShortName(chatContext?.subjectId);
 
   const hasUserSent = useMemo(() => messages.some((m) => m.role === 'user'), [messages]);
+
+  /**
+   * Agent 欢迎页：还没有任何可见消息、且历史已就绪。
+   * 发送是同步落一条 user 消息的，所以一开始对话这里立刻变 false，输入框自己回到贴底位置。
+   * 注意 ChatThread **不卸载**（只被隐藏）：划词助手的容器 ref 是它挂载时绑定的，
+   * 卸载再挂载会让 SelectionPopover 的 effect 错过新节点，Agent 里就再也选不中文字了。
+   */
+  const showAgentWelcome = emptyLayout === 'agent'
+    && chatReady
+    && !isLoading
+    && !messages.some((m) => m.role === 'user' || m.role === 'assistant');
   const headerPinned = pinChatHeader || showHistory;
   const {
     autoHideEnabled,
@@ -114,12 +163,13 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     <div
       className={clsx(
         'chat-panel',
-        autoHideEnabled && 'chat-panel--auto-hide-header',
-        headerCollapsed && 'chat-panel--header-collapsed',
+        showAgentWelcome && 'chat-panel--welcome',
+        !hideHeader && autoHideEnabled && 'chat-panel--auto-hide-header',
+        !hideHeader && headerCollapsed && 'chat-panel--header-collapsed',
       )}
     >
-      {/* 收起态：容器内窄感应条唤出；展开态：不渲染感应条，按钮直接可点 */}
-      <div
+      {/* Agent 中央对话：设置/历史/新对话都已由左侧对话栏承载，这一行整个不渲染。 */}
+      {!hideHeader && <div
         className={clsx(
           'chat-header-sticky',
           autoHideEnabled && 'chat-header-sticky--overlay',
@@ -150,7 +200,10 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
               : () => setRightCollapsedForProfile(layoutProfile, true)
           }
         />
-      </div>
+      </div>}
+
+      {/* 欢迎页只在空对话时露脸；ChatThread 照旧挂着，由 .chat-panel--welcome 隐藏。 */}
+      {showAgentWelcome && <AgentWelcomeGreeting />}
 
       <ChatThread
         messages={messages}
@@ -168,11 +221,13 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         repairModelId={selectedModelId}
         topic={chatContext?.currentTopic ?? ''}
         emptyState={
-          <ChatEmptyState
-            topic={chatContext?.currentTopic ?? ''}
-            subjectName={subjectName}
-            onFollowUpClick={handleFollowUpClick}
-          />
+          emptyLayout === 'agent' ? null : (
+            <ChatEmptyState
+              topic={chatContext?.currentTopic ?? ''}
+              subjectName={subjectName}
+              onFollowUpClick={handleFollowUpClick}
+            />
+          )
         }
       />
 
@@ -183,8 +238,25 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         chatContext={chatContext}
         onOpenSettings={openAgentSettings}
         onComposerInsetChange={setComposerInset}
-        notice={(showWarning || cloudSync.message) ? (
+        focusSignal={focusSignal}
+        notice={(showWarning || cloudSync.message || blankHint) ? (
           <>
+            {blankHint ? (
+              <div
+                role="status"
+                data-testid="blank-chat-hint"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '6px 12px', marginBottom: 8,
+                  borderRadius: 10, fontSize: 12,
+                  background: 'var(--md-sys-color-surface-container-high)',
+                  color: 'var(--md-sys-color-on-surface-variant)',
+                }}
+              >
+                <AgentInfoIcon size={14} style={{ flexShrink: 0 }} />
+                <span style={{ flex: 1 }}>已经在一条新对话里了，直接说你想做什么就行。</span>
+              </div>
+            ) : null}
             {showWarning ? (
           <div role="status" style={{
             display: 'flex', alignItems: 'center', gap: 8,
@@ -240,6 +312,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
           </>
         ) : null}
       />
+
+      {showAgentWelcome && <AgentWelcomeExamples onSelect={handleFollowUpClick} />}
 
       <SelectionPopover containerRef={scrollContainerRef} noteSource="agent" />
 

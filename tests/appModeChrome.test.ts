@@ -65,9 +65,10 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(workspace, /展开对话栏/);
   const dockColumn = readWorkspaceFile("components/layout/AgentDockColumn.tsx");
   assert.match(dockColumn, /data-agent-slot="windows"/);
-  assert.match(dockColumn, /hideAiTab/);
   assert.match(dockColumn, /hideBuiltinTabs/);
   assert.match(dockColumn, /showWindowDock/);
+  // 收起按钮的落点由外壳注入，右栏不再自己写 Studio 档位
+  assert.match(dockColumn, /onCollapse/);
   assert.match(appShell, /AgentDockColumn/);
   assert.match(appShell, /isAgentRoute/);
   assert.match(appShell, /agent-dock-toggle|展开右侧工作区/);
@@ -88,4 +89,36 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.doesNotMatch(globalSettings, /UserQuotaPanel/);
   assert.match(appShell, /MobileSidebarDrawer/);
   assert.match(appShell, /MobileMiniChat/);
+});
+
+test("Agent 顶栏：网页全屏按钮紧贴右侧工作区开关左侧，且与两个面板级「全屏」用不同图标", () => {
+  const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
+  const workspace = readWorkspaceFile("components/layout/AgentWorkspace.tsx");
+  const rightPanel = readWorkspaceFile("components/layout/RightPanel.tsx");
+
+  // 1) 位置：全屏键排在 agent-dock-toggle（控制右侧工作区的那个键）之前 = 它的左侧。
+  const fullscreen = appShell.indexOf('data-testid="browser-fullscreen"');
+  const dockToggle = appShell.indexOf('data-testid="agent-dock-toggle"');
+  assert.ok(fullscreen > 0 && dockToggle > 0, "顶栏要有全屏键与右侧工作区开关");
+  assert.ok(fullscreen < dockToggle, "全屏键必须在右侧工作区开关左侧");
+
+  // 2) 图标：顶栏用四角 Maximize / Minimize；右栏「面板全屏」用对角箭头，两者不得混用。
+  const block = appShell.slice(appShell.lastIndexOf("<button", fullscreen), appShell.indexOf("</button>", fullscreen));
+  assert.match(block, /<Minimize size=\{18\} \/>/);
+  assert.match(block, /<Maximize size=\{18\} \/>/);
+  assert.doesNotMatch(block, /Maximize2|Minimize2/);
+  assert.match(rightPanel, /<Maximize2 size=\{16\} \/>/);
+  assert.match(rightPanel, /<Minimize2 size=\{16\} \/>/);
+
+  // 3) 中间对话面板里不再有悬浮全屏键（旧版会压住第一条消息，且与右栏图标重样）。
+  assert.doesNotMatch(workspace, /agent-chat-fullscreen|useBrowserFullscreen/);
+  assert.doesNotMatch(workspace, /Maximize2|Minimize2/);
+
+  // 4) Agent 顶栏是控件条：不吃 Studio 那个会落盘的「收起顶栏」，否则两个键一起消失。
+  //    React 侧（barCollapsed）与首帧 CSS（html[data-topbar-collapsed] 那条）都要放过它。
+  assert.match(appShell, /const barCollapsed = !agentMode && topBarCollapsed;/);
+  assert.match(appShell, /barCollapsed \? "h-0 border-b-0 py-0"/);
+  assert.match(appShell, /data-agent-bar=\{agentMode \? "true" : undefined\}/);
+  const globals = readWorkspaceFile("app/globals.css");
+  assert.match(globals, /html\[data-topbar-collapsed="true"\] header\[data-topbar\]:not\(\[data-agent-bar\]\)/);
 });

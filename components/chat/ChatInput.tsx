@@ -64,6 +64,8 @@ export interface ChatInputProps {
   onComposerInsetChange?: (inset: number) => void;
   /** 可选上下文警告等内容：与输入区一起测量，避免被底部浮层遮住。 */
   notice?: React.ReactNode;
+  /** 自增即聚焦输入框一次（例如点了「新建对话」但其实已经在新对话里，提示用户直接开说）。 */
+  focusSignal?: number;
 }
 
 export const MAX_INPUT_CHARACTERS = 50_000;
@@ -87,7 +89,10 @@ function countCharacters(text: string) {
   return count;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, chatContext }) => {
+/** 输入框最大高度（与 `.chat-input-textarea` 的 CSS max-height 保持一致）。 */
+const MAX_TEXTAREA_HEIGHT = 120;
+
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, focusSignal, chatContext }) => {
   const [input, setInput] = useState('');
   const [queuedMessages, setQueuedMessages] = useState<QueuedMessage[]>([]);
   const [editingQueuedId, setEditingQueuedId] = useState<string | null>(null);
@@ -99,7 +104,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const [showLimitDialog, setShowLimitDialog] = useState(false);
   const composingRef = useRef(false);
   const [isFocused, setIsFocused] = useState(false);
-  // 本机默认值只在水合完成后生效（useHydratedSetting 在 SSR/水合阶段返回服务端默认值），
+  // 本机默认值只在水合完成后由 hydrateSettings() 应用（首帧是 DEFAULTS，见 lib/stores/settings.ts），
   // 用户手动改过就以覆盖值为准：既不会 hydration mismatch，也避免在 effect 里 setState。
   const defaultThinking = useSettings((s) => s.defaultThinking);
   const defaultThinkingEffort = useSettings((s) => s.defaultThinkingEffort);
@@ -172,10 +177,28 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
   useEffect(() => {
     const el = textareaRef.current;
-    if (el) {
+    if (!el) return;
+    let lastWidth = 0;
+    const resize = () => {
+      // 首帧分栏还没量出宽度时（clientWidth 退化），此时 scrollHeight 是假值：
+      // 一旦写进去就没人再改，空输入框会永久停在 max-height（用户看到「空着也占好几行」）。
+      if (el.clientWidth < 40) return;
+      lastWidth = el.clientWidth;
       el.style.height = 'auto';
-      el.style.height = `${Math.min(el.scrollHeight, 150)}px`;
-    }
+      el.style.height = `${Math.min(el.scrollHeight, MAX_TEXTAREA_HEIGHT)}px`;
+    };
+    resize();
+    // 左右栏拖动/收起会改可用宽度，换行数随之变化：宽度变了就重新量一次高度。
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => {
+      if (el.clientWidth === lastWidth) return;
+      resize();
+    });
+    observer?.observe(el);
+    window.addEventListener('resize', resize);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', resize);
+    };
   }, [input]);
 
   useEffect(() => {
@@ -198,6 +221,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       // 保留最后测量值；StrictMode effect 重放时不先清零，避免滚动区短暂失去避让空间。
     };
   }, [onComposerInsetChange]);
+
+  // 外部要求聚焦（自增即触发一次）：只聚焦，不碰草稿。
+  useEffect(() => {
+    if (!focusSignal) return;
+    textareaRef.current?.focus();
+  }, [focusSignal]);
 
   const planMode = planModeOverride ?? planGate.defaultOn;
   const effectivePlanMode = resolvePlanMode(planMode, settingsSnapshot);

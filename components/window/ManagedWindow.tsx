@@ -8,15 +8,7 @@ import {
   type FullscreenTarget,
 } from "@/lib/hooks/useManagedWindowChrome";
 import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager";
-import { isAgentWorkspace } from "@/lib/stores/workspace";
-import { useAppMode } from "@/lib/stores/appMode";
-import { useIsMobile } from "@/lib/hooks/useIsMobile";
-import { useAgentDockRuntime, activateManagedSurface } from "@/lib/window/agentDockRuntime";
-import {
-  isManagedWindowInteractive,
-  resolveManagedWindowPresentation,
-} from "@/lib/window/presentation";
-import { useDockTypingFocusGuard } from "@/lib/window/dockTypingFocus";
+import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
 
 export type { FullscreenTarget };
 
@@ -99,28 +91,8 @@ export default function ManagedWindow({
   children,
 }: ManagedWindowProps) {
   const managed = useWindowManager((state) => state.windows.find((window) => window.id === windowId));
-  const appMode = useAppMode((state) => state.mode);
-  const isMobile = useIsMobile();
-  const dockHost = useAgentDockRuntime((state) => state.contentHost);
-  const activeSurface = useAgentDockRuntime((state) => state.active);
-  const dockCollapsed = useAgentDockRuntime((state) => state.collapsed);
-  const agent = appMode === "agent" || isAgentWorkspace();
-  const presentation = resolveManagedWindowPresentation({
-    agent,
-    mobile: isMobile,
-    dockHostAvailable: !!dockHost,
-  });
-  const dockActive =
-    presentation === "dock" &&
-    activeSurface?.kind === "managed" &&
-    activeSurface.id === windowId;
-  const interactive = isManagedWindowInteractive({
-    presentation,
-    minimized: managed?.minimized ?? true,
-    active: dockActive,
-    dockCollapsed,
-  });
-  const escapeSuppressed = useDockTypingFocusGuard(presentation === "dock" ? dockHost : null);
+  const { presentation, visible, interactive, escapeSuppressed, portalTarget } =
+    useManagedWindowSurface(windowId);
 
   // 窄屏 sheet 覆盖整页，关闭后把焦点还给打开它的入口；桌面浮窗保持原行为。
   const sheetReturnFocusRef = useRef<HTMLElement | null>(null);
@@ -143,7 +115,6 @@ export default function ManagedWindow({
     elRef,
     onPointerDown,
     onResizeStart,
-    onWestResizeStart,
     toggleFullscreen,
     bringToFront,
     minimizeWindow,
@@ -161,23 +132,16 @@ export default function ManagedWindow({
     escapeSuppressed,
   });
 
-  if (!managed || typeof document === "undefined" || presentation === "pending") return null;
+  if (!managed || typeof document === "undefined" || presentation === "pending" || !portalTarget) return null;
 
   const showBody = !(unmountWhenMinimized && managed.minimized);
-  const portalTarget = presentation === "dock" ? dockHost : document.body;
-  if (!portalTarget) return null;
-
   const surface = presentation === "dock" ? "dock" : presentation === "sheet" ? "sheet" : "floating";
-  const visible = presentation === "dock" ? dockActive && !dockCollapsed && !managed.minimized : !managed.minimized;
   const floatingFrameStyle = presentation === "floating" ? frameStyle : undefined;
 
   return createPortal(
     <div
       ref={elRef}
-      onPointerDownCapture={() => {
-        bringToFront(windowId);
-        if (presentation === "dock") activateManagedSurface(windowId);
-      }}
+      onPointerDownCapture={() => bringToFront(windowId)}
       className={className}
       data-testid={testId}
       data-surface={surface}
@@ -247,23 +211,6 @@ export default function ManagedWindow({
       >
         {showBody ? children : null}
       </WindowChrome>
-      {presentation === "floating" && !managed.fullscreen && !managed.minimized && isAgentWorkspace() && (
-        <div
-          data-no-drag
-          data-testid="agent-window-widen"
-          onPointerDown={onWestResizeStart}
-          title="拖拽加宽"
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: 8,
-            cursor: "ew-resize",
-            touchAction: "none",
-          }}
-        />
-      )}
       {presentation === "floating" && !managed.fullscreen && !managed.minimized && <ResizeGrip onPointerDown={onResizeStart} />}
     </div>,
     portalTarget,

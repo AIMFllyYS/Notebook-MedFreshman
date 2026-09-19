@@ -181,7 +181,8 @@
   --ink-soft: var(--md-sys-color-on-surface-variant);
   --ink-faint: var(--md-sys-color-outline);
   --line: var(--md-sys-color-outline-variant);
-  --line-soft: var(--md-sys-color-outline-variant);
+  /* 分隔线（栏与栏、栏与标签条）：比卡片描边更淡，避免整屏被框线切碎。 */
+  --line-soft: color-mix(in srgb, var(--md-sys-color-outline-variant) 42%, transparent);
   --accent: var(--md-sys-color-primary);
   --accent-weak: var(--md-sys-color-primary-container);
   --accent-ink: var(--md-sys-color-on-primary-container);
@@ -201,6 +202,9 @@
   --duration-fast: var(--md-sys-motion-duration-short3);
   --duration-normal: var(--md-sys-motion-duration-medium1);
   --duration-slow: var(--md-sys-motion-duration-medium4);
+  /* 左右栏「拉出 / 收起」专用：整栏宽度变化比通用动画慢，观感对齐文件树展开
+     （用户口径：原来 400ms 太快，要慢 2~3 倍）。只给 [data-panel] 用。 */
+  --duration-pane: 1000ms;
   --ease-out: var(--md-sys-motion-easing-emphasized-decelerate);
   --ease-in-out: var(--md-sys-motion-easing-standard);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -272,7 +276,8 @@
   --ink-soft: var(--md-sys-color-on-surface-variant);
   --ink-faint: var(--md-sys-color-outline);
   --line: var(--md-sys-color-outline-variant);
-  --line-soft: var(--md-sys-color-outline-variant);
+  /* 分隔线（栏与栏、栏与标签条）：比卡片描边更淡，避免整屏被框线切碎。 */
+  --line-soft: color-mix(in srgb, var(--md-sys-color-outline-variant) 42%, transparent);
   --accent: var(--md-sys-color-primary);
   --accent-weak: var(--md-sys-color-primary-container);
   --accent-ink: var(--md-sys-color-on-primary-container);
@@ -573,6 +578,23 @@ body {
   justify-content: center;
   pointer-events: none;
   background: var(--bg-app);
+  /* 软加载：入场很快的一层淡入（只跑 opacity，不触发重排）。 */
+  animation: resize-loader-in 120ms var(--ease-out) both;
+}
+
+@keyframes resize-loader-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resize-loader {
+    animation: none;
+  }
 }
 
 /* —— AI 对话骨架屏（右栏拖拽；GPU 合成 shimmer：气泡静止、仅高光层做 transform 位移） —— */
@@ -778,8 +800,11 @@ body {
   }
 }
 
-/* —— 布局持久化：在 React hydrate 前通过 data 属性隐藏已折叠的 TopBar，避免闪烁 —— */
-html[data-topbar-collapsed="true"] header[data-topbar] {
+/* —— 布局持久化：在 React hydrate 前通过 data 属性隐藏已折叠的 TopBar，避免闪烁 ——
+   Agent 顶栏（[data-agent-bar]）不吃这条：它是**控件条**——网页全屏与右侧工作区开关都挂在上面，
+   而它自己根本没有「收起顶栏」入口。落盘的收起态只属于 Studio；从 Studio 收着顶栏切到 Agent 时
+   必须放过它，否则首帧就把两个键一起吃掉（React 侧同口径，见 AppShell 的 barCollapsed）。 */
+html[data-topbar-collapsed="true"] header[data-topbar]:not([data-agent-bar]) {
   height: 0;
   padding-top: 0;
   padding-bottom: 0;
@@ -798,13 +823,67 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   display: flex;
 }
 
-/* 用户曾收起右栏时，尽量在首帧压住宽度（react-resizable-panels 用 flex-basis，不保证像素级） */
-html[data-right-collapsed-full="true"] [data-layout-profile="full"] #right-panel,
-html[data-right-collapsed-article="true"] [data-layout-profile="article"] #right-panel,
-html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] #right-panel,
-html[data-right-collapsed-full="true"] [data-layout-profile="full"] [data-panel-id="right"],
-html[data-right-collapsed-article="true"] [data-layout-profile="article"] [data-panel-id="right"],
-html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [data-panel-id="right"] {
+/* 用户曾收起右栏时，尽量在首帧压住宽度（react-resizable-panels 用 flex-basis，不保证像素级）。
+   只在挂载前生效：挂载后收起/展开交给分栏库的内联 flex，才能走同一条横向缓动
+   （max-width: 0 不在过渡属性里，留着会把动画瞬间掐断）。 */
+html:not([data-panels-ready])[data-right-collapsed-full="true"] [data-layout-profile="full"] #right-panel,
+html:not([data-panels-ready])[data-right-collapsed-article="true"] [data-layout-profile="article"] #right-panel,
+html:not([data-panels-ready])[data-right-collapsed-reference="true"] [data-layout-profile="reference"] #right-panel,
+html:not([data-panels-ready])[data-right-collapsed-full="true"] [data-layout-profile="full"] [data-panel-id="right"],
+html:not([data-panels-ready])[data-right-collapsed-article="true"] [data-layout-profile="article"] [data-panel-id="right"],
+html:not([data-panels-ready])[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [data-panel-id="right"] {
+  flex-basis: 0 !important;
+  flex-grow: 0 !important;
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+}
+
+/* 左右栏「拉出 / 收起」的统一横向缓动（与文件树展开同一节奏，方向换成横向）。
+   - 只挂 data-panels-ready 之后：首帧布局写回（autoSaveId 恢复、档位切换）不参与动画，避免入场抖动。
+   - 拖拽中（[data-resizing]）不参与动画，否则跟手迟滞。 */
+html[data-panels-ready] [data-panel] {
+  transition:
+    flex-grow var(--duration-pane) var(--ease-decelerate),
+    flex-basis var(--duration-pane) var(--ease-decelerate);
+}
+/* 左栏被压到阈值以下、吸附成「彻底收起」的那一下要很快（写在 [data-resizing] 之后才能压过它）。 */
+[data-pane-snap] [data-panel] {
+  transition:
+    flex-grow var(--duration-normal) var(--ease-decelerate),
+    flex-basis var(--duration-normal) var(--ease-decelerate);
+}
+[data-resizing] [data-panel] {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-panels-ready] [data-panel] {
+    transition: none;
+  }
+}
+
+/* Agent「全局」态：右栏铺满左侧对话栏之外的全部区域（中央对话与顶栏让位，左栏宽度由 --agent-left-width 提供）。 */
+[data-agent-global] [data-topbar] {
+  display: none;
+}
+[data-agent-global] [data-panel-id="agent-shell-main"],
+[data-agent-global] [data-panel-id="agent-conversations"] {
+  flex-grow: 0 !important;
+  flex-basis: var(--agent-left-width, 15rem) !important;
+}
+[data-agent-global] [data-panel-id="agent-main"] {
+  flex-grow: 0 !important;
+  flex-basis: 0 !important;
+}
+/* 全局态下面板宽度是算出来的，拖动分隔线只会打架，索性隐藏这两条分隔线。 */
+[data-agent-global] > [data-panel-group] > [data-panel-resize-handle-id],
+[data-agent-global] [data-agent-workspace] > [data-panel-group] > [data-panel-resize-handle-id] {
+  display: none;
+}
+
+/* Agent 右栏同理，但用自己的 key：Studio 档位的收起状态不再影响它 */
+html:not([data-panels-ready])[data-agent-dock-collapsed="true"] [data-agent-shell] #right-panel,
+html:not([data-panels-ready])[data-agent-dock-collapsed="true"] [data-agent-shell] [data-panel-id="agent-shell-dock"] {
   flex-basis: 0 !important;
   flex-grow: 0 !important;
   min-width: 0;
@@ -1005,7 +1084,7 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   width: min(256px, 78vw);
   flex-direction: column;
   background: var(--md-sys-color-surface-container-lowest);
-  border-right: 1px solid var(--md-sys-color-outline-variant);
+  border-right: 1px solid var(--line-soft);
   transform: translateX(-8%);
   opacity: 0;
   pointer-events: none;
@@ -1021,7 +1100,7 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   min-height: 44px;
   align-items: center;
   padding: 4px 8px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
 }
 .mobile-shell-page {
   position: relative;
@@ -1093,7 +1172,7 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   align-items: center;
   justify-content: space-between;
   padding: 0 10px 0 14px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   color: var(--md-sys-color-on-surface);
   font-size: 13px;
   font-weight: 650;

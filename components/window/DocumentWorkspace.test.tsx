@@ -1,6 +1,7 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import DocumentWorkspace from "./DocumentWorkspace";
+import { useAppMode } from "@/lib/stores/appMode";
 
 describe("DocumentWorkspace", () => {
   beforeEach(() => {
@@ -9,6 +10,7 @@ describe("DocumentWorkspace", () => {
       unobserve() {}
       disconnect() {}
     });
+    useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
   });
 
   afterEach(() => {
@@ -57,6 +59,27 @@ describe("DocumentWorkspace", () => {
     expect(screen.getByLabelText("我的笔记")).toBeVisible();
     expect(screen.getByLabelText("文件夹")).toBeVisible();
     expect(screen.getByTestId("folder-tree-resize-handle")).toBeVisible();
+  });
+
+  it("Agent 右栏：目录列挂到右侧，并且可以收起/展开", () => {
+    useAppMode.setState({ mode: "agent" });
+    const { container } = render(
+      <DocumentWorkspace outline={[{ id: "1", title: "笔记甲" }]} activeId="1" onSelect={() => {}} outlineLabel="我的笔记">
+        正文
+      </DocumentWorkspace>,
+    );
+    const layout = container.querySelector(".document-workspace");
+    expect(layout?.getAttribute("data-nav-side")).toBe("right");
+    const toggle = screen.getByTestId("document-workspace-nav-toggle");
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByLabelText("我的笔记")).toBeVisible();
+
+    fireEvent.click(toggle);
+    expect(screen.queryByLabelText("我的笔记")).toBeNull();
+    expect(screen.getByTestId("document-workspace-nav-toggle")).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(screen.getByTestId("document-workspace-nav-toggle"));
+    expect(screen.getByLabelText("我的笔记")).toBeVisible();
   });
 
   it("wraps outline meta when asked so long URLs stay on the panel", () => {

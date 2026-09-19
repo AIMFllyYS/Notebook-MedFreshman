@@ -28,6 +28,8 @@ export interface OutboundMessage {
 const LS_KEY_SIDEBAR = "gailvlun-sidebar-collapsed";
 const LS_KEY_TOPBAR = "gailvlun-topbar-collapsed";
 const LS_KEY_RIGHT_COLLAPSED = "gailvlun-right-collapsed-by-profile";
+/** Agent 右栏（通顶工作区）折叠状态：不跟 Studio 的三档右栏共用，避免两个模式互相改对方的开合。 */
+const LS_KEY_AGENT_DOCK = "gailvlun-agent-dock-collapsed";
 
 const DEFAULT_RIGHT_COLLAPSED: Record<LayoutProfile, boolean> = {
   full: false,
@@ -112,9 +114,12 @@ interface AppState {
   layoutProfile: LayoutProfile;
   /** 当前档位允许的右侧 tab */
   rightTabs: RightTab[];
-  /** 用户按档位分别记忆的右栏折叠状态 */
+  /** 用户按档位分别记忆的右栏折叠状态（仅 Studio 内容页） */
   rightCollapsedByProfile: Record<LayoutProfile, boolean>;
   setRightCollapsedForProfile: (profile: LayoutProfile, collapsed: boolean) => void;
+  /** Agent 右栏（通顶工作区）是否收起。与 Studio 的档位右栏互不影响。 */
+  agentDockCollapsed: boolean;
+  setAgentDockCollapsed: (collapsed: boolean) => void;
 
   /** 页面正中的 Agent 设置层（左下角与 AI 助教共用）。 */
   agentSettingsOpen: boolean;
@@ -249,6 +254,8 @@ export const useStore = create<AppState>((set) => ({
       }
     }
     if (hasRightAttr) updates.rightCollapsedByProfile = right;
+    const agentDock = domBoolean("data-agent-dock-collapsed");
+    if (agentDock !== null) updates.agentDockCollapsed = agentDock;
     if (Object.keys(updates).length > 0) set(updates);
   },
 
@@ -274,6 +281,13 @@ export const useStore = create<AppState>((set) => ({
       setLayoutAttr(`data-right-collapsed-${profile}`, collapsed);
       return { rightCollapsedByProfile: next };
     }),
+
+  agentDockCollapsed: false,
+  setAgentDockCollapsed: (collapsed) => {
+    writeBoolean(LS_KEY_AGENT_DOCK, collapsed);
+    setLayoutAttr("data-agent-dock-collapsed", collapsed);
+    set({ agentDockCollapsed: collapsed });
+  },
 
   agentSettingsOpen: false,
   openAgentSettings: () => set({ agentSettingsOpen: true }),

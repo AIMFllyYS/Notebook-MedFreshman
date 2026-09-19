@@ -21,7 +21,7 @@ const historyState = {
   ] as TestSession[],
   activeSessionId: "main-1",
   folders: [] as { id: string; name: string; createdAt: number }[],
-  createSession: vi.fn(() => "new-1"),
+  startNewChat: vi.fn(() => "main-1"),
   deleteSession: vi.fn(),
   switchSession: vi.fn(),
   archiveSession: vi.fn(),
@@ -89,7 +89,8 @@ describe("AgentConversationSidebar", () => {
   it("新对话 / 我的资产 / 点选主对话与划词会话", () => {
     render(<AgentConversationSidebar chatContext={ctx} />);
     fireEvent.click(screen.getByRole("button", { name: "新对话" }));
-    expect(historyState.createSession).toHaveBeenCalledWith(ctx);
+    // 统一走 startNewChat：已有空白新对话时它会复用，不再落第二条
+    expect(historyState.startNewChat).toHaveBeenCalledWith(ctx);
     fireEvent.click(screen.getByRole("button", { name: "我的资产" }));
     expect(openLibrary).toHaveBeenCalledWith({ intent: "browse" });
     fireEvent.click(screen.getByLabelText("细胞生物学复习"));
@@ -111,7 +112,7 @@ describe("AgentConversationSidebar", () => {
 
     expect(screen.getByText("批量对话 4")).toBeInTheDocument();
     expect(screen.queryByText("批量对话 5")).toBeNull();
-    fireEvent.click(screen.getByTestId("session-show-more"));
+    fireEvent.click(screen.getByTestId("session-show-more-main"));
     expect(screen.getByText("批量对话 7")).toBeInTheDocument();
   });
 

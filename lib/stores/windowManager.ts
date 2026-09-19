@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
-import { activateManagedSurface, useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 
 export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain";
 
@@ -121,22 +121,6 @@ function pickNextActiveWindow(windows: ManagedWindow[], closedId: string): strin
   return remaining.reduce((a, b) => (a.z >= b.z ? a : b)).id;
 }
 
-function syncAgentDockAfterWindowChange(): void {
-  if (!isAgentWorkspace()) return;
-  const runtime = useAgentDockRuntime.getState();
-  if (runtime.active?.kind === "builtin") return;
-
-  const state = useWindowManager.getState();
-  const active = state.activeWindowId
-    ? state.windows.find((window) => window.id === state.activeWindowId && !window.minimized)
-    : state.windows
-        .filter((window) => !window.minimized)
-        .reduce<ManagedWindow | null>((top, window) => (!top || window.z > top.z ? window : top), null);
-
-  if (active) activateManagedSurface(active.id);
-  else useAgentDockRuntime.getState().setActive(null);
-}
-
 interface WindowManagerState {
   windows: ManagedWindow[];
   topZ: number;
@@ -189,8 +173,8 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
         : [...state.windows, nextWindow];
       return { windows: withBadges(windows), topZ: z, activeWindowId: input.id };
     });
+    // Agent 右栏：新内容打开时请求展开（右栏收起状态里也照样弹出来）。
     if (isAgentWorkspace() && !(input.minimized ?? false)) {
-      activateManagedSurface(input.id);
       useAgentDockRuntime.getState().requestOpen();
     }
     return input.id;
@@ -203,7 +187,6 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
         state.activeWindowId === id ? pickNextActiveWindow(state.windows, id) : state.activeWindowId;
       return { windows, activeWindowId };
     });
-    syncAgentDockAfterWindowChange();
   },
 
   setActiveWindow: (id) =>
@@ -225,7 +208,6 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
         activeWindowId: wasActive ? pickNextActiveWindow(windows, id) : state.activeWindowId,
       };
     });
-    syncAgentDockAfterWindowChange();
   },
 
   restoreWindow: (id) => {
@@ -239,7 +221,6 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
         ),
       };
     });
-    if (isAgentWorkspace()) activateManagedSurface(id);
   },
 
   setFullscreen: (id, on) =>

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
-import { MessageSquare, MonitorPlay, Hand, Globe, PanelRightClose, X } from "lucide-react";
+import { MessageSquare, MonitorPlay, Hand, Globe, Maximize2, Minimize2, PanelRightClose, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useStore, type RightTab } from "@/lib/stores/ui";
 import { resolveRouteLayout } from "@/lib/content/routeLayout";
@@ -13,10 +13,11 @@ import { tabPanelVariants } from "@/lib/motion";
 import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
+import AgentDockEmptyState from "@/components/window/AgentDockEmptyState";
 import type { ChatContext } from "@/lib/types/chat";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { activateBuiltinSurface, useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { AGENT_DOCK_CONTENT_ID } from "@/lib/constants/layout";
 import { useSettings } from "@/lib/hooks/useSettings";
 
@@ -104,14 +105,18 @@ class RightPanelTabBoundary extends Component<
 }
 
 export default function RightPanel({
-  hideAiTab = false,
   showWindowDock = false,
   hideBuiltinTabs = false,
+  onCollapse,
 }: {
-  hideAiTab?: boolean;
   showWindowDock?: boolean;
-  /** Agent 工作区里不出现动画讲解/可交互/浏览器这些内置栏目（连同收藏夹与浏览器设置一起隐藏）。 */
+  /**
+   * Agent 工作区里不出现 AI 对话/动画讲解/可交互/浏览器这些内置栏目
+   * （连同收藏夹与浏览器设置一起隐藏，正文区也不挂载任何内置栏目）。
+   */
   hideBuiltinTabs?: boolean;
+  /** 顶部「收起」按钮的落点。默认收起当前 Studio 档位的右栏；Agent 右栏由外壳传入。 */
+  onCollapse?: () => void;
 } = {}) {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
@@ -122,37 +127,38 @@ export default function RightPanel({
   const rightTabs = routeLayout.route ? routeLayout.rightTabs : storeRightTabs;
   const layoutProfile = routeLayout.route ? routeLayout.profile : storeLayoutProfile;
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
-  const setActiveWindow = useWindowManager((s) => s.setActiveWindow);
   const managedWindows = useWindowManager((s) => s.windows);
-  const activeSurface = useAgentDockRuntime((s) => s.active);
+  const activeWindowId = useWindowManager((s) => s.activeWindowId);
   const registerContentHost = useAgentDockRuntime((s) => s.registerContentHost);
+  const dockGlobal = useAgentDockRuntime((s) => s.dockGlobal);
+  const setDockGlobal = useAgentDockRuntime((s) => s.setDockGlobal);
   const showRightPanelTabBar = useSettings((s) => s.showRightPanelTabBar);
   const visibleRightTabs = hideBuiltinTabs
     ? []
-    : ALL_RIGHT_TABS.filter((t) => rightTabs.includes(t.id) && !(hideAiTab && t.id === "ai"));
+    : ALL_RIGHT_TABS.filter((t) => rightTabs.includes(t.id));
   const showBrowserChrome = !hideBuiltinTabs && rightTabs.includes("browser");
   const showTabBar = showRightPanelTabBar !== false;
   const showChrome = showTabBar || showWindowDock;
-  const agentFallbackTab = hideAiTab ? visibleRightTabs[0]?.id : undefined;
+  // 只有「当前允许且可见」的栏目才挂正文：右栏收起内置栏目时（Agent），
+  // 即便 store 里的 rightTab 还停在 video/browser，也不会把动画讲解渲染进右栏。
+  const renderedTab = visibleRightTabs.some((t) => t.id === tab) ? tab : null;
   // 右侧工具栏必须始终给「收起」和窗口标签留位置：内置工具标签在窗口坞出现时让出一部分宽度并横向滚动。
   const hasDockTabs = showWindowDock && managedWindows.length > 0;
 
   useEffect(() => {
-    if (hideAiTab && tab === "ai") {
-      if (agentFallbackTab) setTab(agentFallbackTab);
-      return;
-    }
+    // Agent 右栏不展示内置栏目，也就没有「回退到某个内置 tab」这件事。
+    if (hideBuiltinTabs) return;
     if (rightTabs.length > 0 && !rightTabs.includes(tab)) {
       setTab(rightTabs[0] ?? "ai");
     }
-  }, [rightTabs, tab, setTab, hideAiTab, agentFallbackTab]);
+  }, [hideBuiltinTabs, rightTabs, tab, setTab]);
 
   useEffect(() => {
-    if (hideAiTab) return;
+    if (hideBuiltinTabs) return;
     if (!showTabBar && rightTabs.includes("ai") && tab !== "ai") {
       setTab("ai");
     }
-  }, [showTabBar, rightTabs, tab, setTab, hideAiTab]);
+  }, [hideBuiltinTabs, showTabBar, rightTabs, tab, setTab]);
 
   // 追踪方向：比较新旧 tab index 决定滑入方向
   const tabIndex = visibleRightTabs.findIndex((t) => t.id === tab);
@@ -165,11 +171,15 @@ export default function RightPanel({
     setDir(newIdx >= prevTabIndexRef.current ? 1 : -1);
     prevTabIndexRef.current = newIdx;
     setTab(next);
-    if (showWindowDock) {
-      activateBuiltinSurface(next);
-      setActiveWindow(null);
-    }
   };
+
+  const collapsePanel = useCallback(() => {
+    if (onCollapse) {
+      onCollapse();
+      return;
+    }
+    setRightCollapsedForProfile(layoutProfile, true);
+  }, [layoutProfile, onCollapse, setRightCollapsedForProfile]);
 
   const dockContentRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -177,11 +187,10 @@ export default function RightPanel({
     },
     [registerContentHost, showWindowDock],
   );
-  const activeBuiltinTab = activeSurface?.kind === "builtin" ? activeSurface.id : null;
   const managedSurfaceVisible =
     showWindowDock &&
-    activeSurface?.kind === "managed" &&
-    managedWindows.some((window) => window.id === activeSurface.id);
+    activeWindowId !== null &&
+    managedWindows.some((window) => window.id === activeWindowId && !window.minimized);
   const activeSubjectId = useStore((s) => s.activeSubjectId);
   const activeCategoryId = useStore((s) => s.activeCategoryId);
   const activeItemId = useStore((s) => s.activeItemId);
@@ -208,14 +217,15 @@ export default function RightPanel({
   }), [activeSubjectId, activeCategoryId, activeItemId, academicYear]);
 
   return (
-    <div className="flex h-full flex-col border-l border-[var(--line)] bg-[var(--bg-panel)]">
+    <div className="flex h-full flex-col border-l border-[var(--line-soft)] bg-[var(--bg-panel)]">
       {/* Top-level tab bar（可横向滑动；含浏览器收藏夹标签 + 末尾「＋」） */}
-      {showChrome && <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
+      {showChrome && <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line-soft)] px-1.5 py-1.5">
         <div className={clsx("hide-scrollbar flex min-w-0 items-center gap-1 overflow-x-auto", hasDockTabs ? "shrink basis-auto max-w-[45%]" : "flex-1")}>
           {showTabBar && visibleRightTabs.map((t) => {
             const isActive =
-              activeBuiltinTab === t.id ||
-              (!activeSurface && (t.id === "browser" ? tab === "browser" && activeTabId === BROWSE_TAB : tab === t.id));
+              t.id === "browser"
+                ? tab === "browser" && activeTabId === BROWSE_TAB
+                : tab === t.id;
             return (
               <button
                 key={t.id}
@@ -238,7 +248,7 @@ export default function RightPanel({
 
           {/* 分隔符：核心标签 与 浏览器固定书签标签 分开 */}
           {showBrowserChrome && safeBookmarks.length > 0 && (
-            <span className="mx-0.5 h-5 w-px shrink-0 bg-[var(--line)]" aria-hidden />
+            <span className="mx-0.5 h-5 w-px shrink-0 bg-[var(--line-soft)]" aria-hidden />
           )}
 
           {/* 浏览器收藏夹标签（独立固定标签） */}
@@ -283,9 +293,22 @@ export default function RightPanel({
           </div>
         )}
         {showBrowserChrome && <BrowserSettingsButton onAdded={() => switchTab("browser")} />}
+        {showWindowDock && (
+          <button
+            type="button"
+            onClick={() => setDockGlobal(!dockGlobal)}
+            title={dockGlobal ? "缩小到右栏" : "全屏显示这个板块"}
+            aria-label={dockGlobal ? "缩小到右栏" : "全屏显示这个板块"}
+            aria-pressed={dockGlobal}
+            data-testid="agent-dock-global"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+          >
+            {dockGlobal ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+          </button>
+        )}
         <button
           type="button"
-          onClick={() => setRightCollapsedForProfile(layoutProfile, true)}
+          onClick={collapsePanel}
           title="收起右侧面板"
           aria-label="收起右侧面板"
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
@@ -305,30 +328,33 @@ export default function RightPanel({
           />
         )}
         <div className={clsx("h-full min-h-0", managedSurfaceVisible && "invisible pointer-events-none")}>
-          <AnimatePresence mode="wait" custom={dir}>
+          {showWindowDock && !managedSurfaceVisible && (
+            <AgentDockEmptyState hasHiddenWindows={managedWindows.length > 0} />
+          )}
+          {!showWindowDock && <AnimatePresence mode="wait" custom={dir}>
             <RightPanelTabBoundary key={tab} tab={tab}>
-              {tab === "ai" && !hideAiTab && (
+              {renderedTab === "ai" && (
                 <motion.div key="ai-chat" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
                   <ChatPanel chatContext={chatContext} />
                 </motion.div>
               )}
-              {tab === "video" && (
+              {renderedTab === "video" && (
                 <motion.div key="video" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
                   <VideoTab />
                 </motion.div>
               )}
-              {tab === "interactive" && (
+              {renderedTab === "interactive" && (
                 <motion.div key="interactive" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
                   <InteractiveTab />
                 </motion.div>
               )}
-              {tab === "browser" && (
+              {renderedTab === "browser" && (
                 <motion.div key="browser" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
                   <BrowserTab />
                 </motion.div>
               )}
             </RightPanelTabBoundary>
-          </AnimatePresence>
+          </AnimatePresence>}
         </div>
       </div>
     </div>

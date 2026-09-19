@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   Archive,
-  ArchiveRestore,
   ChevronRight,
   Folder,
   FolderOpen,
@@ -21,7 +20,6 @@ import GlobalSettings from "./GlobalSettings";
 import LeftDock from "./LeftDock";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
-import { AddContentButton } from "@/components/window/WindowTaskbar";
 import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
@@ -53,7 +51,7 @@ function sessionPreview(session: SessionMeta): string {
 
 /**
  * Agent 左侧工作区面板内容：对话 / 资产 / 添加内容 / 归档。
- * 由 AgentLeftPanel 以覆盖式抽屉承载，也可以直接作为常驻列渲染。
+ * 由 `AgentWorkspace` 作为常驻列渲染；本组件只在展开时挂载，所以「折叠」按钮只负责收起。
  */
 export default function AgentConversationSidebar({
   chatContext,
@@ -63,7 +61,7 @@ export default function AgentConversationSidebar({
   const sessions = useChatHistory((s) => s.sessionsMeta);
   const folders = useChatHistory((s) => s.folders);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
-  const createSession = useChatHistory((s) => s.createSession);
+  const startNewChat = useChatHistory((s) => s.startNewChat);
   const deleteSession = useChatHistory((s) => s.deleteSession);
   const switchSession = useChatHistory((s) => s.switchSession);
   const archiveSession = useChatHistory((s) => s.archiveSession);
@@ -71,7 +69,6 @@ export default function AgentConversationSidebar({
   const renameFolder = useChatHistory((s) => s.renameFolder);
   const deleteFolder = useChatHistory((s) => s.deleteFolder);
   const moveSessionToFolder = useChatHistory((s) => s.moveSessionToFolder);
-  const isCollapsed = useStore((s) => s.sidebarCollapsed);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [confirmId, setConfirmId] = useState<string | null>(null);
@@ -122,9 +119,9 @@ export default function AgentConversationSidebar({
   const hiddenFloatingCount = floatingSessions.length - visibleFloating.length;
 
   const handleNewChat = useCallback(() => {
-    createSession(chatContext);
+    startNewChat(chatContext);
     useTokenTracker.getState().resetSession();
-  }, [chatContext, createSession]);
+  }, [chatContext, startNewChat]);
 
   const handleSelectMain = (id: string) => {
     if (confirmId) {
@@ -202,7 +199,7 @@ export default function AgentConversationSidebar({
     );
   };
 
-  const renderMore = (hidden: number, onShow: () => void, label: string) => {
+  const renderMore = (hidden: number, onShow: () => void, label: string, slot: "main" | "floating") => {
     if (hidden <= 0) return null;
     return (
       <button
@@ -210,7 +207,7 @@ export default function AgentConversationSidebar({
         onClick={onShow}
         title={`展开其余 ${hidden} 个${label}`}
         aria-label={`展开其余 ${hidden} 个${label}`}
-        data-testid="session-show-more"
+        data-testid={`session-show-more-${slot}`}
         className="press mx-2 my-0.5 flex items-center gap-1.5 rounded-lg px-2 py-1 text-[12px] text-[var(--ink-faint)] hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--ink-soft)]"
       >
         <span className="tracking-[0.15em]">···</span>
@@ -225,7 +222,7 @@ export default function AgentConversationSidebar({
       className="flex h-full flex-col"
       style={{
         background: "var(--md-sys-color-surface-container-lowest)",
-        borderRight: "1px solid var(--md-sys-color-outline-variant)",
+        borderRight: "1px solid var(--line-soft)",
       }}
       onContextMenu={(event) => openMenu(event, { kind: "panel" })}
     >
@@ -234,7 +231,7 @@ export default function AgentConversationSidebar({
         style={{
           height: 40,
           padding: "0 8px 0 12px",
-          borderBottom: "1px solid var(--md-sys-color-outline-variant)",
+          borderBottom: "1px solid var(--line-soft)",
         }}
       >
         <span
@@ -258,12 +255,11 @@ export default function AgentConversationSidebar({
           >
             <Search size={15} />
           </button>
-          <AddContentButton showUrlField={false} />
           <button
             type="button"
-            onClick={() => setCollapsed(!isCollapsed)}
-            title={isCollapsed ? "展开侧边栏" : "折叠侧边栏"}
-            aria-label={isCollapsed ? "展开侧边栏" : "折叠侧边栏"}
+            onClick={() => setCollapsed(true)}
+            title="折叠侧边栏"
+            aria-label="折叠侧边栏"
             className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
           >
             <PanelLeftClose size={15} />
@@ -393,7 +389,7 @@ export default function AgentConversationSidebar({
               ) : (
                 visibleMain.map((session) => renderSession(session, "main"))
               )}
-              {renderMore(hiddenMainCount, () => setShowAllMain(true), "对话")}
+              {renderMore(hiddenMainCount, () => setShowAllMain(true), "对话", "main")}
             </AnimatedCollapse>
 
             <FolderTreeRow
@@ -418,7 +414,7 @@ export default function AgentConversationSidebar({
               ) : (
                 visibleFloating.map((session) => renderSession(session, "floating"))
               )}
-              {renderMore(hiddenFloatingCount, () => setShowAllFloating(true), "划词对话")}
+              {renderMore(hiddenFloatingCount, () => setShowAllFloating(true), "划词对话", "floating")}
             </AnimatedCollapse>
           </>
         )}
@@ -429,7 +425,7 @@ export default function AgentConversationSidebar({
         style={{
           height: 40,
           padding: "0 8px",
-          borderTop: "1px solid var(--md-sys-color-outline-variant)",
+          borderTop: "1px solid var(--line-soft)",
         }}
       >
         <LeftDock
@@ -598,16 +594,6 @@ export default function AgentConversationSidebar({
           )
         : null}
 
-      {showArchived && archived.length > 0 ? (
-        <button
-          type="button"
-          onClick={() => setShowArchived(false)}
-          className="sr-only"
-          aria-label="关闭归档视图"
-        >
-          <ArchiveRestore size={14} />
-        </button>
-      ) : null}
     </aside>
   );
 }

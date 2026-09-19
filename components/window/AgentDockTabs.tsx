@@ -6,9 +6,9 @@ import clsx from "clsx";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
-import { activateManagedSurface, useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 
+/** Agent 右栏的标签条：一条窗口 = 一个标签，活动标签由 `activeWindowId` 决定。 */
 export default function AgentDockTabs({
   windows,
   addContent,
@@ -16,13 +16,12 @@ export default function AgentDockTabs({
   windows: ManagedWindow[];
   addContent?: ReactNode;
 }) {
-  const active = useAgentDockRuntime((state) => state.active);
+  const activeWindowId = useWindowManager((state) => state.activeWindowId);
   const { bringToFront, restoreWindow } = useWindowManager();
 
   const activateWindow = (window: ManagedWindow) => {
     if (window.minimized) restoreWindow(window.id);
     else bringToFront(window.id);
-    activateManagedSurface(window.id);
   };
 
   return (
@@ -34,7 +33,7 @@ export default function AgentDockTabs({
         className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto"
       >
         {windows.map((window) => {
-          const selected = active?.kind === "managed" && active.id === window.id;
+          const selected = activeWindowId === window.id && !window.minimized;
           return (
             <div
               key={window.id}
@@ -72,7 +71,7 @@ export default function AgentDockTabs({
             </div>
           );
         })}
-        </div>
+      </div>
 
       {addContent}
     </div>

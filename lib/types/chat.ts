@@ -173,6 +173,17 @@ export interface ChatContext {
   academicYear?: string;
 }
 
+/**
+ * 上下文是否绑定在「某一页」（分类 + 内容项齐全）。
+ *
+ * Agent 的通用对话只带科目与学年、不绑定当前章节：这时定位行、当前页正文、
+ * 页级参考材料都不该注入——上下文一律由用户显式注入（引用笔记 / 附件 / 技能）。
+ * 定位行与参考材料的判定必须共用这一个函数，否则两边会各自漂移。
+ */
+export function isPageBoundContext(ctx: Pick<ChatContext, 'categoryId' | 'itemId'>): boolean {
+  return Boolean(ctx.categoryId && ctx.itemId);
+}
+
 export interface ChatOptions {
   enableThinking?: boolean;
   enableSearch?: boolean;

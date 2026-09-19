@@ -5,6 +5,7 @@ import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useChatUI } from "@/lib/stores/chatUI";
 import { useStore } from "@/lib/stores/ui";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { currentRecordContext } from "@/lib/review/recordContext";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import {
@@ -69,7 +70,8 @@ export function citeUserNoteToMainAgent(noteId: string): boolean {
   const ui = useStore.getState();
   ui.setRightTab("ai");
   ui.setMobileTab("ai");
-  ui.setRightCollapsedForProfile(ui.layoutProfile, false);
+  // Agent 模式引用进的是中央主对话，不需要（也不该）改 Studio 档位的右栏开合。
+  if (!isAgentWorkspace()) ui.setRightCollapsedForProfile(ui.layoutProfile, false);
   return true;
 }
 

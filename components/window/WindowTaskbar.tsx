@@ -261,12 +261,8 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
   );
 }
 
-export function partitionTaskbarWindows(
-  windows: ManagedWindow[],
-  host: WindowTaskbarProps["host"],
-  width: number,
-) {
-  void host;
+/** 按可用宽度把窗口分成「直接显示」和「收进溢出菜单」两段（与挂载位置无关）。 */
+export function partitionTaskbarWindows(windows: ManagedWindow[], width: number) {
   if (windows.length === 0) return { visible: [] as ManagedWindow[], overflow: [] as ManagedWindow[] };
   const maxWidth = Math.max(0, width);
   if (maxWidth < ICON_SLOT) return { visible: [] as ManagedWindow[], overflow: windows };
@@ -298,9 +294,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
     return () => observer.disconnect();
   }, []);
 
-  const { visible, overflow } = useMemo(() => {
-    return partitionTaskbarWindows(windows, host, width);
-  }, [host, width, windows]);
+  const { visible, overflow } = useMemo(() => partitionTaskbarWindows(windows, width), [width, windows]);
 
   const toggle = (id: string) => {
     const win = useWindowManager.getState().windows.find((item) => item.id === id);

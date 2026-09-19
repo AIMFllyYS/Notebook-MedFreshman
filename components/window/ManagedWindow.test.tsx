@@ -5,7 +5,7 @@ import ManagedWindow from "@/components/window/ManagedWindow";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useAppMode } from "@/lib/stores/appMode";
-import { activateManagedSurface, useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { useOverlayStack } from "@/lib/keyboard/useOverlayStack";
 
 const WIN_ID = "test-managed-window";
@@ -41,7 +41,7 @@ function mountDockHost() {
   const host = document.createElement("div");
   host.dataset.testid = "agent-dock-content";
   document.body.appendChild(host);
-  useAgentDockRuntime.setState({ contentHost: host, active: null, collapsed: false, panelControls: null });
+  useAgentDockRuntime.setState({ contentHost: host });
   return host;
 }
 
@@ -49,7 +49,7 @@ afterEach(() => {
   cleanup();
   useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
-  useAgentDockRuntime.setState({ contentHost: null, active: null, collapsed: false, panelControls: null });
+  useAgentDockRuntime.setState({ contentHost: null, openRequest: 0, dockGlobal: false });
   useOverlayStack.setState({ stack: [] });
   document.getElementById(NOTES_PANEL_ID)?.remove();
   vi.unstubAllGlobals();
@@ -247,7 +247,6 @@ describe("ManagedWindow", () => {
 
     act(() => {
       useWindowManager.getState().bringToFront(WIN_ID);
-      activateManagedSurface(WIN_ID);
     });
 
     await waitFor(() => {
@@ -273,7 +272,6 @@ describe("ManagedWindow", () => {
     );
 
     await waitFor(() => expect(host.querySelector('[data-surface="dock"]')).not.toBeNull());
-    await act(async () => activateManagedSurface(WIN_ID));
     await waitFor(() =>
       expect(useOverlayStack.getState().stack.map((entry) => entry.id)).toContain(WIN_ID),
     );
