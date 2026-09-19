@@ -87,6 +87,9 @@ export const TOOL_REGISTRY = {
   commitNotes: moduleOf("commitNotes"),
   commitFlashcards: moduleOf("commitFlashcards"),
   updateUserNote: moduleOf("updateUserNote"),
+  // 项目文件：索引与切片都只进模型上下文，对话里不出现卡片（同 getSection）。
+  getProjectFiles: moduleOf("getProjectFiles"),
+  readProjectSlices: moduleOf("readProjectSlices"),
 } satisfies { [N in StudyToolName]: ToolModule<N> };
 
 export const THREAD_SILENT_TOOLS = ["proposeMemory", "commitNotes", "commitFlashcards", "updateUserNote"] as const satisfies readonly StudyToolName[];

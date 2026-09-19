@@ -26,6 +26,8 @@ export const PERSIST_KEYS = {
   userNotes: "user-notes",
   /** Agent 的本地导入记录（文件绝对路径 / 网址快捷方式），不上云。 */
   imports: "agent-imports",
+  /** 项目文件的本地索引与切片（不上云）。 */
+  projectFiles: "project-files",
 } as const;
 
 export const CHAT_SESSION_KEY_PREFIX = "chat-session:";

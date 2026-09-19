@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { Plus, Upload, BookOpen, Layers, FileDigit, MonitorPlay } from "lucide-react";
+import { Plus, Upload, BookOpen, Layers, FileDigit, FolderTree, MonitorPlay } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { createAndOpenNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
@@ -15,6 +15,10 @@ import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, 
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { localPathOf, recordImport } from "@/lib/stores/imports";
+import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useAppMode } from "@/lib/stores/appMode";
+import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
+import { openProjectFiles } from "@/lib/project/openProjectFiles";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import AgentDockTabs from "@/components/window/AgentDockTabs";
@@ -70,6 +74,7 @@ function AddMenuDivider() {
 }
 
 export function AddContentButton({ showUrlField = true }: { showUrlField?: boolean } = {}) {
+  const agentMode = useAppMode((s) => s.mode === "agent");
   const [open, setOpen] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
@@ -143,6 +148,21 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
     setOpen(false);
   };
 
+  /**
+   * 「项目文件」入口：项目是归属，所以先确定落在哪个项目——
+   * 有选中项目就用它；没有则用最近有对话的项目；一个都没有才建一个（名字可改）。
+   */
+  const openProjectFilesEntry = () => {
+    const history = useChatHistory.getState();
+    let projectId = history.activeProjectId;
+    if (!projectId) {
+      const recent = recentProjects(buildProjectViews(history.folders, history.sessionsMeta))[0];
+      projectId = recent?.id ?? history.createFolder("我的项目");
+      history.setActiveProject(projectId);
+    }
+    openProjectFiles(projectId);
+  };
+
   return (
     <div ref={rootRef} className="relative shrink-0">
       <button
@@ -187,6 +207,26 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
           style={{ position: "fixed", top: menuPosition.top, right: menuPosition.right }}
           className="window-taskbar-add-menu z-[12000] w-64 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-2 shadow-xl"
         >
+          {agentMode && (
+            <>
+              <div role="group" aria-label="项目" data-menu-group="project-files">
+                <button
+                  type="button"
+                  role="menuitem"
+                  data-testid="add-menu-project-files"
+                  onClick={() => {
+                    openProjectFilesEntry();
+                    setOpen(false);
+                  }}
+                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+                >
+                  <FolderTree size={14} className="text-[var(--md-sys-color-primary)]" />
+                  <span><strong className="font-semibold">项目文件</strong><small className="ml-1 text-[var(--ink-soft)]">本地索引 + 切片</small></span>
+                </button>
+              </div>
+              <AddMenuDivider />
+            </>
+          )}
           <div role="group" aria-label="打开面板" data-menu-group="open-panels">
             <button
               type="button"

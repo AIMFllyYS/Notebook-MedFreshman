@@ -20,6 +20,8 @@ import { presentation as proposeMemory } from "@/lib/ai/agent/tools/proposeMemor
 import { presentation as commitNotes } from "@/lib/ai/agent/tools/commitNotes/presentation";
 import { presentation as commitFlashcards } from "@/lib/ai/agent/tools/commitFlashcards/presentation";
 import { presentation as updateUserNote } from "@/lib/ai/agent/tools/updateUserNote/presentation";
+import { presentation as getProjectFiles } from "@/lib/ai/agent/tools/getProjectFiles/presentation";
+import { presentation as readProjectSlices } from "@/lib/ai/agent/tools/readProjectSlices/presentation";
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   getCurrentPage,
@@ -41,6 +43,8 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   commitNotes,
   commitFlashcards,
   updateUserNote,
+  getProjectFiles,
+  readProjectSlices,
 };
 
 /** 设置面板「工具调用」区展示的工具，按 STUDY_TOOL_NAMES 顺序。 */

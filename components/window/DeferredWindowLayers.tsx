@@ -22,6 +22,7 @@ const AttachmentPreviewViewer = dynamic(() => import("@/components/chat/Attachme
 const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
 const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
 const MembershipSponsorLayer = dynamic(() => import("@/components/chat/MembershipSponsorWindow"), { ssr: false });
+const ProjectFilesLayer = dynamic(() => import("@/components/project/ProjectFilesLayer"), { ssr: false });
 
 /**
  * 首屏不立刻挂 15 个窗层。idle 后再挂；用户一开窗则马上挂，避免水合同时解析一堆 chunk。
@@ -64,6 +65,7 @@ export default function DeferredWindowLayers() {
       <MessageContextMenu />
       <BillingDashboardLayer />
       <MembershipSponsorLayer />
+      <ProjectFilesLayer />
     </>
   );
 }
