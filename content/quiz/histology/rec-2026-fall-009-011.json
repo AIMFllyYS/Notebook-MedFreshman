@@ -1,0 +1,260 @@
+{
+  "subjectId": "histology",
+  "chapterId": "rec-2026-fall-009-011",
+  "generatedAt": "2026-09-18",
+  "examConfig": {
+    "source": "content/histology/lectures/rec-2026-fall-009-011/recording.md；content/histology/lectures/rec-2026-fall-009-011/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-009-011",
+    "revision": 1,
+    "recordingHash": "699b856044882d02ff9eedf93070c9b922fb4d814ed7f6fb47032fcf20c7a419",
+    "notesTextHash": "de8046900e8071e42f4aa3c022e7c972119837514344bc2e4efb7cb558a6641c"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "领取教学切片后，学生必须保证“四号完全一致”，下列哪一项是正确的四号？（　）",
+      "options": [
+        "座位号 = 切片盒号 = 显微镜号 = 座凳号",
+        "座位号 = 学号 = 显微镜号 = QQ号",
+        "切片盒号 = 学号 = 平板号 = 座凳号",
+        "座位号 = 切片盒号 = 平板号 = 手机号"
+      ],
+      "answer": 0,
+      "hint": "座、盒、镜、凳四号对得上。",
+      "explanation": "**A 正确。** 领片返回座位后须保证座位号、切片盒号、显微镜号、座凳号四号完全一致，再按盒面目录清点并登记缺损切片号。\n- B、D：混入学号、QQ号、手机号等与座位设备无关的号码。\nC：以学号、平板号替代显微镜号，不对。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/recording.md",
+        "label": "领片四号一致与清点登记流程"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于实验室教学切片盒及标签的颜色标识，下列正确的是（　）。",
+      "options": [
+        "组胚切片盒及标签为白色，病理为绿色",
+        "组胚切片盒及标签为绿色，病理为白色",
+        "组胚与病理切片盒及标签均为绿色",
+        "组胚与病理切片盒及标签均为白色"
+      ],
+      "answer": 1,
+      "hint": "组胚绿、病理白。",
+      "explanation": "**B 正确。** 教学切片统一编号，组织学与胚胎学切片盒及相关标签为绿色，病理学切片盒及标签为白色，据此按座位号领取对应课程、编号的切片盒。\n- A：把两种颜色说反。\nC、D：两课程标签应区分颜色，不能同为一色。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "切片盒颜色标识 · 组胚绿/病理白"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "要观察46号切片，关于切片卡槽数字与切片标签号的关系，正确的是（　）。",
+      "options": [
+        "卡槽位置上的数字就是片号，直接到第46格取片即可",
+        "卡槽数字与标签号都是顺序号",
+        "卡槽数字=顺序号，切片标签号=片号；须先在盒面目录查得46对应的顺序号位置，再到该卡槽取片",
+        "卡槽数字与标签号完全无关，任意取片均可"
+      ],
+      "answer": 2,
+      "hint": "卡槽是顺序号，标签才是片号，要照目录对位。",
+      "explanation": "**C 正确。** 切片卡槽位置上的数字是顺序号（1,2,3…），切片上贴的标签号才是片号（如46）；需先在盒面目录查得46号对应的顺序号位置（如第38位），再到该卡槽取片。\n- A：把卡槽顺序号当成片号，会取错片。\nB：混淆了两者性质。\nD：二者通过盒面目录对应，并非无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "切片编号规则 · 顺序号 vs 片号"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于上皮组织与结缔组织在血管、排列、极性方面的核心区别，正确的是（　）。",
+      "options": [
+        "上皮与结缔组织都有丰富血管，都无极性",
+        "上皮有丰富血管、细胞排列紧密；结缔无血管、细胞松散",
+        "上皮与结缔组织都无血管，都有极性",
+        "上皮无血管、细胞紧密、有极性；结缔有丰富血管、细胞松散、无极性"
+      ],
+      "answer": 3,
+      "hint": "上皮无血有极性，结缔有血无极性。",
+      "explanation": "**D 正确。** 上皮组织无血管、细胞排列紧密间质少、有极性（游离面/基底面/侧面）；结缔组织有丰富血管、细胞松散间质多、无极性。上皮较厚处营养靠下方结缔组织血管透过基膜供给。\n- B：把有无血管说反。\nA、C：血管与极性的描述均不正确。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "上皮 vs 结缔 · 血管/排列/极性三方面区别"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于单层扁平上皮的两种类型及其分布，正确的是（　）。",
+      "options": [
+        "间皮衬于腹膜腔、胸膜腔、心包腔表面；内皮衬于心、血管、淋巴管腔面",
+        "间皮衬于心血管、淋巴管腔面；内皮衬于体腔浆膜表面",
+        "间皮与内皮都衬于体腔表面",
+        "间皮与内皮都衬于血管腔面"
+      ],
+      "answer": 0,
+      "hint": "间皮=体腔，内皮=脉管。",
+      "explanation": "**A 正确。** 衬于腹膜腔、胸膜腔、心包腔等体腔浆膜表面的单层扁平上皮称间皮；衬于心、血管、淋巴管等脉管系统腔面的单层扁平上皮称内皮。\n- B：把间皮与内皮的分布完全说反。\nC、D：两者分布对象不同，不能都归为体腔或脉管。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "单层扁平上皮 · 间皮与内皮的分布"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于单层柱状上皮游离面“纹状缘”的本质，下列正确的是（　）。",
+      "options": [
+        "纹状缘是电镜术语，对应的光镜结构是微绒毛",
+        "光镜下所见的纹状缘，电镜下对应大量整齐排列的微绒毛，功能为增大吸收面积",
+        "纹状缘即纤毛，可摆动推送分泌物",
+        "纹状缘在杯状细胞处最发达、最连续"
+      ],
+      "answer": 1,
+      "hint": "光镜纹状缘=电镜微绒毛。",
+      "explanation": "**B 正确。** 纹状缘是单层柱状上皮游离面在光镜下所见的一条致密嗜酸性红带，电镜下其结构基础是大量整齐排列的微绒毛，功能为增大消化吸收面积；纹状缘在杯状细胞处中断。\n- A：把光镜/电镜的对应关系说反。\nC：纹状缘是微绒毛（不可动），不是可摆动的纤毛。\nD：纹状缘恰在杯状细胞处中断而非最发达。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "纹状缘与微绒毛 · 光镜电镜对应关系"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于假复层纤毛柱状上皮，下列说法正确的是（　）。",
+      "options": [
+        "所有细胞都不附于基膜，实为真正的复层上皮",
+        "主要分布于膀胱、输尿管等泌尿系统腔面",
+        "所有细胞都附于基膜（实为单层），核高低不一看似复层，游离面有可摆动纤毛，主要分布于呼吸管道",
+        "游离面的纤毛与微绒毛一样不可动"
+      ],
+      "answer": 2,
+      "hint": "实为单层、核不齐、有可动纤毛、在呼吸管道。",
+      "explanation": "**C 正确。** 假复层纤毛柱状上皮所有细胞都附于基膜上（实为单层），只因细胞核位置高低不一看似复层；游离面有较粗长、可摆动的纤毛，可推送粉尘异物排出，主要分布于呼吸管道。\n- A：它实为单层而非复层。\nB：膀胱输尿管是变移上皮，不是本型分布。\nD：纤毛可摆动，微绒毛才不可动。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "假复层纤毛柱状上皮 · 实为单层与纤毛功能"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于浆细胞的镜下识别与来源，下列正确的是（　）。",
+      "options": [
+        "核偏位、胞质嗜碱性深染、核染色质呈车辐状排列、核周可有浅染区；来源于B淋巴细胞，分泌抗体",
+        "核居中、胞质嗜酸性红染、来源于T淋巴细胞",
+        "核偏位、胞质浅染空泡状、来源于肥大细胞",
+        "无细胞核、胞质充满紫红颗粒、释放组胺参与过敏"
+      ],
+      "answer": 0,
+      "hint": "偏位嗜碱车轮核，B细胞分泌抗体。",
+      "explanation": "**A 正确。** 浆细胞识别四要素为核偏位、胞质丰富嗜碱性（HE偏蓝紫）、核染色质沿核膜车辐状排列、核周浅染区；它由B淋巴细胞分化而来，功能是分泌抗体。\n- B：浆细胞核偏位而非居中、胞质嗜碱而非嗜酸、来源是B细胞而非T细胞。\nC：胞质浅染空泡是脂肪细胞/杯状细胞特征。\nD：那是甲苯胺蓝染色的肥大细胞特征。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "浆细胞四要素与B细胞来源"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于疏松结缔组织三种纤维的染色方法与形态，下列正确的是（　）。",
+      "options": [
+        "胶原纤维镀银呈黑色；网状纤维HE呈粉红色",
+        "胶原纤维HE呈粉红色、边界模糊；弹性纤维醛复红呈紫色、发丝状；网状纤维镀银呈黑色",
+        "弹性纤维HE呈粉红色；胶原纤维醛复红呈紫色",
+        "三种纤维在普通HE染色下均呈深紫色"
+      ],
+      "answer": 1,
+      "hint": "胶原粉红、弹性紫、网状黑。",
+      "explanation": "**B 正确。** 胶原纤维HE染色呈粉红色、边界模糊、粗细不均波浪状；弹性纤维需醛复红染色呈深紫色、发丝状；网状纤维需镀银染色呈黑色、纤细网状。\n- A：把胶原与网状纤维的染色方法说反。\nC：HE粉红的是胶原而非弹性纤维。\nD：弹性与网状纤维均不能仅凭HE显色。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "三种纤维 · 胶原/弹性/网状的染色与形态"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于变移上皮的结构与形态变化，下列正确的是（　）。",
+      "options": [
+        "变移上皮为单层上皮，故各面细胞形态一致",
+        "膀胱空虚时细胞被拉平变扁、层数减少；充盈时细胞变大、层数增多",
+        "为复层上皮，表层盖细胞大可覆盖多个细胞、部分可见双核；空虚时细胞大层数多，充盈时被拉平层数少；分布于膀胱、输尿管",
+        "主要分布于呼吸管道，表层细胞为扁平的角化细胞"
+      ],
+      "answer": 2,
+      "hint": "复层、盖细胞可双核、随充盈变形。",
+      "explanation": "**C 正确。** 变移上皮为复层上皮，表层盖细胞体积大可覆盖下方多个细胞、部分可见双核；空虚时细胞大而层数多，充盈时被拉平变扁、层数减少；分布于膀胱、输尿管等泌尿系统腔面。\n- A：它是复层而非单层。\nB：把空虚与充盈的形态变化说反。\nD：那是假复层纤毛柱状（呼吸管道）或角化复层扁平的描述。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/notes.html",
+        "label": "变移上皮 · 盖细胞双核与随充盈度变化"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于本次显微镜操作规范，下列做法正确的是（　）。",
+      "options": [
+        "直接从100×油镜开始观察切片",
+        "双眼贴近目镜同时快速下降载物台以尽快对焦",
+        "移动切片位置时用手直接在镜下推动玻片",
+        "先以4×或10×低倍定位，眼睛侧视先将载物台升至接近物镜，再从目镜观察缓慢下调；移动载物台用下方旋钮，禁止使用100×油镜"
+      ],
+      "answer": 3,
+      "hint": "低倍定位、侧视升降、用旋钮移片、禁油镜。",
+      "explanation": "**D 正确。** 应先用4×或10×低倍找到组织；调焦时眼睛从侧面注视，先将载物台升至接近物镜，再从目镜观察缓慢下调以免压碎切片；移动切片用载物台下方旋钮而非手推玻片；100×为油镜需油介质，空气介质下禁止使用。\n- A：100×为油镜，禁止使用。\nB：侧视升降、缓慢下调才安全，不可边目镜观察边快速下降。\nC：必须用旋钮，禁止手推玻片。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/histology/lectures/rec-2026-fall-009-011/recording.md",
+        "label": "显微镜操作规范 · 低倍定位与禁油镜"
+      }
+    }
+  ]
+}

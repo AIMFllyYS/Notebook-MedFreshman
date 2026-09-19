@@ -1,0 +1,260 @@
+{
+  "subjectId": "anatomy",
+  "chapterId": "rec-2026-fall-019-020",
+  "generatedAt": "2026-09-18",
+  "examConfig": {
+    "source": "content/anatomy/lectures/rec-2026-fall-019-020/recording.md；content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-019-020",
+    "revision": 1,
+    "recordingHash": "422f73923fd3bb00beed1f87cc76cfee563f5f1a3a2475ca00d4c3ca5e4fa86c",
+    "notesTextHash": "0e31de979703de6a8851784f037b935ca782906973ccc9ac84cc429de77e07d4"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "内脏学总论：心血管系统是否属于内脏的判定"
+      },
+      "stem": "按内脏学的判定标准，心血管系统是否属于内脏？",
+      "options": [
+        "不属于内脏，因为心血管系统的管道不与外界相通",
+        "属于内脏，因为它位于胸腔内",
+        "属于内脏，因为它有管道和器官",
+        "属于内脏，因为它参与物质代谢"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。** 内脏的核心判定标准是有孔道直接或间接与外界相通；心血管系统为密闭循环管道，不与外界相通（一旦相通即出血，需急救），故不属于内脏。B 错：位置在胸内不是内脏的判定标准；C 错：有管道不等于管道与外界相通；D 错：循环系统不属于内脏四大系统范畴。",
+      "hint": "内脏必须“管道通外界”，心血管是密闭循环，不通外。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "内脏学总论：实质性器官的结构特征"
+      },
+      "stem": "下列关于实质性内脏器官的描述，正确的是？",
+      "options": [
+        "呈管状或囊状，器官壁由3~4层组织构成",
+        "内部无特定空腔，表面有被膜，实质分小叶，血管神经出入处称门",
+        "包括胃、气管、输尿管、膀胱等",
+        "其管壁从内到外为黏膜、黏膜下层、肌层、外膜"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 实质性器官无特定空腔、多为腺组织，表面覆被膜或浆膜，被膜将实质分为小叶，神经、血管、管道出入处称“门”（如肝门）。A、C、D 错：管状或囊状、壁3~4层、胃气管膀胱等、管壁四层结构均属中空性器官的特征，不是实质性器官。",
+      "hint": "实质三关键词：被膜、小叶、门；管壁几层那是中空器官。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "胸部标志线：锁骨中线的定位"
+      },
+      "stem": "通过锁骨中点所作的胸部垂直线称为？",
+      "options": [
+        "胸骨线",
+        "胸骨旁线",
+        "锁骨中线",
+        "肩胛线"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。** 锁骨中线即通过锁骨中点所作的垂直线。A 错：胸骨线沿胸骨外侧缘；B 错：胸骨旁线在胸骨线与锁骨中线之间的中点；D 错：肩胛线通过肩胛骨下角，在背部。",
+      "hint": "名字即定位——锁骨中点=锁骨中线；别和沿胸骨外侧缘那条混。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "消化系统：上下消化道的分界与组成"
+      },
+      "stem": "下列结构中，属于下消化道的是？",
+      "options": [
+        "食管",
+        "胃",
+        "十二指肠",
+        "空肠"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。** 上下消化道以十二指肠空肠曲为界，空肠及以下（空肠、回肠、盲肠、阑尾、结肠、直肠、肛门）属下消化道。A、B、C 错：口腔、咽、食管、胃、十二指肠均属上消化道。",
+      "hint": "界在十二指肠空肠曲，空肠起算下消化道。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "口腔：咽峡的围成结构（名词解释）"
+      },
+      "stem": "咽峡是口腔与咽的分界，下列哪项不参与围成咽峡？",
+      "options": [
+        "腭帆游离缘",
+        "腭垂（悬雍垂）",
+        "腭舌弓与腭咽弓",
+        "舌根"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 咽峡由腭帆游离缘（上）、两侧腭舌弓与腭咽弓、下方舌根共同围成；腭垂（悬雍垂）虽为软腭正中下垂部分，但不属于咽峡的围成结构。A、C、D 均为咽峡的正确组成。",
+      "hint": "四方围：帆缘、两侧弓、舌根；腭垂是软腭正中下垂物，不算围成。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "舌：四种舌乳头与味蕾分布"
+      },
+      "stem": "下列舌乳头中，体积最小、数目最多、且不含味蕾的是？",
+      "options": [
+        "丝状乳头",
+        "轮廓乳头",
+        "菌状乳头",
+        "叶状乳头"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。** 丝状乳头数目最多、体积最小，不含味蕾，仅起机械摩擦作用。B 错：轮廓乳头最大、7~11个、位于界沟前方、有味蕾；C 错：菌状乳头散在舌尖及舌侧缘、有味蕾；D 错：叶状乳头位于舌侧缘后部、有味蕾。",
+      "hint": "只有丝状乳头没味蕾——磨食物用，不管味。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "舌：颏舌肌的起止与功能"
+      },
+      "stem": "关于舌外肌——颏舌肌的功能，下列正确的是？",
+      "options": [
+        "单侧收缩时舌尖伸向同侧",
+        "单侧收缩时舌尖伸向对侧",
+        "双侧收缩使舌向后上方退缩",
+        "属舌内肌，主要改变舌的形状"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 颏舌肌起自下颌骨颏棘，单侧收缩时舌尖伸向对侧（如左侧收缩舌尖向右）。A 错：方向正相反；C 错：使舌向后上方运动的是茎突舌肌；D 错：颏舌肌是舌外肌，改变舌的位置而非形状。",
+      "hint": "用舌头够对侧磨牙，同侧肌肉发酸——同侧收缩够对侧。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "大唾液腺：下颌下腺的导管开口"
+      },
+      "stem": "下颌下腺的导管开口于？",
+      "options": [
+        "上颌第二磨牙相对的颊黏膜上",
+        "舌下襞",
+        "舌下阜",
+        "舌系带正中"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。** 下颌下腺位于下颌下三角内，其导管开口于舌下阜；舌下腺大管亦开口于舌下阜。A 错：上颌第二磨牙相对颊黏膜是腮腺管的开口；B 错：舌下襞是舌下腺小管的开口处；D 错：舌系带是黏膜皱襞，不是腺体开口。",
+      "hint": "下颌下腺+舌下腺大管都开舌下阜；腮腺管开上颌第二磨牙颊黏膜。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "食管：三个生理性狭窄与距中切牙距离"
+      },
+      "stem": "食管第一生理性狭窄距中切牙约为？",
+      "options": [
+        "25cm",
+        "15cm",
+        "40cm",
+        "10cm"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 第一狭窄为食管起始处（平第6颈椎下缘），距中切牙约15cm。A 错：25cm 是第二狭窄（左主支气管后方与食管交叉处）；C 错：40cm 是第三狭窄（膈食管裂孔处）；D 错：10cm 无对应食管狭窄。",
+      "hint": "口诀15+25=40：一狭15、二狭25、三狭40。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "咽：咽隐窝与鼻咽癌好发部位"
+      },
+      "stem": "鼻咽癌的好发部位是？",
+      "options": [
+        "咽隐窝",
+        "梨状隐窝",
+        "会厌谷",
+        "扁桃体小窝"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。** 咽隐窝位于咽鼓管圆枕后方与咽后壁之间的纵行深窝，是鼻咽癌的好发部位。B 错：梨状隐窝位于喉咽、是鱼刺等异物易卡顿处；C 错：会厌谷位于口咽、亦为异物易停留处；D 错：扁桃体小窝是腭扁桃体内侧面的凹陷。",
+      "hint": "咽隐窝=鼻咽癌；梨状隐窝=卡鱼刺；会厌谷=鱼刺。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "咽：咽淋巴环（Waldeyer环）的组成"
+      },
+      "stem": "咽淋巴环（Waldeyer环）由四处淋巴组织构成，下列哪项不属于其中？",
+      "options": [
+        "咽扁桃体",
+        "咽鼓管扁桃体",
+        "腭扁桃体",
+        "咽鼓管圆枕"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。** 咽淋巴环由咽扁桃体、咽鼓管扁桃体、腭扁桃体、舌扁桃体四处构成，对消化道和呼吸道起防御作用；咽鼓管圆枕只是寻找咽鼓管咽口的弧形隆起，不是扁桃体、不参与咽淋巴环。A、B、C 均为咽淋巴环的正确成分。",
+      "hint": "四种扁桃体：咽、咽鼓管、腭、舌；圆枕是隆起标志，不是淋巴组织。"
+    }
+  ]
+}
