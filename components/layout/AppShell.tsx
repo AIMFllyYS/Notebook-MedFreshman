@@ -14,6 +14,8 @@ import clsx from "clsx";
 import { PanelTopClose, PanelTopOpen, PanelRightOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { setWindowSessionProvider } from "@/lib/stores/windowManager";
+import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { PANEL_PRESETS } from "@/lib/constants/panelPresets";
 import AgentDockColumn from "./AgentDockColumn";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
@@ -116,21 +118,26 @@ function TopBar({
         barCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line-soft)]",
       )}
     >
-      {!agentMode && <button
+      {/* 侧边栏开合：Studio 与 Agent 共用一个开关、同一个落点（LOGO 左侧）。
+          Agent 收起后**没有**第二个入口——中间那块不再浮一个「展开对话栏」按钮。 */}
+      <button
         onClick={toggleSidebar}
         title={
           sidebarShortcutEnabled
             ? `${sidebarCollapsed ? "展开导航" : "收起导航"} ${formatShortcut("global.toggleSidebar")}`
             : sidebarCollapsed ? "展开导航" : "收起导航"
         }
-        className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        aria-label={sidebarCollapsed ? "展开导航" : "收起导航"}
+        aria-pressed={sidebarCollapsed}
+        data-testid="sidebar-toggle"
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <line x1="3" y1="6" x2="21" y2="6" />
           <line x1="3" y1="12" x2="21" y2="12" />
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
-      </button>}
+      </button>
       <ModeSwitcher />
       {!agentMode && <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
         {subject && (
@@ -319,6 +326,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     rememberStudioPath(pathname);
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
   }, [hydrateLayout, hydrateMode, syncFromPathname, rememberStudioPath, pathname, route, setActiveRoute, isMobile]);
+
+  /**
+   * 告诉窗口管理器「现在在哪个对话」：新开的窗口会自动记下归属，
+   * Agent 右栏据此按会话隔离内容（见 lib/window/sessionScope.ts）。
+   * 这里注入而不是让 windowManager 直接依赖 chatHistory —— 那会形成循环依赖。
+   */
+  useEffect(() => {
+    setWindowSessionProvider(() => useChatHistory.getState().activeSessionId);
+    return () => setWindowSessionProvider(null);
+  }, []);
 
   useEffect(() => {
     if (!isMobile || appModeFromPathname(pathname) !== "agent") return;

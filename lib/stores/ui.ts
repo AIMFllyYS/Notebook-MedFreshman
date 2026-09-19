@@ -254,8 +254,8 @@ export const useStore = create<AppState>((set) => ({
       }
     }
     if (hasRightAttr) updates.rightCollapsedByProfile = right;
-    const agentDock = domBoolean("data-agent-dock-collapsed");
-    if (agentDock !== null) updates.agentDockCollapsed = agentDock;
+    // 右栏开合不在这里恢复：它现在跟着对话走（见 useAgentDockPerSession），
+    // 恢复上次的全局值会违背「新对话默认不打开右栏」。
     if (Object.keys(updates).length > 0) set(updates);
   },
 
@@ -282,7 +282,13 @@ export const useStore = create<AppState>((set) => ({
       return { rightCollapsedByProfile: next };
     }),
 
-  agentDockCollapsed: false,
+  /**
+   * 右侧工作区当前是否收起。
+   * **默认收起**：Agent 打开时不该先弹一块面板（用户口径）。
+   * 真正的「每个对话各自记一份」由 `useAgentDockPerSession` 在 AgentShell 里摆平，
+   * 所以这里不再从 localStorage 恢复上次的值——那会让「默认收起」在新会话里失效。
+   */
+  agentDockCollapsed: true,
   setAgentDockCollapsed: (collapsed) => {
     writeBoolean(LS_KEY_AGENT_DOCK, collapsed);
     setLayoutAttr("data-agent-dock-collapsed", collapsed);

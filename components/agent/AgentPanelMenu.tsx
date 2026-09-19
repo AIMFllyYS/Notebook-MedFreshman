@@ -16,7 +16,6 @@ export interface AgentPanelMenuActions {
   moveSession: (id: string, projectId: string | null) => void;
   archiveSession: (id: string, archived: boolean) => void;
   renameProject: (id: string) => void;
-  deleteProject: (id: string) => void;
   newChatInProject: (id: string) => void;
 }
 
@@ -33,9 +32,13 @@ export default function AgentPanelMenu({
   target,
   userProjects,
   pendingDeleteId,
+  pendingDeleteProjectId,
   onRequestDelete,
   onConfirmDelete,
   onCancelDelete,
+  onRequestDeleteProject,
+  onConfirmDeleteProject,
+  onCancelDeleteProject,
   close,
   actions,
 }: {
@@ -44,9 +47,14 @@ export default function AgentPanelMenu({
   target: AgentMenuTarget;
   userProjects: ChatFolder[];
   pendingDeleteId: string | null;
+  /** 待确认删除的项目 id：项目删除同样要二次确认（与对话删除一致）。 */
+  pendingDeleteProjectId: string | null;
   onRequestDelete: (id: string) => void;
   onConfirmDelete: (id: string) => void;
   onCancelDelete: () => void;
+  onRequestDeleteProject: (id: string) => void;
+  onConfirmDeleteProject: (id: string) => void;
+  onCancelDeleteProject: () => void;
   close: () => void;
   actions: AgentPanelMenuActions;
 }) {
@@ -87,12 +95,37 @@ export default function AgentPanelMenu({
             <PenLine size={14} />
             重命名项目
           </button>
-          {target.folder.system ? null : (
+          {target.folder.system ? null : pendingDeleteProjectId === target.folder.id ? (
+            <div
+              data-testid="project-delete-confirm"
+              className="mt-1 rounded-lg border border-[color-mix(in_srgb,var(--md-sys-color-error)_45%,transparent)] p-2"
+            >
+              <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-error)]">
+                删除项目后，里面的对话会退回 Recents（对话本身不删）。
+              </p>
+              <div className="mt-1.5 flex items-center justify-end gap-1.5">
+                <button
+                  type="button"
+                  className="rounded-md px-2 py-1 text-[11.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+                  onClick={onCancelDeleteProject}
+                >
+                  取消
+                </button>
+                <button
+                  type="button"
+                  className="rounded-md bg-[var(--md-sys-color-error)] px-2.5 py-1 text-[11.5px] font-semibold text-[var(--md-sys-color-on-error)]"
+                  onClick={() => onConfirmDeleteProject(target.folder.id)}
+                >
+                  删除项目
+                </button>
+              </div>
+            </div>
+          ) : (
             <button
               type="button"
               role="menuitem"
               className={`${ITEM_CLASS} text-[var(--md-sys-color-error)]`}
-              onClick={() => { actions.deleteProject(target.folder.id); close(); }}
+              onClick={() => onRequestDeleteProject(target.folder.id)}
             >
               <Trash2 size={14} />
               删除项目

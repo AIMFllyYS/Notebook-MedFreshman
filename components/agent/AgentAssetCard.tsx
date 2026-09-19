@@ -58,18 +58,20 @@ export default function AgentAssetCard({ item, view = "grid" }: { item: AssetIte
     <Link
       href={assetHref(item.kind, item.id)}
       data-testid={`asset-card-${item.kind}-${item.id}`}
-      className="press flex h-[132px] flex-col gap-2 rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-3 text-left hover:border-[var(--accent)]"
+      className="press flex h-[188px] flex-col gap-2.5 rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4 text-left hover:border-[var(--accent)]"
     >
-      <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--bg-muted)] text-[var(--md-sys-color-primary)]">
-        <AssetKindIcon item={item} size={18} />
+      <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--bg-muted)] text-[var(--md-sys-color-primary)]">
+        <AssetKindIcon item={item} size={22} />
       </span>
-      <span className="line-clamp-2 text-[12.5px] font-medium leading-snug text-[var(--ink)]">{item.title}</span>
-      <span className="mt-auto flex items-center gap-1.5 text-[10.5px] text-[var(--ink-faint)]">
+      <span className="line-clamp-2 text-[13.5px] font-medium leading-snug text-[var(--ink)]">{item.title}</span>
+      <span className="mt-auto flex flex-col gap-1 text-[11.5px] text-[var(--ink-faint)]">
         <span className="truncate">{item.subtitle}</span>
-      </span>
-      <span className="flex items-center justify-between text-[10.5px] text-[var(--ink-faint)]">
-        <span>{time}</span>
-        {origin ? <span className="rounded-full border border-[var(--line-soft)] px-1.5 py-0.5">{origin}</span> : null}
+        <span className="flex items-center justify-between gap-2">
+          <span>{time}</span>
+          {origin ? (
+            <span className="shrink-0 rounded-full border border-[var(--line-soft)] px-2 py-0.5">{origin}</span>
+          ) : null}
+        </span>
       </span>
     </Link>
   );

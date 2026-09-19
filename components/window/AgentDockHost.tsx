@@ -5,6 +5,7 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useStore } from "@/lib/stores/ui";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 
 /**
  * Stable outer host for the Agent right workspace. The actual content node is
@@ -23,10 +24,13 @@ export default function AgentDockHost({ children }: { children: React.ReactNode 
   const dockGlobal = useAgentDockRuntime((state) => state.dockGlobal);
   const setDockGlobal = useAgentDockRuntime((state) => state.setDockGlobal);
   const handledOpenRequest = useRef(openRequest);
+  const activeSessionId = useActiveChatSessionId();
 
   useEffect(() => {
     if (!isAgentWorkspace()) return;
-    const visible = windows.filter((window) => !window.minimized);
+    // 只看当前对话的窗口：否则切到 B 对话时，宿主会把 A 的窗口重新选成活动窗口，
+    // 右栏就穿帮了（内容换了、标签条却还是 A 的）。
+    const visible = filterWindowsForSession(windows, activeSessionId).filter((window) => !window.minimized);
     if (openRequest !== handledOpenRequest.current) {
       handledOpenRequest.current = openRequest;
       if (dockCollapsed) setAgentDockCollapsed(false);
@@ -36,7 +40,7 @@ export default function AgentDockHost({ children }: { children: React.ReactNode 
     if (activeWindowId && visible.some((window) => window.id === activeWindowId)) return;
     const next = visible.reduce((top, window) => (window.z > top.z ? window : top));
     setActiveWindow(next.id);
-  }, [activeWindowId, dockCollapsed, openRequest, setActiveWindow, setAgentDockCollapsed, windows]);
+  }, [activeSessionId, activeWindowId, dockCollapsed, openRequest, setActiveWindow, setAgentDockCollapsed, windows]);
 
   // 「全屏」不落盘：右栏一收起就自动退出，不会留下半个全屏态。
   // （窗口增删不用管：全屏是面板级状态，切标签就是切全屏里显示的内容。）

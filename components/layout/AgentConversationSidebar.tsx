@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Archive, Folder, FolderOpen, MessagesSquare, PanelLeftClose, Plus, Search } from "lucide-react";
 import FolderTreeRow from "./FolderTreeRow";
 import GlobalSettings from "./GlobalSettings";
@@ -36,6 +36,12 @@ interface PanelMenuState {
  */
 export default function AgentConversationSidebar({ chatContext }: { chatContext: ChatContext }) {
   const pathname = usePathname();
+  const router = useRouter();
+  /** 只有在对话页（/agent）才谈得上「切换会话」；在资产页等子页面点会话要先把人送回来。 */
+  const onChatRoute = pathname === "/agent";
+  const goToChat = useCallback(() => {
+    if (!onChatRoute) router.push("/agent");
+  }, [onChatRoute, router]);
   const sessionsMeta = useChatHistory((s) => s.sessionsMeta);
   const folders = useChatHistory((s) => s.folders);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
@@ -54,6 +60,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [menu, setMenu] = useState<PanelMenuState | null>(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  /** 待确认删除的项目 id（项目删除也要二次确认）。 */
+  const [pendingDeleteProjectId, setPendingDeleteProjectId] = useState<string | null>(null);
   const [renamingSessionId, setRenamingSessionId] = useState<string | null>(null);
   const [renamingProjectId, setRenamingProjectId] = useState<string | null>(null);
   const [showArchived, setShowArchived] = useState(false);
@@ -71,6 +79,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
     const close = () => {
       setMenu(null);
       setPendingDeleteId(null);
+      setPendingDeleteProjectId(null);
     };
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") close();
@@ -92,15 +101,20 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
 
   const handleNewChat = useCallback(
     (projectId?: string | null) => {
+      // 先回对话页：在「我的资产 / 定时任务 / 插件市场」里点新对话，
+      // 以前只改 store 不导航，用户看到的是「点了没反应」。
+      goToChat();
       startNewChat(chatContext, projectId);
       useTokenTracker.getState().resetSession();
     },
-    [chatContext, startNewChat],
+    [chatContext, goToChat, startNewChat],
   );
 
   const handleSelect = useCallback(
     (session: SessionMeta) => {
       setRenamingSessionId(null);
+      // 点会话一律先回对话页：否则在资产页点左栏只是改了状态，看上去毫无反应。
+      goToChat();
       if (session.kind === "floating") {
         useFloatingChats.getState().restoreWindow(session.id);
         return;
@@ -109,7 +123,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
       setActiveProject(session.kind === "note" ? null : (session.folderId ?? null));
       switchSession(session.id);
     },
-    [setActiveProject, switchSession],
+    [goToChat, setActiveProject, switchSession],
   );
 
   const handleDelete = useCallback(
@@ -128,6 +142,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
     event.preventDefault();
     event.stopPropagation();
     setPendingDeleteId(null);
+    setPendingDeleteProjectId(null);
     setMenu({ x: event.clientX, y: event.clientY, target });
   };
 
@@ -136,6 +151,16 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
     setProjectsExpanded(true);
     setRenamingProjectId(id);
   };
+
+  /** 删除项目：菜单里确认过一次才走到这里；成员对话由 store 退回 Recents。 */
+  const handleDeleteProject = useCallback(
+    (id: string) => {
+      deleteFolder(id);
+      setPendingDeleteProjectId(null);
+      setMenu(null);
+    },
+    [deleteFolder],
+  );
 
   const sessionMenuProps = {
     activeSessionId,
@@ -156,7 +181,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
       data-testid="agent-conversation-sidebar"
       className="flex h-full flex-col"
       style={{
-        background: "var(--md-sys-color-surface-container-lowest)",
+        // 深色下由 CSS 变量改成「中间那一档」（B-A-A 配色）；浅色保持原样。
+        background: "var(--agent-sidebar-bg, var(--md-sys-color-surface-container-lowest))",
         borderRight: "1px solid var(--line-soft)",
       }}
       onContextMenu={(event) => openMenu(event, { kind: "panel" })}
@@ -370,12 +396,17 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
           target={menu.target}
           userProjects={userProjects}
           pendingDeleteId={pendingDeleteId}
+          pendingDeleteProjectId={pendingDeleteProjectId}
           onRequestDelete={setPendingDeleteId}
           onConfirmDelete={handleDelete}
           onCancelDelete={() => setPendingDeleteId(null)}
+          onRequestDeleteProject={setPendingDeleteProjectId}
+          onConfirmDeleteProject={handleDeleteProject}
+          onCancelDeleteProject={() => setPendingDeleteProjectId(null)}
           close={() => {
             setMenu(null);
             setPendingDeleteId(null);
+            setPendingDeleteProjectId(null);
           }}
           actions={{
             newChat: () => handleNewChat(activeProjectId),
@@ -384,9 +415,6 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
             moveSession: (id, projectId) => moveSessionToFolder(id, projectId),
             archiveSession: (id, archived) => archiveSession(id, archived),
             renameProject: (id) => setRenamingProjectId(id),
-            deleteProject: (id) => {
-              deleteFolder(id);
-            },
             newChatInProject: (id) => handleNewChat(id),
           }}
         />

@@ -47,7 +47,7 @@ describe("AgentShell", () => {
     expect(panel).toHaveAttribute("data-agent-slot", "main");
   });
 
-  it("左对话栏可收起：面板留在树上（宽度 0）并留展开按钮", () => {
+  it("左对话栏可收起：面板留在树上（宽度 0），展开入口在顶栏而不是中间", () => {
     mobile = false;
     useStore.setState({ sidebarCollapsed: true });
     render(<AgentShell><Center /></AgentShell>);
@@ -56,7 +56,13 @@ describe("AgentShell", () => {
     expect(conversations).not.toBeNull();
     expect(conversations).toHaveAttribute("data-collapsed", "true");
     expect(document.querySelector('[data-agent-slot="main"]')).not.toBeNull();
-    expect(screen.getByRole("button", { name: "展开对话栏" })).toBeInTheDocument();
+    // 展开只有顶栏那一个入口（AppShell TopBar 的 sidebar-toggle，与 Studio 同款）；
+    // 中间不再浮「展开对话栏」——它会压住正文，也和顶栏那个开关重复。
+    expect(screen.queryByRole("button", { name: "展开对话栏" })).toBeNull();
+    expect(document.querySelector('[data-testid="sidebar-toggle"]')).toBeNull();
+    // 内容定宽 + 外层裁剪：收起过程中文字不重排。
+    const inner = conversations?.firstElementChild as HTMLElement | null;
+    expect(inner?.style.width).toContain("--agent-left-content-width");
   });
 
   it("中央面板里没有悬浮的全屏按钮（F11 那个键归顶栏）", () => {

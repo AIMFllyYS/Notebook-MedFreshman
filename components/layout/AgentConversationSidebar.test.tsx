@@ -14,6 +14,8 @@ type TestSession = {
 };
 
 const push = vi.fn();
+/** 当前路由可切换：验证「在资产页点会话/新对话要跳回对话页」。 */
+const routeRef = { pathname: "/agent" };
 
 const historyState = {
   sessionsMeta: [] as TestSession[],
@@ -39,7 +41,7 @@ const historyState = {
 const restoreWindow = vi.fn();
 
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/agent",
+  usePathname: () => routeRef.pathname,
   useRouter: () => ({ push }),
 }));
 
@@ -74,6 +76,7 @@ beforeEach(() => {
   historyState.sessionsMeta = [];
   historyState.activeSessionId = null;
   historyState.activeProjectId = null;
+  routeRef.pathname = "/agent";
 });
 
 const ctx = {
@@ -93,6 +96,21 @@ function seedSessions() {
 }
 
 describe("AgentConversationSidebar（项目 + 最近）", () => {
+  it("非对话页点新对话 / 点会话：都要跳回 /agent", () => {
+    seedSessions();
+    routeRef.pathname = "/agent/assets";
+    render(<AgentConversationSidebar chatContext={ctx} />);
+
+    fireEvent.click(screen.getByTestId("agent-nav-new-chat"));
+    expect(push).toHaveBeenCalledWith("/agent");
+    expect(historyState.startNewChat).toHaveBeenCalled();
+
+    push.mockClear();
+    fireEvent.click(screen.getByLabelText("细胞生物学复习"));
+    expect(push).toHaveBeenCalledWith("/agent");
+    expect(historyState.switchSession).toHaveBeenCalledWith("main-1");
+  });
+
   it("四行导航固定在最上；系统项目与用户项目各归各的会话", () => {
     seedSessions();
     render(<AgentConversationSidebar chatContext={ctx} />);
@@ -193,8 +211,13 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
     expect(screen.queryByText("移动到项目")).toBeNull();
     fireEvent.contextMenu(screen.getByLabelText("笔记记录"));
     expect(screen.queryByRole("menuitem", { name: "删除项目" })).toBeNull();
+    // 删项目也要二次确认：第一次点只是换成确认块，确认后才落库。
     fireEvent.contextMenu(screen.getByLabelText("组胚"));
     fireEvent.click(screen.getByRole("menuitem", { name: "删除项目" }));
+    expect(historyState.deleteFolder).not.toHaveBeenCalled();
+    const confirm = screen.getByTestId("project-delete-confirm");
+    expect(confirm).toHaveTextContent("退回 Recents");
+    fireEvent.click(confirm.querySelectorAll("button")[1]);
     expect(historyState.deleteFolder).toHaveBeenCalledWith("folder-a");
   });
 

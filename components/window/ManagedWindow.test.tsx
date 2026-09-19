@@ -7,6 +7,7 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useAppMode } from "@/lib/stores/appMode";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { useOverlayStack } from "@/lib/keyboard/useOverlayStack";
+import { useStore } from "@/lib/stores/ui";
 
 const WIN_ID = "test-managed-window";
 
@@ -42,6 +43,9 @@ function mountDockHost() {
   host.dataset.testid = "agent-dock-content";
   document.body.appendChild(host);
   useAgentDockRuntime.setState({ contentHost: host });
+  // 右栏现在**默认收起**（产品口径：Agent 打开时不先弹一块面板）。
+  // 这里要验的是「停靠形态怎么渲染」，所以显式把右栏打开。
+  useStore.setState({ agentDockCollapsed: false });
   return host;
 }
 
@@ -50,6 +54,8 @@ afterEach(() => {
   useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   useAgentDockRuntime.setState({ contentHost: null, openRequest: 0, dockGlobal: false });
+  // 回到产品默认：右栏收起。
+  useStore.setState({ agentDockCollapsed: true });
   useOverlayStack.setState({ stack: [] });
   document.getElementById(NOTES_PANEL_ID)?.remove();
   vi.unstubAllGlobals();

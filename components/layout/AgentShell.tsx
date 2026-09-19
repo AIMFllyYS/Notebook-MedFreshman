@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle, type ImperativePanelHandle } from "react-resizable-panels";
-import { PanelLeftOpen } from "lucide-react";
 import AgentConversationSidebar from "./AgentConversationSidebar";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import { useStore } from "@/lib/stores/ui";
@@ -11,6 +10,7 @@ import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
 import { PANEL_PRESETS, nestedShares } from "@/lib/constants/panelPresets";
 import { ChatSkeleton } from "@/components/shared/ResizeLoader";
+import { useAgentDockPerSession } from "@/lib/hooks/useAgentDockPerSession";
 
 /**
  * Agent 段外壳（挂在 `app/agent/layout.tsx`）：「左侧对话栏 + 中央内容插槽」。
@@ -28,6 +28,9 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
 
+  // 右栏跟着对话走：切会话恢复各自的展开状态与内容，非对话页（资产等）默认收起。
+  useAgentDockPerSession();
+
   // 「全局」模式要把中央对话压到 0、让右侧工作区铺满剩余宽度，这需要左栏当前宽度。
   // 变量挂在 <html> 上：消费方是外层 shell 的分栏面板（AgentShell 的祖先），
   // 挂在本地节点上它读不到。这里只交出宽度数字，不做业务逻辑上的 DOM 测量。
@@ -43,8 +46,13 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
     const sync = () => {
       const width = left.getBoundingClientRect().width;
       // 记住用户最后一次「舒适」的左栏宽度：吸附收起后再展开要回到这里，而不是回到吸附点。
-      // 拖拽过程中不记录——否则往窄拖时会把好值覆盖成吸附点附近那个宽度。
-      if (!leftDragging && width >= 80) lastWideWidthRef.current = width;
+      // 两种时候都不记录：拖拽途中（会把好值覆盖成吸附点附近的宽度）、以及正在收起时
+      // （收起动画逐帧变窄，记下来就等于把「冻结宽度」本身越缩越小）。
+      if (!leftDragging && !sidebarCollapsed && width >= 80) lastWideWidthRef.current = width;
+      // 内容宽度**永不小于**最近一次舒适宽度：面板被拖窄/正在收起的那些帧里，
+      // 里面的文字不再跟着重排，只有面板本身真实变窄（外层 overflow-hidden 裁掉多余部分）。
+      const contentWidth = Math.max(Math.round(width), Math.round(lastWideWidthRef.current));
+      left.style.setProperty("--agent-left-content-width", `${contentWidth}px`);
       // 全局态下左栏宽度正是由这个变量驱动出来的，再回写会把瞬时值锁死（越收越窄）。
       if (useAgentDockRuntime.getState().dockGlobal) return;
       rootStyle.setProperty("--agent-left-width", `${Math.round(width)}px`);
@@ -78,22 +86,21 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
     return () => window.clearTimeout(id);
   }, []);
   // 收起**不再卸载面板**：分栏库要留着这个面板，才能在展开时还原用户上次拖到的宽度。
+  /** 展开时要不要把宽度还原到用户上次拖到的位置（收起那一刻决定）。 */
+  const pendingLeftRestoreRef = useRef(false);
   useEffect(() => {
     const panel = leftPanelRef.current;
     if (!panel) return;
     try {
       if (sidebarCollapsed && !panel.isCollapsed()) panel.collapse();
       if (!sidebarCollapsed && panel.isCollapsed()) panel.expand();
+      // 收起动作由顶栏那个开关触发（Agent 中间不再有第二个入口），
+      // 所以「下次展开回到哪儿」只能在这里记。
+      if (sidebarCollapsed) pendingLeftRestoreRef.current = true;
     } catch {
       // 首帧（或 jsdom）还没有布局信息，分栏库会抛「Panel size not found」，忽略即可
     }
   }, [sidebarCollapsed]);
-  /** 展开左栏：标记要在展开后把宽度还原到用户上次拖到的位置。 */
-  const pendingLeftRestoreRef = useRef(false);
-  const expandLeft = useCallback(() => {
-    pendingLeftRestoreRef.current = true;
-    setSidebarCollapsed(false);
-  }, [setSidebarCollapsed]);
 
   // 展开之后再还原宽度：必须排在上面那个「sync 展开」effect 之后，否则面板还是收起的，resize 会被忽略。
   useEffect(() => {
@@ -165,20 +172,8 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
     >
       {children}
       {centerResizing && <ChatSkeleton />}
-      {/* 网页全屏按钮不在这里：它挂在顶栏、紧贴右侧工作区开关左侧（见 AppShell 的 TopBar）。
-          悬浮在对话正文上方会压住第一条消息，也让人以为是内容区的控件。 */}
-      {sidebarCollapsed && (
-        <button
-          type="button"
-          onClick={expandLeft}
-          title="展开对话栏"
-          aria-label="展开对话栏"
-          className="absolute left-0 top-1/2 z-20 flex -translate-y-1/2 flex-col items-center gap-1 rounded-r-lg border border-l-0 border-[var(--line)] bg-[var(--bg-panel)] px-1.5 py-3 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]"
-        >
-          <PanelLeftOpen size={16} />
-          <span>对话</span>
-        </button>
-      )}
+      {/* 展开入口只有顶栏那一个（LOGO 左侧，与 Studio 同款）。这里**不再**浮任何按钮：
+          悬浮块会压住正文，而且和顶栏那个开关是同一个功能、两套图标。 */}
     </div>
   );
 
@@ -207,9 +202,17 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
             if (leftPersistReadyRef.current) setSidebarCollapsed(false);
           }}
         >
-          <aside ref={conversationsRef} data-agent-slot="conversations" className="relative h-full min-h-0" data-collapsed={sidebarCollapsed || undefined}>
-            <AgentConversationSidebar chatContext={chatContext} />
-            {leftDragging && <ChatSkeleton />}
+          <aside
+            ref={conversationsRef}
+            data-agent-slot="conversations"
+            data-collapsed={sidebarCollapsed || undefined}
+            // overflow-hidden + 内容定宽（--agent-left-content-width）：收起时把左栏裁成一条缝，
+            // 内容不重排、不缩放；也正因此不再需要拖拽期的骨架屏遮挡。
+            className="relative h-full min-h-0 overflow-hidden"
+          >
+            <div className="h-full" style={{ width: "var(--agent-left-content-width, 100%)" }}>
+              <AgentConversationSidebar chatContext={chatContext} />
+            </div>
           </aside>
         </Panel>
         <PanelResizeHandle

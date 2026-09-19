@@ -1,0 +1,109 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { test } from "node:test";
+import { join } from "node:path";
+
+const root = process.cwd();
+
+function readFile(path: string) {
+  return readFileSync(join(root, path), "utf8");
+}
+
+test("侧边栏开关在顶栏左上角；中间不再浮「展开对话栏」", () => {
+  const appShell = readFile("components/layout/AppShell.tsx");
+  const agentShell = readFile("components/layout/AgentShell.tsx");
+  // 顶栏那个开关不再对 Agent 隐藏（以前是 {!agentMode && <button …>}）
+  assert.doesNotMatch(appShell, /\{!agentMode && <button[\s\S]{0,120}toggleSidebar/);
+  assert.match(appShell, /data-testid="sidebar-toggle"/);
+  assert.match(appShell, /onClick=\{toggleSidebar\}/);
+  // 中间那块不再有悬浮展开按钮，也没有第二个入口
+  assert.doesNotMatch(agentShell, /展开对话栏/);
+  assert.doesNotMatch(agentShell, /PanelLeftOpen/);
+});
+
+test("左栏收起过程中内容冻结：定宽包裹 + 外层裁剪 + 不记录收起中的宽度", () => {
+  const agentShell = readFile("components/layout/AgentShell.tsx");
+  const globals = readFile("app/globals.css");
+  assert.match(agentShell, /--agent-left-content-width/);
+  assert.match(agentShell, /if \(!leftDragging && !sidebarCollapsed && width >= 80\) lastWideWidthRef\.current = width;/);
+  assert.match(agentShell, /style=\{\{ width: "var\(--agent-left-content-width, 100%\)" \}\}/);
+  assert.match(agentShell, /className="relative h-full min-h-0 overflow-hidden"/);
+  assert.match(globals, /\[data-agent-slot="conversations"\] \{\s*overflow: hidden;/);
+  // 拖拽期的骨架屏已经不需要（内容不动了），别再盖一层
+  assert.doesNotMatch(agentShell, /leftDragging && <ChatSkeleton/);
+});
+
+test("Agent 深色配色 B-A-A：左栏 B、中间与右栏 A，浅色不变", () => {
+  const globals = readFile("app/globals.css");
+  const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
+  assert.match(globals, /:root \{\s*\n\s*--agent-sidebar-bg: var\(--md-sys-color-surface-container-lowest\);/);
+  assert.match(globals, /:root \{\s*\n\s*--agent-sidebar-bg[\s\S]{0,120}--agent-content-bg: var\(--md-sys-color-surface-container-low\);/);
+  assert.match(globals, /html:not\(\[data-theme="light"\]\) \[data-agent-shell\] \{/);
+  assert.match(globals, /--agent-sidebar-bg: var\(--md-sys-color-surface-container-low\);/);
+  assert.match(globals, /--agent-content-bg: var\(--bg-panel\);/);
+  assert.match(globals, /\[data-agent-shell\] \[data-agent-slot="main"\],\s*\n\[data-agent-shell\] \.chat-panel \{/);
+  // 左栏背景走变量（浅色仍是原来那档），不再是写死的 lowest
+  assert.match(sidebar, /background: "var\(--agent-sidebar-bg, var\(--md-sys-color-surface-container-lowest\)\)"/);
+  assert.match(readFile("components/agent/AgentAssetsPage.tsx"), /bg-\[var\(--agent-content-bg,var\(--md-sys-color-surface-container-low\)\)\]/);
+  assert.match(readFile("components/agent/AgentAssetDetail.tsx"), /bg-\[var\(--agent-content-bg,var\(--md-sys-color-surface-container-low\)\)\]/);
+});
+
+test("非对话页点新对话 / 点会话要跳回 /agent", () => {
+  const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
+  assert.match(sidebar, /const onChatRoute = pathname === "\/agent";/);
+  assert.match(sidebar, /if \(!onChatRoute\) router\.push\("\/agent"\);\s*\n\s*\}, \[onChatRoute, router\]\);/);
+  // 三个入口都要先回对话页：新对话、点会话、项目菜单里的「在此新建对话」（走 handleNewChat）
+  const newChat = sidebar.indexOf("const handleNewChat = useCallback(");
+  const select = sidebar.indexOf("const handleSelect = useCallback(");
+  assert.ok(newChat > 0 && select > newChat);
+  assert.match(sidebar.slice(newChat, newChat + 600), /goToChat\(\);/);
+  assert.match(sidebar.slice(select, select + 700), /goToChat\(\);/);
+});
+
+test("删除项目同样二次确认（与删除对话一致）", () => {
+  const menu = readFile("components/agent/AgentPanelMenu.tsx");
+  const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
+  assert.match(menu, /data-testid="project-delete-confirm"/);
+  assert.match(menu, /删除项目后，里面的对话会退回 Recents（对话本身不删）。/);
+  assert.match(menu, /onClick=\{\(\) => onRequestDeleteProject\(target\.folder\.id\)\}/);
+  assert.match(menu, /onClick=\{\(\) => onConfirmDeleteProject\(target\.folder\.id\)\}/);
+  // 菜单不再直接删：动作里没有 deleteProject 了
+  assert.doesNotMatch(menu, /actions\.deleteProject/);
+  assert.match(sidebar, /const handleDeleteProject = useCallback\(/);
+  assert.match(sidebar, /onRequestDeleteProject=\{setPendingDeleteProjectId\}/);
+});
+
+test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，默认收起", () => {
+  const manager = readFile("lib/stores/windowManager.ts");
+  assert.match(manager, /sessionId\?: string \| null;/);
+  assert.match(manager, /export function setWindowSessionProvider\(provider: \(\(\) => string \| null\) \| null\): void \{/);
+  assert.match(manager, /sessionId: input\.sessionId \?\? sessionProvider\?\.\(\) \?\? null,/);
+
+  const scope = readFile("lib/window/sessionScope.ts");
+  assert.match(scope, /export function windowBelongsToSession\(/);
+  assert.match(scope, /if \(!windowSessionId\) return true;/);
+
+  // 四处消费同一判定：ManagedWindow 可见性 / RightPanel / WindowTaskbar / AgentDockHost
+  assert.match(readFile("lib/window/useManagedWindowSurface.ts"), /windowBelongsToSession\(windowSessionId, activeSessionId\)/);
+  assert.match(readFile("components/layout/RightPanel.tsx"), /dockWindows = useMemo\(/);
+  assert.match(readFile("components/window/WindowTaskbar.tsx"), /filterWindowsForSession\(windows, activeSessionId\)/);
+  assert.match(readFile("components/window/AgentDockHost.tsx"), /filterWindowsForSession\(windows, activeSessionId\)/);
+
+  // 默认收起，且不再从 localStorage 恢复
+  const ui = readFile("lib/stores/ui.ts");
+  assert.match(ui, /agentDockCollapsed: true,/);
+  assert.doesNotMatch(ui, /updates\.agentDockCollapsed = agentDock;/);
+  // 每个对话一份记忆的钩子挂在 AgentShell 上
+  assert.match(readFile("components/layout/AgentShell.tsx"), /useAgentDockPerSession\(\);/);
+  assert.match(readFile("lib/hooks/useAgentDockPerSession.ts"), /rememberAgentDockState\(previous, snapshotRef\.current\)/);
+});
+
+test("资产页：卡片更大 + 骨架按视图 + 加载期 aria-busy", () => {
+  const card = readFile("components/agent/AgentAssetCard.tsx");
+  const page = readFile("components/agent/AgentAssetsPage.tsx");
+  assert.match(card, /h-\[188px\] flex-col gap-2\.5 rounded-2xl/);
+  assert.match(page, /minmax\(208px,1fr\)\)\] gap-4/);
+  assert.match(page, /data-testid="assets-skeleton"/);
+  assert.match(page, /aria-label="资产加载中"/);
+  assert.match(page, /aria-busy=\{assets === null \|\| undefined\}/);
+});

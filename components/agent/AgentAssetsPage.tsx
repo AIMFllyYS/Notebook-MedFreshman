@@ -87,7 +87,7 @@ export default function AgentAssetsPage() {
   ];
 
   return (
-    <section data-testid="agent-assets-page" className="flex h-full min-h-0 flex-col bg-[var(--md-sys-color-surface-container-low)]">
+    <section data-testid="agent-assets-page" className="flex h-full min-h-0 flex-col bg-[var(--agent-content-bg,var(--md-sys-color-surface-container-low))]">
       <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-[var(--line-soft)] px-4 py-2.5">
         <h1 className="text-[15px] font-semibold text-[var(--ink)]">我的资产</h1>
         <span className="text-[11.5px] text-[var(--ink-faint)]">
@@ -174,12 +174,47 @@ export default function AgentAssetsPage() {
         ))}
       </div>
 
-      <div data-testid="assets-body" className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
+      <div data-testid="assets-body" className="min-h-0 flex-1 overflow-y-auto px-5 py-4" aria-busy={assets === null || undefined}>
         {assets === null ? (
-          <div className="flex flex-col gap-2" role="status" aria-label="资产加载中">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="h-9 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-            ))}
+          // 五个 store（笔记/闪卡/长文/演示/导入记录）要等 IndexedDB 水合完才给数据；
+          // 这段骨架**跟着视图走**：橱窗给卡片骨架，列表给行骨架，切过来不会先闪一下另一种版式。
+          <div
+            role="status"
+            aria-label="资产加载中"
+            data-testid="assets-skeleton"
+            className="animate-fade-up"
+          >
+            {view === "grid" ? (
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(208px,1fr))] gap-4">
+                {Array.from({ length: 8 }, (_, index) => (
+                  <div
+                    key={index}
+                    className="flex h-[188px] flex-col gap-2.5 rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4"
+                  >
+                    <div className="h-11 w-11 animate-shimmer rounded-xl bg-[var(--bg-muted)]" />
+                    <div className="h-3.5 w-[70%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                    <div className="h-3.5 w-[45%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                    <div className="mt-auto flex items-center justify-between">
+                      <div className="h-3 w-[38%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                      <div className="h-4 w-12 animate-shimmer rounded-full bg-[var(--bg-muted)]" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-0.5">
+                {Array.from({ length: 10 }, (_, index) => (
+                  <div key={index} className="flex items-center gap-3 rounded-lg px-3 py-2">
+                    <div className="h-8 w-8 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
+                    <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                      <div className="h-3 w-[42%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                      <div className="h-3 w-[26%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                    </div>
+                    <div className="h-3 w-16 animate-shimmer rounded bg-[var(--bg-muted)]" />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ) : visible.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-2 text-center">
@@ -197,7 +232,7 @@ export default function AgentAssetsPage() {
             ) : null}
           </div>
         ) : view === "grid" ? (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(176px,1fr))] gap-3" data-testid="assets-grid">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(208px,1fr))] gap-4" data-testid="assets-grid">
             {visible.map((item) => (
               <AgentAssetCard key={`${item.kind}-${item.id}`} item={item} />
             ))}

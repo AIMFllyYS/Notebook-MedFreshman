@@ -7,6 +7,7 @@ import { useWindowManager } from "@/lib/stores/windowManager";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { useDockTypingFocusGuard } from "@/lib/window/dockTypingFocus";
+import { useActiveChatSessionId, windowBelongsToSession } from "@/lib/window/sessionScope";
 import {
   isManagedWindowInteractive,
   resolveManagedWindowPresentation,
@@ -49,6 +50,10 @@ export function useManagedWindowSurface(windowId: string): ManagedWindowSurface 
   const minimized = useWindowManager(
     (state) => state.windows.find((window) => window.id === windowId)?.minimized ?? true,
   );
+  const windowSessionId = useWindowManager(
+    (state) => state.windows.find((window) => window.id === windowId)?.sessionId ?? null,
+  );
+  const activeSessionId = useActiveChatSessionId();
   const dockCollapsed = useStore((state) => state.agentDockCollapsed);
   const escapeSuppressed = useDockTypingFocusGuard(contentHost);
 
@@ -58,13 +63,21 @@ export function useManagedWindowSurface(windowId: string): ManagedWindowSurface 
     dockHostAvailable: !!contentHost,
   });
   const dockActive = presentation === "dock" && activeWindowId === windowId;
-  const visible = minimized ? false : presentation === "dock" ? dockActive && !dockCollapsed : true;
-  const interactive = isManagedWindowInteractive({
-    presentation,
-    minimized,
-    active: dockActive,
-    dockCollapsed,
-  });
+  // 右栏是「每个对话一块」：别的对话开的窗口在本对话里既不显示也不吃键盘。
+  const inThisSession = windowBelongsToSession(windowSessionId, activeSessionId);
+  const visible = minimized
+    ? false
+    : presentation === "dock"
+      ? dockActive && !dockCollapsed && inThisSession
+      : true;
+  const interactive =
+    inThisSession &&
+    isManagedWindowInteractive({
+      presentation,
+      minimized,
+      active: dockActive,
+      dockCollapsed,
+    });
 
   return {
     presentation,

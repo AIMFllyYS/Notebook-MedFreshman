@@ -890,6 +890,30 @@ html:not([data-panels-ready])[data-agent-dock-collapsed="true"] [data-agent-shel
   max-width: 0;
   overflow: hidden;
 }
+/* ─────────────────────────────────────────────────────────────
+   Agent 深色配色：B-A-A（左栏 B、中间 A、右栏 A）
+   - 浅色主题完全不动：两个变量在浅色下就等于各自原来的颜色；
+   - 深色下把左栏提到「中间原来的那档」，中间与右栏统一到面板色，
+     于是 chrome（左栏）与内容（中 + 右）分成两层，不再 A-B-A 三明治。
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --agent-sidebar-bg: var(--md-sys-color-surface-container-lowest);
+  --agent-content-bg: var(--md-sys-color-surface-container-low);
+}
+html:not([data-theme="light"]) [data-agent-shell] {
+  --agent-sidebar-bg: var(--md-sys-color-surface-container-low);
+  --agent-content-bg: var(--bg-panel);
+}
+/* 中间列（对话 / 资产 / 占位页）统一走 --agent-content-bg。 */
+[data-agent-shell] [data-agent-slot="main"],
+[data-agent-shell] .chat-panel {
+  background: var(--agent-content-bg, var(--md-sys-color-surface-container-low));
+}
+
+/* 左栏的开合过渡：内容定宽 + 外层裁剪（见 AgentShell），所以这里只需保证不出现横向滚动条。 */
+[data-agent-slot="conversations"] {
+  overflow: hidden;
+}
 
 /* ─────────────────────────────────────────────────────────────
    Mobile Optimization

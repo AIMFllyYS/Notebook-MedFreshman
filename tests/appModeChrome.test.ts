@@ -67,7 +67,10 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(readWorkspaceFile("components/agent/AgentChatCenter.tsx"), /components\/chat\/ChatPanel/);
   assert.doesNotMatch(workspace, /next\/dynamic/);
   assert.match(workspace, /if \(isMobile\)/);
-  assert.match(workspace, /展开对话栏/);
+  // 展开左栏的入口只有顶栏那一个（与 Studio 同款，testid=sidebar-toggle）；
+  // 中间不再浮「展开对话栏」。
+  assert.doesNotMatch(workspace, /展开对话栏/);
+  assert.match(appShell, /data-testid="sidebar-toggle"/);
   const dockColumn = readWorkspaceFile("components/layout/AgentDockColumn.tsx");
   assert.match(dockColumn, /data-agent-slot="windows"/);
   assert.match(dockColumn, /hideBuiltinTabs/);

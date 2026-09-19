@@ -19,6 +19,7 @@ import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useAppMode } from "@/lib/stores/appMode";
 import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
 import { openProjectFiles } from "@/lib/project/openProjectFiles";
+import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import AgentDockTabs from "@/components/window/AgentDockTabs";
@@ -331,6 +332,12 @@ export function partitionTaskbarWindows(windows: ManagedWindow[], width: number)
 
 export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   const windows = useWindowManager((state) => state.windows);
+  const activeSessionId = useActiveChatSessionId();
+  // 右栏标签条按会话隔离（与 RightPanel 同一套判定）；顶栏任务栏是 Studio 的，不筛。
+  const dockWindows = useMemo(
+    () => (host === "right-panel" ? filterWindowsForSession(windows, activeSessionId) : windows),
+    [activeSessionId, host, windows],
+  );
   const { minimizeWindow, restoreWindow } = useWindowManager();
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(0);
@@ -368,7 +375,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   const activeTooltip = tooltip && windows.some((win) => win.id === tooltip.win.id) ? tooltip : null;
 
   if (host === "right-panel") {
-    return <AgentDockTabs windows={windows} addContent={<AddContentButton />} />;
+    return <AgentDockTabs windows={dockWindows} addContent={<AddContentButton />} />;
   }
 
   return (

@@ -20,6 +20,7 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { AGENT_DOCK_CONTENT_ID } from "@/lib/constants/layout";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
   ssr: false,
@@ -129,6 +130,7 @@ export default function RightPanel({
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
   const managedWindows = useWindowManager((s) => s.windows);
   const activeWindowId = useWindowManager((s) => s.activeWindowId);
+  const activeSessionId = useActiveChatSessionId();
   const registerContentHost = useAgentDockRuntime((s) => s.registerContentHost);
   const dockGlobal = useAgentDockRuntime((s) => s.dockGlobal);
   const setDockGlobal = useAgentDockRuntime((s) => s.setDockGlobal);
@@ -142,8 +144,16 @@ export default function RightPanel({
   // 只有「当前允许且可见」的栏目才挂正文：右栏收起内置栏目时（Agent），
   // 即便 store 里的 rightTab 还停在 video/browser，也不会把动画讲解渲染进右栏。
   const renderedTab = visibleRightTabs.some((t) => t.id === tab) ? tab : null;
+  /**
+   * Agent 右栏只认**当前对话**的窗口：A 对话开的文档、笔记、演示都不该出现在 B 的右栏里，
+   * 标签条同理。Studio 走浮窗路径，不做这层筛选。
+   */
+  const dockWindows = useMemo(
+    () => (showWindowDock ? filterWindowsForSession(managedWindows, activeSessionId) : managedWindows),
+    [activeSessionId, managedWindows, showWindowDock],
+  );
   // 右侧工具栏必须始终给「收起」和窗口标签留位置：内置工具标签在窗口坞出现时让出一部分宽度并横向滚动。
-  const hasDockTabs = showWindowDock && managedWindows.length > 0;
+  const hasDockTabs = showWindowDock && dockWindows.length > 0;
 
   useEffect(() => {
     // Agent 右栏不展示内置栏目，也就没有「回退到某个内置 tab」这件事。
@@ -190,7 +200,7 @@ export default function RightPanel({
   const managedSurfaceVisible =
     showWindowDock &&
     activeWindowId !== null &&
-    managedWindows.some((window) => window.id === activeWindowId && !window.minimized);
+    dockWindows.some((window) => window.id === activeWindowId && !window.minimized);
   const activeSubjectId = useStore((s) => s.activeSubjectId);
   const activeCategoryId = useStore((s) => s.activeCategoryId);
   const activeItemId = useStore((s) => s.activeItemId);
@@ -329,7 +339,7 @@ export default function RightPanel({
         )}
         <div className={clsx("h-full min-h-0", managedSurfaceVisible && "invisible pointer-events-none")}>
           {showWindowDock && !managedSurfaceVisible && (
-            <AgentDockEmptyState hasHiddenWindows={managedWindows.length > 0} />
+            <AgentDockEmptyState hasHiddenWindows={dockWindows.length > 0} />
           )}
           {!showWindowDock && <AnimatePresence mode="wait" custom={dir}>
             <RightPanelTabBoundary key={tab} tab={tab}>

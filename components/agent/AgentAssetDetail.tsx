@@ -151,7 +151,7 @@ export default function AgentAssetDetail({ kind, id }: { kind: AssetKind; id: st
   }
 
   return (
-    <section data-testid="agent-asset-detail" data-asset-kind={kind} className="flex h-full min-h-0 flex-col bg-[var(--md-sys-color-surface-container-low)]">
+    <section data-testid="agent-asset-detail" data-asset-kind={kind} className="flex h-full min-h-0 flex-col bg-[var(--agent-content-bg,var(--md-sys-color-surface-container-low))]">
       <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-[var(--line-soft)] px-4 py-2.5">
         {back}
         <span className="flex items-center gap-2 text-[11.5px] text-[var(--ink-faint)]">

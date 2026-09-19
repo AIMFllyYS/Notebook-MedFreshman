@@ -109,6 +109,11 @@ export interface ManagedWindow<TData = ManagedWindowData> {
   fullscreen: boolean;
   minimized: boolean;
   badge?: number;
+  /**
+   * 打开这个窗口时所在的对话（Agent 右栏按会话隔离：A 的文档不出现在 B 的右栏）。
+   * null/undefined = 不隔离（Studio 打开的、测试构造的旧窗口都按可见处理）。
+   */
+  sessionId?: string | null;
   /** 进入全屏前的几何，供红绿灯与键盘快捷键还原。 */
   preExpand?: { pos: WindowPoint; size: WindowSize } | null;
   data: TData;
@@ -150,6 +155,16 @@ function withBadges(windows: ManagedWindow[]): ManagedWindow[] {
   });
 }
 
+/**
+ * 「当前对话」的提供者。由外壳注入（AppShell），而不是让 windowManager 直接 import chatHistory ——
+ * 那会形成 windowManager → chatHistory → artifacts → windowManager 的循环依赖。
+ */
+let sessionProvider: (() => string | null) | null = null;
+
+export function setWindowSessionProvider(provider: (() => string | null) | null): void {
+  sessionProvider = provider;
+}
+
 export const useWindowManager = create<WindowManagerState>((set) => ({
   windows: [],
   topZ: 5000,
@@ -172,6 +187,7 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
         z,
         fullscreen: input.fullscreen ?? false,
         minimized: input.minimized ?? false,
+        sessionId: input.sessionId ?? sessionProvider?.() ?? null,
       };
       const windows = existing
         ? state.windows.map((win) => (win.id === input.id ? { ...win, ...nextWindow } : win))
