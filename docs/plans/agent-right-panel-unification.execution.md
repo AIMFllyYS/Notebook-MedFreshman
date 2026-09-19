@@ -424,3 +424,529 @@ AppShell 在 `app/layout.tsx` 里包住所有路由，因此每条路由都会�
 ## 说明
 
 上一轮提交（`2881da61`）里的左侧覆盖面板方案已按本轮口径整体替换；`flow7.py` 是旧外壳的脚本，已不再适用。
+---
+
+# 附四：统一改造后的代码清洗（死代码退役 · 单一真相源）
+
+用户要求「先系统性分析最近改动的相关板块，尤其是 Agent 板块，可能需要做一做代码清洗」。本轮只做清洗与由此暴露的缺陷修复，不新增能力。
+
+## 分析证据
+
+- 静态：全仓引用检索、`knip`、`git log -S` 逐个符号追溯「谁还在用、是谁引入的」。
+- 关键追溯：`lib/workspace/agentDock.ts` 与 `useWestResizable` 来自基线提交 `644e9d1c`（第一版「右对齐浮窗盖住右栏」方案）；
+  `git show 3445f3c8:lib/stores/windowManager.ts` 里 `openWindow` 仍在调用 `placeAgentDockWindow`，说明是本轮 `2881da61` 把它变成孤儿。
+- 动态：`tsc` / `eslint` / `vitest` / `node --test` / Playwright 全量回归（见文末验证）。
+
+## 一、死代码退役
+
+| 对象 | 为什么死 | 处置 |
+|---|---|---|
+| `agentDock.ts` 的 `placeAgentDockWindow` / `agentDockRect` / `fallbackAgentDockRect` / `ensureAgentRightPanelOpen` / `DockGeometry` / `agentFullscreenPanelId` | Agent 右栏改为稳定宿主 portal 后，没有代码再为窗口计算「看起来在右栏」的屏幕坐标；基线里的唯一调用点已在 `2881da61` 移除 | 整模块连同 `agentDock.test.tsx` 删除（`lib/workspace/` 目录随之消失） |
+| `resolveWorkspaceFullscreenRect`（同一模块） | 它的 Agent 分支只在「浮窗铺右栏」形态下有意义；dock 窗口的全屏已被「扩展右侧工作区」取代，没有调用方 | 两个调用方（`toggleManagedFullscreen` / `useFullscreenTrack`）改用 `lib/constants/layout.resolveFullscreenRect`；`defaultTargetFor` 去掉 `isAgentWorkspace() → "right"`，`useFullscreenTrack` 去掉 `isAgentWorkspace()` 观测分支 |
+| `ManagedWindow` 的「Agent 浮窗加宽」握把 + `useWestResizable` | presentation 判定保证 Agent 只可能是 dock / sheet / pending，`floating && isAgentWorkspace()` 不可达 | 删除握把、`onWestResizeStart` 接线与 `lib/hooks/useWestResizable.ts` |
+| `RightPanel.hideAiTab`（含 `agentFallbackTab` 与两处 `hideAiTab` 分支） | 生产唯一调用方 `AgentDockColumn` 始终同时传 `hideBuiltinTabs`，该 prop 只剩测试在用 | 收敛为单一 `hideBuiltinTabs` |
+| `WindowTaskbar.partitionTaskbarWindows` 的 `host` 形参 | 函数体里是 `void host`，纯占位 | 删形参，更新 3 处测试调用 |
+| `WindowChrome.className` | 声明了但没有任何调用方传 | 删 prop 与拼接 |
+| `AgentConversationSidebar` 的 sr-only「关闭归档视图」按钮 | 无引用、无行为（归档开关已在底部工具栏） | 删除，连 `ArchiveRestore` 一起 |
+| `AgentConversationSidebar` 的 `isCollapsed` 分支 | 组件只在左栏展开时挂载，该值恒为 false | 收起按钮直接 `setCollapsed(true)` |
+
+## 二、修掉的真实缺陷（清洗过程中暴露）
+
+1. **右栏收起内置栏目时，正文仍会挂载内置栏目。** `hideBuiltinTabs` 此前只清空标签条，
+   正文区仍按 store 里的 `rightTab` 渲染。复现：在 Studio 把当前 tab 停在「动画讲解」→ 切到 Agent，
+   右栏会渲染 `VideoTab`（正是用户第 4 条口径里「不应该有的东西」）。
+   现在只有「当前允许且可见」的 tab 才挂正文（`renderedTab`），并补了单测与浏览器断言。
+2. **Agent 右栏开合与 Studio 档位右栏串味。** `rightCollapsedByProfile[layoutProfile]` 是 **Studio 内容页档位** 的 key，
+   而 `/agent` 的 `layoutProfile` 是上一次 Studio 路由留下的（`setActiveRoute` 只在内容页写）：
+   在 Agent 收起右栏会按「上次访问的档位」写进 Studio 记录；Studio 收起 full 档右栏后进 Agent，
+   首帧预绘制 CSS（`html[data-right-collapsed-full] [data-layout-profile="full"] #right-panel`）还会把 Agent 右栏压成 0 宽。
+   现在 Agent 右栏有独立状态：`ui.agentDockCollapsed` + LS `gailvlun-agent-dock-collapsed` + `data-agent-dock-collapsed`
+   + 独立 CSS 规则；Agent 外壳不再挂 `data-layout-profile`（那是内容页档位语义）。
+   右栏「收起」按钮的落点由外壳注入（`RightPanel.onCollapse`），不再自己写档位。
+3. **Alt+Enter 在 dock 窗口上是「假全屏」。** `toggleFullscreenActiveWindow` 会真的 `setFullscreen`：
+   dock 形态不消费 `fullscreen` 几何，唯一可见副作用是把窗口标记成全屏并最小化其它全屏窗——静默改状态。
+   现在 Agent 里与右栏绿点同语义：`togglePanelExpand()`。
+4. **「当前展示哪个窗口」有两份真相。** `agentDockRuntime.active` 与 `windowManager.activeWindowId` 各自维护，
+   `setActiveWindow()` 只更新后者（会让右栏标签与正文脱节），点击窗口/标签时又要成对调用。
+   现在唯一真相源是 `activeWindowId`；删除 `active` / `setActive` / `activateManagedSurface` / `activateBuiltinSurface` /
+   内置表面类型，以及 `windowManager.syncAgentDockAfterWindowChange()`（`activeWindowId` 的选取逻辑已覆盖它）。
+   新增 `lib/window/useManagedWindowSurface.ts` 统一解析 presentation / 可见性 / 可交互 / portal 宿主 / Esc 抑制，
+   `ManagedWindow` 与两个笔记窗（此前各自手写一遍「是否是最前的 dock 窗」）都改读它。
+
+## 三、陈旧文档与注释
+
+- `AgentConversationSidebar` 头注释里「由 AgentLeftPanel 以覆盖式抽屉承载」——该组件在附三已删。
+- `ChatInput` 注释里的 `useHydratedSetting`——该 hook 在 `2881da61` 已删，改为现行「默认值 + `hydrateSettings()`」契约。
+- `docs/plans/agent-right-panel-unification.md` 顶部加「落地状态」横幅：本文件是改造前分析，
+  并列出已替换/退役的设计（`WorkspaceSurface`、`placeAgentDockWindow` 一系、`hideAiTab`、`useHydratedSetting`）。
+
+## 四、明确不做（留待决策）
+
+- `FullscreenTarget` 仍保留 `"right"` 目标：本轮只是没有生产方，作为通用能力留着（`resolveFullscreenRect("right")` 仍在）。
+- Agent 里 `AgentConversationSidebar` 与右栏标签条各有一个「添加内容」`＋`（左栏那个在左栏收起时仍可用，右栏那个在输出落点旁）：
+  功能重叠但各有覆盖场景，属产品取舍，未擅自删。
+- `knip` 报的 3 个未使用文件 / 12 个未使用导出、`lib/stores/browser.ts` 同步读 localStorage、`ChatInput` 整店订阅等基线问题不在本轮范围。
+- `flow1.py` 是旧外壳脚本（既依赖 dock 里的「动画讲解」内置 tab，也假设页面上只有一个「添加内容」），已被 `flow8.py` / `flow9.py` 取代。
+
+## 五、验证
+
+| 项 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | exit 0 |
+| `npx eslint .` | 0 error / 91 warning（基线 92；少的一条是本次删除的未用变量） |
+| `knip` | 未使用导出 14 → 13（`agentFullscreenPanelId` 消失），其余与基线一致 |
+| `pnpm run test:react` | 143 文件 / 538 通过（文件数 -1 = 删掉的 `lib/workspace/agentDock.test.tsx`；新增 3 条断言抵消） |
+| `pnpm run test:unit` | 1311 通过 |
+| 浏览器 `flow9.py`（新增） | 9 项全过：两套折叠状态互不影响、收起只写自己的 key、收起时 Alt+Enter 不响应、Alt+Enter 扩展右栏（489 → 662 → 489）、Studio full 档位状态仍生效、Studio 动画讲解 tab 不会跟着进 Agent、无页面异常 |
+| 浏览器回归 | `flow8.py` 10 项全过（几何 / 顶栏按钮 / 左栏 / 内置栏目消失 / 输出落位） |
+
+截图：`50-agent-dock-independent.png`（预置 Studio 三档全收起后 Agent 右栏仍展开）、`51-alt-enter-expands-dock.png`、`52-studio-video-tab-not-in-agent.png`。
+
+本轮未改任何 AI 协议、存储格式或业务流程；未提交、未推送。
+---
+
+# 附五：交互细化（空态引导 · 统一横向缓动 · 全局显示 · 目录列改右侧）
+
+用户第二轮口径（含一张 Codex 参考截图）：
+
+1. 左上角不需要加号。
+2. 右栏弹出后若是空白，应像 Codex 一样给出可点的入口引导。
+3. 左右栏拉出/收起要统一成「文件夹展开那种缓动，只是方向换成横向」，全局统一。
+4. 对话输入框没有文字时默认只占一行；右栏要有「全局」按钮，点击后除左侧面板外整块显示当前窗口，并提供「缩小」。
+5. Agent 中央对话不再需要顶部导航栏（AI 助教的设置/历史/新对话，左侧对话栏已经全都承载了）。
+6. 分隔线太粗：全局浅化（对齐 Codex 的细线）。
+7. Agent 里的「选择笔记 / 选择闪卡」这类页面：内部导航列从左侧改到右侧，并且必须能收起；不能影响 Studio。
+
+## 一、逐条落地
+
+| 口径 | 实现 |
+|---|---|
+| 1 左上角不加号 | `AgentConversationSidebar` 头部只留「全局搜索 + 折叠侧边栏」，`AddContentButton` 移除；加号只剩右栏标签条（输出落点旁边） |
+| 2 空态引导 | 新增 `components/window/AgentDockEmptyState.tsx`：右栏没有可显示窗口时给出 5 个已有入口（新建笔记 / 选择笔记 / 复习闪卡 / 导入长文本 / 导入可交互 HTML），点击走各自原有业务路径；窗口都收起时文案改为「窗口都收起来了」 |
+| 3 横向缓动 | `html[data-panels-ready] [data-panel] { transition: flex-grow/flex-basis var(--duration-pane) var(--ease-decelerate) }`：Studio 左右栏、Agent 左对话栏与右工作区共用同一条 MD3 emphasized-decelerate（与文件树展开同一曲线）；`[data-resizing]` 拖拽中不参与，`prefers-reduced-motion` 关闭。**时长**：先是 `--duration-slow`(400ms)，用户反馈「比文件夹快、要慢 2~3 倍」后改为专用令牌 `--duration-pane: 1000ms` |
+| 4 一行输入框 | `.chat-input-textarea` 的 `min-height: 32px` 就是一行；真正的毛病是 auto-grow 的**首帧错误测量**（见下） |
+| 4 全局 / 缩小 | 右栏标签条右侧新增 `agent-dock-global`（`Maximize` ↔ `Minimize`）与 `agent-dock-expand`；全局态给外壳加 `data-agent-global`，用 CSS 把中央对话与顶栏让位、右栏铺满左侧对话栏之外的全部宽度；Alt+Enter 同语义 |
+| 5 中央对话去顶栏 | `ChatPanel` 新增 `hideHeader`，`AgentWorkspace` 传入；Studio 右栏 / 手机 / 浮窗仍保留原来的顶栏与自动隐藏逻辑 |
+| 6 分隔线浅化 | `--line-soft` 从「与 `--line` 同值」改为 `color-mix(... 42%, transparent)`，并把 5 个样式表里 **24 处** 单边 1px 分隔线（面板、顶栏、标签条、左右栏、文档窗内部）切到它；卡片/菜单/按钮描边仍是 `--line` |
+| 7 目录列改右侧 | `DocumentWorkspace` 在 Agent 表面渲染时 `data-nav-side="right"`：正文在左、目录列在右、分隔线换边；`document-workspace-nav-toggle` 贴在正文边缘，可收起/展开目录列（收起后正文拿回宽度）。Studio、PDF/PPT/附件/来源追踪共用同一组件，行为不变 |
+| 7 去掉窗口标题栏 | dock 窗口不再画标题与关闭/收起/扩展按钮（标签条已承担），只在有业务动作或外链时渲染一条动作行；`WindowChrome.className` 与 dock 专属按钮一并退场 |
+
+## 二、过程中挖出的三个真问题
+
+1. **空输入框实际占了 6 行。** auto-grow 只在 `[input]` 变化时量一次，而首帧那次测量发生在分栏还没算出宽度时：
+   实测 `clientWidth=16px`、`scrollHeight=252`，于是写入 `min(252,150)=150px`，被 CSS `max-height:120px` 夹成 120px，之后再没人重算。
+   修法：宽度 < 40px 时拒绝写入；用 ResizeObserver 按**宽度变化**重新量（左右栏一拖就重排换行）；JS 上限常量与 CSS `max-height` 对齐到 120px。
+2. **预绘制「硬收拢」CSS 把缓动掐断。** `html[data-right-collapsed-*] … { max-width: 0 }` 是为了首帧不闪，但 `max-width` 不在过渡属性里，
+   点「收起右侧面板」时面板在 55ms 内直接归零（追踪到的宽度序列：489 → 0，而内联 `flex` 直到 58ms 才变）。
+   修法：这些规则只在 `html:not([data-panels-ready])`（挂载前）生效，挂载后交给分栏库的内联 flex 走同一条过渡。
+3. **全局模式的左栏宽度变量有反馈环。** `--agent-left-width` 最初写在 `AgentWorkspace` 上，但消费方是它的**祖先**面板（CSS 变量只向下继承），
+   取不到就退回 `15rem`；而观测器又会把自己驱动出来的宽度再写回去（228 → 240 → …）。
+   修法：变量挂到 `<html>`，并在全局态停止回写。
+
+## 三、缓动时长的实测对照
+
+| 对象 | 曲线 | 走完 50% | 走完 | 备注 |
+|---|---|---|---|---|
+| 文件树分组收起（用户参照物） | framer-motion accelerate 400ms | 385ms | 468ms | 高度 36 → 0，先慢后快 |
+| 右栏收起（改前） | CSS emphasized-decelerate 400ms | **93ms** | 409ms | 宽度 489 → 0，起步太快（用户说「过于快了」） |
+| 右栏收起（改后） | 同曲线 `--duration-pane` 1000ms | 135ms | 987ms | 同为 489 → 0，整体慢 2.4 倍 |
+
+另修掉一条 dev 警告：Agent 外壳的主面板补了 `defaultSize={66}`（react-resizable-panels 要求给默认尺寸，避免 SSR 后的布局抖动）。
+
+## 四、验证
+
+| 项 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | exit 0 |
+| `pnpm run test:react` | 143 文件 / 540 通过（新增 WindowChrome dock 契约与 DocumentWorkspace Agent 目录列断言） |
+| `pnpm run test:unit` | 1311 通过 |
+| 浏览器 `flow10.py`（新增） | 16 项全过：空框 32px（多行 72px、清空回 32px）、中央对话无顶栏、左栏无加号、空态引导 5 项、dock 窗口无标题/关闭/收起/扩展、全局态右栏 1212px 且左栏 228px 不变、全局态有「缩小」、缩小复原 489px、Alt+Enter 同语义、收起途中有横向缓动（489→82→0）、选择笔记目录列在右（sidebar x=1224 > stage x=952）、收起目录列正文 272→488、Studio 仍是左侧且无把手、`--line` ≠ `--line-soft`、无页面异常 |
+| 浏览器回归 | `flow8.py` 10 项、`flow9.py` 9 项全过（两处断言按新语义更新：Alt+Enter = 全局/缩小；内置栏目判定改为查右栏按钮，不再用整页文本——空态引导里本来就有「导入可交互 HTML」） |
+
+截图：`60-dock-empty-guide.png`（空态引导）、`61-dock-window-no-chrome.png`（窗口去掉标题栏）、`62-agent-global.png`（全局）、`63-picker-nav-right.png`（目录列在右）。
+
+## 四、说明
+
+- 全局态刻意**不移动 DOM**：窗口正文始终在 `#agent-dock-content` 里，只是用 CSS 把中央对话与顶栏让位，
+  这样切进切出不会重挂 iframe/编辑器（草稿、生成、滚动位置都不丢）。
+- 手机端抽屉本来就是横向缓动（`transform 280ms` 同一条 MD3 曲线），未改。
+- 「全局」不落盘：刷新、右栏收起、窗口关闭都会自动退出，不会留下半个全局态。
+---
+
+# 附六：分栏尺寸的持久化契约（用户口径）
+
+用户明确要求：**用户拖过的左/右栏宽度必须存进浏览器本地（localStorage），刷新或下次打开就用上次拖到的宽度；不落数据库。**
+
+## 契约（实现必须遵守的优先级）
+
+1. **用户拖拽记录 > 模式预设**：只要某一列被拖过，永远以 localStorage 里的记录为准，模式预设只在"这一列从未被拖过"时生效。
+2. **程序绝不覆盖用户记录**：应用预设、收起/展开动画、"全局"模式都不得写用户的比例记录；收起时把当时宽度记进 `expandToSizes`，展开时原样恢复。
+3. **按模式各自独立**：Agent 与 Studio（含 full / article / reference 三档）各有自己的 key，互不干扰。
+4. 只走 localStorage，不碰数据库；不新增服务端字段。
+
+现有 key（实测）：
+
+| key | 作用 |
+|---|---|
+| `react-resizable-panels:studysolo-agent-shell-v1` | Agent 右栏 / 主区宽度 |
+| `react-resizable-panels:studysolo-agent-layout-v2` | Agent 左对话栏 / 中央对话宽度 |
+| `react-resizable-panels:gailvlun-layout-v2`（及 `-article` / `-reference`） | Studio 三档的左栏 / 正文 / 右栏 |
+| `gailvlun-agent-dock-collapsed` | Agent 右栏是否收起 |
+| `gailvlun-right-collapsed-by-profile` | Studio 三档右栏是否收起 |
+
+## 实测（1440×900）
+
+| 操作 | 结果 |
+|---|---|
+| 拖右栏分隔线到 45.1% → 刷新 | 45.1% ✅ 保持 |
+| 拖左对话栏到 17.9% → 刷新 | 18% ✅ 保持 |
+| 收起右栏 → 刷新 | 修复前：自己弹回 45.1%，并把 localStorage 的「收起」改写成展开 ❌<br>修复后：仍是收起（0%）✅；再展开回到上次拖到的 45.1%（而不是库兜底的 minSize 20%）✅ |
+
+## 修掉的 bug：挂载瞬间把用户的「收起」改写成展开
+
+根因：react-resizable-panels 在挂载并应用「上次保存为收起」的布局时，会误报一次 `onExpand`。时间线（MutationObserver + rAF 采样）：
+
+```
+t=6ms    html[data-agent-dock-collapsed]=true（预绘制脚本，正确）
+t=131ms  右栏宽度 0（已按保存的收起布局渲染）
+t=164ms  html 属性被改写成 false  ← 面板事件回写，用户意图被吃掉
+t=368ms  右栏展开到 489px，localStorage 的 layout 被改写为 [66,34]
+```
+
+Studio 的两个面板本来就有 `sidebarPersistReadyRef` / `rightPersistReadyRef` 守卫（挂载后一个 tick 内不接受面板事件），Agent 这个外壳漏了。修法：`dockPersistReadyRef`，挂载后 500ms 内不接受面板回写（用户不可能在这段时间内拖动分隔线），水合完成前 likewise 不回写。
+
+## 已知副作用（待用户决定是否处理）
+
+Agent 的左对话栏与中央对话嵌套在一个分栏组里，其百分比是相对"剩余区域"算的。因此：
+
+- 拖**右栏**分隔线 228 → 190px 时，**左栏像素宽度会被动变化**（15.8% → 13.2%）。
+
+若要求"只拖右边、左边不动"，需要把左/中/右改成同一级的三个分栏（结构改动；Studio 不受影响，但左栏的历史宽度记录会重置一次）。
+
+## 预设表落地（2026-09-19 补齐）
+
+新增 `lib/constants/panelPresets.ts` 作为分栏默认尺寸的**单一真相源**；Agent 外壳、Studio 外壳、右栏「扩展」按钮全部从它取数：
+
+| 预设 | 左 | 中 | 右 | 右栏点开后 |
+|---|---|---|---|---|
+| `agent` | 14% | 49% | 37% | 48%（「扩展右侧工作区」目标） |
+| `studio:full` / `studio:reference` | 19% | 50% | 31% | 31% |
+| `studio:article` | 19% | 50% | 0%（默认收起） | 31% |
+| `studio:no-right`（首页 / 复习板） | 19% | 81% | — | — |
+
+Agent 的左对话栏与中央对话共处一个嵌套分栏组，用 `nestedShares()` 把「占窗口」换算成组内百分比（14 / 49 → 22.2 / 77.8）。Studio 的数值与改造前**逐项相等**，只是从字面量搬进了表里。
+
+实测（1440×900，清空 localStorage 的出厂状态）：
+
+| 场景 | 实测 |
+|---|---|
+| Agent 出厂预设 | 左 14%（201px）/ 中 48.9%（705px）/ 右 37%（532px） |
+| Studio 首页出厂预设 | 左 19% / 中 49.9% / 右 31%（与改造前一致） |
+| 拖右栏到 47.1% → 刷新 | 47.4%（用用户记录） |
+| 收起 → 刷新 | 仍是 0%（不再被改写）；再展开回到 47.4%（用户上次拖到的宽度） |
+
+---
+
+# 附七：右栏「全屏」重做 · 宽度变化期的骨架 · 左栏吸附收起
+
+## 用户口径
+
+1. Agent 模式点右栏的「全屏」时：右栏覆盖绝大部分区域，**中间 Agent 对话完全隐藏**，只保留左侧文件夹树，右边就是完整的右栏板块。
+2. 收起右栏时，窄宽度下正文会被响应式压成竖排单字，很难看 → 参考 Studio 拖拽时的做法，**用骨架屏盖住**（顺带也是性能优化）。
+3. 左侧对话文件夹树：被压到一定程度后**自动彻底收起**；收起时的软动画要**很快**。
+
+## 一、右栏「全屏」重做
+
+第一版把「全屏」做成了**某个窗口的属性**（`globalWindowId`）：没有活动窗口时按钮禁用，且要靠"跟随活动标签"维持。这轮改成**面板级状态** `dockGlobal`：
+
+- 没有打开的窗口也能全屏（显示空态引导）；
+- 切换标签就是切换全屏里显示的内容，不需要跟随逻辑；
+- 右栏一收起自动退出，不落盘。
+
+同时**删掉「扩展右侧工作区」按钮**（它只把右栏加宽到 48%、不隐藏对话）——点它很容易被理解成"全屏没生效"。现在右栏标签条只有一个 `Maximize ↔ Minimize` 按钮（aria-label「全屏显示这个板块」/「缩小到右栏」），键盘 Alt+Enter 同语义。
+
+连带清理：`panelControls` / `registerPanelControls` / `togglePanelExpand` 这套面板命令句柄失去唯一消费方，整组删除；`useManagedWindowChrome.toggleFullscreen` 在 dock / sheet 下直接返回（dock 的全屏入口已上移到标签条）。
+
+实测（1440×900）：全屏后 左 201px / 中 **0px** / 右 **1239px**、顶栏 `display:none`、窗口正文仍在 `#agent-dock-content` 内（1238px 铺满）；缩小回到 532px。
+
+## 二、宽度变化期间用骨架屏盖住
+
+复用 Studio 已有的 `ChatSkeleton`（GPU-only：只跑 transform/opacity）：
+
+- **右栏**：`dockBusy` = 拖拽中 `isResizing` 或 收展动画期间（时长从 CSS `--duration-pane` 读出来 + 80ms 余量）→ `AgentDockColumn` 里盖一层 `.resize-loader`。
+- **左栏**：拖拽分隔线期间（`onDragging`）在对话栏上盖同一层骨架。
+
+顺带给 `.resize-loader` 加了 120ms 的软淡入（`prefers-reduced-motion` 下关闭）。
+
+## 三、左栏吸附收起 + 快动画 + 记住宽度
+
+- `Panel` 加 `collapsible collapsedSize={0}`：拖到 `minSize`(14%) 以下，分栏库吸附到 0 → `onCollapse` 把 store 切到「已收起」，出现「展开对话栏」把手。
+- **吸附那一下要快**：`onCollapse` 期间给分组加 `data-pane-snap`，CSS 把缓动从 `--duration-pane`(1000ms) 切到 `--duration-normal`(250ms)；规则写在 `[data-resizing]` 之后才能压过它。
+- **收起不再卸载面板**（原先是 `{!sidebarCollapsed && <Panel/>}`）：卸载会丢掉分栏库记的宽度，重新展开只能落到 `minSize`(127px)。现在面板常驻、宽度 0，展开回到用户上次的宽度（实测 201px）。
+- 另记一份「舒适宽度」`lastWideWidthRef`：**只在非拖拽状态下记录**（否则往窄拖时会把好值覆盖成吸附点附近的 91px），展开时按它 resize（22.2%）。
+
+## 四、验证
+
+| 项 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | exit 0 |
+| 浏览器 `flow11.py`（新增 8 项） | 全过：无窗口也能全屏（中 0 宽 / 左保留 / 顶栏隐藏）、按钮变「缩小到右栏」、缩小回到 532px、全屏里窗口铺满宿主、收起右栏期间有骨架且结束无残留、左栏压过阈值自动彻底收起（宽 0 + 把手）、拖左栏期间有骨架、再展开回到 201px、无页面异常 |
+| 浏览器回归 | `flow8.py` / `flow9.py` / `flow10.py` 无失败 |
+| 单测 | `AgentWorkspace.test` 的"收起"用例改为断言面板仍在（`data-collapsed` + 宽度 0），因为收起不再卸载 |
+
+截图：`71-global-no-window.png`（无窗口也能全屏）、`72-global-with-window.png`、`73-left-snap-collapsed.png`、`74-icons.png`。
+
+## 附七补记：图标与 F11 全屏的归属（用户澄清后）
+
+- **只换图标**：右栏那个「全屏 / 缩小」按钮改用被删按钮的图标 `Maximize2` / `Minimize2`（⤢ / ⤡，上下对称的"打开"样式）。实测按钮 SVG 路径为 `M15 3h6v6 / m21 3-7 7 / m3 21 7-7 / M9 21H3v-6`。
+- **F11 全屏与面板全屏是两回事**：
+  - 右栏的「全屏」= 面板接管工作区（`dockGlobal`），保留不动；
+  - 真正的网页全屏（Fullscreen API）抽成 `lib/hooks/useBrowserFullscreen.ts`，顶栏与 Agent 对话面板顶部共用一份实现；
+  - 按用户口径 1(a)，Agent 里它只在**中间对话面板顶部**显示（顶栏右侧不再出现），Studio 顶栏照旧。
+- **中间对话的骨架屏**：任何导致中间面板宽度变化的动作（切真全屏、拖左右分隔线、改窗口大小）都会盖一层 `ChatSkeleton`，
+  260ms 后自动撤掉——避免宽度一变正文就重新折行、文字自动异位；骨架只跑 transform/opacity，顺带省掉这段的重排开销。
+
+---
+
+# 附八：Agent 通用化（上下文只靠注入 · 空对话欢迎页）
+
+## 用户口径
+
+1. **上下文设计**：Agent 是注入上下文的通用型助手，目前注入的只有教材大纲；**不把默认章节当成它的上下文**。
+2. **页面展示风格**：新建对话时，中间不该再是「我是你的 X 助教 + 当前学习：Y + 试试这样问我」，
+   而要像 ChatGPT 官网首页：**上方一句招呼、中间输入框、下方几条 iOS 风格的示例清单**（可点击）。
+
+## 一、上下文：Agent 不再绑定「当前打开的那一章」
+
+原先 Agent 的 `chatContext` 是照着当前页面拼的（科目 / 分类 / 内容项三段拼成 `currentTopic`），
+于是每开一个新对话都默认绑在「概率论 / detail / 1.1」这一节上：
+
+- 定位行会写进 system（【当前位置】… 内容项：1.1）；
+- 参考材料会把该节全文当成「当前内容」注入；
+- 空态还显示一枚「当前学习: probability detail 1.1」的胶囊。
+
+现在判定收敛到一个函数 `isPageBoundContext()`（`lib/types/chat.ts`，分类 + 内容项齐全才算绑定页面），三处共用：
+
+| 位置 | 变化 |
+|---|---|
+| `AgentWorkspace` 的 `chatContext` | 只带 `subjectId` + `academicYear`，`categoryId` / `itemId` / `currentTopic` 全空 |
+| `buildLocationLine()` | 未绑定页面时**整行不输出**（不再拼出「分类： ｜ 内容项：」这种残行） |
+| `FullContextManager.buildContext()` | 未绑定页面时跳过页面读取，参考材料只剩课程目录（教材大纲），`sources` 为空 |
+
+科目本身保留：工具链默认检索范围、跨学年口径都靠它，去掉的只是「章节」。实测请求体
+`categoryId / itemId / currentTopic` 全为 `""`，`subjectId` 与 `academicYear` 照旧。
+
+工具侧跟着补了一处：`getCurrentPage` 在没有绑定页面时**直说「用户此刻没有打开任何小节页面」**，
+不再回成「该页正文尚未生成（占位）」——后者会让模型以为有一页没写完的笔记，转而向用户解释一个并不存在的页面。
+（`isSafeContentSegment("")` 本就为 false，所以读盘没有被放开的风险。）
+
+## 二、空对话欢迎页
+
+- 新组件 `components/chat/AgentWelcome.tsx`：
+  - `welcomeGreeting(hour)` 按本机时间分档打招呼（早上好 / 中午好 / 下午好 / 晚上好 / 夜深了），
+    时钟用 `useSyncExternalStore` 读（服务端快照为空），不参与服务端首帧；
+  - `AGENT_WELCOME_EXAMPLES` 四条起手式，覆盖 Agent 真能做的事：整理复习提纲、出复习闪卡、
+    做可拖动演示、联网查资料整理简报；点一下就等于把这句话发出去。
+- `ChatPanel` 新增 `emptyLayout?: 'classic' | 'agent'`（默认 `classic`，Studio 右栏 AI 与手机端 AI 不受影响）。
+  `agent` 时空对话进入 `.chat-panel--welcome` 版式：**问候语在上、输入框居中、示例清单在下**。
+
+### 关键实现约束（踩过的坑）
+
+1. **输入框必须是同一个实例**。`ChatInput` 在常规对话里是绝对定位贴底的浮层；欢迎页里它回到文档流，
+   才会被夹在问候语与示例清单之间。做法是把它放在 JSX 里**固定的那一格**（问候语与转录区互换、示例清单挂在它后面），
+   靠 `.chat-panel--welcome` 改 `position`——组件不重挂载，草稿不丢（单测直接断言发送前后 `textbox` 是同一个 DOM 节点）。
+2. **转录区不卸载，只 `display:none`**。`SelectionPopover` 的 `data-selection-host` / 滚动监听是 ChatThread 挂载时绑定的，
+   卸载再挂载会让它的 effect 错过新节点，Agent 里就再也划不中词。
+3. **竖向居中用 auto 外边距而不是 `justify-content:center`**：面板不够高时前者能滚动，后者会把问候语裁掉。
+4. **CSS 覆盖要写在基础规则之后**：`components/chat/ChatInput.layout.test.tsx` 按「文件里第一条 `.chat-input-container` 规则」取值，
+   覆写写在前面会被它读成基础规则（本轮真的踩到）。顺手把该测试的选择器匹配收紧到**行首**，
+   这样 `.chat-panel--welcome .chat-input-container` 这类覆盖写法与 `@media` 里的同名规则都不会再冒充基础规则。
+
+## 三、验证
+
+| 项 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | exit 0 |
+| `npx eslint .`（改动目录） | 0 error |
+| `pnpm run test:react` | 146 文件 / 550 通过（新增 `AgentWelcome.test.tsx`、`ChatPanel.welcome.test.tsx` 共 6 例） |
+| `pnpm run test:unit` | 1314 通过（新增 prompts / fullContext / getCurrentPage 各 1 例） |
+| 浏览器 `flow12.py`（新增 7 项） | 全过：空对话进欢迎版式（问候语 + 4 条示例 + 左右栏都在）、问候在上/输入框中/示例在下、输入框不再贴底（离面板底 457px）、转录区隐藏但未卸载、点示例即发问、发送后回到贴底浮层、请求体不带默认章节、无页面异常 |
+| 浏览器回归 | `flow8.py` / `flow10.py` / `flow11.py` 无失败 |
+
+实测（1440×900，全新浏览器 profile）：问候语 `夜深了，想做点什么？`（top 305 / bottom 340），
+输入框 358→443（`position: static`），示例清单 453→643（4 条，宽 705px）；
+点第一条示例后：欢迎页类名消失、输入框回到 805→890（`position: absolute`）、转录区恢复显示。
+
+截图：`80-agent-welcome.png`、`81-agent-after-send.png`。
+---
+
+# 附九：「新建对话」防连点（已有空白新对话就复用）
+
+## 用户口径
+
+点「新建对话」时，如果已经有一条新建出来的空白对话，再点就**不要再添加新的**——
+防止连点 100 次莫名其妙多出 100 条。
+
+## 一、为什么必须做（比"多几行垃圾"严重）
+
+`lib/stores/chatHistory.ts` 有 `MAX_SESSIONS = 50`：超上限后每多建一条，**数组最旧的那条会话会连同它的消息与附件 blob 一起被删掉**
+（`deleteSessionData` + `scheduleOrphanChatGc`）。所以连点不只是刷出空行，而是会把老的真实对话挤出去删掉。
+另外 `createSession` 一调用就 `saveManifest` 落盘，空会话也会被持久化。
+
+## 二、判定：什么算「已经有一条空白新对话」
+
+`isBlankMainSession(meta)`：**main 类型**（排除 floating 划词窗 / note 笔记窗）、**未归档**、**messageCount === 0**。
+
+用 `meta.messageCount` 而不是 `messagesById[id].length`：它写在 manifest 里，不依赖消息体是否已从 IndexedDB 加载回来。
+否则切到一个正在加载的真实对话时会被误判成空白，点「新建对话」反而什么都不发生。
+
+## 三、一个口子
+
+新增 store action `startNewChat(context)`，四个入口全部改调它（规则只有一份）：
+
+| 入口 | 原来 | 现在 |
+|---|---|---|
+| 左栏「新对话」按钮 | `createSession(chatContext)` | `startNewChat(chatContext)` |
+| 左栏空白处右键菜单「新建对话」 | 同一个 handler | 同上 |
+| 快捷键 `Ctrl/Cmd+Shift+N` | `createSession(currentChatContext())` | `startNewChat(...)` |
+| Studio/右栏 AI 头部「新对话」、上下文超限横幅里的「新建对话」 | `createSession(chatContext)` | `startNewChat(chatContext)` |
+
+`createSession` 原样保留：floating / note 会话，以及 `useChat` 里"发送时发现没有 active 会话才补建"的惰性路径，都不走这个守卫。
+
+优先级：**脚下这条就是空白** → 原地不动（草稿、输入框实例都保留）；否则**复用列表里最近那条空白**；都没有才真的新建。
+
+## 四、复用不能走 `switchSession`
+
+`switchSession` 会先把 `_activeMessagesReady` 置 false，再从 IndexedDB 读一次消息体；
+空白会话的消息体可能压根不在盘上（懒写还没刷、历史数据里就没有），读空会让 `sessionLoadState` 变 `'error'`，
+而 `canSendNow` 只认 `'loaded'`——**发送会被静默挡掉**（点了发送没反应）。
+所以复用分支直接按"已加载的空会话"接上：补 `messagesById[id] = []`、`sessionLoadState[id] = 'loaded'`、`_activeMessagesReady = true`，
+并写一次 manifest（和真正新建时一样，刷新后仍停在新对话里）。
+
+## 五、轻反馈
+
+一次点击"什么都没发生"会像按钮坏了，所以：
+
+- `blankChatPulse`：复用当前这条空白时 +1（只存在内存里，不落盘）；
+- `ChatPanel` 订阅这个脉冲 → 聚焦输入框（`ChatInput` 新增 `focusSignal`，自增即 focus 一次，不碰草稿）
+  ＋ 在输入框上方给一行提示「已经在一条新对话里了，直接说你想做什么就行。」，2 秒后自己消失。
+
+订阅写在 `useEffect` 里的 store subscribe 回调中（不是在 effect 体内同步 setState），避开 `react-hooks/set-state-in-effect`。
+
+## 六、验证
+
+| 项 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | exit 0 |
+| `npx eslint .` | 0 error（91 warning，与基线一致） |
+| `pnpm run test:unit` | 1320 通过（新增 `chatHistory.startNewChat` 6 例：连点复用 / 发过消息才新建 / 脚下是空白不跳走 / 人在真实对话里复用最新空白且可发送 / 归档与浮动笔记不算 / 未加载的真实对话不误判） |
+| `pnpm run test:react` | 144 文件 / 551 通过（`AgentConversationSidebar` 断言改走 `startNewChat`；`ChatPanel.welcome` 新增 1 例：不新增会话 + 提示 + 聚焦 + 2 秒后退场） |
+| 浏览器 `flow13.py`（新增 8 项） | 全过：开局无会话、首次点击建 1 条、**再连点 5 次仍是 1 条**、连点时有提示且焦点落到输入框、发出消息后会话带标题、有内容后再点真的新建、**快捷键连按 3 次也不涨**、无页面异常 |
+| 浏览器回归 | `flow8.py` / `flow10.py` / `flow11.py` / `flow12.py` 无失败 |
+
+截图：`83-blank-chat-hint.png`（连点 6 次后侧栏仍只有一条「新对话」+ 输入框上方的提示）、`84-new-chat-guard.png`。
+---
+
+# 附十：会话记录被清空的事故与修复（2026-09-19）
+
+## 事故
+
+用户 Edge 里的 Agent 会话记录全部消失。我把该 profile 的 IndexedDB 克隆出来直接读，确认不是显示问题：
+
+| 键 | 内容 |
+|---|---|
+| `chat-manifest` | **只剩 1 条**空白会话（`新对话`，messageCount 0），activeSessionId 指向它 |
+| `chat-session:*` | **只剩 1 个**（内容 `[]`）；原先 9 个有内容的会话正文已被删除 |
+| 其它库 | artifacts 125KB / review-cards 78KB / skills 53KB / billing 36KB / user-notes / image-gen / documents **全部完好** |
+
+即：**只有会话被清空**，其它数据没动。
+
+## 根因链
+
+1. **未水合就落盘**：`saveManifest` 写的是「内存里的 sessionsMeta」，而页面刚加载时它还是空数组。
+   此时任何一条新建路径（左栏「新对话」/ 右键菜单 / `Ctrl+Shift+N` / 面板头部 / 划词浮窗 / 笔记窗 /
+   云端拉取合并）都会把盘上真实的 N 条会话**覆盖成「只剩刚建的那一条」**（1 条、messageCount 0 —— 与实测到的 manifest 形态完全一致）。
+2. **孤儿 GC 把 manifest 当唯一真相源**：`ensureChatHistoryBootstrap` 末尾会 `scheduleOrphanChatGc()`，
+   而 `gcOrphanedChatKeys()` 会删除所有不在 manifest 里的 `chat-session:*`。于是覆盖发生后，
+   其余会话的正文被**不可逆删除**。
+   - 追加隐患：`readManifest()` 返回 null 时旧代码把 keep 集合当空集合，等于一次删光；
+   - 追加隐患：存活会话正文读不出来时，它引用的附件会被当成孤儿删掉。
+3. 触发时机：开发期我一边改文件一边让用户的页面热重载，重载后的**未水合窗口**（几十到几百毫秒）里
+   用户正在连点「新建对话」——这条链路在此之前一直没有守卫，我这一轮的工作把命中概率抬高了。
+
+## 修复（4 处守卫）
+
+| 位置 | 变化 |
+|---|---|
+| `lib/stores/chatHistory.ts` | 新增 `persistManifest(state, manifest)`：**未水合一律不落盘**；12 个落盘点全部改走它 |
+| 同上 `startNewChat` | 未水合时不新建、不落盘，返回 null，等 `ensureChatHistoryBootstrap()` 完成后再按当时的真实列表执行（失败则什么都不做） |
+| `lib/sync/engine.ts` | `applyChatPayloadToZustand` / `forgetLocalSessionInZustand` 先 `await ensureChatHistoryBootstrap()` 再合并，未水合不写 |
+| `lib/storage/chatStorage.ts` GC | ①读不到 manifest → **一个都不删**；②本轮孤儿数 > 3 → **整轮放弃**（宁留孤儿键）；③存活会话正文读不出来 → **不动任何附件** |
+
+## 验证
+
+`npx tsc --noEmit` exit 0；`npx eslint .` 0 error；`pnpm run test:unit` 1325 通过（新增 5 例：未水合不落盘、未水合 startNewChat 不新建不落盘、GC 无 manifest 不删、孤儿过多整轮放弃、keep 正文读不出不删附件）；
+`pnpm run test:react` 144 文件 / 552 通过。
+
+## 数据恢复
+
+本地正文已被删除，原始 LevelDB 字节里只剩极少量残留（不足还原）。**唯一可用的恢复路径是云端**：
+`chat-session` 的删除没有推 tombstone（GC 直接删键、不走 `scheduleCloudTombstone`），
+所以云端行仍在；登录状态下刷新页面会触发 `scheduleCloudPull()` → `pullFromCloud()` →
+本地查不到该会话 → `applySession(remote)` 把它整条写回来。
+
+---
+
+# 附十一：Agent 全屏键归位（顶栏 · 面板开关左侧 · 四角图标）
+
+## 用户口径
+
+> 我这个全屏按钮（截图里悬浮在第一条消息上方、带「全屏」提示的那个）是**错的**；应该在**中间对话顶部**，
+> 就是那个控制面板/导航栏的按钮**左侧**；图标要和右侧的**完全不同**（要四个边框的那种）。
+
+## 现象与根因
+
+附七补记把「网页全屏（Fullscreen API）」做成了中间对话面板里的**悬浮键**（`absolute right-3 top-3`），于是：
+
+- **位置错**：实测 1440×900，悬浮键在 `x 863..895 / y 60..92`，而顶栏的「右侧工作区开关」（`PanelRightOpen`）在
+  `x 863..895 / y 8..40`——两键同列、上下差 52px；悬浮键正好压住对话正文第一行（正文从 `y=48` 起），
+  看起来像个走错门的内容区控件。
+- **图标重样**：悬浮键用 `Maximize2`（对角箭头），与右栏「面板全屏」（`RightPanel`）**一模一样**——
+  屏幕上两个「全屏」长同一个样子，谁也说不清哪个是全屏网页、哪个是全屏面板。
+
+## 改法
+
+| 位置 | 变化 |
+|---|---|
+| `components/layout/AppShell.tsx`（TopBar） | 网页全屏键从「仅 Studio」改为**两模式共用**；Agent 里排在右侧工作区开关**之前**（= 它的左侧）：`[⛶ 全屏][▷\| 右侧工作区]`。补 `aria-label` / `aria-pressed` / `data-testid="browser-fullscreen"` |
+| 图标 | 顶栏全屏 = 四角 `Maximize` / `Minimize`（SVG `M8 3H5…`）；右栏面板全屏保留对角 `Maximize2` / `Minimize2`（`M15 3h6v6…`）。两条路径不同，肉眼与代码都可区分 |
+| `components/layout/AgentWorkspace.tsx` | 删掉悬浮键与 `useBrowserFullscreen` 依赖——对话面板里**不再有任何覆盖正文的按钮** |
+| Agent 顶栏不吃 Studio 的收起态 | React 侧 `barCollapsed = !agentMode && topBarCollapsed`；首帧 CSS 侧 `globals.css` 改成 `html[data-topbar-collapsed="true"] header[data-topbar]:not([data-agent-bar])`，header 带 `data-agent-bar` |
+
+最后一条是这次顺手补的坑：Agent 顶栏是**控件条**（全屏 + 右侧工作区开关都挂在上面），它自己根本没有「收起顶栏」入口。
+而从 Studio 收着顶栏切到 Agent 时，那个会落盘的收起态会把 `h-0` 套上去，两个键一起消失（除了 Esc 没有别的退路）。
+
+## 实测（1440×900，真实浏览器）
+
+| 检查 | 结果 |
+|---|---|
+| 全屏键位置 | `x 827..859 / y 8..40`；工作区开关 `x 863..895` —— 同一行、间隙 4px、紧挨其左 ✅ |
+| 不再压正文 | 对话面板上沿 60px 内的 `button` 数为 **0** ✅ |
+| 真全屏 | 点击 → `document.fullscreenElement` 非空、aria-label 变「退出全屏」、键仍可见；再点退出 ✅ |
+| 收起右侧工作区后 | 全屏键仍在（`x 1359`，开关 `1395`）✅ |
+| Studio 不受影响 | 顶栏全屏键照旧（`x 1396`）、无面板开关；Studio 收着顶栏切 Agent → 顶栏高 48、两键都在 ✅ |
+| 旧悬浮键 | `agent-chat-fullscreen` 全仓已无引用 ✅ |
+
+浏览器回归 `flow14.py`：11/11 全过。截图 `99-agent-fullscreen-in-topbar.png`、`A2-agent-light-topright.png`。
+
+## 质量门
+
+`npx tsc --noEmit` 0；`npx eslint .` 0 error / 91 warning（基线）；`pnpm run test:unit` **1326**；
+`pnpm run test:react` **144 文件 / 553 通过**。新增 2 例：
+`AgentWorkspace.test`（面板里不再有悬浮全屏键）、`appModeChrome.test`（顶栏顺序 + 图标区分 + 首帧 CSS 排除 + 控件条不被收起态吃掉）。
+
+## 运维备注（这次踩到的）
+
+改了 `app/globals.css` 之后，**dev server 可能继续发旧 CSS**（chunk 名不变、内容还是旧的，重启也不一定刷）。
+判断方法：直接拉一次 `/_next/static/chunks/*.css` 搜新选择器。它按**内容**失效，所以 `touch` 改 mtime 没用；
+再落一次真实内容改动就会重编（本次即如此）。

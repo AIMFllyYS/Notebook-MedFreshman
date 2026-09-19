@@ -16,6 +16,7 @@
 | 查某个子系统当前实现的权威说明（渲染架构、存储架构等） | [`refer/`](#refer--权威参考手册活文档) |
 | 回顾"为什么现在长这样"、看某次重构的完整过程 | [`plans/`](./plans/README.md)（`01`–`24`）、[`research/`](#research--深度调研报告2026-07-05-快照) |
 | 找已经完成/废弃/不再维护的旧材料 | [`archive/`](./archive/README.md)、[`superpowers/`](#superpowers--历史设计草案)、[`compose/`](#compose--历史设计草案) |
+| 看未采纳的设计探索快照（**禁止作为开发参考**） | [`design-snapshots/`](./design-snapshots/README.md) |
 | 看某个版本发布了什么 | [`releases/`](./releases/) |
 
 ---
@@ -32,6 +33,7 @@ docs/
 ├── research/            2026-07-05 深度调研报告快照
 ├── releases/            版本发布记录
 ├── archive/             历史归档（含 trae-specs/、简化版本/、旧交接文档）
+├── design-snapshots/    未采纳的设计探索快照（git 跟踪，但非设计规范、禁止开发照搬）
 ├── superpowers/         历史设计草案（plans/ + specs/）
 └── compose/             历史设计草案（plans/ + specs/）
 ```
@@ -88,6 +90,10 @@ docs/
 - `HANDOFF-agent-sdk-trace-ui.md`：Agent SDK / Trace UI 迁移交接文档，已被计划 `22`/`23`/`24` 完成并取代。
 - `large-assets-2026-09.md`：大体积资源归档记录。
 - `REWRITE-LOOP.md`：大二上医学教材富文本改写循环的任务专属操作卡（原在仓库根目录）。任务已完成，可复用的反降质机制已沉淀进 [`sop/00-infrastructure.md`「内容生产闭环与反降质契约」](./sop/00-infrastructure.md#内容生产闭环与反降质契约)及 `01`/`02`/`02b`/`03`/`04` 各自的验收细节，现移入本目录仅作历史操作记录保留。
+
+## `design-snapshots/` —— 未采纳的设计探索快照
+
+仍被 git 跟踪的阶段性设计系统 / 设计稿快照，但对应体系尚未成熟、未被产品采纳。**不是设计规范，新功能设计与前端开发不得直接照搬**，见 [`design-snapshots/README.md`](./design-snapshots/README.md)。当前含 2026-09 StudySolo Glass 玻璃拟态探索（设计库 + 13 屏设计稿）。
 
 ## `superpowers/` —— 历史设计草案
 

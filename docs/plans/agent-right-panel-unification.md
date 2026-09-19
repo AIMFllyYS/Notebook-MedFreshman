@@ -4,6 +4,12 @@
 分析基线：本地工作区，Git HEAD `3445f3c8`  
 状态：方案与实施规划，尚未修改功能代码。单人分析，未使用子智能体。
 
+> **落地状态（2026-09-19 更新）**：本文件是改造**前的现状分析与方案**，第 3 节的“现状”描述的是改造前的代码。
+> 实际落地以外壳实现与 `agent-right-panel-unification.execution.md` 为准。方案里出现、但落地后已被替换或退役的设计：
+> `WorkspaceSurface`（未采用）、`placeAgentDockWindow` / `agentDockRect` / `fallbackAgentDockRect` /
+> `agentFullscreenPanelId`（右栏改为稳定宿主后整模块退役）、`RightPanel.hideAiTab`（并入 `hideBuiltinTabs`）、
+> `useHydratedSetting`（改为设置 store 默认值 + `hydrateSettings()`）。
+
 ## 1. 建议采用的方案
 
 **保留现有业务组件、打开入口和业务 store，以 `ManagedWindow` 为兼容入口，增加统一的展示策略和右侧宿主。普通模式沿用浮窗，Agent 桌面模式将同一份内容放进右侧工作区。独立弹层通过薄适配器接入。**
