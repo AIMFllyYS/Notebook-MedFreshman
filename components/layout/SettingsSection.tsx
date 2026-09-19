@@ -19,6 +19,12 @@ function Chevron({ open, size = 16 }: { open: boolean; size?: number }) {
   );
 }
 
+/**
+ * 设置面板里的一个折叠分区。外观由 variant 唯一决定，不再有第二个开关：
+ * - card：手机全屏设置页。卡片样式，展开内容直接向下推后面的卡片（不截高度、不做高度动画）。
+ * - menu：桌面弹出面板。扁平菜单项，一行「图标 标题 …… 摘要」；
+ *   展开内容缩进 + 灰字并限高内部滚动，让各分区的展开位移保持在同一量级。
+ */
 export default function SettingsSection({
   title,
   icon,
@@ -26,7 +32,6 @@ export default function SettingsSection({
   children,
   open,
   onToggle,
-  unbounded = false,
   testId,
   variant = "card",
 }: {
@@ -36,22 +41,12 @@ export default function SettingsSection({
   children: React.ReactNode;
   open: boolean;
   onToggle: () => void;
-  /** 手机设置页：不截高度，内容完整并向下推后面的卡片。 */
-  unbounded?: boolean;
   testId?: string;
-  /**
-   * card：手机全屏设置页的卡片外观。
-   * menu：桌面弹出面板的扁平菜单项——一行「标题 …… 摘要」，展开内容向下缩进、灰字。
-   */
   variant?: "card" | "menu";
 }) {
   if (variant === "menu") {
     return (
-      <section
-        className="shrink-0"
-        data-settings-expand={unbounded ? "unbounded" : "bounded"}
-        data-settings-variant="menu"
-      >
+      <section className="shrink-0" data-settings-expand="bounded" data-settings-variant="menu">
         <button
           type="button"
           aria-expanded={open}
@@ -74,7 +69,9 @@ export default function SettingsSection({
           <Chevron open={open} size={14} />
         </button>
         <AnimatedCollapse isOpen={open}>
-          <div className="pb-2 pl-[30px] pr-2 text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
+          {/* 限高 + 内部滚动：避免「快捷键」这类长内容把展开位移拉到 1500px 以上，
+              使各分区的展开动画位移保持在同一量级。 */}
+          <div className="max-h-[min(44vh,300px)] overflow-y-auto overscroll-contain pb-2 pl-[30px] pr-2 text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
             {children}
           </div>
         </AnimatedCollapse>
@@ -85,7 +82,7 @@ export default function SettingsSection({
   return (
     <section
       className="shrink-0 overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
-      data-settings-expand={unbounded ? "unbounded" : "bounded"}
+      data-settings-expand="unbounded"
       data-settings-variant="card"
       style={{
         background: "var(--md-sys-color-surface-container)",
@@ -114,25 +111,11 @@ export default function SettingsSection({
         </span>
         <Chevron open={open} />
       </button>
-      {unbounded ? (
-        open ? (
-          <div
-            className="border-t px-3.5 py-3"
-            style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
-          >
-            {children}
-          </div>
-        ) : null
-      ) : (
-        <AnimatedCollapse isOpen={open}>
-          <div
-            className="min-h-0 max-h-[50vh] overflow-y-auto overscroll-contain border-t px-3.5 py-3"
-            style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
-          >
-            {children}
-          </div>
-        </AnimatedCollapse>
-      )}
+      {open ? (
+        <div className="border-t px-3.5 py-3" style={{ borderColor: "var(--md-sys-color-outline-variant)" }}>
+          {children}
+        </div>
+      ) : null}
     </section>
   );
 }

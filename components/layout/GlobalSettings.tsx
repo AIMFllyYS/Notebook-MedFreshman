@@ -229,9 +229,20 @@ export default function GlobalSettings({
   useOverlayRegistration({ id: "global-settings", open: !page, onClose, priority: 50 });
 
   // 定位：打开时即算，并随窗口尺寸 / 滚动更新。
+  // 浅比较后写回：滚动事件用捕获阶段监听，会收到面板内部滚动，
+  // 无脑 setPos 会让每次滚动都重渲染整棵面板（动画进行中尤其有害）。
   useLayoutEffect(() => {
     if (page) return;
-    const update = () => setPos(computePos(anchorRef?.current ?? null));
+    const update = () =>
+      setPos((prev) => {
+        const next = computePos(anchorRef?.current ?? null);
+        return prev.left === next.left &&
+          prev.bottom === next.bottom &&
+          prev.width === next.width &&
+          prev.maxHeight === next.maxHeight
+          ? prev
+          : next;
+      });
     update();
     window.addEventListener("resize", update);
     window.addEventListener("scroll", update, true);
@@ -280,8 +291,8 @@ export default function GlobalSettings({
       role={page ? "region" : "dialog"}
       aria-label="设置"
       data-testid={page ? "global-settings-page" : "global-settings-popover"}
-      initial={page ? false : { opacity: 0, scale: 0.87, y: 5 }}
-      animate={page ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 0.9, y: 0 }}
+      initial={page ? false : { opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.18, ease: [0.05, 0.7, 0.1, 1] }}
       className={
         page
@@ -433,7 +444,6 @@ export default function GlobalSettings({
             open={openSection === "quota"}
             onToggle={() => toggleSection("quota")}
             summary="会员 · 用量 · 存储"
-            unbounded={page}
             testId="mobile-settings-quota"
           >
             <div className="flex flex-col gap-3">
@@ -452,7 +462,6 @@ export default function GlobalSettings({
             open={openSection === "year"}
             onToggle={() => toggleSection("year")}
             summary={ACADEMIC_YEAR_LABELS[academicYear]}
-            unbounded={page}
           >
             <AcademicYearSwitcher />
           </SettingsSection>
@@ -463,7 +472,6 @@ export default function GlobalSettings({
             icon={<Trophy size={16} />}
             open={openSection === "scores"}
             onToggle={() => toggleSection("scores")}
-            unbounded={page}
             summary={
               summary.chapters
                 ? `${summary.chapters} 章 · 平均 ${summary.avgBest} · ${summary.totalAttempts} 次`
@@ -594,7 +602,6 @@ export default function GlobalSettings({
             icon={<Keyboard size={16} />}
             open={openSection === "keyboard"}
             onToggle={() => toggleSection("keyboard")}
-            unbounded={page}
             summary={`已启用 ${keyboardEnabledCount} / ${SHORTCUTS.length}`}
           >
             <KeyboardShortcutsSettings />
@@ -606,7 +613,6 @@ export default function GlobalSettings({
             icon={<Palette size={16} />}
             open={openSection === "appearance"}
             onToggle={() => toggleSection("appearance")}
-            unbounded={page}
             summary={`${theme === "light" ? "浅色" : "深色"} · ${APPEARANCE_LABELS[appearance.mode]} · ${FONT_CHOICES[appearance.custom.font].label}`}
           >
             <AppearanceSettingsControls
