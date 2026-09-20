@@ -73,6 +73,7 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
         <p className="source-trace-empty">本轮没有可追踪的引用依据。</p>
       ) : (
         <DocumentWorkspace
+          layoutKey="source-trace"
           outlineLabel="来源目录"
           outline={sources.map((source, index) => ({
             id: sourceItemKey(source, index),

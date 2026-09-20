@@ -502,8 +502,20 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 4. **手写 interactives 注册表**  
    `components/interactives/registry.ts` + 右侧「可交互」tab（`InteractiveTab`）。手写 React 组件，与 AI artifact 无关。见该目录 `README.md`。
 
-5. **附件阅读器（PDF / PPTX / DOCX / MD）**  
-   入口：`AttachmentPreviewViewer` + `ManagedWindow`。PDF 内核是 `pdfjs-dist`（`PdfDocumentPane`，worker/cmap 在 `public/pdfjs/`）；Word 用 `docx-preview`；PPTX 视觉内核是 `pptx-preview`，失败时降级到 `parsePptxSlideText` 文本舞台。外壳是 `DocumentWorkspace`（左目录右正文），不要用库自带工具栏。文件类型图标（红 PDF / 蓝 Word / 橙 PPT）是有意偏离全局 primary 的例外。
+5. **附件阅读器（PDF / PPTX / DOCX / MD / HTML）**  
+   入口：`AttachmentPreviewViewer` + `ManagedWindow`。外壳是 `DocumentWorkspace`（左目录右正文），不要用库自带工具栏。文件类型图标（红 PDF / 蓝 Word / 橙 PPT）是有意偏离全局 primary 的例外。
+
+   **PDF / PPTX 共用「连续纵向页列」模型**：所有页在 `.document-workspace-body` 这一个滚动容器里上下排布，按视口懒渲染；大纲点击 = 滚动定位；缩放/宽度策略是「宽度优先」，不是「塞进盒子」。
+   - PDF：`PdfDocumentPane`（页列 + 当前页推导 + 工具栏）+ `PdfPageCanvas`（单页画布 + 文本层）。worker/cmap 在 `public/pdfjs/`。
+     画布必须按 `devicePixelRatio` 开位图并把 `transform` 交给 pdf.js —— **不要再给 canvas 加任何 CSS 缩放**（历史上的 `max-w-full` 会把位图压小，高分屏直接发虚）。
+     `RenderTask` 必须存下来并在 cleanup 里 `cancel()`，同一块 canvas 上的并发渲染会被 pdf.js 拒绝。
+   - PPTX：`pptx-preview` 必须用 `init(host, { width, mode: "list" })`（**不传 `height`**），再 `load()` + 按需 `htmlRender.renderSlide(i)` 落进 `.pptx-page-slot`。
+     三档降级：懒渲染 → `preview()` 全量 list → `parsePptxSlideBytes` 文字舞台。
+     **不要传 `height`**（库只在有 height 时写死高度与 `overflow`），**不要用 `mode: "slide"`**（它按视口高度垂直居中 `renderPort`，4:3 稿件会上下各裁 90px），也不要再猜库的 DOM 标签名去隐藏控件（list 模式根本不创建那些控件）。
+   - HTML：允许脚本，默认**锁网**（CSP 由 `htmlPreviewCsp(network)` 生成），窗口上有显式「允许联网」开关；sandbox 复用 `ARTIFACT_IFRAME_SANDBOX` + `injectOpaqueOriginStorageShim`，**始终不加 `allow-same-origin`**。
+     `sandbox=""`（全禁，含脚本）会让任何脚本驱动的页面只剩静态壳——不要再退回去。
+
+   阅读器的宽度来源是 `useElementWidth(bodyRef)`，正文容器由 `DocumentWorkspace` 的 `bodyRef` 暴露。
 
 6. **来源浏览器（笔记引用 / 联网搜索 / 「来源」）**  
    左目录右正文，与笔记引用同一套 `DocumentWorkspace`。`WebSourceFold` 与追问卡「来源」打开 `source-trace-viewer`，不再为每条链接新开窗，也不再 `router.push` 回主栏。网页能嵌则嵌（共用 `WebviewSite` / 预检 iframe），否则摘要 + JSON。

@@ -17,6 +17,12 @@ import type { ProjectFileEntry } from "@/lib/project/types";
 import { projectFilesWindowId } from "@/lib/project/openProjectFiles";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
+/** 工具条按钮：四个按钮共用一份样式，避免各写各的以后漂移。 */
+const TOOLBAR_BUTTON =
+  "flex shrink-0 items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2 py-1 text-[12px] text-[var(--ink)] hover:border-[var(--accent)]";
+const TOOLBAR_DANGER_BUTTON =
+  "flex shrink-0 items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2 py-1 text-[12px] text-[var(--md-sys-color-error)] hover:border-[var(--md-sys-color-error)]";
+
 function statusLabel(file: ProjectFileEntry): string {
   if (file.status === "parsing") return "解析中…";
   if (file.status === "error") return `解析失败：${file.error ?? "未知原因"}`;
@@ -55,7 +61,9 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
           id: `${activeFile.id}:index`,
           title: ".index.md",
           kindLabel: "索引",
-          meta: activeFile.name,
+          // 这里以前放的是文件名，10px 等宽字截断成一条看不清的「面包屑」。
+          // 文件名已经由下方文件树承担，这里改成这份索引的规模，短且有用。
+          meta: `${activeFile.slices.length} 片 · ${activeFile.charCount} 字`,
         },
         ...activeFile.slices.map((slice) => ({
           id: `${activeFile.id}:${slice.id}`,
@@ -84,25 +92,35 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
 
   const results = useMemo(() => searchStudioRefs(studioQuery), [studioQuery]);
 
+  const carryText =
+    carry.mode === "all"
+      ? `已全部带入（${carry.totalSlices} 片 · ${carry.totalChars} 字）`
+      : carry.mode === "pinned"
+        ? `带入 ${carry.sliceIds.length} 片 / 共 ${carry.totalSlices} 片`
+        : carry.totalSlices > 0
+          ? `项目较大，暂未带入（共 ${carry.totalSlices} 片）：在切片行点「带入」`
+          : "还没有可带入的内容";
+
   const toolbar = (
-    <div className="flex flex-wrap items-center gap-2" data-no-drag>
-      <span className="text-[11.5px] text-[var(--ink-faint)]" data-testid="project-carry-status">
-        {carry.mode === "all"
-          ? `已全部带入（${carry.totalSlices} 片 · ${carry.totalChars} 字）`
-          : carry.mode === "pinned"
-            ? `带入 ${carry.sliceIds.length} 片 / 共 ${carry.totalSlices} 片`
-            : carry.totalSlices > 0
-              ? `项目较大，暂未带入（共 ${carry.totalSlices} 片）：在切片行点「带入」`
-              : "还没有可带入的内容"}
+    // 工具条高度固定 32px：状态文案自己截断，按钮组 shrink-0 且不换行，
+    // 否则窗口一窄按钮就被换行挤出可视区（以前是 flex-wrap，会直接溢出这条 32px）。
+    <div className="flex min-w-0 flex-1 items-center gap-2" data-no-drag>
+      <span
+        className="min-w-0 flex-1 truncate text-[11.5px] text-[var(--ink-faint)]"
+        title={carryText}
+        data-testid="project-carry-status"
+      >
+        {carryText}
       </span>
-      <button type="button" data-no-drag className="ml-auto flex items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2 py-1 text-[12px] text-[var(--ink)] hover:border-[var(--accent)]" onClick={() => fileInputRef.current?.click()}>
+      <div className="flex shrink-0 items-center gap-2">
+      <button type="button" data-no-drag className={TOOLBAR_BUTTON} onClick={() => fileInputRef.current?.click()}>
         <FilePlus2 size={13} /> 添加文件
       </button>
       <AnchoredMenu
         label="引用 Studio 教材"
         trigger={<><Link2 size={13} /> 引用教材</>}
         width={280}
-        className="flex items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2 py-1 text-[12px] text-[var(--ink)] hover:border-[var(--accent)]"
+        className={TOOLBAR_BUTTON}
       >
         {(close) => (
           <>
@@ -143,19 +161,22 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
       </AnchoredMenu>
       {activeFile ? (
         <>
-          <button type="button" data-no-drag className="flex items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2 py-1 text-[12px] text-[var(--ink)] hover:border-[var(--accent)]" onClick={() => fileInputRef.current?.click()} title="重新导入同名文件即可重新解析">
+          <button type="button" data-no-drag className={TOOLBAR_BUTTON} onClick={() => fileInputRef.current?.click()} title="重新导入同名文件即可重新解析">
             <RefreshCw size={13} /> 重新导入
           </button>
-          <button type="button" data-no-drag className="flex items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2 py-1 text-[12px] text-[var(--md-sys-color-error)] hover:border-[var(--md-sys-color-error)]" onClick={() => removeFile(activeFile.id)}>
+          <button type="button" data-no-drag className={TOOLBAR_DANGER_BUTTON} onClick={() => removeFile(activeFile.id)}>
             <Trash2 size={13} /> 移除
           </button>
         </>
       ) : null}
+      </div>
     </div>
   );
 
   const folderTree = (
-    <div className="flex flex-col gap-0.5 py-1" data-testid="project-file-tree">
+    // 带文件夹树时 .note-citation-sidebar 的 padding 被置 0，这里自己补左右内边距，
+    // 否则文件行会贴死在目录列的左/右边线上。
+    <div className="flex flex-col gap-0.5 px-1.5 py-1" data-testid="project-file-tree">
       {files.length === 0 ? (
         <p className="px-3 py-2 text-[11.5px] leading-relaxed text-[var(--ink-faint)]">
           还没有文件。点「添加文件」导入本机文件，或「引用教材」软链接一条 Studio 内容。
@@ -192,13 +213,16 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
       if (!slice) return null;
       return (
         <div className="flex h-full flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <span className="text-[12.5px] font-medium text-[var(--ink)]">{slice.title}</span>
-            <span className="text-[11.5px] text-[var(--ink-faint)]">{slice.chars} 字</span>
+          {/* 标题可截断、字数与按钮不参与压缩：窗口窄的时候挤坏的应该是标题，不是按钮。 */}
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="min-w-0 truncate text-[12.5px] font-medium text-[var(--ink)]" title={slice.title}>
+              {slice.title}
+            </span>
+            <span className="shrink-0 text-[11.5px] text-[var(--ink-faint)]">{slice.chars} 字</span>
             <button
               type="button"
               data-testid="project-slice-pin"
-              className={`ml-auto rounded-lg border px-2 py-1 text-[11.5px] ${slice.pinned ? "border-[var(--accent)] text-[var(--accent-ink)]" : "border-[var(--line-soft)] text-[var(--ink-soft)]"}`}
+              className={`ml-auto shrink-0 rounded-lg border px-2 py-1 text-[11.5px] ${slice.pinned ? "border-[var(--accent)] text-[var(--accent-ink)]" : "border-[var(--line-soft)] text-[var(--ink-soft)]"}`}
               onClick={() => setPinned(activeFile.id, slice.id, !slice.pinned)}
               title={carry.mode === "all" ? "项目不大，已经全部带入" : "这一片是否随对话一起带给 Agent"}
             >
@@ -244,6 +268,7 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
         }}
       />
       <DocumentWorkspace
+        layoutKey="project-files"
         outlineLabel={activeFile ? activeFile.name : "切片"}
         outline={outline}
         activeId={currentId}

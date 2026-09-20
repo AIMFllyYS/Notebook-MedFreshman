@@ -1,0 +1,63 @@
+/* ─────────────────────────────────────────────────────────────
+   PPTX 阅读器（纵向页列）
+   pptx-preview 用 mode:"list" 把每一页渲染成 position:relative 的块；
+   我们把它搬到 .pptx-page-slot 槽里按序排列，整体交给 .document-workspace-body 滚动。
+   库自带的工具栏/按钮在 list 模式下根本不会创建，这里不需要再隐藏任何控件。
+   ───────────────────────────────────────────────────────────── */
+
+.pptx-pages {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.pptx-page-slot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* 库把幻灯片写成 margin: 0 auto 10px；间距由 .pptx-pages 的 gap 统一负责。 */
+.pptx-page-slot > .pptx-preview-slide-wrapper {
+  margin: 0 !important;
+}
+
+/* 单个页面渲染失败时的文字回退卡（保留原排版能力，至少能读）。 */
+.pptx-page-slot.is-text {
+  padding: 18px 20px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink);
+  white-space: pre-wrap;
+  box-sizing: border-box;
+}
+
+.pptx-page-slot.is-text .pptx-page-fallback-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* 库的原始宿主只用来「生产」幻灯片 DOM，成品会被搬进槽里，所以整块不参与排版。 */
+.pptx-source-host {
+  display: none;
+}
+
+.pptx-pages-status {
+  padding: 24px 16px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}

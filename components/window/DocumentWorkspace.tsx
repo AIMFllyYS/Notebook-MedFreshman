@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type ReactNode, type Ref } from "react";
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -62,16 +62,19 @@ function Stage({
   toolbar,
   children,
   navToggle,
+  bodyRef,
 }: {
   toolbar?: ReactNode;
   children: ReactNode;
   /** Agent 里的列表收起/展开把手：贴在目录列那一侧的正文边缘上。 */
   navToggle?: ReactNode;
+  /** 阅读器（PDF/PPTX）要拿这个滚动容器做滚动定位与宽度测量。 */
+  bodyRef?: Ref<HTMLDivElement>;
 }) {
   return (
     <div className="document-workspace-stage">
       {toolbar ? <div className="document-workspace-toolbar">{toolbar}</div> : null}
-      <div className="document-workspace-body">{children}</div>
+      <div className="document-workspace-body" ref={bodyRef}>{children}</div>
       {navToggle}
     </div>
   );
@@ -95,9 +98,12 @@ function FolderTreeResizeHandle() {
 function LeftPane({
   nav,
   folderTree,
+  layoutKey,
 }: {
   nav: ReactNode;
   folderTree?: ReactNode;
+  /** 每个工作区各自的持久化键：不带它就等于让所有窗口共用一条分栏宽度。 */
+  layoutKey: string;
 }) {
   if (!folderTree) {
     return <div className="note-citation-sidebar">{nav}</div>;
@@ -107,7 +113,7 @@ function LeftPane({
     <div className="note-citation-sidebar has-folder-tree">
       <PanelGroup
         direction="vertical"
-        autoSaveId="document-workspace-folder-tree"
+        autoSaveId={`document-workspace-folder-tree:${layoutKey}`}
         className="h-full min-h-0"
       >
         <Panel defaultSize={75} minSize={28} className="min-h-0">
@@ -130,8 +136,9 @@ export default function DocumentWorkspace({
   children,
   outlineLabel = "目录",
   emptyLabel,
-  resizable = false,
+  layoutKey = "default",
   folderTree,
+  bodyRef,
 }: {
   outline: DocumentOutlineItem[];
   activeId: string;
@@ -141,10 +148,15 @@ export default function DocumentWorkspace({
   outlineLabel?: string;
   /** 目录为空时的说明。缺省「没有目录」。 */
   emptyLabel?: string;
-  /** PDF / PPT 左右栏可拖拽缩放；笔记来源等保持固定目录宽。 */
-  resizable?: boolean;
+  /**
+   * 分栏宽度的持久化键（同一外壳下每类工作区一个）。
+   * 不传就全部共用 "default" —— 拖一次目录，所有窗口的目录宽度都会跟着变。
+   */
+  layoutKey?: string;
   /** 左侧列表下方的文件夹树（学年 → 学科），默认约 1/4 高，可上下拖。 */
   folderTree?: ReactNode;
+  /** 正文滚动容器。连续滚动的阅读器靠它做滚动定位、当前页推导与宽度测量。 */
+  bodyRef?: Ref<HTMLDivElement>;
 }) {
   // Agent 右栏窄：目录列改挂右侧，并且可以整个收起来，把宽度让给正文。
   const agentSurface = useIsAgentSurface();
@@ -161,7 +173,7 @@ export default function DocumentWorkspace({
       emptyLabel={emptyLabel}
     />
   );
-  const left = <LeftPane nav={nav} folderTree={folderTree} />;
+  const left = <LeftPane nav={nav} folderTree={folderTree} layoutKey={layoutKey} />;
   const navToggle = agentSurface ? (
     <button
       type="button"
@@ -177,63 +189,62 @@ export default function DocumentWorkspace({
     </button>
   ) : null;
   const stage = (
-    <Stage toolbar={toolbar} navToggle={navToggle}>
+    <Stage toolbar={toolbar} navToggle={navToggle} bodyRef={bodyRef}>
       {children}
     </Stage>
   );
 
-  if (!resizable) {
-    return (
-      <div
-        className={clsx("note-citation-layout document-workspace", agentSurface && "is-agent")}
-        data-nav-side={navSide}
-      >
-        {agentSurface ? (
-          <>
-            {stage}
-            {showNav ? left : null}
-          </>
-        ) : (
-          <>
-            {left}
-            {stage}
-          </>
-        )}
-      </div>
-    );
-  }
+  // 目录列一律可拖拽：几乎所有工作区（PDF/PPTX/笔记库/闪卡/来源/长文本）都靠它导航，
+  // 固定 13.5rem 在窄窗口里要么太宽要么太窄，交给用户自己拉。
+  //
+  // 分栏顺序按「视觉顺序」直接铺开，**不要用 Panel 的 order 属性**：
+  // PanelResizeHandle 没有 order（等于 0），而 Agent 下 stage/nav 是 2/3，
+  // 于是分隔条会被排到最前面 —— 目录明明挂在右边，拖拽线却画在整块正文的最左边，
+  // 用户抓住的是工作区外沿（实测抓到右栏自身的分栏边界），目录根本调不动。
+  const navPanel = (
+    <Panel id="document-workspace-nav" defaultSize={agentSurface ? 26 : 24} minSize={12} maxSize={60} className="min-h-0 min-w-0">
+      <div className="flex h-full min-h-0 min-w-0 flex-col">{left}</div>
+    </Panel>
+  );
+  // Agent 下 stage 曾经是 defaultSize=100，与 nav 的 26 相加超过 100，
+  // react-resizable-panels 归一化后目录只剩 ~20%，窄得没法用。两边都给成能相加的和。
+  const stagePanel = (
+    <Panel id="document-workspace-stage" defaultSize={agentSurface ? 74 : 76} minSize={30} className="min-h-0 min-w-0">
+      <div className="flex h-full min-h-0 min-w-0 flex-col">{stage}</div>
+    </Panel>
+  );
+  const splitter = (
+    <PanelResizeHandle
+      data-no-drag
+      data-testid="document-workspace-resize-handle"
+      className="document-workspace-resize-handle group relative outline-none"
+    >
+      <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
+      <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-data-[resize-handle-state=drag]:opacity-100">
+        <span className="block h-7 w-1 rounded-full bg-[var(--md-sys-color-primary)]/50" />
+      </span>
+    </PanelResizeHandle>
+  );
 
   return (
     <PanelGroup
       direction="horizontal"
-      autoSaveId="document-workspace"
+      autoSaveId={`document-workspace:${agentSurface ? "agent" : "studio"}:${layoutKey}`}
       className={clsx("note-citation-layout document-workspace is-resizable", agentSurface && "is-agent")}
       data-nav-side={navSide}
     >
-      {!agentSurface && (
-        <Panel id="document-workspace-nav" order={1} defaultSize={24} minSize={14} maxSize={48} className="min-h-0 min-w-0">
-          <div className="flex h-full min-h-0 min-w-0 flex-col">{left}</div>
-        </Panel>
-      )}
-      {(!agentSurface || showNav) && (
-        <PanelResizeHandle
-          data-no-drag
-          data-testid="document-workspace-resize-handle"
-          className="document-workspace-resize-handle group relative outline-none"
-        >
-          <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
-          <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-data-[resize-handle-state=drag]:opacity-100">
-            <span className="block h-7 w-1 rounded-full bg-[var(--md-sys-color-primary)]/50" />
-          </span>
-        </PanelResizeHandle>
-      )}
-      <Panel id="document-workspace-stage" order={2} defaultSize={agentSurface ? 100 : 76} minSize={36} className="min-h-0 min-w-0">
-        <div className="flex h-full min-h-0 min-w-0 flex-col">{stage}</div>
-      </Panel>
-      {agentSurface && showNav && (
-        <Panel id="document-workspace-nav" order={3} defaultSize={26} minSize={16} maxSize={48} className="min-h-0 min-w-0">
-          <div className="flex h-full min-h-0 min-w-0 flex-col">{left}</div>
-        </Panel>
+      {agentSurface ? (
+        <>
+          {stagePanel}
+          {showNav && splitter}
+          {showNav && navPanel}
+        </>
+      ) : (
+        <>
+          {navPanel}
+          {splitter}
+          {stagePanel}
+        </>
       )}
     </PanelGroup>
   );

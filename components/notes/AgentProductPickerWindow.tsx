@@ -83,6 +83,7 @@ function AgentProductPicker() {
         </div>
       ) : (
         <DocumentWorkspace
+          layoutKey="product-picker"
           outlineLabel={kind === "document" ? "长文本" : "可交互 HTML"}
           outline={items.map((item) => ({
             id: item.id,

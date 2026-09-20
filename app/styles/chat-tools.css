@@ -397,35 +397,7 @@
   background: var(--md-sys-color-primary);
 }
 
-.document-workspace-body:has(.pptx-stage-fit) {
-  overflow: hidden;
-}
-
-.pptx-stage-fit {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 8px;
-  box-sizing: border-box;
-}
-
-.pptx-stage-scaler,
-.pptx-stage-scaler.document-workspace-paper {
-  position: relative;
-  flex-shrink: 0;
-  margin: 0;
-}
-
-.pptx-visual-host {
-  position: absolute;
-  left: 0;
-  top: 0;
-}
+/* PPTX 阅读器改成连续页列后，旧的「单页缩放舞台」规则全部搬到 app/styles/pptx-reader.css。 */
 
 .note-citation-sidebar {
   display: flex;
@@ -1913,3 +1885,51 @@ mark.citation-flash {
     border-bottom: none;
   }
 }
+
+/* ── 「项目文件」缺项目时的引导弹窗 ─────────────────────────────
+   复用 .app-dialog 的壳，但不用它的 error 色 eyebrow 与整宽主按钮：
+   这里是一次「引导」而不是一次「报错」。 */
+.project-required-eyebrow {
+  color: var(--md-sys-color-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.project-required-list {
+  display: flex;
+  max-height: 15rem;
+  margin: 14px 0 2px;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.project-required-create {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.project-required-new {
+  margin-top: 10px;
+}
+
+.project-required-cancel {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.project-required-cancel:hover {
+  border-color: var(--md-sys-color-outline);
+  color: var(--ink);
+}
+

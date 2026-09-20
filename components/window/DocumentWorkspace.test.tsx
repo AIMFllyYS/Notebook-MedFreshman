@@ -18,24 +18,26 @@ describe("DocumentWorkspace", () => {
     vi.unstubAllGlobals();
   });
 
-  it("keeps a fixed sidebar without a splitter by default", () => {
+  // 目录列曾经有「固定 13.5rem、不可拖拽」的分支，窄窗口里不是太宽就是太窄。
+  // 现在一律可拖拽 —— 这条测试锁住「默认就有分隔条」，别再退回固定宽度。
+  it("目录列默认就带可拖拽分隔条，没有固定宽度分支", () => {
     render(
       <DocumentWorkspace outline={[{ id: "1", title: "目录项" }]} activeId="1" onSelect={() => {}}>
         正文
       </DocumentWorkspace>,
     );
     expect(screen.getByLabelText("目录")).toBeVisible();
-    expect(screen.queryByTestId("document-workspace-resize-handle")).not.toBeInTheDocument();
+    expect(screen.getByTestId("document-workspace-resize-handle")).toBeVisible();
   });
 
-  it("shows a draggable splitter when resizable", () => {
+  it("带 outlineLabel 时同样可拖拽", () => {
     render(
       <DocumentWorkspace
-        resizable
         outline={[{ id: "1", title: "第一页", meta: "Slide 1" }]}
         activeId="1"
         onSelect={() => {}}
         outlineLabel="幻灯片"
+        layoutKey="pptx"
       >
         舞台
       </DocumentWorkspace>,

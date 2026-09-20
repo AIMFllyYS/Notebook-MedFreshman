@@ -154,6 +154,7 @@ export default function NoteLibraryWindow() {
       unmountWhenMinimized
     >
       <DocumentWorkspace
+        layoutKey="note-library"
         outlineLabel={activeTab === "mine" ? "我的笔记" : "课堂笔记"}
         outline={outline}
         activeId={activeTab === "mine" ? (activeNote?.id ?? "") : (activeClassroom?.id ?? "")}
