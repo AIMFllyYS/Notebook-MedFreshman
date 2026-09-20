@@ -944,6 +944,9 @@ html:not([data-theme="light"]) [data-agent-shell] {
   --agent-chat-inline: clamp(20px, 2.6vw, 44px);
   /* 用户口径：Agent 这一栏要比 Codex 再收一点，两侧留白多一些，整体才协调。 */
   --agent-chat-max: 780px;
+  /* 三个切面左移的下限 = 让开顶栏那个「StudySolo · Agent」模式切换器（实测右边界 ≈249px）。
+     左侧对话栏收到底时 --agent-left-width 会趋近 0；没有这个下限，切面会一路左移盖住 LOGO。 */
+  --agent-tabs-min-left: 264px;
 }
 /* 来源列的拉开 / 收起：与左右面板**同一条横向缓动**（同样的时长与曲线），
    这样「点来源 → 对话列让位」跟「拉左右栏」是同一个手感。
@@ -965,7 +968,8 @@ html[data-panels-ready] [data-agent-shell] .agent-source-column {
 /* 顶栏那三个切面（回答 / 来源 / 图片）跟正文共用一条左边界：
    左边 = 对话栏宽度 + 正文内边距（与 .chat-messages 的 padding 同一个表达式），右边让开来源列。 */
 [data-agent-shell] .agent-center-tabs-overlay {
-  left: calc(var(--agent-left-width, 0px) + var(--agent-chat-inline, 32px));
+  /* max() 就是那个阈值：贴到 LOGO 之后不再跟着左栏继续左移（用户口径）。 */
+  left: max(var(--agent-tabs-min-left), calc(var(--agent-left-width, 0px) + var(--agent-chat-inline, 32px)));
   right: var(--agent-sources-width, 0px);
 }
 

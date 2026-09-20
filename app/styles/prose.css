@@ -959,6 +959,16 @@
   transition: opacity 120ms var(--ease-out), transform 120ms var(--ease-out), visibility 0s linear 120ms;
 }
 
+/* 定位点挪到左侧之后，预览气泡必须跟着翻到**右边**开：
+   它默认是 right: calc(100% + 12px)（往左开 244px），放在左边缘就会压在左侧导航栏上。
+   只覆盖 Agent 的 left 变体 —— Studio 右栏 / 划词浮窗 / 笔记窗的定位点在右侧，保持原样。 */
+[data-agent-shell] .chat-thread[data-dots-placement="left"] .chat-message-dot-preview {
+  left: calc(100% + 12px);
+  right: auto;
+  /* 与默认的 +5px 镜像：进场那一下仍然是从气泡"里侧"滑出来。 */
+  transform: translate(-5px, -50%);
+}
+
 .chat-message-dot-preview strong {
   color: var(--md-sys-color-on-surface);
   font-size: 10px;
