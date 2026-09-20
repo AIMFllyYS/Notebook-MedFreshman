@@ -230,7 +230,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                     alt={`${session.title} ${idx + 1}`}
                     className="w-full cursor-zoom-in"
                     style={{ display: "block" }}
-                    onClick={() => openLightbox(src, session.title)}
+                    onClick={() => openLightbox(src, session.title, { toolbar: "top-right" })}
                   />
                   <button
                     type="button"

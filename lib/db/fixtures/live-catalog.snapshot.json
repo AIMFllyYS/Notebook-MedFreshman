@@ -1,7 +1,7 @@
 {
-  "source": "pglite-after-0006",
+  "source": "pglite-after-0008",
   "projectRef": "jlahwwnjbhqfnsicdjsx",
-  "capturedAt": "2026-09-17T05:31:22.181Z",
+  "capturedAt": "2026-09-20T12:51:29.726Z",
   "catalog": {
     "tables": [
       "app_users",
@@ -9,6 +9,7 @@
       "redemption_codes",
       "redemptions",
       "schema_migrations",
+      "shared_conversations",
       "sync_documents",
       "usage_ledger"
     ],
@@ -21,6 +22,9 @@
       "redemptions_code_id_user_id_key",
       "redemptions_pkey",
       "schema_migrations_pkey",
+      "shared_conversations_created_idx",
+      "shared_conversations_owner_created_idx",
+      "shared_conversations_pkey",
       "sync_documents_pkey",
       "sync_documents_user_id_kind_client_id_key",
       "sync_documents_user_kind_idx",
@@ -32,6 +36,7 @@
     "uniqueConstraints": [],
     "primaryKeys": [],
     "functions": [
+      "get_shared_conversation",
       "handle_new_user",
       "quota_period_sum",
       "sync_documents_enforce_bytes",
@@ -48,6 +53,10 @@
       "app_users_select_own",
       "quota_grants_select_own",
       "redemptions_select_own",
+      "shared_conversations_delete_own",
+      "shared_conversations_insert_own",
+      "shared_conversations_select_own",
+      "shared_conversations_update_own",
       "sync_documents_all_own",
       "usage_ledger_select_own"
     ],
@@ -57,10 +66,14 @@
       "redemption_codes",
       "redemptions",
       "schema_migrations",
+      "shared_conversations",
       "sync_documents",
       "usage_ledger"
     ],
     "grants": [
+      "function:get_shared_conversation:EXECUTE:anon",
+      "function:get_shared_conversation:EXECUTE:authenticated",
+      "function:get_shared_conversation:EXECUTE:service_role",
       "function:handle_new_user:EXECUTE:anon",
       "function:handle_new_user:EXECUTE:authenticated",
       "function:handle_new_user:EXECUTE:service_role",
@@ -159,6 +172,14 @@
       "table:schema_migrations:TRIGGER:service_role",
       "table:schema_migrations:TRUNCATE:service_role",
       "table:schema_migrations:UPDATE:service_role",
+      "table:shared_conversations:DELETE:authenticated",
+      "table:shared_conversations:DELETE:service_role",
+      "table:shared_conversations:INSERT:authenticated",
+      "table:shared_conversations:INSERT:service_role",
+      "table:shared_conversations:SELECT:authenticated",
+      "table:shared_conversations:SELECT:service_role",
+      "table:shared_conversations:UPDATE:authenticated",
+      "table:shared_conversations:UPDATE:service_role",
       "table:sync_documents:DELETE:anon",
       "table:sync_documents:DELETE:authenticated",
       "table:sync_documents:DELETE:service_role",

@@ -388,19 +388,37 @@
 .image-lightbox-close:hover {
   background: rgba(255, 255, 255, 0.25);
 }
+/* 图片 + 工具栏竖排：工具栏默认就贴在图片下方（用户口径：「在图片下方给一条工具栏」）。 */
+.image-lightbox-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  max-height: 100%;
+}
 .image-lightbox-controls {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   z-index: 10;
+  flex-shrink: 0;
+}
+/* Mac 弹窗：图片是窗口的一部分，工具栏压在图下面会跟窗口自己的底部打架，挪到右上角（关闭按钮左侧）。 */
+.image-lightbox-backdrop[data-toolbar="top-right"] .image-lightbox-controls {
+  position: absolute;
+  top: 16px;
+  right: 68px;
+}
+.image-lightbox-divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 2px;
+  background: rgba(255, 255, 255, 0.22);
 }
 .image-lightbox-controls button {
   width: 32px;

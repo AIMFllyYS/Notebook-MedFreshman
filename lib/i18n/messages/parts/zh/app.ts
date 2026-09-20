@@ -27,6 +27,8 @@ export const appZh = {
     zoomIn: "放大",
     zoomOut: "缩小",
     reset: "重置",
+    download: "下载图片",
+    downloadFailed: "下载失败，已在新标签页打开。",
   },
   account: {
     guest: "访客",

@@ -27,6 +27,8 @@ export const appEn = {
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     reset: "Reset",
+    download: "Download image",
+    downloadFailed: "Download failed; opened in a new tab instead.",
   },
   account: {
     guest: "Guest",
