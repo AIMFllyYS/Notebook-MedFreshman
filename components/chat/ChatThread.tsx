@@ -35,6 +35,11 @@ interface ChatThreadProps {
   topic?: string;
   /** 是否在回答下方渲染追问块。窗内笔记对话传 false。默认 true。 */
   showFollowUps?: boolean;
+  /**
+   * 「定位点」轨道贴哪边。默认 right（Studio 右栏 / 划词浮窗 / 笔记窗保持原样）；
+   * Agent 中央对话传 left —— 那边右侧要留给来源栏，左边那片留白正好放它。
+   */
+  dotsPlacement?: "right" | "left";
 }
 
 /**
@@ -57,6 +62,7 @@ export default function ChatThread({
   repairModelId,
   topic,
   showFollowUps = true,
+  dotsPlacement = "right",
 }: ChatThreadProps) {
   const t = useT();
   const internalRef = useRef<HTMLDivElement>(null);
@@ -228,7 +234,7 @@ export default function ChatThread({
   };
 
   return (
-    <div className="chat-thread">
+    <div className="chat-thread" data-dots-placement={dotsPlacement}>
       <div
         ref={scrollRef}
         onScroll={onScroll}

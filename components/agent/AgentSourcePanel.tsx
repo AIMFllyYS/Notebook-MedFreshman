@@ -5,7 +5,7 @@ import { BookOpen, Globe, Link2 } from "lucide-react";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { useStore } from "@/lib/stores/ui";
-import { clampSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
+import { SOURCES_PANEL_INSET as INSET, clampSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
 import { useT } from "@/lib/i18n";
 import { labelRounds } from "./sourceRoundLabel";
 
@@ -96,10 +96,20 @@ export default function AgentSourcePanel({
   if (sources.length === 0) return null;
 
   return (
+    /**
+     * 这一列**占真实宽度**（卡片宽 + 两侧留白）：中间的对话列因此被压窄，正文永远不会钻到卡片底下。
+     * 卡片本身仍是浮起来的（圆角 + 阴影 + 左上留白），看起来是悬浮窗而不是侧栏。
+     * 隐藏时整列消失，对话列拿回整宽 —— flex 兄弟会自动让它在「左栏右侧那块区域」里重新居中。
+     */
+    <aside
+      data-testid="agent-source-column"
+      className="relative flex h-full shrink-0 flex-col"
+      style={{ width: size.width + INSET * 2 }}
+    >
     <div
       data-testid="agent-source-panel"
-      className="absolute right-4 top-3 z-20 flex flex-col overflow-hidden rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] shadow-[0_12px_36px_rgba(0,0,0,0.22)] backdrop-blur"
-      style={{ width: size.width, height: size.height }}
+      className="relative ml-3 mt-3 flex min-h-0 flex-col overflow-hidden rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
+      style={{ height: size.height }}
     >
       <header className="flex h-9 shrink-0 items-center gap-1.5 border-b border-[var(--line-soft)] px-3">
         <Link2 size={13} className="shrink-0 text-[var(--accent)]" />
@@ -159,5 +169,6 @@ export default function AgentSourcePanel({
         className="absolute bottom-0 left-0 h-3.5 w-3.5 cursor-nesw-resize"
       />
     </div>
+    </aside>
   );
 }

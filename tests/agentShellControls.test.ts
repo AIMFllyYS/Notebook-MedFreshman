@@ -107,8 +107,10 @@ test("Agent 中央对话：不贴满左右面板（空隙 + 可读宽度居中�
   const globals = readFile("app/globals.css");
   const thread = readFile("components/chat/ChatThread.tsx");
   // 两个变量挂在 agent 外壳的对话面板上
-  assert.match(globals, /\[data-agent-shell\] \.chat-panel \{\s*\n\s*--agent-chat-inline: clamp\(20px, 2\.6vw, 44px\);/);
-  assert.match(globals, /--agent-chat-max: 920px;/);
+  // 变量挂在 [data-agent-shell] 根节点上：顶栏那三个切面也要读同一条内边距（挂 .chat-panel 上它读不到）。
+  assert.match(globals, /\[data-agent-shell\] \{\s*\n\s*--agent-chat-inline: clamp\(20px, 2\.6vw, 44px\);/);
+  // 用户口径：Agent 这一栏要比 Codex 再收一点（780，原 920），两侧留白多一些才协调。
+  assert.match(globals, /--agent-chat-max: 780px;/);
   // 消息流两侧留白（!important 盖住「有跳转点时内联的 18px」）
   assert.match(globals, /\[data-agent-shell\] \.chat-messages \{\s*\n\s*padding-left: var\(--agent-chat-inline\) !important;/);
   assert.match(globals, /padding-right: var\(--agent-chat-inline\) !important;/);

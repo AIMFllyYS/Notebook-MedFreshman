@@ -1,0 +1,645 @@
+/* ─────────────────────────────────────────────────────────────
+   Auth 板块专用样式：Mac 玻璃窗（GlassCard）/ 登录页 / 人机验证。
+   令牌来自 globals.css 的 studysolo-glass 组；模糊只挂在两处：
+   玻璃窗本体（deep）与遮罩（light 8px），别处不再叠 backdrop-filter。
+   ───────────────────────────────────────────────────────────── */
+
+/* ── 遮罩：macOS 打开窗口的景深感（低透明 + 轻模糊） ── */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--glass-scrim, rgba(0, 0, 0, 0.35));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  animation: agent-settings-overlay-in 160ms var(--ease-out, ease-out) both;
+}
+.login-overlay { z-index: 10010; }
+.human-challenge-overlay { z-index: 10015; }
+
+/* 环境光晕层：验证面板随所选科目呼吸换色 */
+.auth-overlay::before,
+.auth-overlay::after {
+  content: "";
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.16;
+  pointer-events: none;
+  transition: background 600ms ease;
+}
+.auth-overlay::before {
+  top: -18vmax;
+  left: -12vmax;
+  background: var(--auth-ambient-a, var(--ambient-1, #7c6cf0));
+  animation: auth-ambient-drift 22s ease-in-out infinite alternate;
+}
+.auth-overlay::after {
+  right: -14vmax;
+  bottom: -20vmax;
+  background: var(--auth-ambient-b, var(--ambient-2, #3f83f0));
+  animation: auth-ambient-drift 26s ease-in-out infinite alternate-reverse;
+}
+@keyframes auth-ambient-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(6vmax, 4vmax, 0) scale(1.12); }
+}
+
+/* 独立登录页（/login）：铺满、不居中卡片，而是分栏 */
+.login-page {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--md-sys-color-background);
+}
+.login-page .auth-overlay {
+  position: relative;
+  inset: auto;
+  min-height: 100dvh;
+  padding: 0;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* ── Mac 玻璃窗本体 ── */
+.auth-window {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(420px, calc(100vw - 32px));
+  max-height: min(720px, calc(100vh - 48px));
+  overflow: hidden;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+  border-radius: 16px;
+  background: var(--glass-window-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur-deep, 28px)) saturate(var(--glass-saturate, 1.6));
+  backdrop-filter: blur(var(--glass-blur-deep, 28px)) saturate(var(--glass-saturate, 1.6));
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight, rgba(255, 255, 255, 0.14)),
+    0 24px 60px -16px rgba(0, 0, 0, 0.5);
+  color: var(--md-sys-color-on-surface);
+  animation: agent-settings-dialog-in 200ms var(--ease-out, ease-out) both;
+}
+.login-dialog.auth-window { width: min(420px, calc(100vw - 32px)); }
+.human-challenge-dialog.auth-window { width: min(560px, calc(100vw - 32px)); max-height: min(680px, calc(100vh - 48px)); }
+
+/* 灯点条（titlebar） */
+.auth-titlebar {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  border-bottom: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  -webkit-user-select: none;
+  user-select: none;
+}
+.auth-titlebar-lights {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  display: flex;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+.auth-light {
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 50%;
+  color: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transition: filter 140ms var(--ease-out, ease-out);
+}
+.auth-light svg { opacity: 0; transition: opacity 140ms; }
+.auth-light:hover svg { opacity: 1; }
+.auth-light:hover { filter: brightness(1.08); }
+.auth-light[data-tone="close"] { background: var(--mac-close, #ff5f57); }
+.auth-light[data-tone="min"] { background: var(--mac-min, #febc2e); }
+.auth-light[data-tone="zoom"] { background: var(--mac-zoom, #28c840); }
+.auth-light[aria-disabled="true"] { pointer-events: none; }
+.auth-titlebar-title {
+  display: flex;
+  min-width: 0;
+  max-width: calc(100% - 120px);
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── 窗内通用 ── */
+.auth-body {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.login-form-body {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/* 输入框 / 标签 */
+.auth-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 10px;
+  background: var(--glass-control-fill);
+  color: var(--md-sys-color-on-surface);
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 140ms var(--ease-out, ease-out), box-shadow 140ms var(--ease-out, ease-out);
+}
+.auth-input::placeholder { color: var(--md-sys-color-outline); }
+.auth-input:focus-visible {
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
+}
+.auth-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 主 CTA：渐变底 + inset 高光 */
+.auth-cta {
+  display: inline-flex;
+  width: 100%;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--md-sys-color-primary) 86%, #ffffff) 0%,
+    var(--md-sys-color-primary) 100%
+  );
+  color: var(--md-sys-color-on-primary);
+  font-size: 13.5px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 6px 18px -8px color-mix(in srgb, var(--md-sys-color-primary) 70%, transparent);
+  transition: filter 140ms var(--ease-out, ease-out), transform 140ms var(--ease-out, ease-out), opacity 140ms;
+}
+.auth-cta:hover:not(:disabled) { filter: brightness(1.06); }
+.auth-cta:active:not(:disabled) { transform: scale(0.985); }
+.auth-cta:disabled { opacity: 0.45; cursor: default; }
+
+/* 次级链接 */
+.auth-link {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--md-sys-color-primary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.auth-link:hover { text-decoration: underline; }
+
+/* 提示 / 错误 callout */
+.auth-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 9px 11px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-error) 32%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--md-sys-color-error) 10%, transparent);
+  color: var(--md-sys-color-error);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  animation: auth-fade-in 160ms var(--ease-out, ease-out) both;
+}
+.auth-callout[data-tone="info"] {
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
+  background: color-mix(in srgb, var(--md-sys-color-primary) 9%, transparent);
+  color: var(--md-sys-color-on-surface-variant);
+}
+.auth-callout[data-tone="success"] {
+  border-color: color-mix(in srgb, var(--color-success, #4fb471) 36%, transparent);
+  background: color-mix(in srgb, var(--color-success, #4fb471) 12%, transparent);
+  color: var(--color-success, #4fb471);
+}
+@keyframes auth-fade-in { from { opacity: 0; transform: translateY(3px); } }
+
+/* ── macOS 分段控件（滑动 thumb） ── */
+.auth-seg {
+  position: relative;
+  display: flex;
+  flex: none;
+  height: 36px;
+  padding: 3px;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: 999px;
+  background: var(--glass-control-fill);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+.auth-seg-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 999px;
+  background: var(--auth-seg-accent, var(--md-sys-color-primary));
+  box-shadow: 0 1px 2px rgba(30, 60, 110, 0.18), 0 6px 16px -8px rgba(30, 60, 110, 0.3);
+  transition: left 220ms var(--ease-out, ease-out), width 220ms var(--ease-out, ease-out), background 220ms;
+}
+.auth-seg-item {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 180ms;
+}
+.auth-seg-item:hover { color: var(--md-sys-color-on-surface); }
+.auth-seg-item[aria-selected="true"] { color: var(--md-sys-color-on-primary); }
+
+/* ── 字段进场 stagger ── */
+.auth-stagger > * {
+  animation: auth-rise-in 300ms var(--ease-out, ease-out) both;
+}
+.auth-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.auth-stagger > *:nth-child(2) { animation-delay: 40ms; }
+.auth-stagger > *:nth-child(3) { animation-delay: 80ms; }
+.auth-stagger > *:nth-child(4) { animation-delay: 120ms; }
+.auth-stagger > *:nth-child(5) { animation-delay: 160ms; }
+.auth-stagger > *:nth-child(6) { animation-delay: 200ms; }
+.auth-stagger > *:nth-child(7) { animation-delay: 240ms; }
+.auth-stagger > *:nth-child(8) { animation-delay: 280ms; }
+@keyframes auth-rise-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+/* ── OTP 分格输入 ── */
+.auth-otp {
+  display: flex;
+  gap: 8px;
+}
+.auth-otp-cell {
+  width: 44px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 10px;
+  background: var(--glass-control-fill);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  caret-color: var(--md-sys-color-primary);
+  outline: none;
+  transition: border-color 140ms, box-shadow 140ms;
+}
+.auth-otp-cell:focus-visible {
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent);
+  animation: auth-otp-pulse 1.6s ease-in-out infinite;
+}
+@keyframes auth-otp-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent); }
+  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent); }
+}
+
+/* ── 错误抖动 ── */
+.auth-shake { animation: auth-shake 320ms var(--ease-out, ease-out); }
+@keyframes auth-shake {
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   独立登录页 /login：分栏品牌页
+   ═════════════════════════════════════════════════════════════ */
+.login-page-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 100dvh;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 48px clamp(20px, 5vw, 72px);
+}
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  color: var(--md-sys-color-on-surface);
+}
+.login-brand-slogan {
+  max-width: 18em;
+  margin: 0;
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: 0.01em;
+}
+.login-brand-slogan em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--ambient-1), var(--ambient-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.login-brand-sub {
+  max-width: 30em;
+  margin: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.login-brand-points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.login-brand-points li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 13px;
+}
+.login-brand-points li svg { color: var(--md-sys-color-primary); }
+.login-aside {
+  display: flex;
+  justify-content: center;
+}
+.login-aside .auth-window { width: min(420px, 100%); }
+
+/* 窄屏：分栏退化为一栏 */
+@media (max-width: 900px) {
+  .login-page-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    align-content: center;
+    padding: 40px 20px;
+  }
+  .login-brand { align-items: center; text-align: center; }
+  .login-brand-slogan { font-size: clamp(24px, 6vw, 30px); }
+  .login-brand-points { align-items: center; }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   人机验证面板内件
+   ═════════════════════════════════════════════════════════════ */
+.challenge-head { padding: 14px 20px 0; }
+.challenge-head-title { margin: 0; font-size: 16px; font-weight: 700; color: var(--md-sys-color-on-surface); }
+.challenge-head-sub { margin: 4px 0 0; color: var(--md-sys-color-on-surface-variant); font-size: 12.5px; }
+.challenge-seg-row { padding: 12px 20px 0; }
+.challenge-body {
+  min-height: 0;
+  flex: 1;
+  padding: 14px 20px;
+  overflow-y: auto;
+}
+.challenge-foot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+}
+.challenge-foot-status { color: var(--md-sys-color-on-surface-variant); font-size: 12px; }
+.challenge-submit {
+  display: inline-flex;
+  min-width: 96px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-primary) 86%, #ffffff), var(--md-sys-color-primary));
+  color: var(--md-sys-color-on-primary);
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: filter 140ms, transform 140ms, opacity 140ms;
+}
+.challenge-submit:hover:not(:disabled) { filter: brightness(1.06); }
+.challenge-submit:active:not(:disabled) { transform: scale(0.985); }
+.challenge-submit:disabled { opacity: 0.55; cursor: default; }
+
+/* 题目卡（玻璃面板 + 学科色竖条）；用于 fieldset 时重置 UA 默认 */
+.quiz-card {
+  position: relative;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: 14px;
+  background: var(--glass-panel-fill);
+  overflow: hidden;
+}
+.quiz-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--quiz-accent, var(--md-sys-color-primary));
+  opacity: 0.9;
+}
+.quiz-card-title { margin: 0; font-size: 13.5px; font-weight: 650; color: var(--md-sys-color-on-surface); }
+.quiz-card-equation {
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+.quiz-card-condition { margin: 2px 0 0; font-family: var(--font-mono); font-size: 13px; color: var(--md-sys-color-on-surface-variant); }
+.quiz-card-hint { margin: 10px 0 0; color: var(--md-sys-color-on-surface-variant); font-size: 12px; line-height: 1.6; }
+
+/* 可选卡片行（替换原生 radio） */
+.quiz-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+  background: var(--glass-control-fill);
+  color: var(--md-sys-color-on-surface);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 140ms, background 140ms, box-shadow 140ms;
+}
+.quiz-option { cursor: pointer; }
+.quiz-option:hover { background: var(--glass-popover-fill); }
+.quiz-option:has(input:checked) {
+  border-color: var(--quiz-accent, var(--md-sys-color-primary));
+  box-shadow: 0 0 0 1px var(--quiz-accent, var(--md-sys-color-primary)),
+    0 0 0 4px color-mix(in srgb, var(--quiz-accent, var(--md-sys-color-primary)) 16%, transparent);
+}
+.quiz-option:has(input:focus-visible) {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--quiz-accent, var(--md-sys-color-primary)) 26%, transparent);
+}
+.quiz-option-mark {
+  display: inline-flex;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--md-sys-color-outline);
+  border-radius: 50%;
+  color: transparent;
+  transition: all 160ms var(--ease-out, ease-out);
+}
+.quiz-option:has(input:checked) .quiz-option-mark {
+  border-color: var(--quiz-accent, var(--md-sys-color-primary));
+  background: var(--quiz-accent, var(--md-sys-color-primary));
+  color: #ffffff;
+}
+.quiz-option-mono { font-family: var(--font-mono); }
+
+/* 医科排序：节点连线 */
+.pizza-list { display: flex; flex-direction: column; gap: 0; margin: 0; padding: 0; list-style: none; }
+.sort-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+  background: var(--glass-panel-fill);
+}
+.sort-row + .sort-row { margin-top: 10px; }
+.sort-row-index {
+  display: grid;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--quiz-accent, var(--md-sys-color-primary)) 22%, transparent);
+  color: var(--quiz-accent, var(--md-sys-color-primary));
+  font-size: 12px;
+  font-weight: 700;
+}
+.sort-row-btns { display: flex; flex-direction: column; gap: 3px; }
+.sort-btn {
+  display: inline-flex;
+  width: 24px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+  border-radius: 7px;
+  background: var(--glass-control-fill);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background 140ms, color 140ms, opacity 140ms;
+}
+.sort-btn:hover:not(:disabled) { background: var(--glass-popover-fill); color: var(--md-sys-color-on-surface); }
+.sort-btn:disabled { opacity: 0.35; cursor: default; }
+.sort-svg-shell {
+  display: grid;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: 11px;
+  background: var(--glass-control-fill);
+}
+
+/* 揭晓区（reveal） */
+.challenge-reveal {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--reveal-tone, var(--md-sys-color-primary)) 36%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--reveal-tone, var(--md-sys-color-primary)) 10%, transparent);
+  animation: auth-rise-in 220ms var(--ease-out, ease-out) both;
+}
+.challenge-reveal[data-state="passed"] { --reveal-tone: var(--color-success, #4fb471); }
+.challenge-reveal[data-state="failed"] { --reveal-tone: var(--md-sys-color-error); }
+.challenge-reveal-title { margin: 0; font-size: 12.5px; font-weight: 650; color: var(--reveal-tone); }
+.challenge-reveal ul { margin: 8px 0 0; padding: 0 0 0 2px; list-style: none; }
+.challenge-reveal li { padding: 2px 0; color: var(--md-sys-color-on-surface-variant); font-size: 12px; }
+
+/* 冷却环形倒计时 */
+.cooldown-ring { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.cooldown-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.cooldown-ring-track { stroke: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 30%, transparent); }
+.cooldown-ring-bar { stroke: var(--md-sys-color-on-primary); transition: stroke-dashoffset 250ms linear; }
+
+/* 学科徽标点 */
+.track-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--quiz-accent, var(--md-sys-color-primary)); }
+
+/* 进度点（其他科：对 3 题即过） */
+.pass-dots { display: flex; gap: 5px; align-items: center; }
+.pass-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--md-sys-color-outline-variant); transition: background 200ms; }
+.pass-dot[data-on="true"] { background: var(--color-success, #4fb471); }
+
+/* ── 动效尊重 ── */
+@media (prefers-reduced-motion: reduce) {
+  .auth-overlay::before,
+  .auth-overlay::after { animation: none; }
+  .auth-stagger > * { animation-duration: 1ms; animation-delay: 0ms; }
+  .auth-window, .auth-overlay { animation-duration: 1ms; }
+  .auth-seg-thumb { transition: none; }
+  .auth-shake { animation: none; }
+  .auth-otp-cell:focus-visible { animation: none; }
+}

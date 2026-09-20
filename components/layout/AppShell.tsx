@@ -214,13 +214,11 @@ function TopBar({
         </button>
         {showCenterTabs && (
           /**
-           * 让开左侧对话栏的宽度：顶栏比对话栏宽，直接居中会跑到左栏头顶上，
-           * 与下面的正文对不齐。`--agent-left-width` 由 AgentShell 写在 <html> 上。
+           * 三个切面**靠左对齐**，与下面的对话正文同一条左边界（用户口径：要偏左，跟 Perplexity 一样）。
+           * 偏移量在 globals.css 的 `.agent-center-tabs-overlay` 里算：左边让开对话栏 +
+           * 正文那条内边距，右边让开来源列 —— 少让右边这一下它会压到来源卡片上。
            */
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center"
-            style={{ left: "var(--agent-left-width, 0px)" }}
-          >
+          <div className="agent-center-tabs-overlay pointer-events-none absolute inset-y-0 flex items-center">
             <div className="pointer-events-auto">
               <AgentCenterTabsLive />
             </div>

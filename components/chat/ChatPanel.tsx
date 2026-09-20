@@ -222,6 +222,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
         sessionId={sessionId ?? undefined}
         repairModelId={selectedModelId}
         topic={chatContext?.currentTopic ?? ''}
+        // 只有 Agent 中央对话把「定位点」放左边（右侧要留给来源栏）；其它场景保持默认右侧。
+        dotsPlacement={emptyLayout === 'agent' ? 'left' : 'right'}
         emptyState={
           emptyLayout === 'agent' ? null : (
             <ChatEmptyState

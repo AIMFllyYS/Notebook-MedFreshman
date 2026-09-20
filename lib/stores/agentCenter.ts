@@ -14,6 +14,8 @@ export type AgentCenterTab = "answer" | "links" | "images";
  * 注意它是悬浮窗不是侧栏（用户口径）：侧栏那种东西才该进 Agent 右侧统一面板，
  * 而这块是浮在正文之上、可拖动改变大小的一块轻量预览。
  */
+/** 卡片四周留白：卡片是浮起来的（圆角 + 阴影），但**占的是真实宽度**，所以留白也算进那一列的宽度。 */
+export const SOURCES_PANEL_INSET = 12;
 export const SOURCES_PANEL_DEFAULT_SIZE = { width: 300, height: 420 } as const;
 export const SOURCES_PANEL_MIN_SIZE = { width: 220, height: 200 } as const;
 export const SOURCES_PANEL_MAX_SIZE = { width: 720, height: 1200 } as const;

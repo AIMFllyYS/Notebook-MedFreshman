@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./styles/prose.css";
+@import "./styles/auth.css";
 @import "./styles/callouts.css";
 @import "./styles/history-directives.css";
 @import "./styles/code.css";
@@ -149,6 +150,30 @@
   --glass-bg: rgba(19, 19, 24, 0.75);
   --glass-border: rgba(255, 255, 255, 0.12);
 
+  /* ── studysolo-glass 令牌（自 docs/design-snapshots/2026-09-studysolo-glass 移植，深炭取值）── */
+  --glass-window-fill: rgba(255, 255, 255, 0.06);
+  --glass-panel-fill: rgba(255, 255, 255, 0.10);
+  --glass-popover-fill: rgba(255, 255, 255, 0.18);
+  --glass-control-fill: rgba(255, 255, 255, 0.14);
+  --glass-highlight: rgba(255, 255, 255, 0.14);
+  --glass-blur-deep: 28px;
+  --glass-saturate: 1.6;
+  --glass-scrim: rgba(0, 0, 0, 0.35);
+  --mac-close: #ff5f57;
+  --mac-min: #febc2e;
+  --mac-zoom: #28c840;
+  --mac-inactive: #7d7d7d;
+  /* 环境光晕（深炭） */
+  --ambient-1: #7c6cf0;
+  --ambient-2: #3f83f0;
+  --ambient-3: #22c7d6;
+  --ambient-4: #b06cf0;
+  /* 学科强调色（深炭） */
+  --subj-prob: #9a8cff;
+  --subj-phy: #58b8ff;
+  --subj-chem: #43d6a0;
+  --subj-hist: #ff7d8a;
+
   /* State Layers */
   --md-sys-state-hover: 0.08;
   --md-sys-state-focus: 0.12;
@@ -268,6 +293,24 @@
   /* Glass background for light theme */
   --glass-bg: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(0, 0, 0, 0.08);
+
+  /* ── studysolo-glass 令牌（浅色·雾蓝取值）── */
+  --glass-window-fill: rgba(255, 255, 255, 0.55);
+  --glass-panel-fill: rgba(255, 255, 255, 0.62);
+  --glass-popover-fill: rgba(255, 255, 255, 0.8);
+  --glass-control-fill: rgba(255, 255, 255, 0.6);
+  --glass-highlight: rgba(255, 255, 255, 0.75);
+  --glass-scrim: rgba(15, 20, 34, 0.32);
+  /* 环境光晕（雾蓝） */
+  --ambient-1: #8ab0ff;
+  --ambient-2: #6fd6f2;
+  --ambient-3: #b69bff;
+  --ambient-4: #8fe0d2;
+  /* 学科强调色（雾蓝） */
+  --subj-prob: #6750a4;
+  --subj-phy: #1286c4;
+  --subj-chem: #20894f;
+  --subj-hist: #d54458;
 
   /* ── 兼容层：浅色模式覆盖 ────────────────────────────── */
   --bg-app: var(--md-sys-color-background);
@@ -919,16 +962,26 @@ html:not([data-theme="light"]) [data-agent-shell] {
 /* ─────────────────────────────────────────────────────────────
    Agent 中央对话的「呼吸空隙」
    - 不贴满左右面板：两侧始终留 --agent-chat-inline（20–44px，随窗口宽度微调）；
-   - 宽屏时正文收进 --agent-chat-max（920px）居中 —— 这是 Codex 那种「一栏」的观感，
+   - 宽屏时正文收进 --agent-chat-max（780px）居中 —— 这是 Codex 那种「一栏」的观感，
      行长不会拉到一整屏；窄屏时这两条各自退化成「只有空隙」，不会挤压内容。
    - 只作用于 Agent 外壳：Studio 右栏、划词浮窗、笔记窗的对话完全不受影响。
    - 注：改完这套变量若浏览器里没生效，先去看 /_next/static/chunks/*.css 是否已包含 --agent-chat-max：
      Turbopack 的 CSS chunk 偶尔不会随内容失效（本仓库已踩过两次），重启 dev server 即可。
    ───────────────────────────────────────────────────────────── */
-[data-agent-shell] .chat-panel {
+/* 变量挂在**外壳根节点**而不是 .chat-panel 上：顶栏那三个切面也要读同一条内边距，
+   挂在内层面板上的话顶栏那一层读不到，calc() 整条作废（踩过一次）。 */
+[data-agent-shell] {
   --agent-chat-inline: clamp(20px, 2.6vw, 44px);
-  --agent-chat-max: 920px;
+  /* 用户口径：Agent 这一栏要比 Codex 再收一点，两侧留白多一些，整体才协调。 */
+  --agent-chat-max: 780px;
 }
+/* 顶栏那三个切面（回答 / 来源 / 图片）跟正文共用一条左边界：
+   左边 = 对话栏宽度 + 正文内边距（与 .chat-messages 的 padding 同一个表达式），右边让开来源列。 */
+[data-agent-shell] .agent-center-tabs-overlay {
+  left: calc(var(--agent-left-width, 0px) + var(--agent-chat-inline, 32px));
+  right: var(--agent-sources-width, 0px);
+}
+
 /* 消息流两侧留白。!important 是为了盖住「有跳转点时会内联写成 18px」的 padding-right —— 
    那 18px 在 Codex 式留白下反而会把右间隙吃掉。 */
 [data-agent-shell] .chat-messages {

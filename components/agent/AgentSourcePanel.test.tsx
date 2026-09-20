@@ -34,12 +34,17 @@ describe("AgentSourcePanel", () => {
     expect(screen.queryByTestId("agent-source-panel")).not.toBeInTheDocument();
   });
 
-  it("is a floating overlay, not a layout column (absolute, right-anchored)", () => {
+  it("looks like a floating card but reserves real width so it never covers the conversation", () => {
     render(<AgentSourcePanel rounds={rounds} sources={sources} />);
-    const panel = screen.getByTestId("agent-source-panel");
-    expect(panel.className).toContain("absolute");
-    expect(panel.className).toContain("right-4");
-    expect(panel.className).toContain("top-3");
+    // 卡片本身是浮起来的（圆角 + 阴影 + 留白），像悬浮窗而不是占满整列的侧栏。
+    const card = screen.getByTestId("agent-source-panel");
+    expect(card.className).toContain("rounded-xl");
+    expect(card.className).toContain("shadow-");
+    expect(card.className).toContain("ml-3");
+    // 外层这一列必须占真实宽度：对话列因此被压窄，正文不会钻到卡片底下。
+    const column = screen.getByTestId("agent-source-column");
+    expect(column.className).toContain("shrink-0");
+    expect(column.style.width).toBe(`${SOURCES_PANEL_DEFAULT_SIZE.width + 24}px`);
   });
 
   it("shows the count plus every source's title, snippet and host", () => {

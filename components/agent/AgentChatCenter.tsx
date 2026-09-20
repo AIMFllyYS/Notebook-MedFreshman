@@ -7,7 +7,7 @@ import AgentLinksPane from "@/components/agent/AgentLinksPane";
 import AgentImagesPane from "@/components/agent/AgentImagesPane";
 import AgentSourcePanel from "@/components/agent/AgentSourcePanel";
 import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
-import { hydrateSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
+import { SOURCES_PANEL_INSET, hydrateSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
 import { useSessionSourceRounds } from "@/lib/hooks/useSessionSources";
 import { useSessionImages } from "@/lib/hooks/useSessionImages";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
@@ -37,16 +37,35 @@ export default function AgentChatCenter() {
     hydrateSourcesPanelSize();
   }, []);
 
+  /**
+   * 把来源列的宽度写给顶栏：顶栏那三个切面要**只在对话列上居中**。
+   * 不然它会居中在「对话列 + 来源列」上，视觉上偏右（用户口径：要偏左一点，跟 Perplexity 一样）。
+   */
+  const sourcesWidth = useAgentCenter((state) => state.sourcesPanelSize.width);
+
   const showSourcesPanel =
     !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && sources.length > 0;
 
+  useEffect(() => {
+    const root = document.documentElement;
+    // 写 <html> 而不是本节点：消费方是顶栏（祖先）。
+    root.style.setProperty("--agent-sources-width", showSourcesPanel ? `${sourcesWidth + SOURCES_PANEL_INSET * 2}px` : "0px");
+    return () => {
+      root.style.removeProperty("--agent-sources-width");
+    };
+  }, [showSourcesPanel, sourcesWidth]);
+
   return (
-    <div className="relative h-full min-h-0" data-testid="agent-chat-center">
-      <div className={clsx("h-full min-h-0", centerTab !== "answer" && "hidden")} data-testid="agent-center-answer">
-        <ChatPanel chatContext={chatContext} hideHeader emptyLayout="agent" />
+    /* 对话列与来源列是 flex 兄弟：来源列占真实宽度 → 对话列被压窄，正文不会钻到卡片底下。
+       隐藏来源那一列时，对话列拿回整宽，居中自动重新落在「左栏右侧那块区域」的正中间。 */
+    <div className="flex h-full min-h-0" data-testid="agent-chat-center">
+      <div className="relative min-h-0 min-w-0 flex-1">
+        <div className={clsx("h-full min-h-0", centerTab !== "answer" && "hidden")} data-testid="agent-center-answer">
+          <ChatPanel chatContext={chatContext} hideHeader emptyLayout="agent" />
+        </div>
+        {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} /> : null}
+        {centerTab === "images" ? <AgentImagesPane images={images} /> : null}
       </div>
-      {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} /> : null}
-      {centerTab === "images" ? <AgentImagesPane images={images} /> : null}
       {showSourcesPanel ? <AgentSourcePanel rounds={rounds} sources={sources} /> : null}
     </div>
   );
