@@ -21,6 +21,10 @@ export const appZh = {
   loading: {
     label: "加载中",
   },
+  sourcesToggle: {
+    show: "显示来源",
+    hide: "隐藏来源",
+  },
   lightbox: {
     label: "图片查看",
     close: "关闭",

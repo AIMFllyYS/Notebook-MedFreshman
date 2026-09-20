@@ -24,6 +24,10 @@ test("我的资产页：标签顺序、视图切换、搜索与排序都在最�
   // 「全部」也是同一个渲染分支里的标签，testid 用模板串拼出来
   assert.match(page, /data-testid=\{`assets-tab-\$\{tab\.id\}`\}/);
   assert.match(page, /\{ id: "all", label: "全部", count: counts\.all \}/);
+  // 「分享的链接」是独立顶级标签，**不是**第七种 kind：云端分享不参与本机资产的计数与筛选
+  assert.match(page, /\{ id: "share", label: t\("share\.assets\.tab"\) \}/);
+  assert.match(page, /<SharedLinksPanel \/>/);
+  assert.doesNotMatch(catalog, /"share"/, "分享不能混进 ASSET_KINDS");
   assert.match(page, /data-testid="assets-view-grid"/);
   assert.match(page, /data-testid="assets-view-list"/);
   assert.match(page, /data-testid="assets-search"/);

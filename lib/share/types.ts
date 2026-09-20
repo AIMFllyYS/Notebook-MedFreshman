@@ -29,6 +29,19 @@ export interface SharedConversationSnapshot {
 }
 
 /**
+ * 「我的资产 → 分享的链接」列表里的一行。
+ * 不带 payload：列表只要够渲染标题与开关，把整份对话拖回来纯属浪费。
+ */
+export interface SharedLinkSummary {
+  id: string;
+  title: string;
+  /** ISO 字符串（Postgres timestamptz）。 */
+  createdAt: string;
+  /** 已撤回 = 链接打不开；这是用户唯一的开关语义。 */
+  revoked: boolean;
+}
+
+/**
  * 运行时形状校验：RPC 回来的是 jsonb，类型在那一跳就断了，进渲染前必须自己验一遍。
  * 只验「能不能安全渲染」的骨架，不深挖每条 message 的结构（那由消息组件自己容错）。
  */

@@ -8,8 +8,9 @@ import type { SessionMeta } from "@/lib/storage/chatStorage";
 import type { ChatMessage } from "@/lib/types/chat";
 
 /**
- * ShareButton：只负责「打成快照 → POST → 把链接写进剪贴板」，所以这一组断言只盯三件事：
- * 不该发请求时一个字节都不发、成功后剪贴板拿到的确实是服务端给的 url、失败一定走错误提示。
+ * ShareButton：负责「校验 → 弹确认 → 打成快照 → POST → 把 url 交给弹窗」。
+ * 这一组断言盯四件事：不该开弹窗时只提示、**确认之前一个字节都不发**、
+ * 确认后请求形状正确且链接交到弹窗手里、失败留在确认态且能重试。
  */
 
 let authStatus: "loading" | "signedOut" | "signedIn" = "signedIn";
@@ -90,7 +91,7 @@ it("未登录同样不发请求，只提示先登录", async () => {
   expect(fetchMock).not.toHaveBeenCalled();
 });
 
-it("成功后把服务端返回的 url 写进剪贴板并提示已复制", async () => {
+it("先弹确认弹窗：确认之前一个字节都不发，确认后才请求并把链接交给弹窗", async () => {
   fetchMock.mockResolvedValue({
     ok: true,
     json: async () => ({ id: "abc123", url: "https://studysolo.test/s/abc123" }),
@@ -99,19 +100,28 @@ it("成功后把服务端返回的 url 写进剪贴板并提示已复制", async
 
   fireEvent.click(screen.getByTestId("share-conversation"));
 
-  await waitFor(() => expect(writeText).toHaveBeenCalledWith("https://studysolo.test/s/abc123"));
-  expect(toasts()).toContain(translate("zh", "share.copied"));
+  // 分享是不可逆的信息外流：弹窗先摊开「会分享什么」，此时还没发任何请求。
+  expect(screen.getByTestId("share-dialog-body")).toBeVisible();
+  expect(screen.getByText(translate("zh", "share.dialog.warning"))).toBeVisible();
+  expect(fetchMock).not.toHaveBeenCalled();
+  expect(buildSharedSnapshot).not.toHaveBeenCalled();
+
+  fireEvent.click(screen.getByTestId("share-dialog-confirm"));
+
+  expect(await screen.findByTestId("share-link")).toHaveTextContent("https://studysolo.test/s/abc123");
   expect(buildSharedSnapshot).toHaveBeenCalledTimes(1);
   expect(fetchMock).toHaveBeenCalledTimes(1);
   expect(String(fetchMock.mock.calls[0][0])).toBe("/api/share");
 });
 
-it("接口失败走错误提示，不碰剪贴板", async () => {
+it("接口失败时留在确认态给出错误，并且可以再试一次", async () => {
   fetchMock.mockResolvedValue({ ok: false, status: 500, json: async () => ({ error: "boom" }) });
   render(<ShareButton />);
 
   fireEvent.click(screen.getByTestId("share-conversation"));
+  fireEvent.click(screen.getByTestId("share-dialog-confirm"));
 
-  await waitFor(() => expect(toasts()).toContain(translate("zh", "share.failed")));
+  expect(await screen.findByRole("alert")).toHaveTextContent(translate("zh", "share.failed"));
+  expect(screen.getByTestId("share-dialog-confirm")).toBeEnabled();
   expect(writeText).not.toHaveBeenCalled();
 });

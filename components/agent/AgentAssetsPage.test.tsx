@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { translate } from "@/lib/i18n";
 import type { AssetItem } from "@/lib/agent/assetCatalog";
 
 const fixtures: AssetItem[] = [
@@ -25,6 +26,7 @@ afterEach(() => {
   assetsRef.value = fixtures;
   skeletonOn.value = false;
   vi.clearAllMocks();
+  vi.unstubAllGlobals();
   window.localStorage.clear();
 });
 
@@ -102,6 +104,24 @@ describe("AgentAssetsPage", () => {
     render(<AgentAssetsPage />);
     expect(screen.getByLabelText("资产加载中")).toBeInTheDocument();
     expect(screen.queryByText("组胚笔记")).toBeNull();
+  });
+
+  it("分享标签：整块换成分享面板，本机资产的视图/搜索/排序控件同时收起", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => ({ shares: [] }) }));
+    render(<AgentAssetsPage />);
+
+    fireEvent.click(screen.getByTestId("assets-tab-share"));
+
+    // 分享列表不适用这些控件：留着它们既筛不动分享，又会悄悄改一个看不见的资产筛选状态。
+    expect(screen.queryByTestId("assets-grid")).toBeNull();
+    expect(screen.queryByTestId("assets-list")).toBeNull();
+    expect(screen.queryByTestId("assets-view-grid")).toBeNull();
+    expect(screen.queryByTestId("assets-search")).toBeNull();
+    expect(screen.queryByTestId("assets-sort")).toBeNull();
+    expect(screen.queryByTestId("assets-refresh")).toBeNull();
+    expect(screen.queryByText("组胚笔记")).toBeNull();
+
+    expect(await screen.findByTestId("shared-links-empty")).toHaveTextContent(translate("zh", "share.assets.empty"));
   });
 
   it("刷新只重新对齐云端状态", async () => {

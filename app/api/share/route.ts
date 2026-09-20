@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { resolveQuotaUserId } from "@/lib/billing/quotaGate";
-import { saveSharedConversation } from "@/lib/share/server";
+import { listSharedConversations, saveSharedConversation, setSharedConversationEnabled } from "@/lib/share/server";
 import { createShareId } from "@/lib/share/slug";
 import { checkSharePayload, formatSharePayloadError } from "@/lib/share/snapshot";
 import { shareUrl } from "@/lib/share/siteUrl";
@@ -77,4 +77,42 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ id, url: shareUrl(id) }, { status: 201, headers });
+}
+
+/** GET /api/share：列出自己的分享链接（「我的资产 → 分享的链接」用）。必须登录。 */
+export async function GET(req: NextRequest) {
+  const userId = await resolveQuotaUserId(req.headers);
+  if (!userId) {
+    return NextResponse.json({ error: "请先登录后再查看分享链接。" }, { status: 401, headers });
+  }
+  try {
+    return NextResponse.json({ shares: await listSharedConversations(userId) }, { status: 200, headers });
+  } catch (error) {
+    console.error("[share] 读取分享列表失败:", error instanceof Error ? error.message : error);
+    return NextResponse.json({ error: "分享暂时不可用，请稍后重试。" }, { status: 503, headers });
+  }
+}
+
+/** PATCH /api/share：开 / 关某条分享。关闭 = 置 revoked_at，链接立刻打不开。 */
+export async function PATCH(req: NextRequest) {
+  const userId = await resolveQuotaUserId(req.headers);
+  if (!userId) {
+    return NextResponse.json({ error: "请先登录后再管理分享链接。" }, { status: 401, headers });
+  }
+  const raw = (await req.json().catch(() => null)) as { id?: unknown; enabled?: unknown } | null;
+  const id = raw && typeof raw.id === "string" ? raw.id.trim() : "";
+  const enabled = raw && typeof raw.enabled === "boolean" ? raw.enabled : null;
+  if (!id || id.length > 64 || enabled === null) {
+    return NextResponse.json({ error: "请求格式不正确。" }, { status: 400, headers });
+  }
+  try {
+    const ok = await setSharedConversationEnabled(userId, id, enabled);
+    if (!ok) {
+      return NextResponse.json({ error: "找不到这条分享。" }, { status: 404, headers });
+    }
+    return NextResponse.json({ ok: true }, { status: 200, headers });
+  } catch (error) {
+    console.error("[share] 更新分享状态失败:", error instanceof Error ? error.message : error);
+    return NextResponse.json({ error: "分享暂时不可用，请稍后重试。" }, { status: 503, headers });
+  }
 }

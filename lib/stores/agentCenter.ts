@@ -8,12 +8,75 @@ import { create } from "zustand";
  */
 export type AgentCenterTab = "answer" | "links" | "images";
 
+/**
+ * 来源**悬浮窗**的默认尺寸与可调范围。
+ *
+ * 注意它是悬浮窗不是侧栏（用户口径）：侧栏那种东西才该进 Agent 右侧统一面板，
+ * 而这块是浮在正文之上、可拖动改变大小的一块轻量预览。
+ */
+export const SOURCES_PANEL_DEFAULT_SIZE = { width: 300, height: 420 } as const;
+export const SOURCES_PANEL_MIN_SIZE = { width: 220, height: 200 } as const;
+export const SOURCES_PANEL_MAX_SIZE = { width: 720, height: 1200 } as const;
+const SOURCES_PANEL_SIZE_KEY = "studysolo-agent-sources-panel-size";
+
+export function clampSourcesPanelSize(size: { width: number; height: number }): { width: number; height: number } {
+  return {
+    width: Math.min(SOURCES_PANEL_MAX_SIZE.width, Math.max(SOURCES_PANEL_MIN_SIZE.width, Math.round(size.width))),
+    height: Math.min(SOURCES_PANEL_MAX_SIZE.height, Math.max(SOURCES_PANEL_MIN_SIZE.height, Math.round(size.height))),
+  };
+}
+
+function readSavedSize(): { width: number; height: number } {
+  if (typeof window === "undefined") return { ...SOURCES_PANEL_DEFAULT_SIZE };
+  try {
+    const raw = window.localStorage.getItem(SOURCES_PANEL_SIZE_KEY);
+    if (!raw) return { ...SOURCES_PANEL_DEFAULT_SIZE };
+    const parsed = JSON.parse(raw) as { width?: unknown; height?: unknown };
+    const width = typeof parsed.width === "number" ? parsed.width : 0;
+    const height = typeof parsed.height === "number" ? parsed.height : 0;
+    if (width < SOURCES_PANEL_MIN_SIZE.width || height < SOURCES_PANEL_MIN_SIZE.height) {
+      return { ...SOURCES_PANEL_DEFAULT_SIZE };
+    }
+    return { width, height };
+  } catch {
+    return { ...SOURCES_PANEL_DEFAULT_SIZE };
+  }
+}
+
 interface AgentCenterState {
   centerTab: AgentCenterTab;
   setCenterTab: (tab: AgentCenterTab) => void;
+  /** 来源悬浮窗是否显示。用户口径：默认显示，顶栏有开关。 */
+  sourcesPanelOpen: boolean;
+  toggleSourcesPanel: () => void;
+  /** 用户拖出来的尺寸；只记尺寸，位置恒为右上角。 */
+  sourcesPanelSize: { width: number; height: number };
+  setSourcesPanelSize: (size: { width: number; height: number }) => void;
 }
 
 export const useAgentCenter = create<AgentCenterState>((set) => ({
   centerTab: "answer",
   setCenterTab: (tab) => set((state) => (state.centerTab === tab ? state : { centerTab: tab })),
+
+  sourcesPanelOpen: true,
+  toggleSourcesPanel: () => set((state) => ({ sourcesPanelOpen: !state.sourcesPanelOpen })),
+
+  sourcesPanelSize: { ...SOURCES_PANEL_DEFAULT_SIZE },
+  setSourcesPanelSize: (size) => {
+    const next = clampSourcesPanelSize(size);
+    try {
+      window.localStorage.setItem(SOURCES_PANEL_SIZE_KEY, JSON.stringify(next));
+    } catch {
+      /* 隐私模式 / 配额：记不住尺寸不影响使用。 */
+    }
+    set({ sourcesPanelSize: next });
+  },
 }));
+
+/** 首帧之后把上次拖出来的尺寸读回来（SSR 期没有 localStorage，不能放进初始 state）。 */
+export function hydrateSourcesPanelSize(): void {
+  const saved = readSavedSize();
+  const current = useAgentCenter.getState().sourcesPanelSize;
+  if (saved.width === current.width && saved.height === current.height) return;
+  useAgentCenter.setState({ sourcesPanelSize: saved });
+}

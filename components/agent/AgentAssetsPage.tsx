@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { LayoutGrid, List, RefreshCw, Search } from "lucide-react";
 import AgentAssetCard from "./AgentAssetCard";
+import SharedLinksPanel from "@/components/share/SharedLinksPanel";
 import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
@@ -16,9 +17,16 @@ import {
   type AssetKind,
   type AssetSort,
 } from "@/lib/agent/assetCatalog";
+import { useT } from "@/lib/i18n";
 
 type ViewMode = "grid" | "list";
 type KindFilter = AssetKind | "all";
+/**
+ * 顶级标签：本机资产的六类 + 「全部」，再加一个**不是资产**的「分享的链接」。
+ * 分享只借这一行标签的位置，不参与 filterAssets / assetCounts —— 硬塞进 ASSET_KINDS
+ * 会让「六类本机产物」的计数与筛选一起变形（详见 SharedLinksPanel 顶部注释）。
+ */
+type AssetsTab = KindFilter | "share";
 
 const VIEW_STORAGE_KEY = "agent-assets-view";
 
@@ -44,14 +52,21 @@ function writeStoredView(view: ViewMode): void {
 }
 
 /**
- * 我的资产：顶部标签（全部 + 六类）+ 最右视图切换/搜索/排序，主体是橱窗或列表。
+ * 我的资产：顶部标签（全部 + 六类 + 分享的链接）+ 最右视图切换/搜索/排序，主体是橱窗或列表。
  * 橱窗**不预览内容**：只给图标与标题，点卡片跳到 /agent/assets/{kind}/{id} 详情页。
  *
  * 数据以本机为准（用户口径）：本机有、云端没上传的也列出来，用「仅本机」角标标出。
+ * 「分享的链接」例外：那是云端数据，选中它时整块换成 SharedLinksPanel，
+ * 视图切换 / 搜索 / 排序 / 刷新这些**只对本机产物有意义**的控件同时收起
+ * ——留着它们既筛不动分享列表，点了还会悄悄改一个看不见的资产筛选状态。
  */
 export default function AgentAssetsPage() {
+  const t = useT();
   const assets = useAgentAssets();
-  const [kind, setKind] = useState<KindFilter>("all");
+  const [activeTab, setActiveTab] = useState<AssetsTab>("all");
+  const onShareTab = activeTab === "share";
+  /** 分享标签下不筛资产；这里固定成 all 只是让下面 useMemo 的依赖保持稳定。 */
+  const kind: KindFilter = onShareTab ? "all" : activeTab;
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<AssetSort>("recent");
   /**
@@ -113,76 +128,82 @@ export default function AgentAssetsPage() {
     </AnimatePresence>
   );
 
-  const tabs: { id: KindFilter; label: string; count: number }[] = [
+  const tabs: { id: AssetsTab; label: string; count?: number }[] = [
     { id: "all", label: "全部", count: counts.all },
-    ...ASSET_KINDS.map((item) => ({ id: item as KindFilter, label: ASSET_KIND_LABELS[item], count: counts.byKind[item] })),
+    ...ASSET_KINDS.map((item) => ({ id: item as AssetsTab, label: ASSET_KIND_LABELS[item], count: counts.byKind[item] })),
+    // 分享不是本机资产：独立顶级标签，也没有本地计数（条数得联网才知道，不在这里假装有）。
+    { id: "share", label: t("share.assets.tab") },
   ];
 
   return (
     <section data-testid="agent-assets-page" className="flex h-full min-h-0 flex-col bg-[var(--agent-content-bg,var(--md-sys-color-surface-container-low))]">
       <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-[var(--line-soft)] px-4 py-2.5">
         <h1 className="text-[15px] font-semibold text-[var(--ink)]">我的资产</h1>
-        <span className="text-[11.5px] text-[var(--ink-faint)]">
-          {counts.all} 项 · 本机为准，角标显示同步状态
-        </span>
-        <div className="ml-auto flex items-center gap-1.5">
-          <div className="flex items-center gap-0.5 rounded-lg border border-[var(--line-soft)] p-0.5">
+        {onShareTab ? null : (
+          <span className="text-[11.5px] text-[var(--ink-faint)]">
+            {counts.all} 项 · 本机为准，角标显示同步状态
+          </span>
+        )}
+        {onShareTab ? null : (
+          <div className="ml-auto flex items-center gap-1.5">
+            <div className="flex items-center gap-0.5 rounded-lg border border-[var(--line-soft)] p-0.5">
+              <button
+                type="button"
+                data-testid="assets-view-grid"
+                aria-pressed={view === "grid"}
+                aria-label="橱窗视图"
+                title="橱窗视图"
+                onClick={() => chooseView("grid")}
+                className={`flex h-7 w-7 items-center justify-center rounded-md ${view === "grid" ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"}`}
+              >
+                <LayoutGrid size={15} />
+              </button>
+              <button
+                type="button"
+                data-testid="assets-view-list"
+                aria-pressed={view === "list"}
+                aria-label="列表视图"
+                title="列表视图"
+                onClick={() => chooseView("list")}
+                className={`flex h-7 w-7 items-center justify-center rounded-md ${view === "list" ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"}`}
+              >
+                <List size={15} />
+              </button>
+            </div>
+            <label className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--line-soft)] px-2">
+              <Search size={14} className="shrink-0 text-[var(--ink-faint)]" />
+              <input
+                data-testid="assets-search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="搜索标题、科目、路径或网址"
+                aria-label="搜索资产"
+                className="w-[190px] bg-transparent text-[12.5px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
+              />
+            </label>
+            <select
+              data-testid="assets-sort"
+              value={sort}
+              aria-label="排序方式"
+              onChange={(event) => setSort(event.target.value as AssetSort)}
+              className="h-8 rounded-lg border border-[var(--line-soft)] bg-transparent px-2 text-[12.5px] text-[var(--ink-soft)] outline-none"
+            >
+              {(Object.keys(SORT_LABELS) as AssetSort[]).map((key) => (
+                <option key={key} value={key}>{SORT_LABELS[key]}</option>
+              ))}
+            </select>
             <button
               type="button"
-              data-testid="assets-view-grid"
-              aria-pressed={view === "grid"}
-              aria-label="橱窗视图"
-              title="橱窗视图"
-              onClick={() => chooseView("grid")}
-              className={`flex h-7 w-7 items-center justify-center rounded-md ${view === "grid" ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"}`}
+              data-testid="assets-refresh"
+              onClick={refresh}
+              title="重新对齐云端状态"
+              aria-label="重新对齐云端状态"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
             >
-              <LayoutGrid size={15} />
-            </button>
-            <button
-              type="button"
-              data-testid="assets-view-list"
-              aria-pressed={view === "list"}
-              aria-label="列表视图"
-              title="列表视图"
-              onClick={() => chooseView("list")}
-              className={`flex h-7 w-7 items-center justify-center rounded-md ${view === "list" ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"}`}
-            >
-              <List size={15} />
+              <RefreshCw size={15} className={refreshing ? "animate-spin" : undefined} />
             </button>
           </div>
-          <label className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--line-soft)] px-2">
-            <Search size={14} className="shrink-0 text-[var(--ink-faint)]" />
-            <input
-              data-testid="assets-search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="搜索标题、科目、路径或网址"
-              aria-label="搜索资产"
-              className="w-[190px] bg-transparent text-[12.5px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
-            />
-          </label>
-          <select
-            data-testid="assets-sort"
-            value={sort}
-            aria-label="排序方式"
-            onChange={(event) => setSort(event.target.value as AssetSort)}
-            className="h-8 rounded-lg border border-[var(--line-soft)] bg-transparent px-2 text-[12.5px] text-[var(--ink-soft)] outline-none"
-          >
-            {(Object.keys(SORT_LABELS) as AssetSort[]).map((key) => (
-              <option key={key} value={key}>{SORT_LABELS[key]}</option>
-            ))}
-          </select>
-          <button
-            type="button"
-            data-testid="assets-refresh"
-            onClick={refresh}
-            title="重新对齐云端状态"
-            aria-label="重新对齐云端状态"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
-          >
-            <RefreshCw size={15} className={refreshing ? "animate-spin" : undefined} />
-          </button>
-        </div>
+        )}
       </header>
 
       <div className="hide-scrollbar flex shrink-0 items-center gap-1 overflow-x-auto border-b border-[var(--line-soft)] px-3 py-2" role="tablist" aria-label="资产类型">
@@ -191,23 +212,33 @@ export default function AgentAssetsPage() {
             key={tab.id}
             type="button"
             role="tab"
-            aria-selected={kind === tab.id}
+            aria-selected={activeTab === tab.id}
             data-testid={`assets-tab-${tab.id}`}
-            onClick={() => setKind(tab.id)}
+            onClick={() => setActiveTab(tab.id)}
             className={`press shrink-0 rounded-full px-3 py-1 text-[12.5px] font-medium ${
-              kind === tab.id
+              activeTab === tab.id
                 ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
                 : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
             }`}
           >
             {tab.label}
-            <span className="ml-1 text-[11px] text-[var(--ink-faint)]">{tab.count}</span>
+            {/* 分享标签不挂本地计数：条数得联网才知道，不在这里假装有。 */}
+            {tab.count === undefined ? null : (
+              <span className="ml-1 text-[11px] text-[var(--ink-faint)]">{tab.count}</span>
+            )}
           </button>
         ))}
       </div>
 
-      <div data-testid="assets-body" className="min-h-0 flex-1 overflow-y-auto px-5 py-4" aria-busy={showSkeleton || undefined}>
-        {showSkeleton ? (
+      <div
+        data-testid="assets-body"
+        className="min-h-0 flex-1 overflow-y-auto px-5 py-4"
+        // 骨架只描述本机资产的水合；分享面板自带加载态，别让两者互相等。
+        aria-busy={(onShareTab ? false : showSkeleton) || undefined}
+      >
+        {onShareTab ? (
+          <SharedLinksPanel />
+        ) : showSkeleton ? (
           // 五个 store（笔记/闪卡/长文/演示/导入记录）要等 IndexedDB 水合完才给数据；
           // 这段骨架**跟着视图走**：橱窗给卡片骨架，列表给行骨架，切过来不会先闪一下另一种版式。
           <div

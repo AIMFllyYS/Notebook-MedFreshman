@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import type { NextRequest } from "next/server";
-import { POST } from "@/app/api/share/route";
+import { GET, PATCH, POST } from "@/app/api/share/route";
 import { setQuotaGateTestDeps } from "@/lib/billing/quotaGate";
 import { setShareApiTestDeps, type SharedConversationInsert } from "@/lib/share/server";
 import { SHARE_ID_LENGTH, isShareId } from "@/lib/share/slug";
@@ -50,8 +50,9 @@ function request(raw: unknown): NextRequest {
   }) as NextRequest;
 }
 
-function captureStore(): { rows: SharedConversationInsert[]; fail: boolean } {
-  return { rows: [], fail: false };
+/** 内存假库：create/list/setEnabled 都对同一份 rows 操作，GET / PATCH 的用例才有意义。 */
+function captureStore(): { rows: SharedConversationInsert[]; revoked: Set<string>; fail: boolean } {
+  return { rows: [], revoked: new Set(), fail: false };
 }
 
 function useStore(state: ReturnType<typeof captureStore>): void {
@@ -61,8 +62,33 @@ function useStore(state: ReturnType<typeof captureStore>): void {
         if (state.fail) throw new Error("insert failed");
         state.rows.push(row);
       },
+      async list(ownerId) {
+        return state.rows
+          .filter((row) => row.ownerId === ownerId)
+          .map((row) => ({
+            id: row.id,
+            title: row.title,
+            createdAt: new Date(0).toISOString(),
+            revoked: state.revoked.has(row.id),
+          }));
+      },
+      async setEnabled(ownerId, id, enabled) {
+        const row = state.rows.find((item) => item.id === id && item.ownerId === ownerId);
+        if (!row) return false;
+        if (enabled) state.revoked.delete(id);
+        else state.revoked.add(id);
+        return true;
+      },
     },
   });
+}
+
+function jsonRequest(method: "GET" | "PATCH", raw?: unknown): NextRequest {
+  return new Request("https://app.invalid/api/share", {
+    method,
+    headers: { "Content-Type": "application/json" },
+    ...(raw === undefined ? {} : { body: JSON.stringify(raw) }),
+  }) as NextRequest;
 }
 
 test("未登录：401 且不落库（客户端传的 owner 字段不作数）", async () => {
@@ -168,4 +194,51 @@ test("落库失败：503 而不是 400（请求本身没错，重试可能就好
   const json = (await res.json()) as { error: string; id?: string };
   assert.equal(typeof json.error, "string");
   assert.equal(json.id, undefined);
+});
+
+test("GET：未登录 401；登录后只列自己的分享", async () => {
+  signIn(null);
+  useStore(captureStore());
+  assert.equal((await GET(jsonRequest("GET"))).status, 401);
+
+  signIn();
+  const state = captureStore();
+  useStore(state);
+  assert.equal((await POST(request(body()))).status, 201);
+  // 另一个人也发了一条：列表不许串号。
+  state.rows.push({ ...state.rows[0]!, id: "someoneelses1", ownerId: "ffffffff-0000-0000-0000-000000000000" });
+
+  const res = await GET(jsonRequest("GET"));
+  assert.equal(res.status, 200);
+  const json = (await res.json()) as { shares: { id: string; title: string; revoked: boolean }[] };
+  assert.equal(json.shares.length, 1);
+  assert.equal(json.shares[0]?.title, "光合作用");
+  assert.equal(json.shares[0]?.revoked, false);
+});
+
+test("PATCH：关掉一条后列表里就是已关闭；别人的 / 不存在的返回 404", async () => {
+  signIn();
+  const state = captureStore();
+  useStore(state);
+  await POST(request(body()));
+  const id = state.rows[0]!.id;
+
+  const off = await PATCH(jsonRequest("PATCH", { id, enabled: false }));
+  assert.equal(off.status, 200);
+  const listed = (await (await GET(jsonRequest("GET"))).json()) as { shares: { revoked: boolean }[] };
+  assert.equal(listed.shares[0]?.revoked, true);
+
+  const back = await PATCH(jsonRequest("PATCH", { id, enabled: true }));
+  assert.equal(back.status, 200);
+  const relisted = (await (await GET(jsonRequest("GET"))).json()) as { shares: { revoked: boolean }[] };
+  assert.equal(relisted.shares[0]?.revoked, false);
+
+  assert.equal((await PATCH(jsonRequest("PATCH", { id: "nope-nope-nope", enabled: false }))).status, 404);
+  assert.equal((await PATCH(jsonRequest("PATCH", { id, enabled: "yes" }))).status, 400);
+});
+
+test("PATCH：未登录 401", async () => {
+  signIn(null);
+  useStore(captureStore());
+  assert.equal((await PATCH(jsonRequest("PATCH", { id: "abcabcabcabc", enabled: false }))).status, 401);
 });

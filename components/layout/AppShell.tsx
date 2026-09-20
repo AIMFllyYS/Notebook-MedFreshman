@@ -58,6 +58,7 @@ import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 import ToastHost from "@/components/shared/ToastHost";
 import LoginOverlay from "@/components/auth/LoginOverlay";
 import ShareButton from "@/components/share/ShareButton";
+import SourcesPanelToggle from "@/components/agent/SourcesPanelToggle";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
@@ -194,6 +195,9 @@ function TopBar({
             只在 Agent 对话页出现，判定直接复用 showCenterTabs（= isChatRoute），
             资产页等 /agent 子路由不会多出一个没有对话可分享的按钮。 */}
         {showCenterTabs && <ShareButton />}
+        {/* 来源悬浮窗的开关：用户口径放在「分享」与「全屏」之间，默认显示。
+            与「右侧工作区」那个开关是两回事——前者管浮层，后者管统一面板。 */}
+        {showCenterTabs && <SourcesPanelToggle />}
         {/* 网页全屏（F11）。Studio 里它在顶栏右端；Agent 里它落在**中间对话顶部**、
             紧贴「右侧工作区开关」左侧——两个控制同一块面板的键挨在一起，才找得到。
             它与右栏那个「全屏」（面板接管工作区）是两回事，所以图标必须一眼分得开：

@@ -21,6 +21,10 @@ export const appEn = {
   loading: {
     label: "Loading",
   },
+  sourcesToggle: {
+    show: "Show sources",
+    hide: "Hide sources",
+  },
   lightbox: {
     label: "Image viewer",
     close: "Close",
