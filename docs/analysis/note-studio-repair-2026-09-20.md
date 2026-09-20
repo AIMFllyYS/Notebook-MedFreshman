@@ -233,11 +233,27 @@ CommonMark 只有标题层级，没有通用局部字号语法。要做到「重
 
 ---
 
-## 6. 仍未做的（诚实清单）
+## 6. 未在本轮做的，以及为什么
 
-1. **任意局部字号**的完整存储与往返（见 4.4）。
-2. **无感外部替换**：当前靠重挂，丢光标与撤销历史（见 3.2）。理想做法是 `replaceAll(md, flush=false)` + 聚焦时降级为「有更新」提示。
-3. **`memoryInbox.ingestCommit` 的串单风险**：交接报告 §3 指出的「按 `committing + kind` 查找而非绑定 session/proposal」本轮**没有修**——它属于新建笔记旁路，不在「笔记改稿同意」这条链路上，但确实是同一个 P0 级隐患，建议单独一轮。
-4. **新建笔记的两段确认**：交接报告 §3 建议把新建也收口为「候选稿 → 一次确认 → 保存」，本轮未动，仍是先确认再生成正文。
-5. **条目滚动历史中的旧卡片**：刷新后滚到历史消息仍会渲染确认卡（可点、但有版本与账本双重保护）。是否需要隐藏历史卡，取决于产品对「历史记录」的期望。
+本节每条都经过"是不是真问题 / 该不该现在做"的复核，结论与处置一并写明。**不要只看标题就复述成缺陷**——第 3、4 条经复核都不是活 bug。
+
+1. **任意局部字号**（见 4.4）→ **已挂 issue [#132](https://github.com/AIMFllyYS/Notebook-MedFreshman/issues/132)**（P2 / enhancement / area:ui）。
+   是真需求（交接报告 §6 明确列为待交付），但**不是回归**：它是从未存在的能力。要动 `lib/markdown/sanitizeSchema.ts` 的**安全白名单**，且编辑器侧缺少可用的 mark 依赖 → 典型的该单独排期。
+2. **无感外部替换**（见 3.2）→ **已挂 issue [#133](https://github.com/AIMFllyYS/Notebook-MedFreshman/issues/133)**（P3 / enhancement / area:ui）。
+   是真体验问题，但影响面比直觉小：触发时机是"用户刚点完同意"或"云端回灌"，此时用户并不在编辑器里打字；当前重挂**数据正确**，丢的是光标/滚动/撤销上下文。
+3. **`memoryInbox.ingestCommit` 的"串单风险"——复核后确认不可达，不是活 bug。**
+   交接报告 §3 与首轮子智能体都把它描述成「并发整理两篇笔记会串单」，本文件上一版也照抄了这个结论。**自读代码复核后更正：这条路径走不通。**
+   - `shouldAcceptProposal`（`lib/memory/memoryLoop.ts:89-96`）+ `liveKinds`（`lib/stores/memoryInbox.ts:57-62`）保证**全局同时只有一个 `committing` 的同 kind 提议**（live 含 proposed 与 committing），所以 `ingestCommit` 里 `find(status==="committing" && kind===…)` 必然唯一命中自己。
+   - `ingestCommit` 只有两个调用点：`memoryInbox.ts:155`（`startMemoryCommit`，紧邻的 `:135` 已断言同一个 id 是 `committing` 且中间无 await）；`memoryInbox.ts:341`（`syncMemoryInboxFromSessions`，要命中需线程里存在 `commitNotes` 的 tool part，但旁路是 `persistToThread: false`，`commitMessage` 只被 `MemoryProposalCloud` 读取展示、从不写进 `chatHistory.messagesById`）。
+   - 「取消 A 后再开 B，A 的迟到响应落到 B」被 `:135` 的 `status !== "committing"` 早退挡住（`dismiss` 会把状态置为 `dismissed`）。
+
+   因此它是**潜在耦合**（正确性依赖另一个模块维护的不变量），不是可达缺陷。若要硬化，成本是给 `ingestCommit` 多传一个 proposal id，约 2 行。**把它当 P0 会误导排期**——它现在是一条 P3/needs-decision 的耦合硬化，见 **issue [#134](https://github.com/AIMFllyYS/Notebook-MedFreshman/issues/134)**。
+4. **新建笔记的授权时点：决定不做，也决定不建 issue。**
+   交接报告 §3 给的选项是"收口为『候选稿 → 一次确认 → 保存』**或**明确保留原先『同意整理并保存』的授权语义"。本轮核实后确认**保留原语义**：
+   - 现有流程 `proposeMemory → 通知云「整理成笔记？」→ 点「整理」→ 生成正文 → 保存` **只有一次授权**，不存在"叠两次相同确认"。
+   - 与改稿路径的差别只是授权发生在**生成之前**（用户批准"整理这件事"，看不到正文）。
+   - 新建**不覆盖任何既有内容**，风险远低于改稿——改稿会覆盖用户已写的正文，所以必须看草稿；新建没有这个前提。
+   - 事后用户可随意编辑，笔记会直接打开编辑器。
+   若将来要统一两边的授权粒度，那是**产品体验决策**（让新建也多一步看草稿），不是修 bug，需要单独立项。
+5. **条目滚动历史中的旧卡片**：刷新后滚到历史消息仍会渲染确认卡（可点、但有版本指纹与持久化账本双重保护）。是否需要隐藏历史卡，取决于产品对「历史记录」的期望。
 6. 各学科 `subjects/*.md` 中的教学体例未做笔记场景精选（当前做法是整份不拼）。
