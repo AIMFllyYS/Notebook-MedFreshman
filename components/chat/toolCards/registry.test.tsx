@@ -13,15 +13,19 @@ describe("tool registry", () => {
     }
   });
 
-  it("keeps memory-loop tools off the fat result-card list", () => {
-    expect([...THREAD_SILENT_TOOLS]).toEqual(["proposeMemory", "commitNotes", "commitFlashcards", "updateUserNote"]);
+  it("keeps only the memory-loop proposal tools off the result-card list", () => {
+    expect([...THREAD_SILENT_TOOLS]).toEqual(["proposeMemory", "commitNotes", "commitFlashcards"]);
     expect(TOOL_RESULT_CARDS.map((c) => c.name)).not.toEqual(
-      expect.arrayContaining(["proposeMemory", "commitNotes", "commitFlashcards", "updateUserNote"]),
+      expect.arrayContaining(["proposeMemory", "commitNotes", "commitFlashcards"]),
     );
     expect(TOOL_REGISTRY.proposeMemory.ResultCard).toBeUndefined();
     expect(TOOL_REGISTRY.commitNotes.ResultCard).toBeUndefined();
     expect(TOOL_REGISTRY.commitFlashcards.ResultCard).toBeUndefined();
-    expect(TOOL_REGISTRY.updateUserNote.ResultCard).toBeUndefined();
+  });
+
+  it("gives updateUserNote a consent card so the user can see and approve it", () => {
+    expect(TOOL_REGISTRY.updateUserNote.ResultCard).toBeTruthy();
+    expect(TOOL_RESULT_CARDS.map((c) => c.name)).toContain("updateUserNote");
   });
 
   it("lists the result cards in current chat order", () => {
@@ -34,6 +38,7 @@ describe("tool registry", () => {
       "searchNoteImages",
       "writeDocument",
       "imageSearch",
+      "updateUserNote",
     ]);
   });
 

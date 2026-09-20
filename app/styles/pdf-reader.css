@@ -1,0 +1,97 @@
+/* ─────────────────────────────────────────────────────────────
+   PDF 阅读器（连续页流）
+   连续滚动：全部页上下排布，按视口懒渲染。
+   百分比显示的是「屏幕实际占比」，不再复述 pdf.js 的内部 scale。
+   ───────────────────────────────────────────────────────────── */
+
+.pdf-pages {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.pdf-page {
+  position: relative;
+  flex: 0 0 auto;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.pdf-page.is-placeholder {
+  background: color-mix(in srgb, var(--bg-panel) 88%, #fff);
+  box-shadow: none;
+}
+
+.pdf-page-canvas {
+  display: block;
+}
+
+.pdf-pages-status {
+  padding: 24px 16px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* pdfjs TextLayer 需要的最小属性子集（照 node_modules/pdfjs-dist/web/pdf_viewer.css 的 .textLayer 摘录）。
+   不要改成裸元素选择器，也不要挪到 .prose-notes / .chat-prose 作用域里。 */
+.pdf-text-layer {
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: clip;
+  line-height: 1;
+  text-align: initial;
+  text-size-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  forced-color-adjust: none;
+}
+
+.pdf-text-layer :is(span, br) {
+  position: absolute;
+  color: transparent;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+
+.pdf-text-layer > :not(.markedContent),
+.pdf-text-layer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  --scale-x: 1;
+  --rotate: 0deg;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+
+.pdf-text-layer .markedContent {
+  display: contents;
+}
+
+.pdf-text-layer ::selection {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+}
+
+.pdf-text-layer br::selection {
+  background: transparent;
+}
+
+.pdf-text-layer .endOfContent {
+  display: block;
+  position: absolute;
+  inset: 100% 0 0;
+  z-index: 0;
+  cursor: default;
+  user-select: none;
+}

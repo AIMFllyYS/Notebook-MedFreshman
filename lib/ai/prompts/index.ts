@@ -35,9 +35,18 @@ function readMd(rel: string): string {
   return text;
 }
 
+/** 当前科目段：科目名 + 该科提示词（无则只有科目名）。 */
+function subjectBlockOf(ctx: ChatContext): string {
+  const subject = subjectName(ctx.subjectId);
+  const subjectRel = subjectPromptFile(ctx.subjectId);
+  const subjectMd = subjectRel ? readMd(subjectRel) : "";
+  return subjectMd ? `当前科目：${subject}\n\n${subjectMd}` : `当前科目：${subject}`;
+}
+
 /**
- * 稳定 system 前缀：学科无关的 global 在前，当前科目名 + 学科 md 在后。
- * 换科目时失效从「当前科目」段起；global 教学法段可继续命中 prefix cache。
+ * 稳定 system 前缀：学科无关的 global 在前，通用正确性规范居中，
+ * 当前科目名 + 学科 md 在后。换科目时失效从「当前科目」段起；
+ * global 教学法段与 correctness 段可继续命中 prefix cache。
  */
 export function buildSystemPrompt(ctx: ChatContext): string {
   const subject = subjectName(ctx.subjectId);
@@ -45,13 +54,33 @@ export function buildSystemPrompt(ctx: ChatContext): string {
     .replace(/\{subjectTable\}/g, describeSubjectsByYear({ includeOther: true, name: "full", joiner: "、" }))
     .replace(/「\{subjectName\}」/g, "")
     .replace(/\{subjectName\}/g, subject);
-  const subjectRel = subjectPromptFile(ctx.subjectId);
-  const subjectMd = subjectRel ? readMd(subjectRel) : "";
-  const subjectBlock = subjectMd
-    ? `当前科目：${subject}\n\n${subjectMd}`
-    : `当前科目：${subject}`;
-  return `${global}\n\n---\n\n${subjectBlock}`;
+  const correctness = readMd("correctness.md");
+  const head = correctness ? `${global}\n\n---\n\n${correctness}` : global;
+  return `${head}\n\n---\n\n${subjectBlockOf(ctx)}`;
 }
+
+/**
+ * 笔记角色的稳定 system 前缀。
+ *
+ * 与教学 Agent **刻意不共用**：笔记 Agent 要的是短提纲体例与「先征得同意」的写入纪律，
+ * 而 global.md 强制教学法（引导式反问、示范题、追问标签）会把聊天套话带回笔记。
+ * 两边共用同一份 correctness.md（公式规范 + 防幻觉），避免正确性规范出现两份真相。
+ *
+ * 同科目内逐字节一致，同一篇笔记多轮对话可继续命中 prefix cache；
+ * 笔记正文只出现在 volatile 段（见 studyAgent），不进这条前缀。
+ */
+export function buildNoteSystemPrompt(ctx: ChatContext): string {
+  const noteAgent = readMd("note-agent.md");
+  const correctness = readMd("correctness.md");
+  const parts = [noteAgent, correctness].filter(Boolean);
+  return `${parts.join("\n\n---\n\n")}\n\n---\n\n当前科目：${subjectName(ctx.subjectId)}`;
+}
+
+/*
+ * 笔记前缀**不**拼 subjects/<id>.md：那 8 份是「讲解策略」，本体是教学口吻
+ * （引导式提问、:::definition / :::timeline 体例），拼进来等于把教学人格从后门带回去。
+ * 笔记需要的只是「当前是哪一科」，科目名一行足够；学科相关的事实与公式规范由 correctness.md 覆盖。
+ */
 
 /**
  * 当前定位行（轻量、易变，必须放在 system 末尾）。

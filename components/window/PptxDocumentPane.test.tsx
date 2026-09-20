@@ -1,0 +1,306 @@
+import { act, cleanup, render, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { strToU8, zipSync } from "fflate";
+import PptxDocumentPane from "./PptxDocumentPane";
+import { useAppMode } from "@/lib/stores/appMode";
+
+/** 假库的状态与调用记录：断言「用哪个 API、传了什么 options」靠它。 */
+const harness = vi.hoisted(() => ({
+  init: vi.fn(),
+  loadCalls: 0,
+  previewCalls: 0,
+  loadThrows: false,
+  slideCount: 3,
+  deckWidth: 960,
+  deckHeight: 720,
+  renderedIndexes: [] as number[],
+  failSlideIndexes: new Set<number>(),
+}));
+
+vi.mock("pptx-preview", () => ({ init: harness.init }));
+
+interface FakeDeck {
+  width: number;
+  height: number;
+  slides: unknown[];
+}
+
+interface FakePreviewer {
+  wrapper: HTMLElement;
+  pptx?: FakeDeck;
+  htmlRender: { renderSlide: (index: number) => void };
+  load: (buffer: ArrayBuffer) => Promise<FakeDeck>;
+  preview: (buffer: ArrayBuffer) => Promise<unknown>;
+  destroy: () => void;
+}
+
+/** React 的 useElementWidth 与 react-resizable-panels 都建 ResizeObserver；只手动驱动正文容器那一个。 */
+class FakeResizeObserver {
+  static instances: FakeResizeObserver[] = [];
+  readonly callback: ResizeObserverCallback;
+  readonly targets = new Set<Element>();
+
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+    FakeResizeObserver.instances.push(this);
+  }
+
+  observe(target: Element) {
+    this.targets.add(target);
+  }
+
+  unobserve(target: Element) {
+    this.targets.delete(target);
+  }
+
+  disconnect() {
+    this.targets.clear();
+  }
+
+  static triggerFor(target: Element) {
+    for (const instance of FakeResizeObserver.instances) {
+      if (!instance.targets.has(target)) continue;
+      instance.callback(
+        [{ target } as unknown as ResizeObserverEntry],
+        instance as unknown as ResizeObserver,
+      );
+    }
+  }
+
+  static reset() {
+    FakeResizeObserver.instances = [];
+  }
+}
+
+/** IntersectionObserver 桩：jsdom 没有它，手动把槽位「滚进视口」。 */
+class FakeIntersectionObserver {
+  static instances: FakeIntersectionObserver[] = [];
+  readonly callback: IntersectionObserverCallback;
+  readonly targets = new Set<Element>();
+
+  constructor(callback: IntersectionObserverCallback) {
+    this.callback = callback;
+    FakeIntersectionObserver.instances.push(this);
+  }
+
+  observe(target: Element) {
+    this.targets.add(target);
+  }
+
+  unobserve(target: Element) {
+    this.targets.delete(target);
+  }
+
+  disconnect() {
+    this.targets.clear();
+  }
+
+  takeRecords() {
+    return [];
+  }
+
+  /** 把所有被观察的槽位一次性判为「进入视口」。 */
+  static intersectAll() {
+    for (const instance of FakeIntersectionObserver.instances) {
+      if (!instance.targets.size) continue;
+      const entries = [...instance.targets].map(
+        (target) => ({ target, isIntersecting: true }) as unknown as IntersectionObserverEntry,
+      );
+      instance.callback(entries, instance as unknown as IntersectionObserver);
+    }
+  }
+
+  static reset() {
+    FakeIntersectionObserver.instances = [];
+  }
+}
+
+function pptxFixture(): ArrayBuffer {
+  const archive = zipSync({
+    "ppt/slides/slide1.xml": strToU8("<p:sld><a:t>第一页标题</a:t></p:sld>"),
+    "ppt/slides/slide2.xml": strToU8("<p:sld><a:t>第二页标题</a:t></p:sld>"),
+    "ppt/slides/slide3.xml": strToU8("<p:sld><a:t>第三页标题</a:t></p:sld>"),
+  });
+  return archive.buffer.slice(archive.byteOffset, archive.byteOffset + archive.byteLength) as ArrayBuffer;
+}
+
+const deckBuffer = pptxFixture();
+
+function renderPane() {
+  return render(<PptxDocumentPane src="blob:pptx-fixture" name="重点.pptx" />);
+}
+
+function slotList(container: HTMLElement): HTMLElement[] {
+  return [...container.querySelectorAll<HTMLElement>(".pptx-page-slot")];
+}
+
+async function waitForSlots(container: HTMLElement, count = harness.slideCount) {
+  await waitFor(() => expect(slotList(container)).toHaveLength(count));
+}
+
+describe("PptxDocumentPane", () => {
+  beforeEach(() => {
+    harness.init.mockReset();
+    harness.loadCalls = 0;
+    harness.previewCalls = 0;
+    harness.loadThrows = false;
+    harness.slideCount = 3;
+    harness.renderedIndexes = [];
+    harness.failSlideIndexes.clear();
+    FakeResizeObserver.reset();
+    FakeIntersectionObserver.reset();
+    useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
+
+    vi.stubGlobal("ResizeObserver", FakeResizeObserver);
+    vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ arrayBuffer: async () => deckBuffer })),
+    );
+
+    harness.init.mockImplementation((host: HTMLElement) => {
+      const wrapper = host.ownerDocument.createElement("div");
+      wrapper.className = "pptx-preview-wrapper";
+      host.appendChild(wrapper);
+      const instance: FakePreviewer = {
+        wrapper,
+        htmlRender: {
+          renderSlide(index: number) {
+            if (harness.failSlideIndexes.has(index)) throw new Error(`slide ${index} 渲染失败`);
+            const slide = host.ownerDocument.createElement("div");
+            slide.className = `pptx-preview-slide-wrapper pptx-preview-slide-wrapper-${index}`;
+            wrapper.appendChild(slide);
+            harness.renderedIndexes.push(index);
+          },
+        },
+        async load() {
+          harness.loadCalls += 1;
+          if (harness.loadThrows) throw new Error("课件解析失败");
+          instance.pptx = {
+            width: harness.deckWidth,
+            height: harness.deckHeight,
+            slides: Array.from({ length: harness.slideCount }, (_, index) => ({ index })),
+          };
+          return instance.pptx;
+        },
+        async preview() {
+          harness.previewCalls += 1;
+          instance.pptx = {
+            width: harness.deckWidth,
+            height: harness.deckHeight,
+            slides: Array.from({ length: harness.slideCount }, (_, index) => ({ index })),
+          };
+          for (let index = 0; index < harness.slideCount; index += 1) {
+            instance.htmlRender.renderSlide(index);
+          }
+          return instance.pptx;
+        },
+        destroy: vi.fn(),
+      };
+      return instance;
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+  });
+
+  it("list 模式初始化：不传 height（传了会被库写成固定高度 + overflow）", async () => {
+    renderPane();
+    await waitFor(() => expect(harness.init).toHaveBeenCalled());
+
+    const [, options] = harness.init.mock.calls[0] as [HTMLElement, Record<string, unknown>];
+    expect(options.mode).toBe("list");
+    expect(options).not.toHaveProperty("height");
+    expect(typeof options.width).toBe("number");
+  });
+
+  it("先 load 建槽（页数 = 页数），没有进视口的页先不渲染", async () => {
+    const { container } = renderPane();
+    await waitForSlots(container);
+
+    expect(harness.loadCalls).toBe(1);
+    expect(harness.previewCalls).toBe(0);
+    expect(slotList(container).map((slot) => slot.dataset.pptxPage)).toEqual(["1", "2", "3"]);
+    // 懒渲染：观察者还没报告可见，一页都不该画。
+    expect(harness.renderedIndexes).toEqual([]);
+
+    await act(async () => {
+      FakeIntersectionObserver.intersectAll();
+    });
+    expect(harness.renderedIndexes).toEqual([0, 1, 2]);
+    for (const index of [0, 1, 2]) {
+      expect(
+        slotList(container)[index].querySelector(`.pptx-preview-slide-wrapper-${index}`),
+      ).not.toBeNull();
+    }
+  });
+
+  it("4:3 稿件按真实纵横比留位：960×720 的页在 696 宽下是 522 高", async () => {
+    const { container } = renderPane();
+    await waitForSlots(container);
+    const [, options] = harness.init.mock.calls[0] as [HTMLElement, { width: number }];
+    expect(slotList(container)[0].style.height).toBe(`${Math.round((options.width * 720) / 960)}px`);
+    // 库自己的 wrapper 高度也必须等于槽位高度，页面才不会被裁。
+    expect(slotList(container)[0].style.height).not.toBe("540px");
+  });
+
+  it("单页渲染失败只降级那一页：该槽变文字卡，其它页照旧", async () => {
+    harness.failSlideIndexes.add(1);
+    const { container } = renderPane();
+    await waitForSlots(container);
+
+    await act(async () => {
+      FakeIntersectionObserver.intersectAll();
+    });
+
+    const slots = slotList(container);
+    expect(slots[0].querySelector(".pptx-preview-slide-wrapper-0")).not.toBeNull();
+    expect(slots[1].classList.contains("is-text")).toBe(true);
+    expect(slots[1].querySelector(".pptx-page-fallback-label")?.textContent).toBe("Slide 2");
+    expect(slots[1].textContent).toContain("第二页标题");
+    expect(slots[2].querySelector(".pptx-preview-slide-wrapper-2")).not.toBeNull();
+  });
+
+  it("没有 IntersectionObserver 时全部挂载（jsdom / 老浏览器不留空槽）", async () => {
+    vi.stubGlobal("IntersectionObserver", undefined);
+    const { container } = renderPane();
+    await waitForSlots(container);
+
+    await waitFor(() => expect(harness.renderedIndexes).toEqual([0, 1, 2]));
+    expect(slotList(container)[2].querySelector(".pptx-preview-slide-wrapper-2")).not.toBeNull();
+  });
+
+  it("load 失败退回全量 preview（仍然 list 模式），槽位照常铺满", async () => {
+    harness.loadThrows = true;
+    const { container } = renderPane();
+    await waitForSlots(container);
+
+    expect(harness.loadCalls).toBe(1);
+    expect(harness.previewCalls).toBe(1);
+    expect(harness.init).toHaveBeenCalledTimes(2);
+    expect(container.querySelector(".pptx-page-slot .pptx-preview-slide-wrapper-1")).not.toBeNull();
+  });
+
+  it("正文容器宽度变化超过 8px 才重建预览器，并按新宽度重铺槽位", async () => {
+    const { container } = renderPane();
+    await waitForSlots(container);
+    const [firstCall] = harness.init.mock.calls as [HTMLElement, { width: number }][];
+
+    const body = container.querySelector<HTMLElement>(".document-workspace-body");
+    expect(body).not.toBeNull();
+    Object.defineProperty(body, "clientWidth", { value: 900, configurable: true });
+    await act(async () => {
+      FakeResizeObserver.triggerFor(body as HTMLElement);
+    });
+
+    await waitFor(() => expect(harness.init).toHaveBeenCalledTimes(2), { timeout: 3000 });
+    const calls = harness.init.mock.calls as [HTMLElement, { width: number }][];
+    // 扣掉 .pptx-pages 两侧各 12px 的 padding，槽位才不会被容器撑出横向滚动。
+    expect(calls[1][1].width).toBe(900 - 24);
+    expect(calls[1][1].width).not.toBe(firstCall[1].width);
+    await waitForSlots(container);
+    expect(slotList(container)[0].style.width).toBe(`${900 - 24}px`);
+  });
+});

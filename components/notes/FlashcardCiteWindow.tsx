@@ -128,6 +128,7 @@ function FlashcardCitePicker() {
       unmountWhenMinimized
     >
       <DocumentWorkspace
+        layoutKey="flashcard-cite"
         outlineLabel="复习闪卡"
         outline={cards.map((card) => ({
           id: card.id,

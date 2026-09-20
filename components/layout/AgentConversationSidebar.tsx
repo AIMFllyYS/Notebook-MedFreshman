@@ -285,7 +285,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                 return (
                   <div key={project.id}>
                     <div
-                      className="flex items-center"
+                      className="group flex items-center"
                       onContextMenu={(event) =>
                         openMenu(event, {
                           kind: "project",
@@ -335,6 +335,26 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                           />
                         )}
                       </div>
+                      {/**
+                       * 项目行右侧的「+」：直接在这个项目里开一条新对话。
+                       * 系统项目（笔记记录 / 划词摘录）的成员由会话 kind 决定，手动新建挂不进去，所以不给。
+                       * 重命名时也藏起来，免得和输入框抢焦点。
+                       */}
+                      {!project.system && renamingProjectId !== project.id ? (
+                        <button
+                          type="button"
+                          data-testid={`agent-project-new-chat-${project.id}`}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleNewChat(project.id);
+                          }}
+                          title={`在「${project.name}」里新建对话`}
+                          aria-label={`在「${project.name}」里新建对话`}
+                          className="mr-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[var(--ink-soft)] opacity-0 transition-opacity hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--ink)] focus-visible:opacity-100 group-hover:opacity-100"
+                        >
+                          <Plus size={13} />
+                        </button>
+                      ) : null}
                     </div>
                     <AnimatedCollapse isOpen={expanded}>
                       <AgentSessionList

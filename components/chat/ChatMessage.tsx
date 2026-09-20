@@ -23,6 +23,8 @@ interface ChatMessageProps {
   sessionId?: string;
   repairModelId?: string;
   topic?: string;
+  /** 窗内笔记对话置 false：追问属于教学场景的聊天套话，与笔记角色冲突。默认 true。 */
+  showFollowUps?: boolean;
 }
 
 function traceFromSteps(steps: TraceStep[]): AgentTraceModel {
@@ -37,7 +39,7 @@ function traceFromSteps(steps: TraceStep[]): AgentTraceModel {
   };
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming: requestStreaming, sessionId, repairModelId, topic }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming: requestStreaming, sessionId, repairModelId, topic, showFollowUps = true }) => {
   const isStreaming = requestStreaming && !message.parts.some((part) => part.type === 'data-answer-complete');
   const isUser = message.role === 'user';
   const parts = message.parts;
@@ -147,7 +149,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
               );
             })}
             <ToolResultCards message={message} isStreaming={isStreaming} />
-            {revealFollowups && !isStreaming && (followUpQuestions.length > 0 || traceSources.length > 0) ? (
+            {showFollowUps && revealFollowups && !isStreaming && (followUpQuestions.length > 0 || traceSources.length > 0) ? (
               <FollowUpQuestions questions={followUpQuestions} onSelect={onFollowUpSelect} sources={traceSources} />
             ) : null}
           </>

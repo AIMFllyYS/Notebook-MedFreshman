@@ -6,7 +6,7 @@ import { useWindowManager } from "@/lib/stores/windowManager";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useChatUI } from "@/lib/stores/chatUI";
 import { useStore } from "@/lib/stores/ui";
-import { applyUpdateUserNoteEvents, resetAppliedUserNoteEdits } from "@/lib/notes/applyUserNoteAgent";
+import { useNoteChangeProposals } from "@/lib/stores/noteChangeProposals";
 import { createAndOpenClassroomNote, createAndOpenNote, openNoteLibrary } from "@/lib/notes/openUserNote";
 import { BLANK_NOTE_MARKDOWN, EXAMPLE_USER_NOTE_ID } from "@/lib/notes/userNote";
 
@@ -57,7 +57,7 @@ describe("personal note windows", () => {
       _activeMessagesReady: true,
     });
     useStore.setState({ rightTab: "video", mobileTab: "detail" });
-    resetAppliedUserNoteEdits();
+    useNoteChangeProposals.getState().reset();
   });
 
   afterEach(() => {
@@ -147,6 +147,59 @@ describe("personal note windows", () => {
     expect(screen.getByTestId("subject-picker")).toHaveTextContent("概率论");
   });
 
+  it("does not write a note from an agent tool result without the user approving it", () => {
+    const id = createAndOpenNote("anatomy", { title: "被覆上皮", markdown: "旧稿" });
+    const sessionId = useUserNotes.getState().ensureNoteAgentSession(id);
+    expect(sessionId).toBeTruthy();
+    render(<UserNoteLayer />);
+
+    act(() => {
+      useChatHistory.setState({
+        activeSessionId: "main",
+        messagesById: {
+          main: [],
+          [sessionId!]: [
+            {
+              id: "a-consent",
+              role: "assistant",
+              timestamp: 1,
+              parts: [
+                {
+                  type: "tool-updateUserNote",
+                  toolCallId: "u-consent",
+                  state: "output-available",
+                  input: { markdown: "# 被覆上皮\n\n1. 单层扁平" },
+                  output: {
+                    text: "已生成候选稿，等学生在前端点「同意修改」。",
+                    proposalId: "u-consent",
+                    ok: true,
+                    noteId: id,
+                    markdown: "# 被覆上皮\n\n1. 单层扁平",
+                    action: "update",
+                    sourceComplete: true,
+                    baseDigest: "",
+                    summary: "修改笔记「被覆上皮」",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      });
+    });
+
+    // 未点同意：正文、标题、更新时间都不许动。
+    expect(useUserNotes.getState().byId[id]?.markdown).toBe("旧稿");
+    expect(useUserNotes.getState().byId[id]?.title).toBe("被覆上皮");
+
+    // 点同意后才落地。
+    act(() => {
+      const result = useNoteChangeProposals.getState().approve("u-consent");
+      expect(result.ok).toBe(true);
+    });
+    expect(useUserNotes.getState().byId[id]?.markdown).toBe("# 被覆上皮\n\n1. 单层扁平");
+  });
+
   it("opens an in-window note agent without touching the main thread", () => {
     const id = createAndOpenNote("anatomy", { title: "被覆上皮", markdown: "旧稿" });
     const mainMessages = [
@@ -188,11 +241,15 @@ describe("personal note windows", () => {
                   state: "output-available",
                   input: { markdown: "# 被覆上皮\n\n1. 单层扁平" },
                   output: {
-                    text: "已写回",
+                    text: "已生成候选稿，等学生在前端点「同意修改」。",
+                    proposalId: "u-layer",
+                    ok: true,
                     noteId: id,
                     markdown: "# 被覆上皮\n\n1. 单层扁平",
                     action: "update",
-                    applied: true,
+                    sourceComplete: true,
+                    baseDigest: "",
+                    summary: "修改笔记「被覆上皮」",
                   },
                 },
               ],
@@ -202,10 +259,11 @@ describe("personal note windows", () => {
       });
     });
 
-    expect(useUserNotes.getState().byId[id]?.markdown).toBe("# 被覆上皮\n\n1. 单层扁平");
+    // 工具结果只是候选稿：没点同意，正文与标题都不动。
+    expect(useUserNotes.getState().byId[id]?.markdown).toBe("旧稿");
+    expect(useNoteChangeProposals.getState().statusOf("u-layer")).toBe("pending");
     expect(screen.getByLabelText("笔记标题")).toHaveValue("被覆上皮");
     expect(useChatHistory.getState().messagesById.main).toEqual(mainMessages);
-    expect(applyUpdateUserNoteEvents(Object.values(useChatHistory.getState().messagesById).flat())).toEqual([]);
     expect(screen.getByRole("navigation", { name: "笔记目录" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "刷新渲染" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "隐藏目录" }));

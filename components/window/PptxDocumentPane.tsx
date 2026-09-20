@@ -1,131 +1,313 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Presentation } from "lucide-react";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
 import { parsePptxSlideBytes, type PptxSlideText } from "@/lib/chat/parsePptx";
+import {
+  createSlideSlots,
+  mountRenderedSlide,
+  slideDisplayHeight,
+  topmostSlotIndex,
+  type PptxSlideMetrics,
+} from "@/lib/chat/pptxSlideList";
+import { useElementWidth } from "@/lib/hooks/useElementWidth";
+import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
 
-const SLIDE_WIDTH = 960;
-const SLIDE_HEIGHT = 540;
+/** 首帧 / 没有 ResizeObserver 时的兜底可用宽度。 */
+const FALLBACK_WIDTH = 720;
+/** 宽度抖动小于它就沿用当前预览器：重建要重新解析整份课件，不值得为 1px 付这个代价。 */
+const WIDTH_EPSILON = 8;
+/** .pptx-pages 左右各这么多 padding（见 app/styles/pptx-reader.css）。两边都要扣掉：
+ *  容器是 width:max-content + border-box，槽位宽度决定容器宽度，不扣就会横向溢出。 */
+const PAGES_GUTTER = 12;
+/** 懒渲染提前量：视口上下各 800px 内的页提前渲染好，滚过去时不会看到空槽。 */
+const PRELOAD_MARGIN = "800px 0px";
+/** 「跳到第 N 页」时目标页离容器顶留这么多像素，别把页眉贴死在边上。 */
+const SCROLL_TOP_OFFSET = 8;
+
+interface PptxDeck {
+  width: number;
+  height: number;
+  slides: unknown[];
+}
+
+/** pptx-preview 1.0.7 里我们真正用到的那几个成员（发行包类型没有描述完整形状）。 */
+interface PptxPreviewer {
+  wrapper: HTMLElement;
+  pptx?: PptxDeck;
+  htmlRender: { renderSlide: (index: number) => void };
+  load: (buffer: ArrayBuffer) => Promise<PptxDeck>;
+  preview: (buffer: ArrayBuffer) => Promise<unknown>;
+  destroy: () => void;
+}
 
 async function sourceToBuffer(src: string): Promise<ArrayBuffer> {
-  if (src.startsWith("data:")) {
-    const encoded = src.slice(src.indexOf(",") + 1);
-    const binary = atob(encoded);
-    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-    return bytes.buffer;
-  }
-  if (src.startsWith("blob:") || src.startsWith("http://") || src.startsWith("https://")) {
+  if (
+    src.startsWith("data:") ||
+    src.startsWith("blob:") ||
+    src.startsWith("http://") ||
+    src.startsWith("https://")
+  ) {
+    // data: 也走 fetch：几十兆的课件同步 atob 解码会把主线程卡住几百毫秒。
     const response = await fetch(src);
     return response.arrayBuffer();
   }
   throw new Error("无法读取该 PPTX");
 }
 
-function fitSlide(stage: HTMLElement, scaler: HTMLElement, host: HTMLElement) {
-  const pad = 16;
-  const availW = Math.max(160, stage.clientWidth - pad);
-  const availH = Math.max(90, stage.clientHeight - pad);
-  const scale = Math.min(availW / SLIDE_WIDTH, availH / SLIDE_HEIGHT);
-  if (!Number.isFinite(scale) || scale <= 0) return;
-  scaler.style.width = `${SLIDE_WIDTH * scale}px`;
-  scaler.style.height = `${SLIDE_HEIGHT * scale}px`;
-  host.style.width = `${SLIDE_WIDTH}px`;
-  host.style.height = `${SLIDE_HEIGHT}px`;
-  host.style.transform = `scale(${scale})`;
-  host.style.transformOrigin = "top left";
+function deckMetrics(deck: PptxDeck): PptxSlideMetrics {
+  return { count: deck.slides.length, deckWidth: deck.width, deckHeight: deck.height };
+}
+
+/** 单页渲染失败时的文字回退卡：至少能读，不影响同列其它页。 */
+function renderTextFallback(slot: HTMLElement, number: number, text: string) {
+  const doc = slot.ownerDocument;
+  slot.classList.add("is-text");
+  // 截图不成，槽位就不该继续占着整页高度。
+  slot.style.height = "auto";
+  const label = doc.createElement("span");
+  label.className = "pptx-page-fallback-label";
+  label.textContent = `Slide ${number}`;
+  const body = doc.createElement("p");
+  body.textContent = text || `幻灯片 ${number}`;
+  slot.replaceChildren(label, body);
 }
 
 export default function PptxDocumentPane({ src, name }: { src: string; name: string }) {
   const hostRef = useRef<HTMLDivElement | null>(null);
-  const stageRef = useRef<HTMLDivElement | null>(null);
-  const scalerRef = useRef<HTMLDivElement | null>(null);
-  const previewerRef = useRef<{
-    slideCount: number;
-    renderSingleSlide: (index: number) => void;
-    destroy: () => void;
-  } | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const pagesRef = useRef<HTMLDivElement | null>(null);
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+  const slotsRef = useRef<HTMLElement[]>([]);
+  /** 已渲染成功的下标：IntersectionObserver 会反复回调，同一页不能渲染两次。 */
+  const renderedRef = useRef<Set<number>>(new Set());
+  /** 上一次真正建过预览器的宽度（含抖动过滤）。 */
+  const widthRef = useRef(FALLBACK_WIDTH - PAGES_GUTTER * 2);
+
+  const measured = useElementWidth(bodyRef);
+  const [displayWidth, setDisplayWidth] = useState(FALLBACK_WIDTH - PAGES_GUTTER * 2);
   const [slides, setSlides] = useState<PptxSlideText[] | null>(null);
-  const [page, setPage] = useState(1);
-  const [pageCount, setPageCount] = useState(1);
-  const [visual, setVisual] = useState(false);
+  const [count, setCount] = useState(1);
+  const [current, setCurrent] = useState(0);
+  const [textStage, setTextStage] = useState(false);
+  const [status, setStatus] = useState<string | null>("正在准备幻灯片…");
+  const [error, setError] = useState<string | null>(null);
+
+  // 宽度先过一道「变化 < 8px 不重建」的闸，displayWidth 才是重建预览器的唯一触发源。
+  const rawWidth = Math.max(160, (measured > 0 ? measured : FALLBACK_WIDTH) - PAGES_GUTTER * 2);
+  useEffect(() => {
+    if (Math.abs(rawWidth - widthRef.current) < WIDTH_EPSILON) return;
+    widthRef.current = rawWidth;
+    setDisplayWidth(rawWidth);
+  }, [rawWidth]);
+
+  const scrollToSlide = useCallback((index: number) => {
+    const body = bodyRef.current;
+    const el = pagesRef.current?.children[index] as HTMLElement | undefined;
+    if (body && el) scrollToElementTop(body, el, SCROLL_TOP_OFFSET);
+  }, []);
 
   useEffect(() => {
+    const host = hostRef.current;
+    const pages = pagesRef.current;
+    const body = bodyRef.current;
+    if (!host || !pages) return;
+
     let cancelled = false;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    let observer: IntersectionObserver | null = null;
+    let previewer: PptxPreviewer | null = null;
+    const rendered = renderedRef.current;
+    rendered.clear();
+    // 重建（分栏拖拽 / 右栏展开）后要滚回原来那一页，否则用户会被甩到第 1 页。
+    const restoring = slotsRef.current.length > 0;
+    const restoreIndex = restoring ? topmostSlotIndex(slotsRef.current, body?.scrollTop ?? 0) : 0;
+    slotsRef.current = [];
+
     setError(null);
-    setVisual(false);
-    previewerRef.current?.destroy();
-    previewerRef.current = null;
-    if (hostRef.current) hostRef.current.replaceChildren();
+    setStatus("正在准备幻灯片…");
+    setTextStage(false);
 
     void (async () => {
-      const host = hostRef.current;
-      if (!host) return;
+      let buffer: ArrayBuffer;
+      try {
+        buffer = await sourceToBuffer(src);
+      } catch (err) {
+        if (cancelled) return;
+        setStatus(null);
+        setError(err instanceof Error ? err.message : `无法打开 ${name}`);
+        return;
+      }
+
+      // 大纲文字是离线解析的，先出来：库整体不可用时它还是唯一的读物。
       let titles: PptxSlideText[] = [];
       try {
-        const buffer = await sourceToBuffer(src);
-        try {
-          titles = parsePptxSlideBytes(new Uint8Array(buffer));
-        } catch {
-          titles = [];
-        }
-        if (!cancelled) setSlides(titles.length ? titles : null);
-        const { init } = await import("pptx-preview");
-        if (cancelled) return;
-        const previewer = init(host, { width: SLIDE_WIDTH, height: SLIDE_HEIGHT, mode: "slide" });
-        await previewer.preview(buffer);
-        if (cancelled) {
-          previewer.destroy();
-          return;
-        }
-        previewerRef.current = previewer;
-        const count = Math.max(previewer.slideCount || titles.length || 1, 1);
-        setPageCount(count);
-        setPage(1);
-        host.querySelectorAll("button").forEach((button) => {
-          button.style.display = "none";
-        });
-        setVisual(true);
-      } catch (err) {
-        if (!cancelled) {
-          setVisual(false);
-          if (!titles.length) setError(err instanceof Error ? err.message : `无法打开 ${name}`);
-        }
+        titles = parsePptxSlideBytes(new Uint8Array(buffer));
+      } catch {
+        titles = [];
       }
+      if (cancelled) return;
+      setSlides(titles.length ? titles : null);
+      const textOf = (number: number) =>
+        titles.find((slide) => slide.number === number)?.text ?? "";
+
+      const { init } = await import("pptx-preview");
+      if (cancelled) return;
+
+      const buildSlots = (metrics: PptxSlideMetrics) =>
+        createSlideSlots(
+          pages,
+          metrics.count,
+          displayWidth,
+          slideDisplayHeight(metrics.deckWidth, metrics.deckHeight, displayWidth),
+        );
+
+      // A：list 模式只 load，不渲染；每一页等滚到附近再 renderSlide 进自己的槽。
+      try {
+        host.replaceChildren();
+        const instance: PptxPreviewer = init(host, { width: displayWidth, mode: "list" });
+        previewer = instance;
+        const deck = await instance.load(buffer);
+        if (cancelled) return;
+
+        const metrics = deckMetrics(deck);
+        const slots = buildSlots(metrics);
+        slotsRef.current = slots;
+
+        const mountSlot = (index: number) => {
+          if (index < 0 || index >= slots.length || rendered.has(index)) return;
+          try {
+            instance.htmlRender.renderSlide(index);
+            if (!mountRenderedSlide(slots[index], instance.wrapper, index)) {
+              throw new Error(`第 ${index + 1} 页没有渲染出内容`);
+            }
+            rendered.add(index);
+          } catch {
+            // 单页失败不该拖垮整份稿件：这一页退成文字卡，其余页照旧。
+            // 一并记进 rendered：观察者会反复回调，不记就会反复重试——
+            // 而库里那棵树上还留着上一次的残节点，重试会把文字卡又换成坏页。
+            rendered.add(index);
+            renderTextFallback(slots[index], index + 1, textOf(index + 1));
+          }
+        };
+
+        if (typeof IntersectionObserver === "undefined") {
+          // jsdom / 老浏览器：没有观察者就一次性全挂上，懒渲染只是优化、不是正确性前提。
+          for (let index = 0; index < slots.length; index += 1) mountSlot(index);
+        } else {
+          observer = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.isIntersecting) mountSlot(slots.indexOf(entry.target as HTMLElement));
+              }
+            },
+            { root: body ?? null, rootMargin: PRELOAD_MARGIN },
+          );
+          for (const slot of slots) observer.observe(slot);
+        }
+
+        if (cancelled) return;
+        setCount(Math.max(metrics.count, 1));
+        setStatus(null);
+        setTextStage(false);
+        if (restoring) scrollToSlide(restoreIndex);
+        return;
+      } catch {
+        observer?.disconnect();
+        observer = null;
+      }
+
+      // B：A 挂了（解析失败 / 读不出页几何）就退回库的全量渲染，仍然是 list 模式。
+      try {
+        previewer?.destroy();
+        host.replaceChildren();
+        const instance: PptxPreviewer = init(host, { width: displayWidth, mode: "list" });
+        previewer = instance;
+        await instance.preview(buffer);
+        if (cancelled) return;
+
+        const deck = instance.pptx;
+        if (!deck?.slides.length) throw new Error("没有可渲染的幻灯片");
+        const metrics = deckMetrics(deck);
+        const slots = buildSlots(metrics);
+        slotsRef.current = slots;
+        for (let index = 0; index < slots.length; index += 1) {
+          if (!mountRenderedSlide(slots[index], instance.wrapper, index)) {
+            renderTextFallback(slots[index], index + 1, textOf(index + 1));
+          }
+        }
+
+        setCount(Math.max(metrics.count, 1));
+        setStatus(null);
+        setTextStage(false);
+        if (restoring) scrollToSlide(restoreIndex);
+        return;
+      } catch {
+        previewer?.destroy();
+        previewer = null;
+        host.replaceChildren();
+      }
+
+      // C：库整体不可用 → 文字化幻灯片舞台（老行为，至少能读）。
+      if (cancelled) return;
+      slotsRef.current = [];
+      pages.replaceChildren();
+      setCount(Math.max(titles.length, 1));
+      setCurrent(0);
+      setStatus(null);
+      setTextStage(true);
+      if (!titles.length) setError(`无法打开 ${name}`);
     })();
 
     return () => {
       cancelled = true;
-      previewerRef.current?.destroy();
-      previewerRef.current = null;
+      observer?.disconnect();
+      observer = null;
+      previewer?.destroy();
+      previewer = null;
+      rendered.clear();
     };
-  }, [name, src]);
+  }, [src, name, displayWidth, scrollToSlide]);
 
+  // 滚动 → 当前页：rAF 节流，滚动过程中每帧最多量一次。
   useEffect(() => {
-    if (!visual || !previewerRef.current) return;
-    previewerRef.current.renderSingleSlide(Math.max(0, page - 1));
-  }, [page, visual]);
-
-  useLayoutEffect(() => {
-    if (!visual) return;
-    const stage = stageRef.current;
-    const scaler = scalerRef.current;
-    const host = hostRef.current;
-    if (!stage || !scaler || !host) return;
-    const apply = () => fitSlide(stage, scaler, host);
+    const body = bodyRef.current;
+    if (!body) return;
+    let frame = 0;
+    const apply = () => {
+      frame = 0;
+      const slots = slotsRef.current;
+      if (!slots.length) return;
+      setCurrent(topmostSlotIndex(slots, body.scrollTop));
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(apply);
+    };
+    body.addEventListener("scroll", onScroll, { passive: true });
     apply();
-    if (typeof ResizeObserver === "undefined") return;
-    const observer = new ResizeObserver(apply);
-    observer.observe(stage);
-    return () => observer.disconnect();
-  }, [visual, page]);
+    return () => {
+      body.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [bodyRef, slotsRef]);
 
-  const outline = (slides ?? Array.from({ length: pageCount }, (_, index) => ({
-    number: index + 1,
-    text: `幻灯片 ${index + 1}`,
-  }))).map((slide) => ({
+  const goToSlide = useCallback(
+    (index: number) => {
+      const target = Math.max(0, Math.min(count - 1, index));
+      // 页列模式滚动到位；文字模式没有槽位，滚动是空操作，直接切页。
+      scrollToSlide(target);
+      setCurrent(target);
+    },
+    [count, scrollToSlide],
+  );
+
+  const outline = (
+    slides ??
+    Array.from({ length: count }, (_, index) => ({
+      number: index + 1,
+      text: `幻灯片 ${index + 1}`,
+    }))
+  ).map((slide) => ({
     id: String(slide.number),
     title: slide.text.slice(0, 36) || `幻灯片 ${slide.number}`,
     meta: `Slide ${slide.number}`,
@@ -141,46 +323,52 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     );
   }
 
-  const current = slides?.find((slide) => slide.number === page);
+  const currentText = slides?.find((slide) => slide.number === current + 1)?.text;
 
   return (
     <DocumentWorkspace
       outline={outline}
-      activeId={String(page)}
-      onSelect={(id) => setPage(Number(id) || 1)}
+      activeId={String(current + 1)}
+      onSelect={(id) => goToSlide((Number(id) || 1) - 1)}
       outlineLabel="幻灯片"
-      resizable
+      layoutKey="pptx"
+      bodyRef={bodyRef}
       toolbar={
         <>
-          <button type="button" data-no-drag title="上一页" onClick={() => setPage((value) => Math.max(1, value - 1))}>
+          <button type="button" data-no-drag title="上一页" onClick={() => goToSlide(current - 1)}>
             <ChevronLeft size={13} />
           </button>
           <span>
-            {page} / {pageCount}
+            {current + 1} / {count}
           </span>
-          <button type="button" data-no-drag title="下一页" onClick={() => setPage((value) => Math.min(pageCount, value + 1))}>
+          <button type="button" data-no-drag title="下一页" onClick={() => goToSlide(current + 1)}>
             <ChevronRight size={13} />
           </button>
         </>
       }
     >
-      <div ref={stageRef} className="pptx-stage-fit">
-        <div
-          ref={scalerRef}
-          className="pptx-stage-scaler document-workspace-paper overflow-hidden rounded-xl"
-          hidden={!visual}
-        >
-          <div ref={hostRef} className="pptx-visual-host" />
-        </div>
-        {!visual && current ? (
+      {/* 页列容器常驻 DOM：宽度变化重建时槽位坐标系还在原地；文字模式下用行内 display 让位。 */}
+      <div
+        ref={pagesRef}
+        className="pptx-pages"
+        style={textStage ? { display: "none" } : undefined}
+      />
+      {/* 库的宿主只负责「生产」幻灯片 DOM，成品会被搬进槽里，所以整块不参与排版。
+          必须是 .pptx-pages 的兄弟而不是子节点，否则会占掉槽位下标。 */}
+      <div ref={hostRef} className="pptx-source-host" />
+      {textStage ? (
+        <div className="flex min-h-full justify-center p-4">
           <article className="document-workspace-paper min-h-52 w-full max-w-3xl rounded-xl p-6">
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink-faint)]">
-              Slide {current.number}
+              Slide {current + 1}
             </div>
-            <p className="whitespace-pre-wrap text-[15px] leading-7 text-[var(--ink)]">{current.text}</p>
+            <p className="whitespace-pre-wrap text-[15px] leading-7 text-[var(--ink)]">
+              {currentText ?? `幻灯片 ${current + 1}`}
+            </p>
           </article>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
+      {status ? <p className="pptx-pages-status">{status}</p> : null}
     </DocumentWorkspace>
   );
 }

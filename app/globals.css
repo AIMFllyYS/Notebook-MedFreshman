@@ -5,6 +5,8 @@
 @import "./styles/code.css";
 @import "./styles/canvas.css";
 @import "./styles/chat-tools.css";
+@import "./styles/pdf-reader.css";
+@import "./styles/pptx-reader.css";
 @import "./styles/appearance.css";
 
 /* Keep wheel/touch/keyboard scrolling everywhere in the app; hide only native scrollbar chrome. */

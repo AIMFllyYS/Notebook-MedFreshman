@@ -6,7 +6,7 @@
 
 import { ToolLoopAgent, isStepCount, wrapLanguageModel, type ToolSet, type PrepareStepFunction } from "ai";
 import type { LanguageModelV4 } from "@ai-sdk/provider";
-import { buildSystemPrompt, buildLocationLine } from "@/lib/ai/prompts";
+import { buildSystemPrompt, buildNoteSystemPrompt, buildLocationLine } from "@/lib/ai/prompts";
 import type { ChatContext, ChatOptions } from "@/lib/types/chat";
 import type { Skill } from "@/lib/types/skill";
 import type { AcademicYearId } from "@/lib/constants/academic-year";
@@ -111,7 +111,9 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   const pinnedSkills = sortedSkills.filter((s) => s.pinned);
   const menuSkills = sortedSkills.filter((s) => !s.pinned);
 
-  const baseSystemPrompt = buildSystemPrompt(chatCtx);
+  // 笔记角色自成一条稳定前缀（短提纲体例 + 先征得同意的写入纪律），
+  // 教学 Agent 继续用 global 教学法前缀。两者共用 correctness.md，各自命中自己的 prefix cache。
+  const baseSystemPrompt = noteWindowAgent ? buildNoteSystemPrompt(chatCtx) : buildSystemPrompt(chatCtx);
   const skillsMenuText = menuSkills.length
     ? menuSkills.map((s) => `- ${s.name}：${s.description || "（无描述）"}`).join("\n")
     : "";
@@ -134,8 +136,8 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     : baseSystemPrompt;
 
   // 易变段必须后置：定位（换页/换学年）→ 当前笔记正文 → 参考材料 → 演示目录 → 压缩说明。
-  // 稳定前缀（global + 学科 + 用户设置 + 工具清单）在 systemPrompt 里，同页追问可命中 prefix cache。
-  // 窗内笔记对话与右侧主 Agent 共用这条前缀；笔记 markdown 只出现在定位行之后，避免每篇笔记各自 bust 前缀。
+  // 稳定前缀（角色 + 学科 + 用户设置 + 工具清单）在 systemPrompt 里，同页追问可命中 prefix cache。
+  // 笔记正文只出现在定位行之后，避免每篇笔记各自 bust 前缀（前面那段是逐字不变的笔记角色前缀）。
   const memoryLine = noteWindowAgent ? "" : formatMemoryCatalogLine(userNotes, flashcards);
   const forcedSkillName = forcedSkillId(forcedTool)
     ? sortedSkills.find((skill) => skill.id === forcedSkillId(forcedTool))?.name

@@ -32,6 +32,8 @@ interface ChatThreadProps {
   sessionId?: string;
   repairModelId?: string;
   topic?: string;
+  /** 是否在回答下方渲染追问块。窗内笔记对话传 false。默认 true。 */
+  showFollowUps?: boolean;
 }
 
 /**
@@ -53,6 +55,7 @@ export default function ChatThread({
   sessionId,
   repairModelId,
   topic,
+  showFollowUps = true,
 }: ChatThreadProps) {
   const internalRef = useRef<HTMLDivElement>(null);
   const scrollRef = scrollContainerRef ?? internalRef;
@@ -281,6 +284,7 @@ export default function ChatThread({
                       sessionId={sessionId}
                       repairModelId={repairModelId}
                       topic={topic}
+                      showFollowUps={showFollowUps}
                     />
                   </div>
                 );

@@ -17,7 +17,7 @@ import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { localPathOf, recordImport } from "@/lib/stores/imports";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useAppMode } from "@/lib/stores/appMode";
-import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
+import ProjectRequiredDialog from "@/components/project/ProjectRequiredDialog";
 import { openProjectFiles } from "@/lib/project/openProjectFiles";
 import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
@@ -78,6 +78,8 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
   const agentMode = useAppMode((s) => s.mode === "agent");
   const [open, setOpen] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
+  /** 「项目文件」在无项目时的引导弹窗。 */
+  const [projectGateOpen, setProjectGateOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -150,16 +152,20 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
   };
 
   /**
-   * 「项目文件」入口：项目是归属，所以先确定落在哪个项目——
-   * 有选中项目就用它；没有则用最近有对话的项目；一个都没有才建一个（名字可改）。
+   * 「项目文件」入口：项目是归属，先确定落在哪个项目。
+   *
+   * 优先级：当前会话自己的项目 → 用户为「下一条新对话」选的落点。
+   * 两个都没有时**不再**偷偷取最近项目/自动建「我的项目」——
+   * 那样用户会看到一份不属于当前对话的文件列表，还不知道自己被塞进了哪个项目。
+   * 改成弹窗明确问一句：新建项目，或把当前对话挪进已有项目。
    */
   const openProjectFilesEntry = () => {
     const history = useChatHistory.getState();
-    let projectId = history.activeProjectId;
+    const active = history.sessionsMeta.find((session) => session.id === history.activeSessionId);
+    const projectId = active?.folderId ?? history.activeProjectId ?? null;
     if (!projectId) {
-      const recent = recentProjects(buildProjectViews(history.folders, history.sessionsMeta))[0];
-      projectId = recent?.id ?? history.createFolder("我的项目");
-      history.setActiveProject(projectId);
+      setProjectGateOpen(true);
+      return;
     }
     openProjectFiles(projectId);
   };
@@ -216,8 +222,8 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
                   role="menuitem"
                   data-testid="add-menu-project-files"
                   onClick={() => {
-                    openProjectFilesEntry();
                     setOpen(false);
+                    openProjectFilesEntry();
                   }}
                   className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
                 >
@@ -311,6 +317,15 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
         document.body,
       )}
       {fileError && typeof document !== "undefined" ? <FileErrorDialog message={fileError} onClose={() => setFileError(null)} /> : null}
+      {projectGateOpen ? (
+        <ProjectRequiredDialog
+          onCancel={() => setProjectGateOpen(false)}
+          onReady={(projectId) => {
+            setProjectGateOpen(false);
+            openProjectFiles(projectId);
+          }}
+        />
+      ) : null}
     </div>
   );
 }

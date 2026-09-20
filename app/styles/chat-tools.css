@@ -397,35 +397,7 @@
   background: var(--md-sys-color-primary);
 }
 
-.document-workspace-body:has(.pptx-stage-fit) {
-  overflow: hidden;
-}
-
-.pptx-stage-fit {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 8px;
-  box-sizing: border-box;
-}
-
-.pptx-stage-scaler,
-.pptx-stage-scaler.document-workspace-paper {
-  position: relative;
-  flex-shrink: 0;
-  margin: 0;
-}
-
-.pptx-visual-host {
-  position: absolute;
-  left: 0;
-  top: 0;
-}
+/* PPTX 阅读器改成连续页列后，旧的「单页缩放舞台」规则全部搬到 app/styles/pptx-reader.css。 */
 
 .note-citation-sidebar {
   display: flex;
@@ -1148,14 +1120,349 @@ mark.citation-flash {
   padding: 8px 16px 28px 28px;
 }
 
+/* ── 笔记标题阶梯 ───────────────────────────────────────────────
+   Crepe 出厂 reset.css 给的是 h1 2.625em / h2 2.25em / h3 2em / h4 1.75em / h5 1.5em，
+   项目原本只压了 h1(1.45em) h2(1.22em)，于是 14.5px 基准下 h3=29px、h4=25.4px、h5=21.8px
+   全都比 h1=21px 还大。这里一次性覆盖 H1–H6，并与分栏预览（.user-note-preview.prose-notes）
+   共用同一组令牌，保证「编辑与预览层级一致」。
+   用 rem 而不是 em：编辑器基准是 14.5px、预览基准是 16px，em 会让两边各算各的。 */
+.user-note-editor,
+.user-note-preview,
+.classroom-note {
+  --note-h1: 1.5rem;
+  --note-h2: 1.28rem;
+  --note-h3: 1.13rem;
+  --note-h4: 1.01rem;
+  --note-h5: 0.95rem;
+  --note-h6: 0.9rem;
+  --note-heading-lh: 1.34;
+  --note-heading-weight: 650;
+}
+
+/* 便签基准更小（13px），阶梯收紧一档 */
+.classroom-note,
+.user-note-crepe.is-compact {
+  --note-h1: 1.25rem;
+  --note-h2: 1.1rem;
+  --note-h3: 1rem;
+  --note-h4: 0.95rem;
+  --note-h5: 0.92rem;
+  --note-h6: 0.9rem;
+}
+
+/* 编辑侧：三段前缀 (0,3,1) 恒定压过 Crepe 的 .milkdown .ProseMirror hN (0,2,1) */
+.user-note-crepe .milkdown .ProseMirror h1,
+.user-note-preview.prose-notes h1 {
+  font-size: var(--note-h1, 1.5rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h2,
+.user-note-preview.prose-notes h2 {
+  font-size: var(--note-h2, 1.28rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h3,
+.user-note-preview.prose-notes h3 {
+  font-size: var(--note-h3, 1.13rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h4,
+.user-note-preview.prose-notes h4 {
+  font-size: var(--note-h4, 1.01rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h5,
+.user-note-preview.prose-notes h5 {
+  font-size: var(--note-h5, 0.95rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h6,
+.user-note-preview.prose-notes h6 {
+  font-size: var(--note-h6, 0.9rem);
+}
+
+/* 字重/行高/断行两侧拉平：Crepe 出厂 font-weight 是 400，预览侧是 680 */
+.user-note-crepe .milkdown .ProseMirror :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: var(--note-heading-weight, 650);
+  line-height: var(--note-heading-lh, 1.34);
+  overflow-wrap: anywhere;
+}
+
+.user-note-preview.prose-notes :is(h1, h2, h3, h4) {
+  font-weight: var(--note-heading-weight, 650);
+  line-height: var(--note-heading-lh, 1.34);
+}
+
+/* 上间距逐级收窄，替代 Crepe 的 32/28/24/20/16/16px */
 .user-note-crepe .milkdown .ProseMirror h1 {
-  font-size: 1.45em;
   margin-top: 18px;
 }
 
 .user-note-crepe .milkdown .ProseMirror h2 {
-  font-size: 1.22em;
   margin-top: 16px;
+}
+
+.user-note-crepe .milkdown .ProseMirror h3 {
+  margin-top: 16px;
+}
+
+.user-note-crepe .milkdown .ProseMirror h4 {
+  margin-top: 14px;
+}
+
+.user-note-crepe .milkdown .ProseMirror h5,
+.user-note-crepe .milkdown .ProseMirror h6 {
+  margin-top: 12px;
+}
+
+/* 划词工具栏：出厂 32×32 且不换行（约 285px 宽），在窄笔记窗 / 便签里会挤爆 */
+.user-note-crepe .milkdown .milkdown-toolbar {
+  max-width: calc(100% - 16px);
+}
+
+.user-note-crepe .milkdown .milkdown-toolbar .toolbar-item {
+  width: 28px;
+  height: 28px;
+  margin: 4px;
+}
+
+.user-note-crepe .milkdown .milkdown-toolbar .toolbar-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+.user-note-crepe .milkdown .milkdown-toolbar .divider {
+  height: 20px;
+  margin: 8px;
+}
+
+.user-note-crepe.is-compact .milkdown .milkdown-toolbar .toolbar-item {
+  width: 26px;
+  height: 26px;
+  margin: 3px;
+}
+
+/* ── 笔记变更确认卡 ──────────────────────────────────────────────
+   与 .note-citation-card / .agent-fold 同一套视觉语言（圆角 12、outline-variant 边、
+   surface-container 底）。它渲染在聊天气泡的结果卡位置，没有外层包裹，必须自带形态。 */
+.note-consent {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  margin: 4px 0 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background: var(--md-sys-color-surface-container);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.note-consent-head {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.note-consent-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent);
+  color: var(--md-sys-color-primary);
+}
+
+.note-consent-title {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.note-consent-eyebrow {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.note-consent-summary {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--md-sys-color-on-surface);
+  overflow-wrap: anywhere;
+}
+
+.note-consent-toggle {
+  /* 占满卡片内宽：展开条与卡片左右边严格对齐，而不是缩成一个小药丸。 */
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px 5px 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.note-consent-toggle:hover {
+  background: var(--bg-muted);
+  color: var(--ink);
+}
+
+.note-consent-toggle svg {
+  transition: transform 0.16s ease;
+}
+
+.note-consent-toggle svg.is-open {
+  transform: rotate(180deg);
+}
+
+.note-consent-count {
+  /* 行数推到右端，与卡片右边对齐。 */
+  margin-left: auto;
+  padding-left: 8px;
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.note-consent-diff {
+  max-height: 16rem;
+  overflow: auto;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--line-soft);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.note-consent-line {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.note-consent-line > span {
+  flex: 0 0 auto;
+  opacity: 0.6;
+  user-select: none;
+}
+
+.note-consent-line.is-removed {
+  color: var(--md-sys-color-error);
+}
+
+.note-consent-line.is-added {
+  color: var(--md-sys-color-primary);
+}
+
+.note-consent-diff-note {
+  margin: 0;
+  padding: 2px 0;
+  color: var(--ink-faint);
+  font-family: var(--font-sans, inherit);
+  font-size: 10.5px;
+}
+
+.note-consent-warn,
+.note-consent-error,
+.note-consent-result {
+  display: flex;
+  margin: 0;
+  align-items: flex-start;
+  gap: 5px;
+  overflow-wrap: anywhere;
+}
+
+.note-consent-warn {
+  color: var(--md-sys-color-error);
+  font-size: 11.5px;
+}
+
+.note-consent-error {
+  color: var(--md-sys-color-error);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.note-consent-result {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11.5px;
+}
+
+.note-consent-actions {
+  /* 两个动作分列左右；窄到放不下时换行，仍各自贴边。 */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.note-consent-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.note-consent-btn:hover {
+  background: var(--bg-muted);
+  color: var(--ink);
+}
+
+.note-consent-btn.is-primary {
+  border-color: transparent;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.note-consent-btn.is-primary:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 88%, black);
+  color: var(--md-sys-color-on-primary);
+}
+
+.note-consent-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.note-consent-btn:disabled:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* 浅色 / 彩色外观下的对比度微调 */
+[data-appearance="colorful"] .note-consent {
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 32%, var(--line));
 }
 
 .user-note-preview {
@@ -1578,3 +1885,51 @@ mark.citation-flash {
     border-bottom: none;
   }
 }
+
+/* ── 「项目文件」缺项目时的引导弹窗 ─────────────────────────────
+   复用 .app-dialog 的壳，但不用它的 error 色 eyebrow 与整宽主按钮：
+   这里是一次「引导」而不是一次「报错」。 */
+.project-required-eyebrow {
+  color: var(--md-sys-color-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.project-required-list {
+  display: flex;
+  max-height: 15rem;
+  margin: 14px 0 2px;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.project-required-create {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.project-required-new {
+  margin-top: 10px;
+}
+
+.project-required-cancel {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.project-required-cancel:hover {
+  border-color: var(--md-sys-color-outline);
+  color: var(--ink);
+}
+

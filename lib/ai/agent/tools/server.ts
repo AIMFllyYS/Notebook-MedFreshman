@@ -55,7 +55,11 @@ export interface BuildStudyToolsOptions {
    * 未确认时只给 proposeMemory，避免模型直接写笔记/闪卡。
    */
   memoryCommit?: "note" | "flashcards";
-  /** 学生从笔记窗打开助教时才暴露 updateUserNote。 */
+  /**
+   * 正在编辑的个人笔记（窗内对话，或主对话引用了某篇打开的笔记）。
+   * updateUserNote 恒定暴露：主对话也能凭目录 id 产出候选稿；
+   * 但无论哪个入口，写入都必须由用户在确认卡上同意（见 lib/stores/noteChangeProposals.ts）。
+   */
   editingUserNote?: EditingUserNoteContext;
   /** 窗内笔记 Agent 不暴露演示/生图/长文等重工具。 */
   noteWindowAgent?: boolean;
