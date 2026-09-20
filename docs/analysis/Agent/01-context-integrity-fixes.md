@@ -29,6 +29,8 @@
 - `buildRequestMessages` 的 `preserveAttachmentHistory` 默认 false → 历史轮附件被 `historyAttachmentNote` 换成一句
   "字节在本机"。模型只能诚实回答"我看不到图片"。
 - 每请求最多 1 张图（`MAX_REQUEST_IMAGES`）、400KB data URL；超 800KB 时 `fitChatRequest` 先丢历史图、再丢本轮图。
+- **本轮**图片超限时是**静默 `continue`**：模型收到的消息里没有图、也没有任何说明，只能按纯文字回答——
+  用户看到的就是"Agent 没看我的图"。
 
 ### 2.2 项目文件：静默降级 + 无记忆
 - `planCarry`：`totalChars <= MAX_CARRY_CHARS(48k)` → `mode:"all"`；否则只带 pinned；没有 pinned → `mode:"none"`（**一片都不带**）。
@@ -37,6 +39,9 @@
 - `buildProjectCatalog` 目录超 64KB 时**从最后一个文件整片地删** → 排在后面的文件可能整个从模型视野消失。
 - 读过的切片不记：同一份文件第 3 轮读得到、第 5 轮读不到。
 - 项目归属取的是侧栏全局 `activeProjectId`，不是会话自己的 `folderId` → 从历史打开旧对话会"换户口"。
+  这一点有旁证：项目文件窗本来就按 **`active?.folderId ?? history.activeProjectId`** 打开
+  （`components/window/WindowTaskbar.tsx:165-174`），也就是说窗口里显示的是**会话自己项目**的文件，
+  而请求带的是**全局选中项目**的文件——两边不一致时，用户会看到"窗里明明有，Agent 却说没有"。
 
 ### 2.3 挂断：两道闸门
 - **服务端**：`withSseHeartbeat` 在 `firstChunkSeen` 后 `stop()`——首 chunk 之后的静默期（深度思考、长工具链）没有任何保活。
@@ -70,7 +75,7 @@
 ### Phase 2 · 历史图片可恢复 + 预算收敛
 | 文件 | 变更 |
 |---|---|
-| `lib/chat/buildRequestMessages.ts` | 占位文本带 blob id 与「重新带入本轮」指引；新增 `reincludedMessageIds`；**整包最多一张图**（本轮提问优先）；截断时保住被点过带入的消息 |
+| `lib/chat/buildRequestMessages.ts` | 占位文本带 blob id 与「重新带入本轮」指引；新增 `reincludedMessageIds`；**整包最多一张图**（本轮提问优先）；截断时保住被点过带入的消息；**超限图片改为写明原因**而不是静默丢弃 |
 | `lib/stores/reincludedAttachments.ts`（新） | 一次性意图 store：`takeForRequest` 读取即清空，不落盘、不跨会话 |
 | `lib/chat/executeChatRequest.ts` / `lib/hooks/useChat.ts` | 透传 `reincludedMessageIds`，水合范围同步扩大 |
 | `components/chat/ChatMessage.tsx` + `ChatThread.tsx` + `app/styles/prose.css` | 历史带图消息上加「重新带入本轮」开关（`aria-pressed`） |
@@ -108,7 +113,7 @@
 - `lib/chat/createStallWatchdog.test.ts`：idle 触发一次、touch 推迟、max-wait 总闸、`maxWaitMs=0` 不限、clamp 边界
 - `lib/chat/classifySendError.test.ts`：两种超时的文案不同，且不互相误判
 - `lib/chat/requestBudget.test.ts`：先砍项目正文再动本轮图；砍到 0 才继续丢图
-- `lib/chat/buildRequestMessages.test.ts`：占位含 blob id 与恢复动作、重新带入生效、整包最多一张图、截断不丢被点过的消息
+- `lib/chat/buildRequestMessages.test.ts`：占位含 blob id 与恢复动作、重新带入生效、整包最多一张图、截断不丢被点过的消息、超限图片写进请求说明
 - `lib/project/catalog.test.ts`：携带摘要/告警、已读回补只在降级态、回补仍受预算封顶、轮转裁每文件≥1 片
 - `lib/project/sessionSlices.test.ts`：脏 parts 不炸、去重、FIFO
 - `lib/stores/chatHistory.lifecycle.test.ts`：累计已读、无新增不落盘、会话不存在静默跳过

@@ -193,6 +193,33 @@ test("buildRequestMessages：截断时点过带入的历史消息不会被窗口
   assert.ok(hasFile(reincluded));
 });
 
+test("buildRequestMessages：图片超限时告诉模型「带不上」，而不是静默丢掉", () => {
+  const huge = `data:image/png;base64,${"z".repeat(500_000)}`;
+  const input = msg("1", "user", "看这张图", {
+    attachments: [
+      { type: "image", mimeType: "image/png", name: "太大.png", base64: huge },
+    ],
+  });
+
+  const { messages } = buildRequestMessages([input]);
+  const requestText = textOf(messages[0]);
+  assert.equal(messages[0].parts.some((part) => part.type === "file"), false, "超限的图本来就不该带上");
+  assert.match(requestText, /没能随请求发送/);
+  assert.match(requestText, /太大\.png/);
+  assert.match(requestText, /不要凭文件名猜测图片内容/);
+});
+
+test("buildRequestMessages：正常大小的图带上了，就不加「带不上」的说明", () => {
+  const input = msg("1", "user", "看这张图", {
+    attachments: [
+      { type: "image", mimeType: "image/png", name: "正常.png", base64: "data:image/png;base64,abc" },
+    ],
+  });
+  const { messages } = buildRequestMessages([input]);
+  assert.ok(messages[0].parts.some((part) => part.type === "file"));
+  assert.doesNotMatch(textOf(messages[0]), /没能随请求发送/);
+});
+
 test("buildRequestMessages：TXT / MD / DOCX 正文作为明确标记的文本附件发送", () => {
   const input = msg("1", "user", "请总结附件", {
     attachments: [

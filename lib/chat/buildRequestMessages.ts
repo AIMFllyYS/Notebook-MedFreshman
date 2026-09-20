@@ -73,20 +73,49 @@ export function historyAttachmentNote(attachments: StoredChatAttachment[] | unde
   return notes.length > 0 ? notes.join(' ') : null;
 }
 
-function imageFileParts(attachments: StoredChatAttachment[] | undefined): ChatMessagePart[] {
+interface ImageFilePartsResult {
+  parts: ChatMessagePart[];
+  /** 因为数量 / 体积上限没能带上的图片名（要写进请求，否则模型以为用户没发图）。 */
+  skipped: string[];
+}
+
+function imageFileParts(attachments: StoredChatAttachment[] | undefined): ImageFilePartsResult {
   const images = (attachments ?? []).filter(
     (a): a is Extract<ChatAttachment, { type: 'image' }> => a.type === 'image' && 'base64' in a && !!a.base64,
   );
   const parts: ChatMessagePart[] = [];
+  const skipped: string[] = [];
   let chars = 0;
   for (const image of images) {
-    if (parts.length >= MAX_REQUEST_IMAGES) break;
+    if (parts.length >= MAX_REQUEST_IMAGES) {
+      skipped.push(attachmentLabel(image));
+      continue;
+    }
     const url = image.base64;
-    if (chars + url.length > MAX_REQUEST_IMAGE_CHARS) continue;
+    if (chars + url.length > MAX_REQUEST_IMAGE_CHARS) {
+      skipped.push(attachmentLabel(image));
+      continue;
+    }
     parts.push({ type: 'file', mediaType: image.mimeType, url });
     chars += url.length;
   }
-  return parts;
+  return { parts, skipped };
+}
+
+/**
+ * 图片带不上时给模型一句实话。
+ * 以前这里是静默 continue：模型收到的消息里根本没有图，也没有任何说明，只能按纯文字回答，
+ * 用户看到的就是"Agent 没看我的图"。这里把上限与下一步一起说清楚，模型才可能给出可执行回复。
+ */
+function skippedImageNote(skipped: string[]): ChatMessagePart | null {
+  if (skipped.length === 0) return null;
+  const limitKb = Math.round(MAX_REQUEST_IMAGE_CHARS / 1024);
+  return {
+    type: 'text',
+    text: '（本轮有 ' + skipped.length + ' 张图片没能随请求发送：「' + skipped.join('」「') + '」。'
+      + '单次最多带 ' + MAX_REQUEST_IMAGES + ' 张、合计不超过 ' + limitKb + 'KB。'
+      + '请告诉用户压缩后再发，或改用文件形式；不要凭文件名猜测图片内容。）',
+  };
 }
 
 function documentTextPart(attachments: StoredChatAttachment[] | undefined): ChatMessagePart | null {
@@ -108,7 +137,12 @@ export function toRequestMessage(
   if (m.role === 'user') {
     if (options?.includeAttachments) {
       // includeImages 由调用方按"整包最多几张图"决定；缺省仍按老行为带图。
-      if (options.includeImages !== false) parts.push(...imageFileParts(m.attachments));
+      if (options.includeImages !== false) {
+        const images = imageFileParts(m.attachments);
+        parts.push(...images.parts);
+        const note = skippedImageNote(images.skipped);
+        if (note) parts.push(note);
+      }
       const document = documentTextPart(m.attachments);
       if (document) parts.push(document);
     } else {
