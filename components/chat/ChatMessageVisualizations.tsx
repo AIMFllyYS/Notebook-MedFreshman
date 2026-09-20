@@ -14,6 +14,7 @@ import { getAnswerText, withAnswerText } from '@/lib/chat/messageParts';
 import type { CanvasBlock } from '@/lib/canvas/types';
 import VizFold from '@/components/chat/VizFold';
 import { AgentFileIcon, AgentImageIcon, AgentQuizIcon, AgentTerminalIcon } from '@/components/icons/AgentIcons';
+import { useT, type I18nKey } from '@/lib/i18n';
 
 // ----------------------------------------------------
 // ChatMessageVisualizations: 标签分发器
@@ -53,12 +54,13 @@ const toStr = (v: unknown): string | undefined =>
 const toDistributionType = (v: unknown): 'normal' | 'binomial' | 'poisson' =>
   v === 'binomial' || v === 'poisson' || v === 'normal' ? v : 'normal';
 
-const VIZ_FOLD: Record<string, { title: string; icon: React.ReactNode }> = {
-  InteractiveVenn: { title: '韦恩图', icon: <AgentImageIcon size={16} className="shrink-0" /> },
-  InlineDistribution: { title: '分布图', icon: <AgentImageIcon size={16} className="shrink-0" /> },
-  FormulaSteps: { title: '推导步骤', icon: <AgentQuizIcon size={16} className="shrink-0" /> },
-  ManimPlayer: { title: '动画演示', icon: <AgentTerminalIcon size={16} className="shrink-0" /> },
-  SvgDiagram: { title: '图示', icon: <AgentFileIcon size={16} className="shrink-0" /> },
+/** 折叠条标题进词典；图标仍随原语走。 */
+const VIZ_FOLD: Record<string, { titleKey: I18nKey; icon: React.ReactNode }> = {
+  InteractiveVenn: { titleKey: 'trace.viz.venn', icon: <AgentImageIcon size={16} className="shrink-0" /> },
+  InlineDistribution: { titleKey: 'trace.viz.distribution', icon: <AgentImageIcon size={16} className="shrink-0" /> },
+  FormulaSteps: { titleKey: 'trace.viz.formulaSteps', icon: <AgentQuizIcon size={16} className="shrink-0" /> },
+  ManimPlayer: { titleKey: 'trace.viz.manim', icon: <AgentTerminalIcon size={16} className="shrink-0" /> },
+  SvgDiagram: { titleKey: 'trace.viz.diagram', icon: <AgentFileIcon size={16} className="shrink-0" /> },
 };
 
 export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps> = ({
@@ -67,6 +69,7 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
   childrenText,
   repairContext,
 }) => {
+  const t = useT();
   const handleCanvasRevision = useCallback((nextBlock: CanvasBlock) => {
     const sessionId = repairContext?.sessionId;
     const messageId = repairContext?.messageId;
@@ -174,11 +177,10 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
   })();
 
   if (!inner) return null;
-  const fold = VIZ_FOLD[tagName] ?? { title: '可视化', icon: <AgentFileIcon size={16} className="shrink-0" /> };
+  const fold = VIZ_FOLD[tagName] ?? { titleKey: 'trace.viz.fallback' as I18nKey, icon: <AgentFileIcon size={16} className="shrink-0" /> };
   return (
-    <VizFold title={fold.title} icon={fold.icon}>
+    <VizFold title={t(fold.titleKey)} icon={fold.icon}>
       {inner}
     </VizFold>
   );
 };
-

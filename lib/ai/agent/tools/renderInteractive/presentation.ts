@@ -2,9 +2,9 @@
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {
-  label: "HTML 演示",
-  settingsLabel: "HTML 演示",
-  description: "生成可交互的 HTML 演示页（Artifact），在独立浮窗中打开",
+  labelKey: "trace.tool.renderInteractive.label",
+  settingsLabelKey: "trace.tool.renderInteractive.settingsLabel",
+  descriptionKey: "trace.tool.renderInteractive.description",
   icon: "terminal",
   toggleable: true,
 };

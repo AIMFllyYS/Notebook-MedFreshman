@@ -11,10 +11,12 @@ import { AgentQuizIcon } from "@/components/icons/AgentIcons";
 import QuizExplainBody from "@/components/quiz/QuizExplainBody";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
+import { useT } from "@/lib/i18n";
 
 export default function QuizExplainWindow({ win }: { win: QuizExplainWin }) {
   const managed = useWindowManager((state) => state.windows.find((item) => item.id === win.id));
   const closeWindow = useQuizExplain((state) => state.closeWindow);
+  const t = useT();
   const updateWindow = useQuizExplain((state) => state.updateWindow);
   const { commitGeometry, updateWindow: updateManagedWindow } = useWindowManager();
   const sessionTitle = useChatHistory(
@@ -72,7 +74,7 @@ export default function QuizExplainWindow({ win }: { win: QuizExplainWin }) {
   return (
     <ManagedWindow
       windowId={win.id}
-      title={sessionTitle && sessionTitle !== "新对话" ? sessionTitle : "深度解析"}
+      title={sessionTitle && sessionTitle !== t("agent.session.untitled") ? sessionTitle : t("window.quiz.explain.title")}
       icon={<AgentQuizIcon size={15} />}
       onClose={handleClose}
       fullscreenTarget={fullscreenTarget}

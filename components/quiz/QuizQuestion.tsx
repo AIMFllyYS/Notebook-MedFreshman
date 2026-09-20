@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { Check, X, Lightbulb, BookOpen, Film } from "lucide-react";
 import type { QuizQuestion as Q, UserAnswer } from "@/lib/quiz/types";
-import { displayLabel, TYPE_LABELS, isComposite } from "@/lib/quiz/types";
+import { isComposite } from "@/lib/quiz/types";
 import type { QuestionResult } from "@/lib/quiz-store";
 import { useQuizStore } from "@/lib/quiz-store";
 import { getVideo } from "@/lib/content-data/media";
 import { openMessageMenu } from "@/lib/hooks/useContextMenu";
 import QuizMarkdown from "./QuizMarkdown";
 import { useQuizExplain } from "@/lib/stores/quizExplain";
+import { useT } from "@/lib/i18n";
 
 const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
   ssr: false,
@@ -18,9 +19,22 @@ const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
 });
 
 const DIFFICULTY_LABELS: Record<Q["difficulty"], string> = {
-  basic: "基础",
-  medium: "中等",
-  hard: "提高",
+  basic: "window.quiz.difficulty.basic",
+  medium: "window.quiz.difficulty.medium",
+  hard: "window.quiz.difficulty.hard",
+};
+
+/** 题型默认显示名（等价于 lib/quiz/types 的 displayLabel，只是走词典）。 */
+const TYPE_LABELS: Record<Q["type"], string> = {
+  single_choice: "window.quiz.type.singleChoice",
+  multiple_choice: "window.quiz.type.multipleChoice",
+  true_false: "window.quiz.type.trueFalse",
+  analysis: "window.quiz.type.analysis",
+  fill_blank: "window.quiz.type.fillBlank",
+  essay: "window.quiz.type.essay",
+  reading: "window.quiz.type.reading",
+  cloze: "window.quiz.type.cloze",
+  translation: "window.quiz.type.translation",
 };
 
 const SUCCESS = "var(--color-success)";
@@ -69,18 +83,19 @@ function Chip({ children, tone }: { children: React.ReactNode; tone?: "review" |
 }
 
 function MetaBar({ q, index, total }: { q: Q; index: number; total: number }) {
+  const t = useT();
   const isExamFocus = q.label === "考试重点";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "12px" }}>
       <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--md-sys-color-primary)" }}>
-        第 {index + 1} / {total} 题
+        {t("window.quiz.question.indexTotal", { index: index + 1, total })}
       </span>
-      <Chip>{isExamFocus ? TYPE_LABELS[q.type] : displayLabel(q)}</Chip>
-      <Chip>{DIFFICULTY_LABELS[q.difficulty]}</Chip>
-      {isExamFocus && <Chip tone="exam">考试重点</Chip>}
-      {q.source === "review" && <Chip tone="review">复习 · {q.sourceChapter ?? "前序章节"}</Chip>}
+      <Chip>{isExamFocus ? t(TYPE_LABELS[q.type]) : q.label?.trim() || t(TYPE_LABELS[q.type])}</Chip>
+      <Chip>{t(DIFFICULTY_LABELS[q.difficulty])}</Chip>
+      {isExamFocus && <Chip tone="exam">{t("window.quiz.question.examFocus")}</Chip>}
+      {q.source === "review" && <Chip tone="review">{t("window.quiz.question.reviewPrefix", { chapter: q.sourceChapter ?? t("window.quiz.question.previousChapter") })}</Chip>}
       <span style={{ marginLeft: "auto", fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)" }}>
-        {q.points} 分
+        {t("window.quiz.question.points", { points: q.points })}
       </span>
     </div>
   );
@@ -171,6 +186,7 @@ function OptionRow({
 
 /** 交卷前的「提示」按钮（不泄露答案）。 */
 function HintBlock({ q, onUse, used }: { q: Q; onUse: () => void; used: boolean }) {
+  const t = useT();
   if (!q.hint) return null;
   return (
     <div style={{ marginTop: "14px" }}>
@@ -194,7 +210,7 @@ function HintBlock({ q, onUse, used }: { q: Q; onUse: () => void; used: boolean 
           }}
         >
           <Lightbulb size={15} />
-          查看提示
+          {t("window.quiz.question.showHint")}
         </button>
       ) : (
         <div
@@ -219,17 +235,18 @@ function HintBlock({ q, onUse, used }: { q: Q; onUse: () => void; used: boolean 
 
 /** Manim 视频讲解卡片（复杂题，点击播放）。 */
 function ManimVideo({ id }: { id: string }) {
+  const t = useT();
   const [playing, setPlaying] = useState(false);
   const video = getVideo(id);
   return (
     <div style={{ marginTop: "12px" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)", marginBottom: "6px" }}>
         <Film size={14} style={{ color: "var(--md-sys-color-primary)" }} />
-        Manim 视频讲解
+        {t("window.quiz.question.manimTitle")}
       </div>
       {!video ? (
         <div style={{ fontSize: "12.5px", color: "var(--md-sys-color-on-surface-variant)", padding: "10px 12px", borderRadius: "var(--md-sys-shape-corner-medium)", border: "1px dashed var(--md-sys-color-outline-variant)" }}>
-          本题视频讲解正在生成中（{id}）。
+          {t("window.quiz.question.manimPending", { id })}
         </div>
       ) : playing ? (
         <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
@@ -257,7 +274,7 @@ function ManimVideo({ id }: { id: string }) {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
           </span>
           <span style={{ fontSize: "13.5px", fontWeight: 600, color: "var(--md-sys-color-on-surface)" }}>
-            {video.title || "播放本题动画讲解"}
+            {video.title || t("window.quiz.question.playVideo")}
           </span>
         </button>
       )}
@@ -267,6 +284,7 @@ function ManimVideo({ id }: { id: string }) {
 
 /** review 模式：深度解析 + 参考答案 + 评分要点 + 来源目录 + 视频。 */
 function ReviewExplain({ q }: { q: Q }) {
+  const t = useT();
   const isSubjective = q.type === "analysis" || q.type === "fill_blank" || q.type === "essay";
   return (
     <div
@@ -289,7 +307,7 @@ function ReviewExplain({ q }: { q: Q }) {
         }}
       >
         <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)" }}>
-          深度解析
+          {t("window.quiz.question.explain")}
         </span>
         <button
           type="button"
@@ -308,21 +326,21 @@ function ReviewExplain({ q }: { q: Q }) {
             cursor: "pointer",
           }}
         >
-          让 Agent 更详细解答
+          {t("window.quiz.question.askAgent")}
         </button>
       </div>
 
       {/* 辨析题：先给命题判断 */}
       {q.type === "analysis" && (
         <div style={{ fontSize: "13px", fontWeight: 700, marginBottom: "8px", color: q.answer === 1 ? SUCCESS : ERROR }}>
-          此命题：{q.answer === 1 ? "正确 √" : "错误 ×"}
+          {t("window.quiz.question.proposition", { verdict: q.answer === 1 ? t("window.quiz.question.verdictTrue") : t("window.quiz.question.verdictFalse") })}
         </div>
       )}
 
       {/* 参考答案（主观题） */}
       {isSubjective && (
         <>
-          <SectionLabel tight>参考答案</SectionLabel>
+          <SectionLabel tight>{t("window.quiz.question.referenceAnswer")}</SectionLabel>
           <div style={{ fontSize: "14px", lineHeight: 1.75, color: "var(--md-sys-color-on-surface)" }}>
             <QuizMarkdown>{q.type === "analysis" ? q.reasoning || String(q.answer ?? "") : String(q.answer ?? "")}</QuizMarkdown>
           </div>
@@ -332,7 +350,7 @@ function ReviewExplain({ q }: { q: Q }) {
       {/* 评分要点 */}
       {q.scoring_criteria && q.scoring_criteria.length > 0 && (
         <>
-          <SectionLabel tight={!isSubjective}>评分要点</SectionLabel>
+          <SectionLabel tight={!isSubjective}>{t("window.quiz.question.scoringCriteria")}</SectionLabel>
           <ul style={{ margin: 0, paddingLeft: "18px", display: "flex", flexDirection: "column", gap: "4px" }}>
             {q.scoring_criteria.map((c, i) => (
               <li key={i} style={{ fontSize: "13px", lineHeight: 1.6, color: "var(--md-sys-color-on-surface)" }}>
@@ -369,7 +387,7 @@ function ReviewExplain({ q }: { q: Q }) {
         >
           <BookOpen size={14} style={{ flexShrink: 0, marginTop: "2px", color: "var(--md-sys-color-primary)" }} />
           <span>
-            来源：{q.sourceRef.label}
+            {t("window.quiz.question.source", { label: q.sourceRef.label ?? "" })}
             {q.sourceRef.path && (
               <code style={{ marginLeft: "6px", fontSize: "11.5px", color: "var(--md-sys-color-on-surface-variant)", fontFamily: "var(--font-mono)" }}>
                 {q.sourceRef.path}
@@ -404,6 +422,7 @@ export default function QuizQuestion({
   hintsUsed: hintsUsedProp,
   onUseHint: onUseHintProp,
 }: QuizQuestionProps) {
+  const t = useT();
   const reviewing = mode === "review";
 
   const renderChoices = (multiple: boolean) => {
@@ -462,8 +481,8 @@ export default function QuizQuestion({
     const picked = typeof answer === "number" ? answer : null;
     const correct = q.answer as number;
     const opts = [
-      { val: 1, label: "正确 √" },
-      { val: 0, label: "错误 ×" },
+      { val: 1, label: t("window.quiz.question.verdictTrue") },
+      { val: 0, label: t("window.quiz.question.verdictFalse") },
     ];
     return (
       <div style={{ display: "flex", gap: "10px" }}>
@@ -523,7 +542,7 @@ export default function QuizQuestion({
       value={typeof answer === "string" ? answer : ""}
       onChange={(e) => onChange?.(e.target.value)}
       disabled={reviewing}
-      placeholder="在此输入你的答案…"
+      placeholder={t("window.quiz.question.answerPlaceholder")}
       style={{
         width: "100%",
         padding: "11px 14px",
@@ -608,8 +627,8 @@ export default function QuizQuestion({
       const picked = typeof subAnswer === "number" ? subAnswer : null;
       const correct = correctAnswer as number;
       const opts = [
-        { val: 1, label: "正确 √" },
-        { val: 0, label: "错误 ×" },
+        { val: 1, label: t("window.quiz.question.verdictTrue") },
+        { val: 0, label: t("window.quiz.question.verdictFalse") },
       ];
       return (
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -829,7 +848,7 @@ export default function QuizQuestion({
             >
               {idx + 1}. <QuizMarkdown inline>{item.source}</QuizMarkdown>
               <span style={{ marginLeft: "8px", fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)", fontWeight: 500 }}>
-                ({item.points} 分)
+                {t("window.quiz.question.subPoints", { points: item.points })}
               </span>
             </div>
             <textarea
@@ -837,7 +856,7 @@ export default function QuizQuestion({
               onChange={(e) => setCompositeAnswer(item.id, e.target.value)}
               disabled={reviewing}
               rows={reviewing ? 3 : 5}
-              placeholder="在此输入你的翻译…"
+              placeholder={t("window.quiz.question.translationPlaceholder")}
               style={{
                 width: "100%",
                 padding: "12px 14px",
@@ -864,12 +883,12 @@ export default function QuizQuestion({
                   lineHeight: 1.65,
                 }}
               >
-                <strong style={{ color: "var(--md-sys-color-on-surface)" }}>参考译文：</strong>
+                <strong style={{ color: "var(--md-sys-color-on-surface)" }}>{t("window.quiz.question.referenceTranslation")}</strong>
                 <QuizMarkdown inline>{item.reference}</QuizMarkdown>
                 {item.explanation && (
                   <>
                     <br />
-                    <strong style={{ color: "var(--md-sys-color-on-surface)" }}>要点：</strong>
+                    <strong style={{ color: "var(--md-sys-color-on-surface)" }}>{t("window.quiz.question.keyPoints")}</strong>
                     <QuizMarkdown inline>{item.explanation}</QuizMarkdown>
                   </>
                 )}
@@ -902,8 +921,8 @@ export default function QuizQuestion({
       {q.type === "multiple_choice" && renderChoices(true)}
       {q.type === "true_false" && renderTrueFalse()}
       {q.type === "fill_blank" && renderFillBlank()}
-      {q.type === "analysis" && renderTextArea("先判断「正确/错误」，再写出你的理由…")}
-      {q.type === "essay" && renderTextArea("在此作答（要点式即可）…")}
+      {q.type === "analysis" && renderTextArea(t("window.quiz.question.analysisPlaceholder"))}
+      {q.type === "essay" && renderTextArea(t("window.quiz.question.essayPlaceholder"))}
       {q.type === "reading" && renderReading()}
       {q.type === "cloze" && renderCloze()}
       {q.type === "translation" && renderTranslation()}
@@ -922,7 +941,7 @@ export default function QuizQuestion({
           }}
         >
           {result.correct ? <Check size={15} /> : <X size={15} />}
-          {result.correct ? "回答正确" : "回答错误"} · 得 {result.awarded} / {result.max} 分
+          {t("window.quiz.question.resultLine", { verdict: result.correct ? t("window.quiz.question.correct") : t("window.quiz.question.wrong"), awarded: result.awarded, max: result.max })}
         </div>
       )}
 

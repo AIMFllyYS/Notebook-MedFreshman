@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { useT } from "@/lib/i18n";
 
 interface VizErrorBoundaryProps {
   /** 渲染失败时提示卡的标题，如「图形」「分子结构」。 */
@@ -12,7 +13,6 @@ interface VizErrorBoundaryProps {
 
 interface VizErrorBoundaryState {
   failed: boolean;
-  showSource: boolean;
 }
 
 /**
@@ -24,6 +24,8 @@ interface VizErrorBoundaryState {
  *
  * 这里把每个可视化块单独包住：出错只把**该块**降级为内联提示卡，
  * 其余消息正常显示，绝不冒泡成白屏。
+ *
+ * 降级卡是函数组件：类组件取不到 useT()，而这块文案要跟着语言走。
  */
 export class VizErrorBoundary extends React.Component<
   VizErrorBoundaryProps,
@@ -31,7 +33,7 @@ export class VizErrorBoundary extends React.Component<
 > {
   constructor(props: VizErrorBoundaryProps) {
     super(props);
-    this.state = { failed: false, showSource: false };
+    this.state = { failed: false };
   }
 
   static getDerivedStateFromError(): Partial<VizErrorBoundaryState> {
@@ -47,27 +49,30 @@ export class VizErrorBoundary extends React.Component<
 
   render() {
     if (!this.state.failed) return this.props.children;
-
-    const { label = "图形", source } = this.props;
-    return (
-      <div className="viz-error-card">
-        <div className="viz-error-head">⚠️ 该{label}渲染失败（已跳过，不影响其余内容）</div>
-        {source && source.trim() ? (
-          <>
-            <button
-              type="button"
-              className="viz-error-toggle press"
-              onClick={() => this.setState((s) => ({ showSource: !s.showSource }))}
-            >
-              {this.state.showSource ? "收起源码" : "查看源码"}
-            </button>
-            {this.state.showSource && (
-              <pre className="viz-error-source">{source}</pre>
-            )}
-          </>
-        ) : null}
-      </div>
-    );
+    return <VizErrorCard label={this.props.label} source={this.props.source} />;
   }
 }
 
+function VizErrorCard({ label, source }: { label?: string; source?: string }) {
+  const t = useT();
+  const [showSource, setShowSource] = useState(false);
+  return (
+    <div className="viz-error-card">
+      <div className="viz-error-head">{t("trace.viz.error", { label: label ?? t("trace.viz.fallbackLabel") })}</div>
+      {source && source.trim() ? (
+        <>
+          <button
+            type="button"
+            className="viz-error-toggle press"
+            onClick={() => setShowSource((current) => !current)}
+          >
+            {showSource ? t("trace.viz.hideSource") : t("trace.viz.showSource")}
+          </button>
+          {showSource && (
+            <pre className="viz-error-source">{source}</pre>
+          )}
+        </>
+      ) : null}
+    </div>
+  );
+}

@@ -10,6 +10,7 @@ import ManagedWindow from "@/components/window/ManagedWindow";
 import { formatImageGenError, imageGenErrorHeading } from "@/lib/ai/imageGenError";
 import { capabilityNeedsForImageGen, selectCapabilityEndpointsForRequest } from "@/lib/ai/capabilityEndpoints";
 import { selectCustomApiGroupsForRequest } from "@/lib/ai/models";
+import { useT } from "@/lib/i18n";
 
 /** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */
 function imageSrc(img: ImageGenImage): string {
@@ -24,6 +25,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   const startLoading = useImageGen((s) => s.startLoading);
   const updateSession = useImageGen((s) => s.updateSession);
   const openLightbox = useLightbox((s) => s.open);
+  const t = useT();
   const requestStartedRef = useRef(false);
 
   const winId = imageGenWindowId(sessionId);
@@ -70,7 +72,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
 
         const data = await res.json();
         if (!Array.isArray(data?.images)) {
-          updateSession(sid, { status: "error", error: "生图 API 返回格式异常" });
+          updateSession(sid, { status: "error", error: t("window.imageGen.badResponse") });
           return;
         }
 
@@ -164,13 +166,13 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
             color: "var(--md-sys-color-on-surface-variant)",
           }}
         >
-          <span style={{ fontWeight: 600 }}>提示词：</span>
+          <span style={{ fontWeight: 600 }}>{t("window.imageGen.promptLabel")}</span>
           <span className="break-words">{session.prompt}</span>
           <span
             className="ml-2 inline-block rounded px-1 text-[10px]"
             style={{ background: "var(--md-sys-color-surface-container-high)" }}
           >
-            {session.size} · {session.count} 张
+            {t("window.imageGen.sizeCount", { size: session.size, count: session.count })}
           </span>
         </div>
 
@@ -190,7 +192,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                 className="max-w-md text-[12px] leading-relaxed"
                 style={{ color: "var(--md-sys-color-on-surface-variant)" }}
               >
-                {session.error || "未知错误"}
+                {session.error || t("window.imageGen.unknownError")}
               </div>
               <button
                 type="button"
@@ -201,7 +203,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                   color: "var(--md-sys-color-on-primary)",
                 }}
               >
-                <RefreshCw size={13} /> 重试
+                <RefreshCw size={13} /> {t("window.imageGen.retry")}
               </button>
             </div>
           )}
@@ -233,7 +235,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                   <button
                     type="button"
                     onClick={() => downloadImage(src, idx)}
-                    title="下载图片"
+                    title={t("window.common.downloadImage")}
                     className="press absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-lg opacity-0 transition-opacity group-hover:opacity-100"
                     style={{
                       background: "var(--md-sys-color-surface)",
@@ -254,7 +256,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
               className="flex h-full items-center justify-center text-[12px]"
               style={{ color: "var(--md-sys-color-on-surface-variant)" }}
             >
-              生图完成，但未返回任何图片
+              {t("window.imageGen.empty")}
             </div>
           )}
         </div>
@@ -273,14 +275,14 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                 color: "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              <RefreshCw size={13} /> 重新生成
+              <RefreshCw size={13} /> {t("window.imageGen.regenerate")}
             </button>
             {session.images.some((img) => img.url && !img.b64_json) && (
               <span
                 className="ml-3 text-[10.5px]"
                 style={{ color: "var(--md-sys-color-on-surface-variant)" }}
               >
-                图片 URL 1 小时后失效，请及时下载
+                {t("window.imageGen.urlExpiry")}
               </span>
             )}
           </div>
@@ -302,6 +304,7 @@ export default function ImageGenViewerLayer() {
 }
 
 function WatercolorLoading({ count }: { count: number }) {
+  const t = useT();
   const cells = Array.from({ length: count });
   const cols = count === 1 ? 1 : 2;
   return (
@@ -418,7 +421,7 @@ function WatercolorLoading({ count }: { count: number }) {
                   "0 1px 2px color-mix(in srgb, var(--md-sys-color-surface) 60%, transparent)",
               }}
             >
-              正在生成图片…
+              {t("window.imageGen.generating")}
             </div>
           </div>
         </div>

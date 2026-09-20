@@ -12,6 +12,7 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { ARTIFACT_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from "@/lib/sandbox/opaqueOriginStorageShim";
 import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
 import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";
+import { useT } from "@/lib/i18n";
 import ManagedWindow from "@/components/window/ManagedWindow";
 
 function artifactWindowId(id: string) {
@@ -23,6 +24,7 @@ export default function ArtifactViewer() {
   const art = useArtifacts((s) => (s.viewerId ? s.byId[s.viewerId] : null));
   const closeViewer = useArtifacts((s) => s.closeViewer);
   const fullscreenTarget = useSettings((s) => s.artifactFullscreenTarget);
+  const t = useT();
 
   if (!art || !viewerId) return null;
 
@@ -40,7 +42,7 @@ export default function ArtifactViewer() {
           type="button"
           data-no-drag
           onClick={() => downloadHtmlFile(art.html, art.title)}
-          title="下载 HTML"
+          title={t("window.common.downloadHtml")}
           className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]"
         >
           <Download size={15} />

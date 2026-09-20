@@ -2,9 +2,9 @@
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {
-  label: "查看项目文件索引",
-  settingsLabel: "项目文件",
-  description: "查看项目文件的文件树与切片索引（正文用 readProjectSlices 按需读）",
+  labelKey: "trace.tool.getProjectFiles.label",
+  settingsLabelKey: "trace.tool.getProjectFiles.settingsLabel",
+  descriptionKey: "trace.tool.getProjectFiles.description",
   icon: "file",
   toggleable: false,
 };

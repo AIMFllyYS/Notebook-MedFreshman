@@ -2,9 +2,9 @@
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {
-  label: "提议沉淀",
-  settingsLabel: "记忆提议",
-  description: "对话里出现值得记住的定义/定理/步骤时，轻量提议整理成笔记或闪卡",
+  labelKey: "trace.tool.proposeMemory.label",
+  settingsLabelKey: "trace.tool.proposeMemory.settingsLabel",
+  descriptionKey: "trace.tool.proposeMemory.description",
   icon: "document",
   toggleable: true,
 };

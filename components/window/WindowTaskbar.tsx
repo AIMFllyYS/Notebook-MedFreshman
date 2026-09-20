@@ -23,6 +23,7 @@ import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/se
 import OpenUrlField from "@/components/window/OpenUrlDialog";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import AgentDockTabs from "@/components/window/AgentDockTabs";
+import { useT } from "@/lib/i18n";
 
 interface WindowTaskbarProps {
   host: "topbar" | "content-tab" | "right-panel";
@@ -57,13 +58,14 @@ function isImagePreview(attachment: AttachmentPreview): attachment is ImageAttac
 }
 
 function FileErrorDialog({ message, onClose }: { message: string; onClose: () => void }) {
+  const t = useT();
   return createPortal(
     <div className="app-dialog-backdrop">
-      <div role="alertdialog" aria-modal="true" aria-label="文件添加失败" className="app-dialog">
-        <div className="app-dialog-eyebrow">文件添加提醒</div>
-        <h2>文件无法添加</h2>
+      <div role="alertdialog" aria-modal="true" aria-label={t("panel.fileError.aria")} className="app-dialog">
+        <div className="app-dialog-eyebrow">{t("panel.fileError.eyebrow")}</div>
+        <h2>{t("panel.fileError.title")}</h2>
         <p>{message}</p>
-        <button type="button" className="app-dialog-confirm" onClick={onClose}>知道了</button>
+        <button type="button" className="app-dialog-confirm" onClick={onClose}>{t("panel.fileError.confirm")}</button>
       </div>
     </div>,
     document.body,
@@ -75,6 +77,7 @@ function AddMenuDivider() {
 }
 
 export function AddContentButton({ showUrlField = true }: { showUrlField?: boolean } = {}) {
+  const t = useT();
   const agentMode = useAppMode((s) => s.mode === "agent");
   const [open, setOpen] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
@@ -175,9 +178,9 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
       <button
         ref={buttonRef}
         type="button"
-        aria-label="添加内容"
+        aria-label={t("panel.addMenu.addContent")}
         aria-expanded={open}
-        title="添加笔记、闪卡、文件或网址"
+        title={t("panel.addMenu.addContentHint")}
         onClick={() => {
           setOpen((value) => {
             const next = !value;
@@ -210,13 +213,13 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
         <div
           ref={menuRef}
           role="menu"
-          aria-label="添加内容"
+          aria-label={t("panel.addMenu.addContent")}
           style={{ position: "fixed", top: menuPosition.top, right: menuPosition.right }}
           className="window-taskbar-add-menu z-[12000] w-64 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-2 shadow-xl"
         >
           {agentMode && (
             <>
-              <div role="group" aria-label="项目" data-menu-group="project-files">
+              <div role="group" aria-label={t("panel.addMenu.projectAria")} data-menu-group="project-files">
                 <button
                   type="button"
                   role="menuitem"
@@ -228,13 +231,13 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
                   className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
                 >
                   <FolderTree size={14} className="text-[var(--md-sys-color-primary)]" />
-                  <span><strong className="font-semibold">项目文件</strong><small className="ml-1 text-[var(--ink-soft)]">本地索引 + 切片</small></span>
+                  <span><strong className="font-semibold">{t("panel.addMenu.projectFiles")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.projectFilesHint")}</small></span>
                 </button>
               </div>
               <AddMenuDivider />
             </>
           )}
-          <div role="group" aria-label="打开面板" data-menu-group="open-panels">
+          <div role="group" aria-label={t("panel.addMenu.openPanelsAria")} data-menu-group="open-panels">
             <button
               type="button"
               role="menuitem"
@@ -245,7 +248,7 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
               className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
             >
               <BookOpen size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span><strong className="font-semibold">选择笔记</strong><small className="ml-1 text-[var(--ink-soft)]">引用我的 / 课程笔记</small></span>
+              <span><strong className="font-semibold">{t("panel.addMenu.pickNote")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.pickNoteHint")}</small></span>
             </button>
             <button
               type="button"
@@ -257,11 +260,11 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
               className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
             >
               <Layers size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span><strong className="font-semibold">复习闪卡页面</strong><small className="ml-1 text-[var(--ink-soft)]">管理记忆卡</small></span>
+              <span><strong className="font-semibold">{t("panel.addMenu.flashcardPage")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.flashcardHint")}</small></span>
             </button>
           </div>
           <AddMenuDivider />
-          <div role="group" aria-label="导入产物" data-menu-group="import-products">
+          <div role="group" aria-label={t("panel.addMenu.importAria")} data-menu-group="import-products">
             <button
               type="button"
               role="menuitem"
@@ -272,7 +275,7 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
               className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
             >
               <FileDigit size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span><strong className="font-semibold">导入长文本</strong><small className="ml-1 text-[var(--ink-soft)]">Agent 讲义</small></span>
+              <span><strong className="font-semibold">{t("panel.addMenu.document")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.documentHint")}</small></span>
             </button>
             <button
               type="button"
@@ -284,11 +287,11 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
               className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
             >
               <MonitorPlay size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span><strong className="font-semibold">导入可交互 HTML</strong><small className="ml-1 text-[var(--ink-soft)]">Agent 演示</small></span>
+              <span><strong className="font-semibold">{t("panel.addMenu.artifact")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.artifactHint")}</small></span>
             </button>
           </div>
           <AddMenuDivider />
-          <div role="group" aria-label="新建文件" data-menu-group="create-files">
+          <div role="group" aria-label={t("panel.addMenu.createAria")} data-menu-group="create-files">
             <button
               type="button"
               role="menuitem"
@@ -299,11 +302,11 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
               className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
             >
               <NotebookFormulaIcon size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span><strong className="font-semibold">新建笔记</strong><small className="ml-1 text-[var(--ink-soft)]">Markdown · 公式</small></span>
+              <span><strong className="font-semibold">{t("panel.addMenu.newNote")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.newNoteHint")}</small></span>
             </button>
             <button type="button" role="menuitem" onClick={() => fileRef.current?.click()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
               <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
+              <span><strong className="font-semibold">{t("panel.addMenu.addFile")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.addFileHint")}</small></span>
             </button>
           </div>
           {showUrlField && (
@@ -312,7 +315,7 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
               <OpenUrlField onOpened={() => setOpen(false)} />
             </>
           )}
-          <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">笔记、闪卡、长文本和演示都从本机仓库打开，不会重新生成。</p>
+          <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">{t("panel.addMenu.footer")}</p>
         </div>,
         document.body,
       )}

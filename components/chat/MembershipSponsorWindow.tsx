@@ -12,6 +12,7 @@ function GithubMark({ size = 22 }: { size?: number }) {
 }
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useT } from "@/lib/i18n";
 import {
   GITHUB_REPO_URL,
   MEMBERSHIP_SPONSOR_WINDOW_ID,
@@ -26,13 +27,14 @@ export default function MembershipSponsorLayer() {
 }
 
 function MembershipSponsorWindow() {
+  const t = useT();
   const closeWindow = useWindowManager((state) => state.closeWindow);
   const handleClose = useCallback(() => closeWindow(MEMBERSHIP_SPONSOR_WINDOW_ID), [closeWindow]);
 
   return (
     <ManagedWindow
       windowId={MEMBERSHIP_SPONSOR_WINDOW_ID}
-      title="获取会员"
+      title={t("panel.membership.title")}
       icon={<Heart size={15} />}
       onClose={handleClose}
       fullscreenTarget="notes"
@@ -44,7 +46,7 @@ function MembershipSponsorWindow() {
     >
       <div className="flex flex-col gap-4 px-5 py-4">
         <p className="text-[13px] leading-6 text-[var(--ink)]">
-          本站开源。需要更多额度时，可以联系站长或发邮件申请；如果学习过程中真的帮到你，也欢迎赞赏。
+          {t("panel.membership.intro")}
         </p>
 
         <a
@@ -55,7 +57,7 @@ function MembershipSponsorWindow() {
         >
           <GithubMark size={22} />
           <span className="min-w-0">
-            <span className="block text-[12px] font-semibold">GitHub 开源仓库</span>
+            <span className="block text-[12px] font-semibold">{t("panel.membership.repo")}</span>
             <span className="mt-0.5 block truncate text-[11px] text-[var(--ink-soft)]">{GITHUB_REPO_URL.replace("https://", "")}</span>
           </span>
         </a>
@@ -66,7 +68,7 @@ function MembershipSponsorWindow() {
         >
           <Mail size={20} className="shrink-0" />
           <span className="min-w-0">
-            <span className="block text-[12px] font-semibold">联系站长获取更多额度</span>
+            <span className="block text-[12px] font-semibold">{t("panel.membership.contact")}</span>
             <span className="mt-0.5 block text-[11px] text-[var(--ink-soft)]">{SPONSOR_EMAIL}</span>
           </span>
         </a>
@@ -75,11 +77,11 @@ function MembershipSponsorWindow() {
           {/* eslint-disable-next-line @next/next/no-img-element -- local static QR, not a remote CMS image. */}
           <img
             src={SPONSOR_QR_SRC}
-            alt="赞赏码"
+            alt={t("panel.membership.qrAlt")}
             className="mx-auto max-h-[280px] w-auto max-w-full rounded-lg"
           />
           <figcaption className="mt-3 text-[12px] leading-6 text-[var(--ink)]">
-            真实对你有帮助，欢迎来赞赏。
+            {t("panel.membership.note")}
           </figcaption>
         </figure>
       </div>

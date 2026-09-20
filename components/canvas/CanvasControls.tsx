@@ -1,6 +1,7 @@
 "use client";
 
 import { Maximize2, Minimize2, ZoomIn, ZoomOut, RotateCcw, ExternalLink, Download } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 interface CanvasControlsProps {
   onReset?: () => void;
@@ -32,30 +33,31 @@ export function CanvasControls({
   onMaximize,
   fullscreen = false,
 }: CanvasControlsProps) {
+  const t = useT();
   return (
     <div className="svg-canvas-controls">
       {onZoomIn && (
-        <button className="press" onClick={onZoomIn} title="放大" aria-label="放大">
+        <button className="press" onClick={onZoomIn} title={t("window.canvas.zoomIn")} aria-label={t("window.canvas.zoomIn")}>
           <ZoomIn size={11} />
         </button>
       )}
       {onZoomOut && (
-        <button className="press" onClick={onZoomOut} title="缩小" aria-label="缩小">
+        <button className="press" onClick={onZoomOut} title={t("window.canvas.zoomOut")} aria-label={t("window.canvas.zoomOut")}>
           <ZoomOut size={11} />
         </button>
       )}
       {onReset && (
-        <button className="press" onClick={onReset} title="重置视图" aria-label="重置视图">
+        <button className="press" onClick={onReset} title={t("window.canvas.resetView")} aria-label={t("window.canvas.resetView")}>
           <RotateCcw size={11} />
         </button>
       )}
       {onDownload && (
-        <button className="press" onClick={onDownload} title="下载 HTML" aria-label="下载 HTML">
+        <button className="press" onClick={onDownload} title={t("window.common.downloadHtml")} aria-label={t("window.common.downloadHtml")}>
           <Download size={11} />
         </button>
       )}
       {onOpenExternal && (
-        <button className="press" onClick={onOpenExternal} title="新页面展开" aria-label="新页面展开">
+        <button className="press" onClick={onOpenExternal} title={t("window.canvas.openExternal")} aria-label={t("window.canvas.openExternal")}>
           <ExternalLink size={11} />
         </button>
       )}
@@ -63,8 +65,8 @@ export function CanvasControls({
         <button
           className="press"
           onClick={onMaximize}
-          title={fullscreen ? "退出全屏" : "放大查看"}
-          aria-label={fullscreen ? "退出全屏" : "放大查看"}
+          title={fullscreen ? t("window.canvas.exitFullscreen") : t("window.canvas.maximize")}
+          aria-label={fullscreen ? t("window.canvas.exitFullscreen") : t("window.canvas.maximize")}
         >
           {fullscreen ? <Minimize2 size={11} /> : <Maximize2 size={11} />}
         </button>

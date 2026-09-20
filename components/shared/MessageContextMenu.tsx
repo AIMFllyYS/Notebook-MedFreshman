@@ -11,11 +11,13 @@ import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { useT } from "@/lib/i18n";
 
 const MENU_W = 168;
 
 // 全站消息右键菜单。挂在 AppShell（桌面+移动），portal 到 body。
 export default function MessageContextMenu() {
+  const t = useT();
   const open = useContextMenu((s) => s.open);
   const x = useContextMenu((s) => s.x);
   const y = useContextMenu((s) => s.y);
@@ -82,11 +84,11 @@ export default function MessageContextMenu() {
       }}
       className="animate-fade-up"
     >
-      <Item onClick={handleCopy} icon={Copy} label="复制" />
-      <Item onClick={handleQuote} icon={Quote} label="引用到对话" />
-      <Item onClick={handleAsk} icon={MessageSquare} label="追问" />
+      <Item onClick={handleCopy} icon={Copy} label={t("menu.contextMenu.copy")} />
+      <Item onClick={handleQuote} icon={Quote} label={t("menu.contextMenu.quote")} />
+      <Item onClick={handleAsk} icon={MessageSquare} label={t("menu.contextMenu.ask")} />
       <div style={{ height: 1, margin: "3px 6px", background: "var(--md-sys-color-outline-variant)" }} />
-      <Item onClick={handleRecord} icon={BookmarkPlus} label="记录到复习板" accent />
+      <Item onClick={handleRecord} icon={BookmarkPlus} label={t("menu.contextMenu.record")} accent />
     </div>,
     document.body,
   );

@@ -14,6 +14,7 @@ import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
 import { noteBreadcrumb, noteHref, parseNotePath } from '@/lib/content/notePath';
 import { useEmbeddable } from '@/lib/hooks/useEmbeddable';
 import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { useT } from '@/lib/i18n';
 
 type LoadState = 'idle' | 'loading' | 'done' | 'missing' | 'error';
 type SectionFormat = 'markdown' | 'text' | 'html';
@@ -43,6 +44,7 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
   const closeWindow = useWindowManager((s) => s.closeWindow);
   const updateWindow = useWindowManager((s) => s.updateWindow);
   const handleClose = useCallback(() => closeWindow(windowId), [closeWindow, windowId]);
+  const t = useT();
 
   const sources = useMemo(() => {
     const raw = (managed?.data as { sources?: TraceSource[] } | undefined)?.sources;
@@ -62,7 +64,8 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
     let index = 0;
     for (const round of rounds) {
       // 组标题用工具既有的展示名（TOOL_PRESENTATION），不新增文案；round.label 留给调用方覆盖。
-      const label = round.label || getToolPresentation(round.tool)?.label || round.tool;
+      const presentation = getToolPresentation(round.tool);
+      const label = round.label || (presentation ? t(presentation.labelKey) : undefined) || round.tool;
       for (const source of round.sources) {
         items.push({
           key: sourceItemKey(source, index),
@@ -73,7 +76,7 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
       }
     }
     return items;
-  }, [rounds, sources]);
+  }, [rounds, sources, t]);
 
   // 索引仍按扁平列表数：entries 与窗口 data 的 sources 同序，点选键因此与旧版一致。
   const activeKey = (managed?.data as { activeKey?: string } | undefined)?.activeKey ?? (entries[0] ? entries[0].key : '');
@@ -97,7 +100,7 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
       overlayId={windowId === SOURCE_TRACE_WINDOW_ID ? 'source-trace-viewer' : `source-trace-${windowId}`}
       externalLink={
         active?.kind === 'web' && active.url
-          ? { onOpen: () => window.open(active.url, '_blank', 'noopener,noreferrer'), label: '打开原页面' }
+          ? { onOpen: () => window.open(active.url, '_blank', 'noopener,noreferrer'), label: t('window.source.openOriginal') }
           : active?.kind === 'note'
             ? (() => {
                 const parsed = parseNotePath(active.path);
@@ -109,16 +112,16 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
       unmountWhenMinimized
     >
       {entries.length === 0 ? (
-        <p className="source-trace-empty">本轮没有可追踪的引用依据。</p>
+        <p className="source-trace-empty">{t('agent.sources.empty')}</p>
       ) : (
         <DocumentWorkspace
           layoutKey="source-trace"
-          outlineLabel="来源目录"
+          outlineLabel={t('window.source.outline')}
           outline={entries.map((entry) => ({
             id: entry.key,
-            kindLabel: entry.source.kind === 'note' ? '笔记' : '网页',
+            kindLabel: entry.source.kind === 'note' ? t('window.source.kindNote') : t('window.source.kindWeb'),
             title: entry.source.title,
-            meta: entry.source.kind === 'note' ? entry.source.path : entry.source.url || '暂无链接',
+            meta: entry.source.kind === 'note' ? entry.source.path : entry.source.url || t('window.source.noLink'),
             metaWrap: entry.source.kind === 'web',
             group: entry.group,
           }))}
@@ -139,6 +142,7 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
 
 function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'note' }> }) {
   const cacheRef = useRef<Map<string, { content: string; format: SectionFormat }>>(new Map());
+  const t = useT();
   const [status, setStatus] = useState<LoadState>('idle');
   const [content, setContent] = useState('');
   const [format, setFormat] = useState<SectionFormat>('markdown');
@@ -160,7 +164,7 @@ function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'not
       setContent(source.snippet || '');
       setFormat('markdown');
       setStatus('missing');
-      setError('无法解析笔记路径');
+      setError(t('window.source.parseNotePathFailed'));
       return;
     }
     const controller = new AbortController();
@@ -173,7 +177,7 @@ function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'not
     });
     fetch(`/api/section?${params.toString()}`, { signal: controller.signal })
       .then(async (res) => {
-        if (!res.ok) throw new Error(`读取失败 ${res.status}`);
+        if (!res.ok) throw new Error(t('window.source.readFailedWithStatus', { status: res.status }));
         return res.json() as Promise<{ content?: string | null; format?: SectionFormat | null }>;
       })
       .then((data) => {
@@ -195,7 +199,7 @@ function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'not
         setContent(source.snippet || '');
         setFormat('markdown');
         setStatus('error');
-        setError(err instanceof Error ? err.message : '读取笔记失败');
+        setError(err instanceof Error ? err.message : t('window.source.readNoteFailed'));
       });
     return () => controller.abort();
   }, [source.path, source.snippet, source.title]);
@@ -204,13 +208,13 @@ function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'not
     <div className="note-citation-body h-full overflow-auto bg-[var(--bg-panel)] p-4">
       {source.snippet ? (
         <div className="note-citation-snippet">
-          <div className="note-citation-snippet-label">检索片段</div>
+          <div className="note-citation-snippet-label">{t('window.source.snippet')}</div>
           <p>{source.snippet}</p>
         </div>
       ) : null}
-      {status === 'loading' ? <p className="note-citation-status">正在读取笔记正文…</p> : null}
-      {status === 'error' ? <p className="note-citation-status is-error">{error || '读取失败'}</p> : null}
-      {status === 'missing' ? <p className="note-citation-status">未找到完整正文，已显示检索片段。</p> : null}
+      {status === 'loading' ? <p className="note-citation-status">{t('window.source.readingNote')}</p> : null}
+      {status === 'error' ? <p className="note-citation-status is-error">{error || t('window.state.readFailed')}</p> : null}
+      {status === 'missing' ? <p className="note-citation-status">{t('window.source.missingFullText')}</p> : null}
       {content ? (
         format === 'html' ? (
           <iframe srcDoc={content} sandbox="allow-popups" className="h-full min-h-[320px] w-full flex-1 border-0" title={heading} />
@@ -227,6 +231,7 @@ function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'not
 }
 
 function WebSourceAddressBar({ url }: { url: string }) {
+  const t = useT();
   return (
     <div className="web-source-address-bar" data-testid="web-source-address">
       {url ? (
@@ -240,7 +245,7 @@ function WebSourceAddressBar({ url }: { url: string }) {
           {url}
         </a>
       ) : (
-        <span className="web-source-address-missing">此来源未提供链接</span>
+        <span className="web-source-address-missing">{t('window.source.missingLink')}</span>
       )}
     </div>
   );
@@ -254,6 +259,7 @@ function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web'
   );
   const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : source.url || null);
   const [loadFailed, setLoadFailed] = useState(false);
+  const t = useT();
   const showFallback = !source.url || (!isDesktop && (blocked || loadFailed));
   const address = <WebSourceAddressBar url={source.url} />;
 
@@ -262,17 +268,17 @@ function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web'
       <div className="flex h-full min-h-0 flex-col overflow-auto bg-[var(--bg-panel)]">
         {address}
         <div className="note-citation-snippet m-4">
-          <div className="note-citation-snippet-label">页面摘要</div>
+          <div className="note-citation-snippet-label">{t('window.source.summary')}</div>
           <p className="text-[13px] font-semibold text-[var(--ink)]">{source.title}</p>
           {source.snippet ? <p className="mt-2 text-[13px] leading-6 text-[var(--ink)]">{source.snippet}</p> : null}
         </div>
         <details className="mx-4 mb-3 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-2">
-          <summary className="cursor-pointer text-[12px] font-medium text-[var(--ink-soft)]">原始 JSON</summary>
+          <summary className="cursor-pointer text-[12px] font-medium text-[var(--ink-soft)]">{t('window.source.rawJson')}</summary>
           <pre className="mt-2 overflow-auto text-[11px] leading-5 text-[var(--ink)]">{JSON.stringify(source, null, 2)}</pre>
         </details>
         {source.url ? (
           <div className="min-h-48 flex-1">
-            <EmbedFallback url={source.url} reason={reason || (loadFailed ? '页面加载失败' : undefined)} onForce={() => { setLoadFailed(false); forceEmbed(); }} />
+            <EmbedFallback url={source.url} reason={reason || (loadFailed ? t('window.state.pageLoadFailed') : undefined)} onForce={() => { setLoadFailed(false); forceEmbed(); }} />
           </div>
         ) : null}
       </div>

@@ -2,6 +2,7 @@
 
 import { Moon, RotateCcw, Sun, Type } from "lucide-react";
 import AppSelect from "@/components/ui/AppSelect";
+import { useT } from "@/lib/i18n";
 import {
   FONT_CHOICES,
   type AppearanceMode,
@@ -11,10 +12,11 @@ import {
   type ThemeMode,
 } from "@/lib/theme/appearance";
 
-export const APPEARANCE_LABELS: Record<AppearanceMode, string> = {
-  default: "默认",
-  colorful: "彩色",
-  custom: "自定义",
+/** 外观模式 → 文案 key（值见 settings.appearance.mode*）；渲染方用 t() 取词。 */
+export const APPEARANCE_LABEL_KEYS: Record<AppearanceMode, string> = {
+  default: "settings.appearance.modeDefault",
+  colorful: "settings.appearance.modeColorful",
+  custom: "settings.appearance.modeCustom",
 };
 
 function AppearanceModeButton({
@@ -26,6 +28,7 @@ function AppearanceModeButton({
   active: boolean;
   onClick: () => void;
 }) {
+  const t = useT();
   return (
     <button
       type="button"
@@ -38,7 +41,7 @@ function AppearanceModeButton({
           : "var(--md-sys-color-on-surface-variant)",
       }}
     >
-      {APPEARANCE_LABELS[mode]}
+      {t(APPEARANCE_LABEL_KEYS[mode])}
     </button>
   );
 }
@@ -86,6 +89,7 @@ export default function AppearanceSettingsControls({
   setCustomAppearance: (next: Partial<CustomAppearanceSettings>) => void;
   resetAppearance: () => void;
 }) {
+  const t = useT();
   const updateCustomAppearance = (patch: Partial<CustomAppearanceSettings>) => {
     if (appearance.mode !== "custom") setAppearanceMode("custom");
     setCustomAppearance(patch);
@@ -94,7 +98,7 @@ export default function AppearanceSettingsControls({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between gap-3 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] px-3 py-2">
-        <span className="text-[13px] text-[var(--md-sys-color-on-surface)]">明暗主题</span>
+        <span className="text-[13px] text-[var(--md-sys-color-on-surface)]">{t("settings.appearance.theme")}</span>
         <div
           className="flex items-center gap-0.5 rounded-full p-0.5"
           style={{ background: "var(--md-sys-color-surface-container-highest)" }}
@@ -115,7 +119,7 @@ export default function AppearanceSettingsControls({
                 }}
               >
                 {mode === "light" ? <Sun size={13} /> : <Moon size={13} />}
-                {mode === "light" ? "浅色" : "深色"}
+                {t(mode === "light" ? "settings.appearance.light" : "settings.appearance.dark")}
               </button>
             );
           })}
@@ -138,17 +142,17 @@ export default function AppearanceSettingsControls({
 
       <div className="grid grid-cols-1 gap-2">
         <ColorField
-          label="白天主色"
+          label={t("settings.appearance.lightAccent")}
           value={appearance.custom.lightAccent}
           onChange={(value) => updateCustomAppearance({ lightAccent: value })}
         />
         <ColorField
-          label="夜间主色"
+          label={t("settings.appearance.darkAccent")}
           value={appearance.custom.darkAccent}
           onChange={(value) => updateCustomAppearance({ darkAccent: value })}
         />
         <ColorField
-          label="划词颜色"
+          label={t("settings.appearance.selectionColor")}
           value={appearance.custom.selection}
           onChange={(value) => updateCustomAppearance({ selection: value })}
         />
@@ -156,13 +160,13 @@ export default function AppearanceSettingsControls({
 
       <label className="flex items-center justify-between gap-3 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] px-3 py-2">
         <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
-          <Type size={14} /> 全局字体
+          <Type size={14} /> {t("settings.appearance.font")}
         </span>
-        <AppSelect label="全局字体" value={appearance.custom.font}
+        <AppSelect label={t("settings.appearance.font")} value={appearance.custom.font}
           onValueChange={(font) => updateCustomAppearance({ font })}
           className="max-w-[150px]"
           options={(Object.keys(FONT_CHOICES) as GlobalFontId[]).map((fontId) => ({
-            value: fontId, label: FONT_CHOICES[fontId].label,
+            value: fontId, label: t(FONT_CHOICES[fontId].labelKey),
           }))} />
       </label>
 
@@ -171,7 +175,7 @@ export default function AppearanceSettingsControls({
         onClick={resetAppearance}
         className="press flex items-center justify-center gap-1.5 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] px-3 py-2 text-[12.5px] font-semibold text-[var(--md-sys-color-on-surface-variant)]"
       >
-        <RotateCcw size={14} /> 恢复默认外观
+        <RotateCcw size={14} /> {t("settings.appearance.reset")}
       </button>
     </div>
   );

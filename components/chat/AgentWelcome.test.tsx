@@ -1,6 +1,7 @@
 import React from 'react';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { translate } from '@/lib/i18n';
 import {
   AGENT_WELCOME_EXAMPLES,
   AgentWelcomeExamples,
@@ -40,10 +41,11 @@ describe('AgentWelcome', () => {
     render(<AgentWelcomeExamples onSelect={onSelect} />);
     const list = screen.getByTestId('agent-welcome-examples');
     expect(list.querySelectorAll('button')).toHaveLength(AGENT_WELCOME_EXAMPLES.length);
+    // 起手式文案搬进了词典：断言「组件渲染的是该 key 的中文」而不是组件文件里的字面量。
     for (const example of AGENT_WELCOME_EXAMPLES) {
-      expect(screen.getByTestId(`agent-welcome-example-${example.id}`)).toHaveTextContent(example.text);
+      expect(screen.getByTestId(`agent-welcome-example-${example.id}`)).toHaveTextContent(translate('zh', example.textKey));
     }
     fireEvent.click(screen.getByTestId('agent-welcome-example-flashcards'));
-    expect(onSelect).toHaveBeenCalledWith(AGENT_WELCOME_EXAMPLES[1].text);
+    expect(onSelect).toHaveBeenCalledWith(translate('zh', AGENT_WELCOME_EXAMPLES[1].textKey));
   });
 });

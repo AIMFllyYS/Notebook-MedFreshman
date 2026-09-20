@@ -16,6 +16,7 @@ import { MessageContent } from "@/components/chat/MessageContent";
 import { ARTIFACT_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from "@/lib/sandbox/opaqueOriginStorageShim";
 import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
 import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";
+import { useT } from "@/lib/i18n";
 
 
 /**
@@ -90,6 +91,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
   const managed = useWindowManager((state) => state.windows.find((win) => win.id === windowId));
   const closeWindow = useWindowManager((state) => state.closeWindow);
   const handleClose = useCallback(() => closeWindow(windowId), [closeWindow, windowId]);
+  const t = useT();
   const data = managed?.data as AttachmentPreviewData | undefined;
   const kind = data ? attachmentPreviewKind(data) : "text";
   const content = data?.content ?? "";
@@ -112,7 +114,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
       minSize={{ minW: 360, minH: 280 }}
       className="attachment-preview-window"
       testId="attachment-preview-window"
-      externalLink={kind === "html" ? { onOpen: () => openHtmlInNewTab(data.content), label: "新标签页" } : undefined}
+      externalLink={kind === "html" ? { onOpen: () => openHtmlInNewTab(data.content), label: t("window.attachment.newTab") } : undefined}
       /**
        * 只有 HTML 附件有真正的窗口动作，其余格式传 undefined。
        *
@@ -129,7 +131,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
               data-no-drag
               onClick={() => setNetwork((value) => !value)}
               aria-pressed={network}
-              title={network ? "已允许联网 · 点击改回仅本地" : "仅本地预览 · 点击允许联网"}
+              title={network ? t("window.attachment.networkOn") : t("window.attachment.networkOff")}
               className={clsx(
                 "press flex h-7 w-7 items-center justify-center rounded-lg",
                 network
@@ -143,7 +145,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
               type="button"
               data-no-drag
               onClick={() => downloadHtmlFile(data.content, data.name)}
-              title="下载 HTML"
+              title={t("window.common.downloadHtml")}
               className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]"
             >
               <Download size={15} />
@@ -178,9 +180,9 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
         ) : (
           <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
             <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />
-            <p className="text-[13px] font-semibold text-[var(--ink)]">PowerPoint 本地预览</p>
+            <p className="text-[13px] font-semibold text-[var(--ink)]">{t("window.attachment.pptxTitle")}</p>
             <p className="max-w-md text-[12px] leading-6 text-[var(--ink-soft)]">
-              旧版 .ppt 为二进制格式，浏览器无法在不联网的情况下还原版式；文件仍保存在本机。
+              {t("window.attachment.pptxLegacy")}
             </p>
           </div>
         )
@@ -191,20 +193,21 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
   );
 }
 
-function markdownOutline(content: string) {
+function markdownOutline(content: string, fallbackTitle: string) {
   const items = [...content.matchAll(/^(#{1,4})\s+(.+)$/gm)].map((match, index) => ({
     id: String(index + 1),
     title: match[2].trim(),
     meta: `H${match[1].length}`,
   }));
-  return items.length ? items : [{ id: "1", title: "正文" }];
+  return items.length ? items : [{ id: "1", title: fallbackTitle }];
 }
 
 function MarkdownPreviewPane({ content }: { content: string }) {
-  const outline = useMemo(() => markdownOutline(content), [content]);
+  const t = useT();
+  const outline = useMemo(() => markdownOutline(content, t("window.attachment.bodyFallback")), [content, t]);
   const [activeId, setActiveId] = useState(outline[0]?.id ?? "1");
   return (
-    <DocumentWorkspace outline={outline} activeId={activeId} onSelect={setActiveId} outlineLabel="Markdown 目录" layoutKey="markdown">
+    <DocumentWorkspace outline={outline} activeId={activeId} onSelect={setActiveId} outlineLabel={t("window.attachment.markdownOutline")} layoutKey="markdown">
       <div className="h-full overflow-auto bg-[var(--bg-panel)] px-6 py-5 chat-prose">
         <MessageContent content={content} enableVisualizations={false} preserveLineBreaks={false} />
       </div>

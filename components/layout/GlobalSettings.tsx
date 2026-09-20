@@ -42,9 +42,10 @@ import {
   scoreGrade,
   type ProgressEntry,
 } from "@/lib/quiz-progress";
-import AppearanceSettingsControls, { APPEARANCE_LABELS } from "./AppearanceSettingsControls";
+import AppearanceSettingsControls, { APPEARANCE_LABEL_KEYS } from "./AppearanceSettingsControls";
 import SettingsSection from "./SettingsSection";
 import KeyboardShortcutsSettings from "./KeyboardShortcutsSettings";
+import { useT } from "@/lib/i18n";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 import { SHORTCUTS } from "@/lib/keyboard/shortcuts";
@@ -202,6 +203,7 @@ export default function GlobalSettings({
   variant?: "popover" | "page";
 }) {
   const page = variant === "page";
+  const t = useT();
   const theme = useTheme((s) => s.theme);
   const setTheme = useTheme((s) => s.setTheme);
   const appearance = useTheme((s) => s.appearance);
@@ -289,7 +291,7 @@ export default function GlobalSettings({
     <motion.div
       ref={panelRef}
       role={page ? "region" : "dialog"}
-      aria-label="设置"
+      aria-label={t("settings.global.title")}
       data-testid={page ? "global-settings-page" : "global-settings-popover"}
       initial={page ? false : { opacity: 0, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
@@ -322,7 +324,7 @@ export default function GlobalSettings({
             <button
               type="button"
               data-testid="account-header"
-              aria-label="查看账户"
+              aria-label={t("settings.global.viewAccount")}
               onClick={() => setAccountOpen(true)}
               className="flex shrink-0 items-center gap-2.5 px-3.5 py-2.5 text-left transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
               style={{ background: "transparent", border: "none", cursor: "pointer" }}
@@ -359,7 +361,7 @@ export default function GlobalSettings({
           >
             <div className="flex items-center gap-1.5">
               <Settings size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">设置</span>
+              <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">{t("settings.global.title")}</span>
             </div>
           </div>
         ) : null}
@@ -379,7 +381,7 @@ export default function GlobalSettings({
               className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
               style={{ background: "transparent", border: "none", cursor: "pointer" }}
               onClick={() => setAccountOpen(true)}
-              aria-label="查看账户"
+              aria-label={t("settings.global.viewAccount")}
             >
               <UserAvatar
                 name={account.nickname}
@@ -400,7 +402,7 @@ export default function GlobalSettings({
             {authStatus === "signedIn" ? (
               <button
                 type="button"
-                aria-label="退出"
+                aria-label={t("settings.global.signOut")}
                 onClick={() => void signOut()}
                 className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
                 style={{
@@ -411,12 +413,12 @@ export default function GlobalSettings({
                 }}
               >
                 <LogOut size={14} />
-                退出
+                {t("settings.global.signOut")}
               </button>
             ) : (
               <button
                 type="button"
-                aria-label="登录"
+                aria-label={t("settings.global.signIn")}
                 onClick={() => {
                   openLoginOverlay();
                   onClose();
@@ -430,7 +432,7 @@ export default function GlobalSettings({
                 }}
               >
                 <LogIn size={14} />
-                登录
+                {t("settings.global.signIn")}
               </button>
             )}
           </div>
@@ -439,17 +441,17 @@ export default function GlobalSettings({
           {/* 额度与手机设置页共用同一段：桌面弹出面板里默认收起，展开走有界滚动折叠。 */}
           <SettingsSection
             variant={page ? "card" : "menu"}
-            title="额度"
+            title={t("settings.global.quota")}
             icon={<Gauge size={16} />}
             open={openSection === "quota"}
             onToggle={() => toggleSection("quota")}
-            summary="会员 · 用量 · 存储"
+            summary={t("settings.global.quotaSummary")}
             testId="mobile-settings-quota"
           >
             <div className="flex flex-col gap-3">
               <AccountQuota variant="panel" />
               <div>
-                <div className="mb-1.5 text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">存储额度</div>
+                <div className="mb-1.5 text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">{t("settings.global.storageQuota")}</div>
                 <StorageQuotaBlock />
               </div>
             </div>
@@ -457,7 +459,7 @@ export default function GlobalSettings({
 
           <SettingsSection
             variant={page ? "card" : "menu"}
-            title="年级 / 学期"
+            title={t("settings.global.year")}
             icon={<GraduationCap size={16} />}
             open={openSection === "year"}
             onToggle={() => toggleSection("year")}
@@ -468,27 +470,31 @@ export default function GlobalSettings({
 
           <SettingsSection
             variant={page ? "card" : "menu"}
-            title="成绩"
+            title={t("settings.global.scores")}
             icon={<Trophy size={16} />}
             open={openSection === "scores"}
             onToggle={() => toggleSection("scores")}
             summary={
               summary.chapters
-                ? `${summary.chapters} 章 · 平均 ${summary.avgBest} · ${summary.totalAttempts} 次`
-                : "暂无测验记录"
+                ? t("settings.scores.summary", {
+                    chapters: summary.chapters,
+                    avg: summary.avgBest,
+                    attempts: summary.totalAttempts,
+                  })
+                : t("settings.scores.empty")
             }
           >
             <div className="flex flex-col gap-3">
               <div className="flex gap-2.5">
-                <StatCard icon={<Layers size={15} />} value={summary.chapters} label="已测章节" flat={!page} />
+                <StatCard icon={<Layers size={15} />} value={summary.chapters} label={t("settings.scores.chapters")} flat={!page} />
                 <StatCard
                   icon={<BarChart3 size={15} />}
                   value={summary.chapters ? summary.avgBest : "—"}
-                  label="平均最佳分"
+                  label={t("settings.scores.avgBest")}
                   accent={summary.chapters ? scoreGrade(summary.avgBest).color : undefined}
                   flat={!page}
                 />
-                <StatCard icon={<Repeat size={15} />} value={summary.totalAttempts} label="测验次数" flat={!page} />
+                <StatCard icon={<Repeat size={15} />} value={summary.totalAttempts} label={t("settings.scores.attempts")} flat={!page} />
               </div>
 
               {groups.length === 0 ? (
@@ -498,9 +504,9 @@ export default function GlobalSettings({
                     : "px-0.5 py-1.5 text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"}
                   style={page ? { background: "var(--md-sys-color-surface-container-lowest)" } : undefined}
                 >
-                  还没有测验记录。
+                  {t("settings.scores.emptyTitle")}
                   <br />
-                  打开任意章节的「题目测试」标签，完成一套题后成绩会出现在这里。
+                  {t("settings.scores.emptyHint")}
                 </div>
               ) : (
                 <div className="flex flex-col gap-3.5">
@@ -513,10 +519,10 @@ export default function GlobalSettings({
                             {g.name}
                           </span>
                           <span className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-                            {g.items.length} 章
+                            {t("settings.scores.chapterCount", { count: g.items.length })}
                           </span>
                           <span className="ml-auto text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-                            平均最佳
+                            {t("settings.scores.avgBestShort")}
                           </span>
                           <ScoreBadge percent={g.avgBest} />
                         </div>
@@ -547,7 +553,7 @@ export default function GlobalSettings({
                                   {chapterLabel(e.chapterId)}
                                 </span>
                                 <span className="shrink-0 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                                  上次 {e.progress.last.percent} · {e.progress.attempts} 次
+                                  {t("settings.scores.lastAttempt", { percent: e.progress.last.percent, attempts: e.progress.attempts })}
                                 </span>
                                 <ScoreBadge percent={e.progress.best} />
                               </div>
@@ -567,10 +573,10 @@ export default function GlobalSettings({
                   <div className={page
                     ? "text-[13px] font-medium text-[var(--md-sys-color-on-surface)]"
                     : "text-[11.5px] font-medium text-[var(--md-sys-color-on-surface)]"}>
-                    清空全部成绩
+                    {t("settings.scores.clear")}
                   </div>
                   <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                    仅清除本机保存的测验成绩，不影响题目本身。
+                    {t("settings.scores.clearDesc")}
                   </div>
                 </div>
                 <button
@@ -590,7 +596,7 @@ export default function GlobalSettings({
                   }}
                 >
                   <Trash2 size={14} />
-                  {confirmClear ? "确认清空" : "清空"}
+                  {t(confirmClear ? "settings.scores.clearConfirm" : "settings.scores.clearAction")}
                 </button>
               </div>
             </div>
@@ -598,22 +604,26 @@ export default function GlobalSettings({
 
           <SettingsSection
             variant={page ? "card" : "menu"}
-            title="快捷键"
+            title={t("settings.global.keyboard")}
             icon={<Keyboard size={16} />}
             open={openSection === "keyboard"}
             onToggle={() => toggleSection("keyboard")}
-            summary={`已启用 ${keyboardEnabledCount} / ${SHORTCUTS.length}`}
+            summary={t("settings.keyboard.enabled", { enabled: keyboardEnabledCount, total: SHORTCUTS.length })}
           >
             <KeyboardShortcutsSettings />
           </SettingsSection>
 
           <SettingsSection
             variant={page ? "card" : "menu"}
-            title="外观"
+            title={t("settings.global.appearance")}
             icon={<Palette size={16} />}
             open={openSection === "appearance"}
             onToggle={() => toggleSection("appearance")}
-            summary={`${theme === "light" ? "浅色" : "深色"} · ${APPEARANCE_LABELS[appearance.mode]} · ${FONT_CHOICES[appearance.custom.font].label}`}
+            summary={t("settings.appearance.summary", {
+              theme: t(theme === "light" ? "settings.appearance.light" : "settings.appearance.dark"),
+              mode: t(APPEARANCE_LABEL_KEYS[appearance.mode]),
+              font: t(FONT_CHOICES[appearance.custom.font].labelKey),
+            })}
           >
             <AppearanceSettingsControls
               theme={theme}
@@ -631,15 +641,15 @@ export default function GlobalSettings({
           >
             <div className="min-w-0">
               <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">
-                打开 Agent 设置
+                {t("settings.global.openAgent")}
               </div>
               <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                模型、工具、导出与外观，与右侧 AI 助教共用同一份配置。
+                {t("settings.global.openAgentDesc")}
               </div>
             </div>
             <button
               type="button"
-              aria-label="打开 Agent 设置"
+              aria-label={t("settings.global.openAgent")}
               onClick={handleOpenAgentSettings}
               className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
               style={{
@@ -650,7 +660,7 @@ export default function GlobalSettings({
               }}
             >
               <SlidersHorizontal size={14} />
-              打开
+              {t("settings.global.open")}
             </button>
           </div>
           ) : (
@@ -658,12 +668,12 @@ export default function GlobalSettings({
               <div className="app-menu-separator" />
               <button
                 type="button"
-                aria-label="打开 Agent 设置"
+                aria-label={t("settings.global.openAgent")}
                 onClick={handleOpenAgentSettings}
                 className="app-menu-item"
               >
                 <span className="app-menu-check"><SlidersHorizontal size={14} /></span>
-                <span>打开 Agent 设置</span>
+                <span>{t("settings.global.openAgent")}</span>
               </button>
             </>
           )}
@@ -678,17 +688,17 @@ export default function GlobalSettings({
               {authStatus === "signedIn" ? (
                 <button
                   type="button"
-                  aria-label="退出登录"
+                  aria-label={t("settings.global.signOutFull")}
                   onClick={() => void signOut()}
                   className="app-menu-item"
                 >
                   <span className="app-menu-check"><LogOut size={14} /></span>
-                  <span>退出登录</span>
+                  <span>{t("settings.global.signOutFull")}</span>
                 </button>
               ) : (
                 <button
                   type="button"
-                  aria-label="登录"
+                  aria-label={t("settings.global.signIn")}
                   onClick={() => {
                     openLoginOverlay();
                     onClose();
@@ -696,7 +706,7 @@ export default function GlobalSettings({
                   className="app-menu-item"
                 >
                   <span className="app-menu-check"><LogIn size={14} /></span>
-                  <span>登录</span>
+                  <span>{t("settings.global.signIn")}</span>
                 </button>
               )}
             </div>

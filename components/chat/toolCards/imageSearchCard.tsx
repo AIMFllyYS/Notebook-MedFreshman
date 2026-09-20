@@ -5,17 +5,20 @@ import { ChatImage } from "@/components/chat/ChatImage";
 import { ImageStrip } from "@/components/chat/ImageStrip";
 import { dedupeByKey, webItemKey } from "@/lib/chat/traceSources";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
+import { useT } from "@/lib/i18n";
 
 export default function ImageSearchResultCard({ part }: ResultCardProps<"imageSearch">) {
+  const t = useT();
   if (part.state !== "output-available" || !part.output.sources?.length) return null;
   const sources = dedupeByKey(part.output.sources, webItemKey);
   if (!sources.length) return null;
+  const fallbackTitle = t("trace.images.untitled");
 
   return (
     <div className="image-search-gallery">
       <div className="image-search-gallery-header">
         <AgentImageIcon size={16} />
-        <span>本次搜索图片 · {sources.length} 张</span>
+        <span>{t("trace.images.searchTitle", { count: sources.length })}</span>
         <span className="image-search-gallery-via">via Unsplash</span>
       </div>
       <ImageStrip>
@@ -30,10 +33,10 @@ export default function ImageSearchResultCard({ part }: ResultCardProps<"imageSe
               e.dataTransfer.effectAllowed = "copy";
             }}
           >
-            <ChatImage src={source.url} alt={source.alt || source.title || "图片"} />
+            <ChatImage src={source.url} alt={source.alt || source.title || fallbackTitle} />
             <div className="image-search-gallery-credit">
               <a href={source.url} target="_blank" rel="noopener noreferrer">
-                {source.title || source.alt || "图片"}
+                {source.title || source.alt || fallbackTitle}
               </a>
               {source.author ? (
                 <>

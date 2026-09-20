@@ -2,6 +2,7 @@
 
 import type { ComponentType, MouseEventHandler, ReactNode, Ref } from "react";
 import { BookmarkPlus, Copy, Lightbulb, MessageSquare, Send, StickyNote } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import type { SelectionAssistantAction } from "@/lib/notes/selectionAssistant";
 
 export const SELECTION_POPOVER_BAR_CLASS =
@@ -50,6 +51,7 @@ export function SelectionPopBtn({
   disabled?: boolean;
   testId?: string;
 }) {
+  const t = useT();
   return (
     <button
       type="button"
@@ -57,7 +59,7 @@ export function SelectionPopBtn({
       disabled={disabled}
       aria-pressed={active}
       aria-label={label}
-      title={active ? label : `已隐藏「${label}」`}
+      title={active ? label : t("menu.selection.hidden", { label })}
       data-testid={testId}
       className={
         SELECTION_POPOVER_BTN_CLASS +
@@ -89,14 +91,15 @@ export function SelectionPopIconBtn({
   disabled?: boolean;
   testId?: string;
 }) {
+  const t = useT();
   const ActiveIcon = copied && CopiedIcon ? CopiedIcon : Icon;
-  const label = copied ? "已复制" : title;
+  const label = copied ? t("menu.selection.copied") : title;
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
-      title={active ? label : `已隐藏「${title}」`}
+      title={active ? label : t("menu.selection.hidden", { label: title })}
       aria-label={title}
       aria-pressed={active}
       data-testid={testId}

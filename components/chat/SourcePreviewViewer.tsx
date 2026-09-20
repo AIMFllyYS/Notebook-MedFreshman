@@ -7,6 +7,7 @@ import WebviewSite from "@/components/browser/WebviewSite";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useT } from "@/lib/i18n";
 
 function SourcePreviewIcon({ iconUrl }: { iconUrl?: string }) {
   const [failedIcon, setFailedIcon] = useState<string | null>(null);
@@ -44,6 +45,7 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
   const managed = useWindowManager((s) => s.windows.find((win) => win.id === windowId));
   const closeWindow = useWindowManager((s) => s.closeWindow);
   const handleClose = useCallback(() => closeWindow(windowId), [closeWindow, windowId]);
+  const t = useT();
 
   const data = (managed?.data ?? {}) as { url?: string; title?: string; iconUrl?: string };
   const url = data.url ?? "";
@@ -77,7 +79,7 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
         onOpen: () => {
           window.open(url, "_blank", "noopener,noreferrer");
         },
-        label: "打开原页面",
+        label: t("window.source.openOriginal"),
       }}
       bodyClassName="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-white"
       unmountWhenMinimized
@@ -85,7 +87,7 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
       {showFallback ? (
         <EmbedFallback
           url={url}
-          reason={reason || (loadFailed ? "页面加载失败" : undefined)}
+          reason={reason || (loadFailed ? t("window.state.pageLoadFailed") : undefined)}
           onForce={() => {
             setLoadFailed(false);
             forceEmbed();

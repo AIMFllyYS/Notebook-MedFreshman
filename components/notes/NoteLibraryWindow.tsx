@@ -11,6 +11,7 @@ import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useUserNotes, selectClassroomNotes, selectLibraryNotes } from "@/lib/stores/userNotes";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { createAndOpenNote } from "@/lib/notes/openUserNote";
+import { useT } from "@/lib/i18n";
 import {
   formatClassroomNoteQuote,
   formatNoteQuote,
@@ -33,6 +34,7 @@ export default function NoteLibraryWindow() {
   const intent = useUserNotes((s) => s.libraryIntent);
   const subjectId = useUserNotes((s) => s.librarySubjectId);
   const byId = useUserNotes((s) => s.byId);
+  const t = useT();
   const order = useUserNotes((s) => s.order);
   const openEditor = useUserNotes((s) => s.openEditor);
   const closeLibrary = useUserNotes((s) => s.closeLibrary);
@@ -91,20 +93,20 @@ export default function NoteLibraryWindow() {
     activeTab === "mine"
       ? visibleNotes.map((note) => ({
           id: note.id,
-          title: note.title || "无标题笔记",
+          title: note.title || t("window.note.common.untitled"),
           meta: `${subjectLabel(note.subjectId)} · ${formatUpdatedAt(note.updatedAt)}`,
         }))
       : visibleClassroom.map((note) => ({
           id: note.id,
-          kindLabel: note.source?.kind === "agent" ? "Agent" : note.source?.kind === "review" ? "复习板" : "正文",
-          title: note.title || "课堂笔记",
-          meta: plainSnippet(note.quote || note.markdown, 60) || note.source?.label || "课堂批注",
+          kindLabel: note.source?.kind === "agent" ? "Agent" : note.source?.kind === "review" ? t("window.note.library.kindReview") : t("window.note.library.kindBody"),
+          title: note.title || t("window.note.common.classroom"),
+          meta: plainSnippet(note.quote || note.markdown, 60) || note.source?.label || t("window.note.common.classroomAnnotation"),
         }));
 
   const toolbar = (
     <div className="user-note-library-toolbar" data-no-drag>
       {showTabs ? (
-        <div className="user-note-modes" role="group" aria-label="笔记来源">
+        <div className="user-note-modes" role="group" aria-label={t("window.note.library.sourceGroup")}>
           <button
             type="button"
             data-no-drag
@@ -112,7 +114,7 @@ export default function NoteLibraryWindow() {
             className={`user-note-mode${activeTab === "mine" ? " is-active" : ""}`}
             onClick={() => setTab("mine")}
           >
-            我的笔记
+            {t("window.note.library.tabMine")}
           </button>
           <button
             type="button"
@@ -121,7 +123,7 @@ export default function NoteLibraryWindow() {
             className={`user-note-mode${activeTab === "classroom" ? " is-active" : ""}`}
             onClick={() => setTab("classroom")}
           >
-            课堂笔记
+            {t("window.note.library.tabClassroom")}
           </button>
         </div>
       ) : null}
@@ -130,13 +132,13 @@ export default function NoteLibraryWindow() {
         data-no-drag
         className="user-note-search is-offset"
         value={query}
-        placeholder="按标题搜索…"
-        aria-label="按标题搜索笔记"
+        placeholder={t("window.note.library.searchPlaceholder")}
+        aria-label={t("window.note.library.searchAria")}
         onChange={(event) => setQuery(event.target.value)}
       />
 
       <button type="button" data-no-drag className="user-note-toolbar-primary" onClick={handleCreate}>
-        <Plus size={13} /> 新建笔记
+        <Plus size={13} /> {t("window.note.library.newNote")}
       </button>
     </div>
   );
@@ -155,12 +157,12 @@ export default function NoteLibraryWindow() {
     >
       <DocumentWorkspace
         layoutKey="note-library"
-        outlineLabel={activeTab === "mine" ? "我的笔记" : "课堂笔记"}
+        outlineLabel={activeTab === "mine" ? t("window.note.library.tabMine") : t("window.note.library.tabClassroom")}
         outline={outline}
         activeId={activeTab === "mine" ? (activeNote?.id ?? "") : (activeClassroom?.id ?? "")}
         onSelect={(id) => (activeTab === "mine" ? setActiveNoteId(id) : setActiveClassroomId(id))}
         toolbar={toolbar}
-        emptyLabel={activeTab === "mine" ? "还没有笔记" : "还没有课堂笔记"}
+        emptyLabel={activeTab === "mine" ? t("window.note.library.emptyMine") : t("window.note.library.emptyClassroom")}
         folderTree={<YearSubjectFolderTree selectedId={subjectId} onSelect={setLibrarySubjectId} />}
       >
         {activeTab === "mine" ? (
@@ -189,10 +191,11 @@ function UserNoteStage({
   onCite: (note: UserNote) => void;
   onOpen: (note: UserNote) => void;
 }) {
+  const t = useT();
   if (!note) {
     return (
       <div className="user-note-stage">
-        <p className="user-note-empty">这一科还没有笔记。点『新建笔记』开始写。</p>
+        <p className="user-note-empty">{t("window.note.library.subjectEmpty")}</p>
       </div>
     );
   }
@@ -200,16 +203,16 @@ function UserNoteStage({
   return (
     <div className="user-note-stage">
       <div className="user-note-stage-head">
-        <div className="user-note-stage-title">{note.title || "无标题笔记"}</div>
+        <div className="user-note-stage-title">{note.title || t("window.note.common.untitled")}</div>
         <div className="user-note-stage-meta">
-          {subjectLabel(note.subjectId)} · 更新于 {formatUpdatedAt(note.updatedAt)}
+          {subjectLabel(note.subjectId)} · {t("window.note.common.updatedAt", { time: formatUpdatedAt(note.updatedAt) })}
         </div>
         <div className="user-note-stage-actions" data-no-drag>
           <button type="button" data-no-drag className="user-note-action" onClick={() => onOpen(note)}>
-            <PenLine size={13} /> 打开编辑
+            <PenLine size={13} /> {t("window.note.library.openEditor")}
           </button>
           <button type="button" data-no-drag className="user-note-action is-primary" onClick={() => onCite(note)}>
-            {cited ? <Check size={13} /> : <Quote size={13} />} {cited ? "已引用到对话" : "引用到对话"}
+            {cited ? <Check size={13} /> : <Quote size={13} />} {cited ? t("window.note.common.cited") : t("window.note.common.cite")}
           </button>
         </div>
       </div>
@@ -217,7 +220,7 @@ function UserNoteStage({
         {note.markdown.trim() ? (
           <NoteRenderer content={note.markdown} />
         ) : (
-          <p className="note-citation-status">这篇笔记还是空的。</p>
+          <p className="note-citation-status">{t("window.note.library.emptyNote")}</p>
         )}
       </div>
     </div>
@@ -227,11 +230,12 @@ function UserNoteStage({
 function ClassroomNoteStage({ note }: { note: UserNote | null }) {
   const { cited, cite } = useCiteToChat();
   const openEditor = useUserNotes((s) => s.openEditor);
+  const t = useT();
   if (!note) {
     return (
       <div className="user-note-stage">
         <p className="user-note-empty">
-          还没有课堂笔记。在正文或 Agent 回答里划一句，点「笔记」写成便签批注。
+          {t("window.note.library.classroomEmpty")}
         </p>
       </div>
     );
@@ -240,13 +244,13 @@ function ClassroomNoteStage({ note }: { note: UserNote | null }) {
   return (
     <div className="user-note-stage">
       <div className="user-note-stage-head">
-        <div className="user-note-stage-title">{note.title || "课堂笔记"}</div>
+        <div className="user-note-stage-title">{note.title || t("window.note.common.classroom")}</div>
         <div className="user-note-stage-meta">
-          {subjectLabel(note.subjectId)} · {note.source?.label || "课堂批注"} · 更新于 {formatUpdatedAt(note.updatedAt)}
+          {subjectLabel(note.subjectId)} · {note.source?.label || t("window.note.common.classroomAnnotation")} · {t("window.note.common.updatedAt", { time: formatUpdatedAt(note.updatedAt) })}
         </div>
         <div className="user-note-stage-actions" data-no-drag>
           <button type="button" data-no-drag className="user-note-action" onClick={() => openEditor(note.id)}>
-            <PenLine size={13} /> 编辑
+            <PenLine size={13} /> {t("window.note.library.edit")}
           </button>
           <button
             type="button"
@@ -254,26 +258,26 @@ function ClassroomNoteStage({ note }: { note: UserNote | null }) {
             className="user-note-action is-primary"
             onClick={() => cite(formatClassroomNoteQuote(note))}
           >
-            {cited ? <Check size={13} /> : <Quote size={13} />} {cited ? "已引用到对话" : "引用到对话"}
+            {cited ? <Check size={13} /> : <Quote size={13} />} {cited ? t("window.note.common.cited") : t("window.note.common.cite")}
           </button>
         </div>
       </div>
       <div className="user-note-preview prose-notes">
         <blockquote className="classroom-note-quote">
-          <div className="classroom-note-quote-label">原文引用</div>
-          {note.quote?.trim() || "（没有划词原文）"}
+          <div className="classroom-note-quote-label">{t("window.note.library.quoteLabel")}</div>
+          {note.quote?.trim() || t("window.note.common.noSelectionQuote")}
         </blockquote>
         <div className="classroom-note-org">
-          <div className="classroom-note-org-label">整理信息</div>
-          <p className="classroom-note-org-line">科目：{subjectLabel(note.subjectId)}</p>
-          <p className="classroom-note-org-line">出处：{note.source?.label || "课堂"}</p>
-          {note.source?.path ? <p className="classroom-note-org-line">路径：{note.source.path}</p> : null}
-          <p className="classroom-note-org-line">更新：{formatUpdatedAt(note.updatedAt)}</p>
+          <div className="classroom-note-org-label">{t("window.note.library.orgLabel")}</div>
+          <p className="classroom-note-org-line">{t("window.note.library.orgSubject", { subject: subjectLabel(note.subjectId) })}</p>
+          <p className="classroom-note-org-line">{t("window.note.library.orgSource", { label: note.source?.label || t("window.note.library.sourceFallback") })}</p>
+          {note.source?.path ? <p className="classroom-note-org-line">{t("window.note.library.orgPath", { path: note.source.path })}</p> : null}
+          <p className="classroom-note-org-line">{t("window.note.library.orgUpdated", { time: formatUpdatedAt(note.updatedAt) })}</p>
         </div>
         {note.markdown.trim() ? (
           <NoteRenderer content={note.markdown} />
         ) : (
-          <p className="note-citation-status">还没有批注。点「编辑」在便签里写一句。</p>
+          <p className="note-citation-status">{t("window.note.library.emptyAnnotation")}</p>
         )}
       </div>
     </div>

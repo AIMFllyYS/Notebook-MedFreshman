@@ -1,3 +1,5 @@
+import type { I18nKey } from "@/lib/i18n";
+
 export type ThemeMode = "light" | "dark";
 export type AppearanceMode = "default" | "colorful" | "custom";
 export type GlobalFontId = "system" | "songti" | "kaiti" | "hei" | "serif" | "mono";
@@ -16,33 +18,34 @@ export interface AppearanceSettings {
 
 export const APPEARANCE_LS_KEY = "gailvlun-appearance-v1";
 
-export const FONT_CHOICES: Record<GlobalFontId, { label: string; cssValue: string }> = {
+// labelKey 是设置页下拉项的文案 key（值见 settings.appearance.fontChoices.*），渲染处用 t() 取词。
+export const FONT_CHOICES: Record<GlobalFontId, { labelKey: I18nKey; cssValue: string }> = {
   system: {
-    label: "系统默认",
+    labelKey: "settings.appearance.fontChoices.system",
     cssValue:
       'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif',
   },
   songti: {
-    label: "宋体阅读",
+    labelKey: "settings.appearance.fontChoices.songti",
     cssValue:
       '"Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, Georgia, "Times New Roman", serif',
   },
   kaiti: {
-    label: "楷体手写",
+    labelKey: "settings.appearance.fontChoices.kaiti",
     cssValue:
       'KaiTi, STKaiti, "Kaiti SC", "LXGW WenKai", "Ma Shan Zheng", "Microsoft YaHei", cursive',
   },
   hei: {
-    label: "黑体清晰",
+    labelKey: "settings.appearance.fontChoices.hei",
     cssValue:
       '"Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", Arial, sans-serif',
   },
   serif: {
-    label: "英文衬线",
+    labelKey: "settings.appearance.fontChoices.serif",
     cssValue: 'Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", serif',
   },
   mono: {
-    label: "等宽",
+    labelKey: "settings.appearance.fontChoices.mono",
     cssValue: '"JetBrains Mono", "Cascadia Code", Consolas, "Microsoft YaHei", monospace',
   },
 };

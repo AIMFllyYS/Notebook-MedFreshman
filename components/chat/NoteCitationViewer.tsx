@@ -9,6 +9,7 @@ import NoteRenderer from '@/components/notes/NoteRenderer';
 import PlainTextReader from '@/components/notes/PlainTextReader';
 import { noteBreadcrumb, noteHref, parseNotePath } from '@/lib/content/notePath';
 import type { SearchHit } from '@/lib/ai/agent/toolTypes';
+import { useT } from '@/lib/i18n';
 
 type LoadState = 'idle' | 'loading' | 'done' | 'missing' | 'error';
 type SectionFormat = 'markdown' | 'text' | 'html';
@@ -26,6 +27,7 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
   const closeViewer = useNoteCitations((s) => s.closeViewer);
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === NOTE_CITATION_WINDOW_ID));
   const cacheRef = useRef<Map<string, CachedSection>>(new Map());
+  const t = useT();
   const [status, setStatus] = useState<LoadState>('idle');
   const [content, setContent] = useState('');
   const [format, setFormat] = useState<SectionFormat>('markdown');
@@ -50,7 +52,7 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
       setContent(active.snippet || '');
       setFormat('markdown');
       setStatus('missing');
-      setError('无法解析笔记路径');
+      setError(t('window.source.parseNotePathFailed'));
       return;
     }
     const controller = new AbortController();
@@ -63,7 +65,7 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
     });
     fetch(`/api/section?${params.toString()}`, { signal: controller.signal })
       .then(async (res) => {
-        if (!res.ok) throw new Error(`读取失败 ${res.status}`);
+        if (!res.ok) throw new Error(t('window.source.readFailedWithStatus', { status: res.status }));
         return res.json() as Promise<{ content?: string | null; format?: SectionFormat | null }>;
       })
       .then((data) => {
@@ -86,7 +88,7 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
         setContent(active.snippet || '');
         setFormat('markdown');
         setStatus('error');
-        setError(err instanceof Error ? err.message : '读取笔记失败');
+        setError(err instanceof Error ? err.message : t('window.source.readNoteFailed'));
       });
     return () => controller.abort();
   }, [active]);
@@ -114,7 +116,7 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
       unmountWhenMinimized
     >
       <div className="note-citation-layout">
-        <nav className="note-citation-sidebar" aria-label="引用列表">
+        <nav className="note-citation-sidebar" aria-label={t('window.source.citationList')}>
           {hits.map((hit, index) => {
             const selected = hit.path === active.path;
             return (
@@ -134,18 +136,18 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
         <div className="note-citation-body">
           {active.snippet ? (
             <div className="note-citation-snippet">
-              <div className="note-citation-snippet-label">检索片段</div>
+              <div className="note-citation-snippet-label">{t('window.source.snippet')}</div>
               <p>{active.snippet}</p>
             </div>
           ) : null}
           {status === 'loading' ? (
-            <p className="note-citation-status">正在读取笔记正文…</p>
+            <p className="note-citation-status">{t('window.source.readingNote')}</p>
           ) : null}
           {status === 'error' ? (
-            <p className="note-citation-status is-error">{error || '读取失败'}</p>
+            <p className="note-citation-status is-error">{error || t('window.state.readFailed')}</p>
           ) : null}
           {status === 'missing' ? (
-            <p className="note-citation-status">未找到完整正文，已显示检索片段。</p>
+            <p className="note-citation-status">{t('window.source.missingFullText')}</p>
           ) : null}
           {content ? (
             format === 'html' ? (

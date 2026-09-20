@@ -10,6 +10,7 @@ import {
   normalizeThinkingLevels,
 } from "@/lib/ai/models";
 import { Pencil, Star, Trash2 } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 const SIZE_OPTIONS = ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"];
 const DEFAULT_SIZES = ["1024x1024", "960x1280", "768x1024"];
@@ -198,6 +199,7 @@ function ModelRow({
   onDelete?: () => void;
   isEditing?: boolean;
 }) {
+  const t = useT();
   const isImage = model.type === "image";
   return (
     <div
@@ -222,7 +224,7 @@ function ModelRow({
                 color: "var(--md-sys-color-secondary)",
               }}
             >
-              生图
+              {t("settings.models.badge.image")}
             </span>
           )}
           {model.thinking && (
@@ -233,7 +235,7 @@ function ModelRow({
                 color: "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              {model.thinkingRequired ? "思考不可关" : "思考"}
+              {t(model.thinkingRequired ? "settings.models.badge.thinkingRequired" : "settings.models.badge.thinking")}
               {normalizeThinkingLevels(model.thinkingLevels).length > 0
                 ? ` · ${normalizeThinkingLevels(model.thinkingLevels).map((l) => THINKING_EFFORT_LABELS[l]).join("/")}`
                 : model.thinkingLevels === undefined
@@ -250,7 +252,7 @@ function ModelRow({
                 color: "var(--md-sys-color-tertiary)",
               }}
             >
-              视觉
+              {t("settings.models.badge.vision")}
             </span>
           )}
         </div>
@@ -259,14 +261,14 @@ function ModelRow({
           {!isImage && ` · ${model.contextK ?? 128}K`}
           {model.pricing && ` · ¥${model.pricing.input}/${model.pricing.output}`}
           {isImage && model.imageParams?.sizes?.length
-            ? ` · ${model.imageParams.sizes.length} 尺寸`
+            ? ` · ${t("settings.models.sizeCount", { count: model.imageParams.sizes.length })}`
             : ""}
         </div>
       </div>
       {isImage && onSetDefault && (
         <button
           onClick={onSetDefault}
-          title={isDefaultImage ? "已是默认生图模型" : "设为默认生图模型"}
+          title={t(isDefaultImage ? "settings.models.imageDefault.is" : "settings.models.imageDefault.set")}
           className="rounded p-1 hover:bg-[var(--md-sys-color-surface-container-high)]"
           style={{
             color: isDefaultImage

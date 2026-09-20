@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useT } from "@/lib/i18n";
 
 /**
  * 拖拽面板时的加载覆盖层。
@@ -41,6 +42,7 @@ export function ChatSkeleton() {
 }
 
 export function PageLoader() {
+  const t = useT();
   return (
     <div className="resize-loader resize-loader-page">
       <div className="page-loader">
@@ -55,7 +57,7 @@ export function PageLoader() {
             ))}
           </ul>
         </div>
-        <span>加载中</span>
+        <span>{t("app.loading.label")}</span>
       </div>
     </div>
   );

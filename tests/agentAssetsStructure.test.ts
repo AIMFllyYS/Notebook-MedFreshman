@@ -75,8 +75,12 @@ test("项目 chip 只出现在 Agent 中央对话的输入框右下角", () => {
     "chip 排在发送键左侧",
   );
   assert.match(chip, /No Projects/);
-  assert.match(chip, /添加新项目/);
-  assert.match(chip, /不使用项目/);
+  // 文案已迁进 i18n 词典：组件只引用 key，中文原文留在 zh 分片里。
+  const zhMenu = readFile("lib/i18n/messages/parts/zh/menu.ts");
+  assert.match(chip, /t\("menu\.projectPicker\.add"\)/);
+  assert.match(zhMenu, /add: "添加新项目"/);
+  assert.match(chip, /t\("menu\.projectPicker\.clear"\)/);
+  assert.match(zhMenu, /clear: "不使用项目"/);
   assert.match(readFile("app/styles/prose.css"), /\.chat-input-project-chip \{/);
 });
 

@@ -9,6 +9,7 @@ import {
 } from "@/lib/hooks/useManagedWindowChrome";
 import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager";
 import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
+import { useT } from "@/lib/i18n";
 
 export type { FullscreenTarget };
 
@@ -38,11 +39,12 @@ export interface ManagedWindowProps {
 }
 
 function ResizeGrip({ onPointerDown }: { onPointerDown: (event: PointerEvent) => void }) {
+  const t = useT();
   return (
     <div
       data-no-drag
       onPointerDown={onPointerDown}
-      title="拖拽缩放窗口"
+      title={t("panel.window.resize")}
       style={{
         position: "absolute",
         right: 1,

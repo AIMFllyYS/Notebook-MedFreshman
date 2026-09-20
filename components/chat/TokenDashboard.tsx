@@ -29,6 +29,7 @@ import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
 import { ContextUsageRing } from '@/components/chat/ContextUsageRing';
 import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 import { compactActiveSession } from '@/lib/context/compactChatSession';
+import { translate, useT } from '@/lib/i18n';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -54,7 +55,7 @@ function fmtMoneyPair(yuan: number, rate: number): string {
 }
 
 function fmtDuration(sec: number): string {
-  if (sec <= 0) return '已过期';
+  if (sec <= 0) return translate(useSettings.getState().locale, 'panel.token.expired');
   const h = Math.floor(sec / 3600);
   const m = Math.floor((sec % 3600) / 60);
   const s = Math.floor(sec % 60);
@@ -73,15 +74,16 @@ function calcCost(
 }
 
 // 上下文分项（IDE 式构成条）：键对应 ContextBreakdown，色值固定且明暗主题均可辨。
-const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conversation'; label: string; color: string }[] = [
-  { key: 'tools', label: '系统提示词', color: '#8b5cf6' },
-  { key: 'skills', label: '技能', color: '#ec4899' },
-  { key: 'pages', label: '笔记页面', color: '#f59e0b' },
-  { key: 'webSearch', label: '联网搜索', color: '#3b82f6' },
-  { key: 'conversation', label: '对话', color: '#10b981' },
+const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conversation'; labelKey: string; color: string }[] = [
+  { key: 'tools', labelKey: 'panel.token.cat.tools', color: '#8b5cf6' },
+  { key: 'skills', labelKey: 'panel.token.cat.skills', color: '#ec4899' },
+  { key: 'pages', labelKey: 'panel.token.cat.pages', color: '#f59e0b' },
+  { key: 'webSearch', labelKey: 'panel.token.cat.webSearch', color: '#3b82f6' },
+  { key: 'conversation', labelKey: 'panel.token.cat.conversation', color: '#10b981' },
 ];
 
 export default function TokenDashboard({ isLoading = false, floatingSessionId, modelId }: { isLoading?: boolean; floatingSessionId?: string; modelId?: string }) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -211,7 +213,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const pctText = `${Math.min(Math.round(ratio * 100), 999)}%`;
   const ringLevel = contextRingLevel(ratio);
   const ringColor = contextRingColor(ringLevel);
-  const ringCaption = contextRingCaption(ringLevel);
+  const ringCaptionKey = contextRingCaption(ringLevel);
+  const ringCaption = ringCaptionKey ? t(ringCaptionKey) : '';
   const barColor = ringColor;
   const cachedTokens = breakdown?.cachedTokens ?? lastTurn.cachedTokens;
   const showCacheRow = breakdown?.cachedTokens !== undefined
@@ -274,7 +277,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
         content={
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             {isLoading && <Loader2 size={11} className="animate-spin" />}
-            {pctText} ({fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)}) 上下文已使用
+            {t('panel.token.tooltip', { pct: pctText, used: fmtTokens(ctxTokens), limit: fmtTokens(ctxLimit) })}
             {ringCaption ? ` · ${ringCaption}` : ''}
           </span>
         }
@@ -283,7 +286,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
         <button
           ref={btnRef}
           onClick={() => setOpen((v) => !v)}
-          aria-label="打开上下文看板"
+          aria-label={t('panel.token.open')}
           aria-expanded={open}
           className="press flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
@@ -321,11 +324,11 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
               cursor: 'grab', userSelect: 'none', touchAction: 'none',
             }}
           >
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)' }}>上下文看板</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)' }}>{t('panel.token.title')}</span>
             <span style={{ display: 'flex', gap: 4 }}>
               <button
                 onClick={() => openBillingDashboard()}
-                title="打开计费总览"
+                title={t('panel.token.openBilling')}
                 data-no-drag
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--md-sys-color-primary)' }}
               >
@@ -338,7 +341,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                   notifyAccountUsageChanged();
                   setTimeout(() => setRefreshing(false), 600);
                 }}
-                title="刷新上下文估算"
+                title={t('panel.token.refresh')}
                 data-no-drag
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--ink-faint)' }}
               >
@@ -346,7 +349,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
               </button>
               <button
                 onClick={() => setPinned((v) => !v)}
-                title={pinned ? '取消固定' : '固定面板'}
+                title={t(pinned ? 'panel.token.unpin' : 'panel.token.pin')}
                 data-no-drag
                 style={{
                   background: 'none', border: 'none', cursor: 'pointer', padding: 2,
@@ -357,7 +360,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
               </button>
               <button
                 onClick={() => { setOpen(false); setPinned(false); }}
-                aria-label="关闭上下文看板"
+                aria-label={t('panel.token.close')}
                 data-no-drag
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--ink-faint)' }}
               >
@@ -370,7 +373,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             {/* Context usage bar */}
             <div style={{ marginBottom: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4, color: 'var(--ink-soft)' }}>
-                <span>上下文使用</span>
+                <span>{t('panel.token.used')}</span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ color: barColor, fontWeight: 600 }}>
                     {fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)} &nbsp;{pctText}
@@ -390,11 +393,11 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                       cursor: compacting ? 'wait' : 'pointer',
                     }}
                   >
-                    {compacting ? '压缩中…' : '压缩'}
+                    {t(compacting ? 'panel.token.compacting' : 'panel.token.compact')}
                   </button>
                 </span>
               </div>
-              <UsageProgressBar ratio={ratio} ariaLabel="上下文使用比例" />
+              <UsageProgressBar ratio={ratio} ariaLabel={t('panel.token.usageAria')} />
               {ringCaption && (
                 <div style={{ marginTop: 4, fontSize: 10, color: ringColor }}>{ringCaption}</div>
               )}
@@ -403,10 +406,10 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             {(contextTruncated || showCacheRow) && (
               <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 10 }}>
                 {showCacheRow && (
-                  <Row label="上下文缓存" value={formatContextCacheValue(cachedTokens, fmtTokens)} />
+                  <Row label={t('panel.token.cacheRow')} value={formatContextCacheValue(cachedTokens, fmtTokens)} />
                 )}
                 {contextTruncated && (
-                  <Row label="发送策略" value="滚动摘要" accent />
+                  <Row label={t('panel.token.sendPolicy')} value={t('panel.token.sendPolicyRolling')} accent />
                 )}
                 {contextWarning && (
                   <div style={{ marginTop: 4, fontSize: 10, lineHeight: 1.35, color: 'var(--md-sys-color-error)' }}>
@@ -418,7 +421,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
 
             <div style={{ marginBottom: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
-                <span>上下文构成</span>
+                <span>{t('panel.token.breakdown')}</span>
                 <span style={{ fontWeight: 600 }}>{fmtTokens(breakdown?.total ?? 0)}</span>
               </div>
               <div style={{ display: 'flex', height: 8, borderRadius: 4, background: 'var(--bg-muted)', overflow: 'hidden' }}>
@@ -429,7 +432,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                   return (
                     <div
                       key={c.key}
-                      title={`${c.label} ${fmtTokens(v)}`}
+                      title={`${t(c.labelKey)} ${fmtTokens(v)}`}
                       style={{ width: `${w}%`, height: '100%', background: c.color, transition: 'width 0.3s ease' }}
                     />
                   );
@@ -443,7 +446,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                   return (
                     <div key={c.key} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: 'var(--ink-soft)' }}>
                       <span style={{ width: 8, height: 8, borderRadius: 2, background: c.color, flexShrink: 0 }} />
-                      <span>{c.label}</span>
+                      <span>{t(c.labelKey)}</span>
                       <span style={{ color: 'var(--ink-faint)', fontVariantNumeric: 'tabular-nums' }}>
                         {fmtTokens(v)}·{pct}%
                       </span>
@@ -455,11 +458,11 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
 
             {/* Last turn */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
-              <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>本轮对话</div>
-              <Row label="输入 token" value={fmtTokens(sessionLedger.lastTurn.promptTokens)} />
-              <Row label="输出 token" value={fmtTokens(sessionLedger.lastTurn.completionTokens)} />
-              <Row label="缓存命中" value={fmtTokens(sessionLedger.lastTurn.cachedTokens)} />
-              <Row label="本轮费用" value={fmtMoneyPair(turnCost, usdExchangeRate)} accent />
+              <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>{t('panel.token.lastTurn')}</div>
+              <Row label={t('panel.token.promptTokens')} value={fmtTokens(sessionLedger.lastTurn.promptTokens)} />
+              <Row label={t('panel.token.completionTokens')} value={fmtTokens(sessionLedger.lastTurn.completionTokens)} />
+              <Row label={t('panel.token.cacheHit')} value={fmtTokens(sessionLedger.lastTurn.cachedTokens)} />
+              <Row label={t('panel.token.turnCost')} value={fmtMoneyPair(turnCost, usdExchangeRate)} accent />
             </div>
 
             {/* Prefix cache countdown — 隔离到子组件，其每秒 tick 不再重渲整个看板 */}
@@ -473,16 +476,16 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
 
             {/* Session total */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8 }}>
-              <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>累计计费</div>
-              <Row label="总输入" value={fmtTokens(sessionLedger.promptTokens)} />
-              <Row label="总输出" value={fmtTokens(sessionLedger.completionTokens)} />
-              <Row label="缓存命中" value={`${sessionLedger.cacheHitCount} 次`} />
-              <Row label="命中率" value={`${Math.round(sessionLedger.cacheHitRate * 100)}%`} />
-              <Row label="累计费用" value={fmtMoneyPair(totalCost, usdExchangeRate)} accent />
+              <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>{t('panel.token.total')}</div>
+              <Row label={t('panel.token.totalInput')} value={fmtTokens(sessionLedger.promptTokens)} />
+              <Row label={t('panel.token.totalOutput')} value={fmtTokens(sessionLedger.completionTokens)} />
+              <Row label={t('panel.token.cacheHit')} value={t('panel.token.hitCount', { count: sessionLedger.cacheHitCount })} />
+              <Row label={t('panel.token.hitRate')} value={`${Math.round(sessionLedger.cacheHitRate * 100)}%`} />
+              <Row label={t('panel.token.totalCost')} value={fmtMoneyPair(totalCost, usdExchangeRate)} accent />
             </div>
 
             <div style={{ marginTop: 8, fontSize: 9, color: 'var(--ink-faint)', lineHeight: 1.3 }}>
-              价格为平台参考价，实际以 API 提供商结算为准。缓存命中窗口默认 {Math.round(cacheTtlSec / 60)} 分钟。
+              {t('panel.token.priceNote', { minutes: Math.round(cacheTtlSec / 60) })}
             </div>
           </div>
         </div>,
@@ -514,6 +517,7 @@ function CacheCountdown({
   lastTurn: { promptTokens: number; completionTokens: number; cachedTokens: number };
   turnCost: number;
 }) {
+  const t = useT();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (!lastRequestTime || !cacheTtlSec) return;
@@ -526,18 +530,18 @@ function CacheCountdown({
       <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
           <Clock size={11} style={{ color: 'var(--ink-faint)' }} />
-          <span style={{ fontWeight: 600, color: 'var(--ink)' }}>缓存倒计时</span>
-          <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>估算</span>
+          <span style={{ fontWeight: 600, color: 'var(--ink)' }}>{t('panel.token.countdown')}</span>
+          <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>{t('panel.token.estimate')}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
-          <span>剩余时间</span>
+          <span>{t('panel.token.remaining')}</span>
           <span style={{ color: 'var(--ink-faint)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>0s</span>
         </div>
         <div style={{ height: 5, borderRadius: 2.5, background: 'var(--bg-muted)', overflow: 'hidden' }}>
           <div style={{ width: '0%', height: '100%', borderRadius: 2.5, background: 'var(--ink-faint)' }} />
         </div>
         <div style={{ fontSize: 9, color: 'var(--ink-faint)', marginTop: 3, lineHeight: 1.3 }}>
-          等待首次对话
+          {t('panel.token.waiting')}
         </div>
       </div>
     );
@@ -557,8 +561,8 @@ function CacheCountdown({
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
         <Clock size={11} style={{ color: 'var(--ink-faint)' }} />
-        <span style={{ fontWeight: 600, color: 'var(--ink)' }}>缓存倒计时</span>
-        <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>估算</span>
+        <span style={{ fontWeight: 600, color: 'var(--ink)' }}>{t('panel.token.countdown')}</span>
+        <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>{t('panel.token.estimate')}</span>
       </div>
       {cacheExpired ? (
         <div style={{
@@ -569,16 +573,20 @@ function CacheCountdown({
         }}>
           <AlertTriangle size={12} style={{ flexShrink: 0, marginTop: 1 }} />
           <span>
-            缓存可能已过期，下次请求将按全价计费
+            {t('panel.token.expiredTitle')}
             {pricing && lastTurn.cachedTokens > 0 && (
-              <strong>（约 {fmtCost(calcCost(lastTurn.promptTokens, lastTurn.completionTokens, 0, pricing) - turnCost)} 更贵）</strong>
+              <strong>
+                {t('panel.token.expiredDelta', {
+                  amount: fmtCost(calcCost(lastTurn.promptTokens, lastTurn.completionTokens, 0, pricing) - turnCost),
+                })}
+              </strong>
             )}
           </span>
         </div>
       ) : (
         <>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
-            <span>剩余时间</span>
+            <span>{t('panel.token.remaining')}</span>
             <span style={{ color: cacheBarColor, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
               {fmtDuration(cacheRemaining)}
             </span>
@@ -592,7 +600,10 @@ function CacheCountdown({
             }} />
           </div>
           <div style={{ fontSize: 9, color: 'var(--ink-faint)', marginTop: 3, lineHeight: 1.3 }}>
-            过期后输入价格将从 {pricing ? `¥${pricing.cachedInput}` : '—'} → {pricing ? `¥${pricing.input}` : '—'} /百万token
+            {t('panel.token.priceShift', {
+              before: pricing ? `¥${pricing.cachedInput}` : '—',
+              after: pricing ? `¥${pricing.input}` : '—',
+            })}
           </div>
         </>
       )}

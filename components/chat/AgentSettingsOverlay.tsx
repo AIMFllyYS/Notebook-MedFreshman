@@ -6,6 +6,7 @@ import clsx from "clsx";
 import ChatSettings from "@/components/chat/ChatSettings";
 import { useStore } from "@/lib/stores/ui";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useT } from "@/lib/i18n";
 
 /**
  * 页面正中的 Agent 设置层：复用现有 ChatSettings 工作区，不走 ManagedWindow。
@@ -17,6 +18,7 @@ export default function AgentSettingsOverlay() {
   const closeAgentSettings = useStore((s) => s.closeAgentSettings);
   const onClose = useCallback(() => closeAgentSettings(), [closeAgentSettings]);
   const isMobile = useIsMobile();
+  const t = useT();
 
   if (!open || typeof document === "undefined") return null;
 
@@ -33,7 +35,7 @@ export default function AgentSettingsOverlay() {
         className={clsx("agent-settings-dialog", isMobile && "agent-settings-dialog--mobile")}
         role="dialog"
         aria-modal="true"
-        aria-label="Agent 设置"
+        aria-label={t("settings.overlay.aria")}
       >
         <ChatSettings onClose={onClose} navPlacement={isMobile ? "top" : "side"} />
       </div>

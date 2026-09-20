@@ -2,9 +2,9 @@
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {
-  label: "写入笔记",
-  settingsLabel: "沉淀笔记",
-  description: "学生确认后，把短要点提纲写入个人笔记并打开编辑器",
+  labelKey: "trace.tool.commitNotes.label",
+  settingsLabelKey: "trace.tool.commitNotes.settingsLabel",
+  descriptionKey: "trace.tool.commitNotes.description",
   icon: "document",
   toggleable: false,
 };

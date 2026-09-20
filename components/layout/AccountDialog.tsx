@@ -16,6 +16,7 @@ import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
 import { useUserProfile } from "@/lib/stores/userProfile";
 import { useToast } from "@/lib/stores/toast";
 import UserAvatar from "./UserAvatar";
+import { useT } from "@/lib/i18n";
 
 export default function AccountDialog({
   onClose,
@@ -35,6 +36,7 @@ export default function AccountDialog({
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState<"name" | "avatar" | "password" | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const t = useT();
   if (nickname !== syncedName) {
     setSyncedName(nickname);
     setDraftName(nickname);
@@ -71,7 +73,7 @@ export default function AccountDialog({
       cacheNickname(userId, saved.nickname);
       showSaved();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "昵称未能保存");
+      setError(err instanceof Error ? err.message : t("settings.account.nicknameFailed"));
     } finally {
       setBusy(null);
     }
@@ -86,7 +88,7 @@ export default function AccountDialog({
       setLocalAvatar(userId, dataUrl);
       showSaved();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "头像未能保存");
+      setError(err instanceof Error ? err.message : t("settings.account.avatarFailed"));
     } finally {
       setBusy(null);
       if (fileRef.current) fileRef.current.value = "";
@@ -96,7 +98,7 @@ export default function AccountDialog({
   const savePassword = async () => {
     const client = tryGetBrowserAuthClient() as PasswordAuthClient | null;
     if (!client) {
-      setError("登录未配置");
+      setError(t("settings.account.authMissing"));
       return;
     }
     setBusy("password");
@@ -141,7 +143,7 @@ export default function AccountDialog({
         >
           <div>
             <div id={titleId} className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">
-              账户信息
+              {t("settings.account.title")}
             </div>
             <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">{membership}</div>
           </div>
@@ -149,7 +151,7 @@ export default function AccountDialog({
             type="button"
             onClick={onClose}
             className="rounded-lg p-1 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)]"
-            aria-label="关闭账户信息"
+            aria-label={t("settings.account.close")}
           >
             <X size={16} />
           </button>
@@ -159,8 +161,8 @@ export default function AccountDialog({
           <div className="flex items-center gap-3">
             <UserAvatar name={draftName} email={email} imageSrc={avatarSrc} signedIn={signedIn} size={44} />
             <div className="min-w-0 flex-1">
-              <div className="text-[12px] font-medium text-[var(--md-sys-color-on-surface)]">头像</div>
-              <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">只保存在这台设备</div>
+              <div className="text-[12px] font-medium text-[var(--md-sys-color-on-surface)]">{t("settings.account.avatar")}</div>
+              <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">{t("settings.account.localOnly")}</div>
               <div className="mt-1.5 flex gap-1.5">
                 <button
                   type="button"
@@ -173,7 +175,7 @@ export default function AccountDialog({
                   onClick={() => fileRef.current?.click()}
                   disabled={!userId || busy === "avatar"}
                 >
-                  更换
+                  {t("settings.account.change")}
                 </button>
                 {avatarSrc ? (
                   <button
@@ -182,7 +184,7 @@ export default function AccountDialog({
                     style={{ background: "transparent", border: "none" }}
                     onClick={() => userId && setLocalAvatar(userId, null)}
                   >
-                    恢复字标
+                    {t("settings.account.restoreInitials")}
                   </button>
                 ) : null}
               </div>
@@ -197,7 +199,7 @@ export default function AccountDialog({
           </div>
 
           <label className="flex flex-col gap-1">
-            <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">名称</span>
+            <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">{t("settings.account.name")}</span>
             <input
               value={draftName}
               onChange={(event) => setDraftName(event.target.value)}
@@ -210,7 +212,7 @@ export default function AccountDialog({
             />
           </label>
           <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-            未改时默认 {email?.split("@")[0] || "邮箱前缀"}
+            {t("settings.account.nameHint", { name: email?.split("@")[0] || t("settings.account.emailPrefix") })}
           </div>
           <button
             type="button"
@@ -223,26 +225,26 @@ export default function AccountDialog({
               border: "none",
             }}
           >
-            保存名称
+            {t("settings.account.saveName")}
           </button>
 
           <div
             className="rounded-xl px-3 py-2 text-[11px] text-[var(--md-sys-color-on-surface-variant)]"
             style={{ background: "var(--md-sys-color-surface-container)" }}
           >
-            {email || "未绑定邮箱"}
+            {email || t("settings.account.noEmail")}
           </div>
 
           {signedIn ? (
             <div className="flex flex-col gap-2">
               <div className="text-[12px] font-medium text-[var(--md-sys-color-on-surface)]">
-                {hasPassword ? "修改密码" : "设置密码"}
+                {t(hasPassword ? "settings.account.changePassword" : "settings.account.setPassword")}
               </div>
               {hasPassword ? (
                 <input
                   type="password"
                   autoComplete="current-password"
-                  placeholder="当前密码"
+                  placeholder={t("settings.account.currentPassword")}
                   value={oldPassword}
                   onChange={(event) => setOldPassword(event.target.value)}
                   className="rounded-lg px-2.5 py-1.5 text-[13px]"
@@ -256,7 +258,7 @@ export default function AccountDialog({
               <input
                 type="password"
                 autoComplete="new-password"
-                placeholder="新密码"
+                placeholder={t("settings.account.newPassword")}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 className="rounded-lg px-2.5 py-1.5 text-[13px]"
@@ -269,7 +271,7 @@ export default function AccountDialog({
               <input
                 type="password"
                 autoComplete="new-password"
-                placeholder="确认新密码"
+                placeholder={t("settings.account.confirmPassword")}
                 value={confirm}
                 onChange={(event) => setConfirm(event.target.value)}
                 className="rounded-lg px-2.5 py-1.5 text-[13px]"
@@ -290,7 +292,7 @@ export default function AccountDialog({
                   border: "none",
                 }}
               >
-                {hasPassword ? "更新密码" : "设置密码"}
+                {t(hasPassword ? "settings.account.updatePassword" : "settings.account.setPassword")}
               </button>
             </div>
           ) : null}

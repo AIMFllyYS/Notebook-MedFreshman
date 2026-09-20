@@ -7,6 +7,7 @@ import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
+import { useT } from "@/lib/i18n";
 
 /** Agent 右栏的标签条：一条窗口 = 一个标签，活动标签由 `activeWindowId` 决定。 */
 export default function AgentDockTabs({
@@ -16,6 +17,7 @@ export default function AgentDockTabs({
   windows: ManagedWindow[];
   addContent?: ReactNode;
 }) {
+  const t = useT();
   const activeWindowId = useWindowManager((state) => state.activeWindowId);
   const { bringToFront, restoreWindow } = useWindowManager();
 
@@ -29,7 +31,7 @@ export default function AgentDockTabs({
       <div
         data-testid="agent-dock-tabs"
         role="tablist"
-        aria-label="工作区标签"
+        aria-label={t("panel.window.tabsAria")}
         className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto"
       >
         {windows.map((window) => {
@@ -50,7 +52,7 @@ export default function AgentDockTabs({
                 type="button"
                 role="tab"
                 aria-selected={selected}
-                aria-label={`打开 ${window.title}`}
+                aria-label={t("panel.window.openTab", { title: window.title })}
                 onClick={() => activateWindow(window)}
                 className="press flex min-w-0 items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-medium"
               >
@@ -59,7 +61,7 @@ export default function AgentDockTabs({
               </button>
               <button
                 type="button"
-                aria-label={`关闭 ${window.title}`}
+                aria-label={t("panel.window.closeTab", { title: window.title })}
                 onClick={(event) => {
                   event.stopPropagation();
                   closeManagedWindow(window);

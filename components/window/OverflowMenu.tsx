@@ -7,6 +7,7 @@ import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { useT } from "@/lib/i18n";
 
 interface OverflowMenuProps {
   windows: ManagedWindow[];
@@ -19,6 +20,7 @@ function overflowAccent(win: ManagedWindow): string | undefined {
 }
 
 export default function OverflowMenu({ windows, onToggle }: OverflowMenuProps) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -55,7 +57,7 @@ export default function OverflowMenu({ windows, onToggle }: OverflowMenuProps) {
         ref={buttonRef}
         type="button"
         onClick={() => setOpen((value) => !value)}
-        title="更多窗口"
+        title={t("menu.window.more")}
         className="press flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--ink-soft)] shadow-sm hover:bg-[var(--bg-muted)]"
       >
         <MoreHorizontal size={16} />

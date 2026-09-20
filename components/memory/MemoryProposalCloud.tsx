@@ -9,30 +9,32 @@ import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { memoryProposalWindowId } from "@/lib/notes/userNote";
 import { buildTrace } from "@/lib/chat/buildTrace";
 import type { RecordMode } from "@/lib/review/types";
+import { useT } from "@/lib/i18n";
 
-const MODES: { id: RecordMode; label: string }[] = [
-  { id: "excerpt", label: "摘录" },
-  { id: "cloze", label: "挖空" },
-  { id: "quiz", label: "出题" },
-  { id: "custom", label: "自定义" },
+const MODES: { id: RecordMode; labelKey: string }[] = [
+  { id: "excerpt", labelKey: "window.memory.modeExcerpt" },
+  { id: "cloze", labelKey: "window.memory.modeCloze" },
+  { id: "quiz", labelKey: "window.memory.modeQuiz" },
+  { id: "custom", labelKey: "window.memory.modeCustom" },
 ];
 
 export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProposal }) {
   const confirm = useMemoryInbox((s) => s.confirm);
   const dismiss = useMemoryInbox((s) => s.dismiss);
   const setDraft = useMemoryInbox((s) => s.setDraft);
+  const t = useT();
 
-  const question = proposal.kind === "note" ? "要把这次对话整理成笔记吗？" : "要把这次对话整理成闪卡吗？";
+  const question = proposal.kind === "note" ? t("window.memory.askNote") : t("window.memory.askFlashcard");
   const streaming = proposal.status === "committing";
   const trace = streaming || proposal.commitMessage
     ? buildTrace(proposal.commitMessage ?? { parts: [] }, streaming)
     : null;
-  const committingLabel = proposal.kind === "note" ? "正在整理笔记…" : "正在整理闪卡…";
+  const committingLabel = proposal.kind === "note" ? t("window.memory.committingNote") : t("window.memory.committingFlashcard");
 
   return (
     <ManagedWindow
       windowId={memoryProposalWindowId(proposal.id)}
-      title={proposal.kind === "note" ? "笔记提议" : "闪卡提议"}
+      title={proposal.kind === "note" ? t("window.memory.titleNote") : t("window.memory.titleFlashcard")}
       icon={<Sparkles size={15} />}
       onClose={() => dismiss(proposal.id)}
       fullscreenTarget="notes"
@@ -50,18 +52,18 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
 
         {proposal.status === "proposed" && proposal.kind === "note" ? (
           <label className="memory-cloud-field">
-            <span>标题</span>
+            <span>{t("window.memory.fieldTitle")}</span>
             <input
               value={proposal.titleDraft}
-              placeholder="课堂要点"
-              aria-label="笔记标题建议"
+              placeholder={t("window.memory.titlePlaceholder")}
+              aria-label={t("window.memory.titleAria")}
               onChange={(event) => setDraft(proposal.id, { titleDraft: event.target.value })}
             />
           </label>
         ) : null}
 
         {proposal.status === "proposed" && proposal.kind === "flashcard" ? (
-          <div className="user-note-modes" role="group" aria-label="闪卡模式">
+          <div className="user-note-modes" role="group" aria-label={t("window.memory.modeGroupAria")}>
             {MODES.map((item) => (
               <button
                 key={item.id}
@@ -70,7 +72,7 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
                 aria-pressed={proposal.modeDraft === item.id}
                 onClick={() => setDraft(proposal.id, { modeDraft: item.id })}
               >
-                {item.label}
+                {t(item.labelKey)}
               </button>
             ))}
           </div>
@@ -84,7 +86,7 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
 
         {proposal.status === "done" ? (
           <p className="memory-cloud-reason">
-            {proposal.kind === "note" ? "已写入个人笔记并打开编辑器。" : "已写入复习板，并打开成卡预览。"}
+            {proposal.kind === "note" ? t("window.memory.doneNote") : t("window.memory.doneFlashcard")}
           </p>
         ) : null}
 
@@ -94,10 +96,10 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
           {proposal.status === "proposed" ? (
             <>
               <button type="button" className="user-note-toolbar-link" onClick={() => dismiss(proposal.id)}>
-                不用了
+                {t("window.memory.dismiss")}
               </button>
               <button type="button" className="user-note-toolbar-primary" onClick={() => confirm(proposal.id)}>
-                整理
+                {t("window.memory.organize")}
               </button>
             </>
           ) : null}
@@ -110,7 +112,7 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
               className="user-note-toolbar-primary"
               onClick={() => useUserNotes.getState().openEditor(proposal.createdNoteId!)}
             >
-              打开笔记
+              {t("window.memory.openNote")}
             </button>
           ) : null}
           {proposal.status === "done" && proposal.kind === "flashcard" ? (
@@ -119,7 +121,7 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
               className="user-note-toolbar-primary"
               onClick={() => useFlashcardCitations.getState().openPicker()}
             >
-              查看闪卡
+              {t("window.memory.viewFlashcards")}
             </button>
           ) : null}
         </div>

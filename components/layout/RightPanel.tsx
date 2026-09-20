@@ -21,34 +21,37 @@ import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { AGENT_DOCK_CONTENT_ID } from "@/lib/constants/layout";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
+import { translate, useT } from "@/lib/i18n";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
   ssr: false,
-  loading: () => <RightPanelTabLoading label="AI 对话" />,
+  loading: () => <RightPanelTabLoading labelKey="panel.rightTab.ai" />,
 });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), {
   ssr: false,
-  loading: () => <RightPanelTabLoading label="动画讲解" />,
+  loading: () => <RightPanelTabLoading labelKey="panel.rightTab.video" />,
 });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), {
   ssr: false,
-  loading: () => <RightPanelTabLoading label="可交互" />,
+  loading: () => <RightPanelTabLoading labelKey="panel.rightTab.interactive" />,
 });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), {
   ssr: false,
-  loading: () => <RightPanelTabLoading label="浏览器" />,
+  loading: () => <RightPanelTabLoading labelKey="panel.rightTab.browser" />,
 });
 
-const ALL_RIGHT_TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
-  { id: "ai", label: "AI 对话", icon: <MessageSquare size={15} /> },
-  { id: "video", label: "动画讲解", icon: <MonitorPlay size={15} /> },
-  { id: "interactive", label: "可交互", icon: <Hand size={15} /> },
-  { id: "browser", label: "浏览器", icon: <Globe size={15} /> },
+const ALL_RIGHT_TABS: { id: RightTab; labelKey: string; icon: React.ReactNode }[] = [
+  { id: "ai", labelKey: "panel.rightTab.ai", icon: <MessageSquare size={15} /> },
+  { id: "video", labelKey: "panel.rightTab.video", icon: <MonitorPlay size={15} /> },
+  { id: "interactive", labelKey: "panel.rightTab.interactive", icon: <Hand size={15} /> },
+  { id: "browser", labelKey: "panel.rightTab.browser", icon: <Globe size={15} /> },
 ];
 
-function RightPanelTabLoading({ label }: { label: string }) {
+function RightPanelTabLoading({ labelKey }: { labelKey: string }) {
+  const t = useT();
+  const label = t(labelKey);
   return (
-    <div className="flex h-full flex-col gap-3 px-4 py-5" role="status" aria-label={`${label} 加载中`}>
+    <div className="flex h-full flex-col gap-3 px-4 py-5" role="status" aria-label={t("panel.rightTab.loading", { label })}>
       <div className="h-4 w-24 animate-shimmer rounded bg-[var(--bg-muted)]" />
       <div className="h-28 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
       <div className="h-16 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
@@ -83,22 +86,26 @@ class RightPanelTabBoundary extends Component<
   render() {
     if (!this.state.error) return this.props.children;
 
-    const tabLabel = ALL_RIGHT_TABS.find((item) => item.id === this.props.tab)?.label ?? this.props.tab;
+    // 类组件用不了 useT()：直接问 store 要当前语言。父级 RightPanel 换语言时会重渲染，
+    // 这一层跟着重渲染就拿到新文案。
+    const locale = useSettings.getState().locale;
+    const tabKey = ALL_RIGHT_TABS.find((item) => item.id === this.props.tab)?.labelKey;
+    const tabLabel = tabKey ? translate(locale, tabKey) : this.props.tab;
     return (
       <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
         <div className="rounded-full border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-1 text-[12px] font-medium text-[var(--ink-soft)]">
           {tabLabel}
         </div>
-        <h3 className="text-[15px] font-semibold text-[var(--ink)]">面板加载失败</h3>
+        <h3 className="text-[15px] font-semibold text-[var(--ink)]">{translate(locale, "panel.rightTab.errorTitle")}</h3>
         <p className="max-w-[320px] text-[12.5px] leading-relaxed text-[var(--ink-soft)]">
-          这个栏目遇到了运行时错误，已经拦截以避免白屏。可以重试，或切换到其他栏目继续使用。
+          {translate(locale, "panel.rightTab.errorBody")}
         </p>
         <button
           type="button"
           onClick={() => this.setState({ error: null })}
           className="press rounded-full bg-[var(--accent)] px-4 py-2 text-[13px] font-medium text-[var(--md-sys-color-on-primary)]"
         >
-          重试
+          {translate(locale, "panel.common.retry")}
         </button>
       </div>
     );
@@ -119,6 +126,7 @@ export default function RightPanel({
   /** 顶部「收起」按钮的落点。默认收起当前 Studio 档位的右栏；Agent 右栏由外壳传入。 */
   onCollapse?: () => void;
 } = {}) {
+  const t = useT();
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
   const storeRightTabs = useStore((s) => s.rightTabs);
@@ -231,17 +239,17 @@ export default function RightPanel({
       {/* Top-level tab bar（可横向滑动；含浏览器收藏夹标签 + 末尾「＋」） */}
       {showChrome && <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line-soft)] px-1.5 py-1.5">
         <div className={clsx("hide-scrollbar flex min-w-0 items-center gap-1 overflow-x-auto", hasDockTabs ? "shrink basis-auto max-w-[45%]" : "flex-1")}>
-          {showTabBar && visibleRightTabs.map((t) => {
+          {showTabBar && visibleRightTabs.map((item) => {
             const isActive =
-              t.id === "browser"
+              item.id === "browser"
                 ? tab === "browser" && activeTabId === BROWSE_TAB
-                : tab === t.id;
+                : tab === item.id;
             return (
               <button
-                key={t.id}
+                key={item.id}
                 onClick={() => {
-                  switchTab(t.id);
-                  if (t.id === "browser") openBrowse();
+                  switchTab(item.id);
+                  if (item.id === "browser") openBrowse();
                 }}
                 className={clsx(
                   "press flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
@@ -250,8 +258,8 @@ export default function RightPanel({
                     : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
                 )}
               >
-                {t.icon}
-                {t.label}
+                {item.icon}
+                {t(item.labelKey)}
               </button>
             );
           })}
@@ -287,7 +295,7 @@ export default function RightPanel({
                 </button>
                 <button
                   onClick={() => removeBookmark(bm.id)}
-                  title="移除收藏"
+                  title={t("panel.rightTab.removeBookmark")}
                   className="rounded p-0.5 text-[var(--ink-faint)] opacity-0 transition-opacity hover:text-[var(--md-sys-color-error)] group-hover:opacity-100"
                 >
                   <X size={11} />
@@ -307,8 +315,8 @@ export default function RightPanel({
           <button
             type="button"
             onClick={() => setDockGlobal(!dockGlobal)}
-            title={dockGlobal ? "缩小到右栏" : "全屏显示这个板块"}
-            aria-label={dockGlobal ? "缩小到右栏" : "全屏显示这个板块"}
+            title={t(dockGlobal ? "agent.dock.shrink" : "agent.dock.global")}
+            aria-label={t(dockGlobal ? "agent.dock.shrink" : "agent.dock.global")}
             aria-pressed={dockGlobal}
             data-testid="agent-dock-global"
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
@@ -319,8 +327,8 @@ export default function RightPanel({
         <button
           type="button"
           onClick={collapsePanel}
-          title="收起右侧面板"
-          aria-label="收起右侧面板"
+          title={t("agent.dock.collapse")}
+          aria-label={t("agent.dock.collapse")}
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           <PanelRightClose size={16} />

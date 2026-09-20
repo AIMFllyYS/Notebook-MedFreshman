@@ -1,13 +1,14 @@
 "use client";
 
 import { ExternalLink, ShieldAlert } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 export default function EmbedFallback({
   url,
   reason,
   onForce,
-  title = "无法内嵌该页面",
-  actionLabel = "打开原页面",
+  title,
+  actionLabel,
 }: {
   url: string;
   reason?: string;
@@ -15,6 +16,10 @@ export default function EmbedFallback({
   title?: string;
   actionLabel?: string;
 }) {
+  const t = useT();
+  const titleText = title ?? t("window.browser.embedBlockedTitle");
+  const actionText = actionLabel ?? t("window.browser.openOriginal");
+
   let host = url;
   try {
     host = new URL(url).host;
@@ -27,10 +32,10 @@ export default function EmbedFallback({
       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--bg-muted)] text-[var(--ink-soft)]">
         <ShieldAlert size={28} />
       </div>
-      <p className="text-[15px] font-semibold text-[var(--ink)]">{title}</p>
+      <p className="text-[15px] font-semibold text-[var(--ink)]">{titleText}</p>
       <p className="mt-1 max-w-[320px] text-[12px] leading-relaxed text-[var(--ink-soft)]">
         <span className="font-medium text-[var(--ink)]">{host}</span>{" "}
-        拒绝在当前窗口中显示（安全策略或访问受限）。请到原网站查看，以保留完整功能。
+        {t("window.browser.embedBlockedBody")}
       </p>
       {reason ? (
         <p className="mt-2 max-w-[320px] text-[11px] leading-relaxed text-[var(--ink-faint)]">{reason}</p>
@@ -42,7 +47,7 @@ export default function EmbedFallback({
         rel="noopener noreferrer"
         className="press mt-5 inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-4 py-2 text-[13px] font-medium text-[var(--md-sys-color-on-primary)]"
       >
-        <ExternalLink size={15} /> {actionLabel}
+        <ExternalLink size={15} /> {actionText}
       </a>
 
       <button
@@ -50,7 +55,7 @@ export default function EmbedFallback({
         onClick={onForce}
         className="press mt-3 text-[11.5px] text-[var(--ink-faint)] underline-offset-2 hover:underline"
       >
-        仍要尝试内嵌（可能显示空白）
+        {t("window.browser.forceEmbed")}
       </button>
     </div>
   );

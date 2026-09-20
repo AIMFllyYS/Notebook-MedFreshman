@@ -22,7 +22,7 @@ export function AppearanceSection() {
 
   return (
     <section className="flex flex-col gap-3">
-      <h3 className={h3Cls}>Agent 面板</h3>
+      <h3 className={h3Cls}>{t("settings.appearance.agentPanel")}</h3>
       {[
         {
           on: showRightPanelTabBar,
@@ -30,18 +30,18 @@ export function AppearanceSection() {
             setShowRightPanelTabBar(next);
             if (!next) useStore.getState().setRightTab("ai");
           },
-          label: "右侧栏顶部标签",
-          desc: "显示「AI 对话 / 动画讲解 / 可交互」那一行",
+          label: t("settings.appearance.rightPanelTabBar"),
+          desc: t("settings.appearance.rightPanelTabBarDesc"),
           icon: <PanelRight size={16} />,
-          ariaLabel: "显示右侧栏顶部标签",
+          ariaLabel: t("settings.appearance.rightPanelTabBarAria"),
         },
         {
           on: pinChatHeader,
           set: setPinChatHeader,
-          label: "固定助教顶部导航",
-          desc: "始终显示「设置 / 历史 / 新对话」，不随对话自动收起",
+          label: t("settings.appearance.pinChatHeader"),
+          desc: t("settings.appearance.pinChatHeaderDesc"),
           icon: <Pin size={16} />,
-          ariaLabel: "固定 AI 助教顶部导航",
+          ariaLabel: t("settings.appearance.pinChatHeaderAria"),
         },
       ].map((it) => (
         <div
@@ -63,7 +63,7 @@ export function AppearanceSection() {
         </div>
       ))}
       <div className="settings-section-divider" />
-      <h3 className={h3Cls}>整个项目</h3>
+      <h3 className={h3Cls}>{t("settings.appearance.project")}</h3>
       {/* 语言是全局设置，跟外观一起归在「整个项目」；分段控件复用明暗主题那组胶囊的既有写法。 */}
       <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
         <div className="flex items-center gap-2.5">
@@ -109,10 +109,10 @@ export function AppearanceSection() {
       <AppearanceSettingsControls theme={theme} setTheme={setTheme} appearance={appearance}
         setAppearanceMode={setAppearanceMode} setCustomAppearance={setCustomAppearance} resetAppearance={resetAppearance} />
       <div className="settings-section-divider" />
-      <h3 className={h3Cls}>对话阅读</h3>
+      <h3 className={h3Cls}>{t("settings.appearance.reading")}</h3>
       <div className="flex items-center gap-2 text-[var(--md-sys-color-on-surface-variant)]">
         <Type size={14} />
-        <span className="text-[12.5px]">对话字体大小</span>
+        <span className="text-[12.5px]">{t("settings.appearance.fontSize")}</span>
         <span className="ml-auto text-[12px] font-medium text-[var(--md-sys-color-primary)]">
           {Math.round(fontScale * 100)}%
         </span>
@@ -131,7 +131,7 @@ export function AppearanceSection() {
         className="rounded-lg bg-[var(--md-sys-color-surface-container)] px-3 py-2 text-[var(--md-sys-color-on-surface)]"
         style={{ fontSize: `${13 * fontScale}px`, lineHeight: 1.6 }}
       >
-        预览：这段文字的字号会随上面的滑块实时变化，对话区的回答也会同步缩放。
+        {t("settings.appearance.fontPreview")}
       </div>
     </section>
   );

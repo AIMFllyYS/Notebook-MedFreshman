@@ -15,6 +15,7 @@ import { getMessageText } from '@/lib/chat/messageParts';
 import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseChatContent';
 import { collectMessageSources } from '@/lib/chat/traceSources';
 import { ToolResultCards } from '@/components/chat/toolCards/ToolResultCards';
+import { useT } from '@/lib/i18n';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -45,6 +46,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   const parts = message.parts;
   const stepDurationsMs = message.metadata?.stepDurationsMs;
   const reducedMotion = useReducedMotion();
+  const t = useT();
   const streaming = !!isStreaming;
   const [revealFollowups, setRevealFollowups] = useState(!streaming);
   const [prevStreaming, setPrevStreaming] = useState(streaming);
@@ -69,8 +71,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
     return () => window.clearTimeout(timer);
   }, [revealNonce]);
   const trace = useMemo(
-    () => buildTrace({ parts, metadata: stepDurationsMs ? { stepDurationsMs } : undefined }, !!isStreaming),
-    [parts, stepDurationsMs, isStreaming],
+    () => buildTrace({ parts, metadata: stepDurationsMs ? { stepDurationsMs } : undefined }, !!isStreaming, t),
+    [parts, stepDurationsMs, isStreaming, t],
   );
   const userText = useMemo(() => isUser ? getMessageText({ parts }) : '', [isUser, parts]);
   const followUpQuestions = useMemo(() => {
@@ -87,17 +89,17 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
       <div className="chat-message-header">
         {isUser ? (
           <span className="chat-message-header-left">
-            <span className="chat-message-header-name">你</span>
+            <span className="chat-message-header-name">{t('trace.message.you')}</span>
             <AgentUserIcon size={16} />
           </span>
         ) : (
-          <span className="chat-message-header-left chat-message-assistant-status" aria-label="AI 回复状态">
+          <span className="chat-message-header-left chat-message-assistant-status" aria-label={t('trace.message.assistantAria')}>
             <BrandLogo size={20} />
             <span className="chat-message-assistant-status-text" role="status" aria-live="polite">
-              {agentProcessingLabel(trace, !!isStreaming, message.metadata?.durationMs)}
+              {agentProcessingLabel(trace, !!isStreaming, message.metadata?.durationMs, t)}
             </span>
-            {message.metadata?.thinkingEnabled ? <span className="sr-only">已启用深度思考</span> : null}
-            {message.metadata?.searchEnabled ? <span className="sr-only">已启用联网搜索</span> : null}
+            {message.metadata?.thinkingEnabled ? <span className="sr-only">{t('trace.message.thinkingEnabled')}</span> : null}
+            {message.metadata?.searchEnabled ? <span className="sr-only">{t('trace.message.searchEnabled')}</span> : null}
           </span>
         )}
       </div>

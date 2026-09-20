@@ -9,7 +9,7 @@
 ```
 lib/ai/agent/tools/<name>/
   types.ts           # Input / Output（客户端安全，禁止 import fs / 密钥 / tool.ts）
-  presentation.ts    # label / icon / 设置文案 / toggleable
+  presentation.ts    # labelKey / settingsLabelKey / descriptionKey / icon / toggleable
   tool.ts            # tool() 定义（仅服务端）
 
 components/chat/toolCards/
@@ -39,6 +39,7 @@ components/chat/toolCards/
 ## 步骤
 
 1. 新建 `lib/ai/agent/tools/<name>/types.ts`、`presentation.ts`、`tool.ts`。有卡片再加 `components/chat/toolCards/<name>Card.tsx`。
+   顺手把 `trace.tool.<name>.label / settingsLabel / description` 三个 key 写进 zh/en 两份 trace 分片（见下方示例）。
 2. 在 `names.ts` 的 `StudyTools` 与 `STUDY_TOOL_NAMES` 各加一项。
 3. 在 `presentations.ts` import 并写入 `TOOL_PRESENTATION`。
 4. 在 `components/chat/toolCards/registry.tsx` 的 `TOOL_REGISTRY` 登记；有卡片则写入 `RESULT_CARD_ORDER`（顺序按现网卡片，不是 `STUDY_TOOL_NAMES`）。
@@ -68,13 +69,17 @@ export interface ExampleToolOutput extends TextToolOutput {
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {
-  label: "查阅示例",
-  settingsLabel: "示例工具",
-  description: "演示用，新增工具时替换文案",
+  labelKey: "trace.tool.exampleTool.label",
+  settingsLabelKey: "trace.tool.exampleTool.settingsLabel",
+  descriptionKey: "trace.tool.exampleTool.description",
   icon: "file",
   toggleable: true,
 };
 ```
+
+三个字段的类型都是 `I18nKey`：这里放的是**文案 key**，不是文案本身，渲染处一律 `t(presentation.labelKey)`。
+key 要同时加进 `lib/i18n/messages/parts/zh/trace.ts` 与 `lib/i18n/messages/parts/en/trace.ts`（zh 是真相源，
+en 用 `satisfies LocaleMessages` 对齐形状）——**两边缺一个 `pnpm typecheck` 就会报错**。中文值照搬界面上原本那串字。
 
 `tool.ts`（只给 `server.ts` 用）：
 

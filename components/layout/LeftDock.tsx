@@ -3,6 +3,7 @@
 import UserAvatar from "./UserAvatar";
 import { resolveNickname } from "@/lib/profile/displayName";
 import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
+import { useT } from "@/lib/i18n";
 
 export function LeftDockFace({
   email,
@@ -11,11 +12,12 @@ export function LeftDockFace({
   email?: string | null;
   signedIn?: boolean;
 }) {
+  const t = useT();
   const account = useAccountProfile();
   const isSignedIn = account.signedIn || Boolean(signedIn);
   const nickname = isSignedIn
     ? resolveNickname(account.signedIn ? account.nickname : null, account.email ?? email)
-    : "访客";
+    : t("app.account.guest");
 
   return (
     <>
@@ -42,12 +44,13 @@ export default function LeftDock({
   /** 设置面板当前是否打开，用于 aria-expanded。 */
   settingsOpen?: boolean;
 }) {
+  const t = useT();
   const account = useAccountProfile();
   return (
     <button
       ref={buttonRef}
       type="button"
-      aria-label={`账户 ${account.nickname}`}
+      aria-label={t("app.account.aria", { name: account.nickname })}
       aria-haspopup="dialog"
       aria-expanded={settingsOpen}
       data-testid="left-dock"

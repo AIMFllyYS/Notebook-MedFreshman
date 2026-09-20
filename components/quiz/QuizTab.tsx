@@ -10,6 +10,7 @@ import { getChapterProgress, getSession, type ChapterProgress, type QuizSession 
 import QuizQuestion from "./QuizQuestion";
 import QuizScoring from "./QuizScoring";
 import QuizSummary from "./QuizSummary";
+import { useT } from "@/lib/i18n";
 
 /** 客户端读取本地历史成绩（mounted 后再读，避免 hydration 抖动）。 */
 function useChapterProgress(subjectId: string, chapterId: string, deps: unknown[] = []) {
@@ -24,6 +25,7 @@ function useChapterProgress(subjectId: string, chapterId: string, deps: unknown[
 
 /** 历史成绩横幅（上次 / 最佳 + 答题恢复提示）。 */
 function HistoryBanner({ subjectId, chapterId }: { subjectId: string; chapterId: string }) {
+  const t = useT();
   const progress = useChapterProgress(subjectId, chapterId);
   const [session, setSession] = useState<QuizSession | null>(null);
   useEffect(() => {
@@ -35,10 +37,10 @@ function HistoryBanner({ subjectId, chapterId }: { subjectId: string; chapterId:
 
   const sessionLabel = session
     ? session.phase === "answering"
-      ? `继续答题（上次答到第 ${session.currentIndex + 1} 题）`
+      ? t("window.quiz.tab.resumeAnswering", { index: session.currentIndex + 1 })
       : session.phase === "scoring"
-        ? "继续评分"
-        : "查看上次成绩"
+        ? t("window.quiz.tab.resumeScoring")
+        : t("window.quiz.tab.viewLastScore")
     : null;
 
   return (
@@ -65,9 +67,9 @@ function HistoryBanner({ subjectId, chapterId }: { subjectId: string; chapterId:
       {progress && (
         <span>
           {sessionLabel && <span style={{ margin: "0 8px", opacity: 0.5 }}>·</span>}
-          历史最佳 <strong style={{ color: "var(--md-sys-color-primary)" }}>{progress.best} 分</strong>
+          {t("window.quiz.tab.bestPrefix")}<strong style={{ color: "var(--md-sys-color-primary)" }}>{progress.best}{t("window.quiz.tab.bestSuffix")}</strong>
           <span style={{ margin: "0 8px", opacity: 0.5 }}>·</span>
-          上次 {progress.last.percent} 分（已作答 {progress.attempts} 次）
+          {t("window.quiz.tab.lastAttempt", { percent: progress.last.percent, count: progress.attempts })}
         </span>
       )}
     </div>
@@ -127,6 +129,7 @@ function CenterState({
 }
 
 function AnsweringView() {
+  const t = useT();
   const data = useQuizStore((s) => s.data)!;
   const subjectId = useQuizStore((s) => s.subjectId);
   const chapterId = useQuizStore((s) => s.chapterId);
@@ -150,11 +153,11 @@ function AnsweringView() {
       <div style={{ marginBottom: "16px" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
           <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--md-sys-color-primary)" }}>
-            题目测试 · {data.chapterId.toUpperCase()}
+            {t("window.quiz.tab.title", { chapter: data.chapterId.toUpperCase() })}
           </div>
           <div style={{ fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)" }}>
-            已作答 {answeredCount} / {questions.length}
-            {data.examConfig?.timeLimit ? ` · 建议 ${data.examConfig.timeLimit} 分钟` : ""}
+            {t("window.quiz.tab.answered", { answered: answeredCount, total: questions.length })}
+            {data.examConfig?.timeLimit ? t("window.quiz.tab.timeLimit", { minutes: data.examConfig.timeLimit }) : ""}
           </div>
         </div>
         <div
@@ -191,7 +194,7 @@ function AnsweringView() {
               key={qq.id}
               type="button"
               onClick={() => goTo(i)}
-              title={`第 ${i + 1} 题`}
+              title={t("window.quiz.tab.gotoQuestion", { index: i + 1 })}
               style={{
                 width: "28px",
                 height: "28px",
@@ -270,7 +273,7 @@ function AnsweringView() {
           }}
         >
           <ChevronLeft size={16} />
-          上一题
+          {t("window.quiz.tab.prev")}
         </button>
 
         {isLast ? (
@@ -294,7 +297,7 @@ function AnsweringView() {
             }}
           >
             <CheckCircle2 size={16} />
-            提交并评分
+            {t("window.quiz.tab.submit")}
           </button>
         ) : (
           <button
@@ -315,7 +318,7 @@ function AnsweringView() {
               cursor: "pointer",
             }}
           >
-            下一题
+            {t("window.quiz.tab.next")}
             <ChevronRight size={16} />
           </button>
         )}
@@ -325,6 +328,7 @@ function AnsweringView() {
 }
 
 export default function QuizTab() {
+  const t = useT();
   const subjectId = useStore((s) => s.activeSubjectId);
   const chapterId = useStore((s) => s.activeChapterId);
   const status = useQuizStore((s) => s.status);
@@ -342,8 +346,8 @@ export default function QuizTab() {
         icon={
           <ClipboardCheck size={28} className="animate-pulse" style={{ color: "var(--md-sys-color-primary)" }} />
         }
-        title="正在加载题目…"
-        desc="正在为当前章节准备题目测试。"
+        title={t("window.quiz.tab.loadingTitle")}
+        desc={t("window.quiz.tab.loadingDesc")}
       />
     );
   }
@@ -352,8 +356,8 @@ export default function QuizTab() {
     return (
       <CenterState
         icon={<AlertCircle size={28} style={{ color: "var(--md-sys-color-error)" }} />}
-        title="题目加载失败"
-        desc="请稍后重试，或切换到其他章节。"
+        title={t("window.quiz.tab.errorTitle")}
+        desc={t("window.quiz.tab.errorDesc")}
       />
     );
   }
@@ -362,11 +366,11 @@ export default function QuizTab() {
     return (
       <CenterState
         icon={<ClipboardCheck size={28} style={{ color: "var(--md-sys-color-primary)" }} />}
-        title="本章题目测试即将推出"
+        title={t("window.quiz.tab.emptyTitle")}
         desc={
           chapterId
-            ? "该章节的题目正在按 SOP 系统性生成，敬请期待。"
-            : "请先在左侧选择某一章节的小节，再来测试。"
+            ? t("window.quiz.tab.emptyDescChapter")
+            : t("window.quiz.tab.emptyDescNoChapter")
         }
       />
     );

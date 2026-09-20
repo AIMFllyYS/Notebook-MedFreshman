@@ -14,9 +14,18 @@ import { ModelIcon } from "@/components/icons/ModelBrandIcons";
 import { AgentCheckIcon, AgentPauseIcon } from "@/components/icons/AgentIcons";
 import { THINKING_EFFORT_OPTIONS } from "@/components/chat/ThinkingMenu";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { useT } from "@/lib/i18n";
 
 const CATEGORIES = ["免费模型", "快速模型", "多模态模型", "旗舰模型", "生图模型"];
 const CATEGORY_ICONS: Record<string, LucideIcon> = { '免费模型': Gift, '快速模型': Zap, '多模态模型': Layers, '旗舰模型': Crown, '生图模型': ImageIcon };
+/** 分类中文名 → 词典 key。分类名同时是 series 状态与 CATEGORY_ICONS 的标识，保持中文不动，只在渲染时翻译。 */
+const CATEGORY_LABEL_KEYS: Record<string, string> = {
+  "免费模型": "menu.model.category.free",
+  "快速模型": "menu.model.category.fast",
+  "多模态模型": "menu.model.category.multimodal",
+  "旗舰模型": "menu.model.category.flagship",
+  "生图模型": "menu.model.category.image",
+};
 const COLUMN_WIDTHS = [190, 210, 224];
 const GAP = 6;
 function category(model: ModelInfo) { return model.group === "多模态" ? "多模态模型" : model.group; }
@@ -32,6 +41,7 @@ export default function ModelMenu({
   thinkingEnabled?: boolean; thinkingEffort?: ThinkingEffort;
   onThinkingChange?: (next: { enabled: boolean; effort: ThinkingEffort }) => void;
 }) {
+  const t = useT();
   const globalSelected = useSettings((s) => s.selectedModelId);
   const globalSet = useSettings((s) => s.setSelectedModelId);
   const customApiGroups = useSettings((s) => s.customApiGroups);
@@ -185,43 +195,45 @@ export default function ModelMenu({
       ? -(COLUMN_WIDTHS.slice(1, index + 1).reduce((a, b) => a + b, 0) + GAP * index)
       : COLUMN_WIDTHS.slice(0, index).reduce((a, b) => a + b, 0) + GAP * index } : {}),
   });
-  const title = series?.startsWith("category:") ? series.slice(9)
-    : customApiGroups.find((group) => group.id === series?.slice(7))?.name ?? "自定义 API";
+  const categoryName = series?.startsWith("category:") ? series.slice(9) : null;
+  const categoryKey = categoryName ? CATEGORY_LABEL_KEYS[categoryName] : undefined;
+  const title = categoryName ? (categoryKey ? t(categoryKey) : categoryName)
+    : customApiGroups.find((group) => group.id === series?.slice(7))?.name ?? t("menu.model.custom");
   const details = detail ? <>
     <ModelDetails model={detail} onUse={() => pick(detail)} />
-    {detail.thinking && (modelSupportsThinkingEffort(detail) || modelAllowsDisableThinking(detail)) ? <div role="menu" aria-label="思考强度" data-testid="model-thinking-submenu"><ThinkingSubmenu model={detail} selected={selectedId === detail.id} thinkingEnabled={thinkingEnabled} thinkingEffort={thinkingEffort} onPick={(thinking) => pick(detail, thinking)} /></div> : null}
+    {detail.thinking && (modelSupportsThinkingEffort(detail) || modelAllowsDisableThinking(detail)) ? <div role="menu" aria-label={t("menu.thinking.strength")} data-testid="model-thinking-submenu"><ThinkingSubmenu model={detail} selected={selectedId === detail.id} thinkingEnabled={thinkingEnabled} thinkingEffort={thinkingEffort} onPick={(thinking) => pick(detail, thinking)} /></div> : null}
   </> : null;
 
   return <>
     <button ref={btnRef} type="button" aria-haspopup="dialog" aria-expanded={open}
-      onClick={() => { if (open) close(); else { setOpen(true); focusColumn(1); } }} title="选择模型" data-testid="model-menu-button"
+      onClick={() => { if (open) close(); else { setOpen(true); focusColumn(1); } }} title={t("menu.model.choose")} data-testid="model-menu-button"
       className="press flex max-w-[180px] min-w-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]">
       {selectedId === AUTO_MODEL_ID ? <Compass size={12} /> : <Cpu size={12} />}
       <span className="model-menu-label model-menu-label-full truncate">{current?.label ?? selectedId}</span>
-      <span className="model-menu-label model-menu-label-short">模型</span><ChevronDown size={12} />
+      <span className="model-menu-label model-menu-label-short">{t("menu.model.short")}</span><ChevronDown size={12} />
     </button>
-    {open ? createPortal(<div ref={panelRef} role="dialog" aria-label="模型选择" onKeyDown={keyboard}
+    {open ? createPortal(<div ref={panelRef} role="dialog" aria-label={t("menu.model.dialog")} onKeyDown={keyboard}
       style={{ left: position.left + (!position.mobile && position.growLeft ? COLUMN_WIDTHS.slice(1, count).reduce((a, b) => a + b, 0) + GAP * (count - 1) : 0), bottom: position.bottom, gap: GAP }}
       className="fixed z-[9999] flex items-end" data-testid="model-menu-panel" data-layout={position.mobile ? "drilldown" : "cascade"}>
-      {(!position.mobile || !series) ? <section data-menu-level="1" aria-label="模型系列" className={columnClass} style={columnStyle(0)}>
-        <div className="px-2 py-1.5 text-[10px] font-semibold text-[var(--ink-faint)]">内置模型</div>
-        <button type="button" className={rowClass} onClick={() => pick(AUTO_MODEL_INFO)} data-testid="model-menu-item-auto"><Compass aria-hidden size={14} className="shrink-0 text-[var(--accent-ink)]" /><span className="flex-1">自动模型</span>{selectedId === AUTO_MODEL_ID ? <Check size={12} /> : null}</button>
-        {CATEGORIES.map((name) => { const Icon = CATEGORY_ICONS[name]; return <button type="button" key={name} className={rowClass + (series === "category:" + name ? " bg-[var(--accent-weak)]" : "")}
+      {(!position.mobile || !series) ? <section data-menu-level="1" aria-label={t("menu.model.series")} className={columnClass} style={columnStyle(0)}>
+        <div className="px-2 py-1.5 text-[10px] font-semibold text-[var(--ink-faint)]">{t("menu.model.builtin")}</div>
+        <button type="button" className={rowClass} onClick={() => pick(AUTO_MODEL_INFO)} data-testid="model-menu-item-auto"><Compass aria-hidden size={14} className="shrink-0 text-[var(--accent-ink)]" /><span className="flex-1">{t("menu.model.auto")}</span>{selectedId === AUTO_MODEL_ID ? <Check size={12} /> : null}</button>
+        {CATEGORIES.map((name) => { const Icon = CATEGORY_ICONS[name]; const labelKey = CATEGORY_LABEL_KEYS[name]; return <button type="button" key={name} className={rowClass + (series === "category:" + name ? " bg-[var(--accent-weak)]" : "")}
           aria-expanded={series === "category:" + name} onMouseEnter={(event) => { if (!position.mobile) navigate("category:" + name, event.currentTarget); }} onClick={(event) => navigate("category:" + name, event.currentTarget)}>
           {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
           <Icon aria-hidden size={14} className="shrink-0 text-[var(--ink-soft)]" />
-          <span className="flex-1">{name}</span>{position.mobile || !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
+          <span className="flex-1">{labelKey ? t(labelKey) : name}</span>{position.mobile || !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
         </button>; })}
-        {customApiGroups.length ? <div className="mt-1 flex items-center gap-2 border-t border-[var(--line)] px-2 py-2 text-[10px] text-[var(--ink-faint)]"><Plug aria-hidden size={13} />用户自定义 API</div> : null}
+        {customApiGroups.length ? <div className="mt-1 flex items-center gap-2 border-t border-[var(--line)] px-2 py-2 text-[10px] text-[var(--ink-faint)]"><Plug aria-hidden size={13} />{t("menu.model.customHeading")}</div> : null}
         {customApiGroups.map((group) => <button type="button" key={group.id} className={rowClass} aria-expanded={series === "custom:" + group.id}
           onMouseEnter={(event) => { if (!position.mobile) navigate("custom:" + group.id, event.currentTarget); }} onClick={(event) => navigate("custom:" + group.id, event.currentTarget)}>
           {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
           <Server aria-hidden size={14} className="shrink-0 text-[var(--ink-soft)]" /><span className="min-w-0 flex-1 truncate">{group.name}</span>{position.mobile || !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
         </button>)}
       </section> : null}
-      {series ? <section data-menu-level="2" aria-label="具体模型" className={columnClass} style={columnStyle(1)}>
+      {series ? <section data-menu-level="2" aria-label={t("menu.model.models")} className={columnClass} style={columnStyle(1)}>
         <div className="flex items-center gap-1 px-1 py-1 text-[10px] text-[var(--ink-faint)]">
-          {position.mobile ? <button type="button" aria-label="返回模型系列" onClick={() => back(2)} className="rounded p-2"><ChevronLeft size={14} /></button> : null}{title}
+          {position.mobile ? <button type="button" aria-label={t("menu.model.backToSeries")} onClick={() => back(2)} className="rounded p-2"><ChevronLeft size={14} /></button> : null}{title}
         </div>
         {models.map((model) => <div key={model.id}>
           <button type="button" className={rowClass + (detailId === model.id ? " bg-[var(--accent-weak)]" : "")} aria-expanded={detailId === model.id}
@@ -231,13 +243,13 @@ export default function ModelMenu({
             {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
             <ModelIcon brand={model.icon} size={14} /><span className="min-w-0 flex-1"><span className="block truncate">{model.label}</span>
             {model.vendorTrainingNotice ? <span className="block text-[10px] text-[var(--md-sys-color-error)]">{model.vendorTrainingNotice}</span> : null}</span>
-            {selectedId === model.id ? <Check aria-label="已选模型" size={12} className="shrink-0" /> : null}
+            {selectedId === model.id ? <Check aria-label={t("menu.model.selected")} size={12} className="shrink-0" /> : null}
             {position.mobile ? <ChevronDown aria-hidden size={12} className="shrink-0" /> : !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
           </button>
           {position.mobile && detail?.id === model.id ? <div data-testid="model-submenu" className="mx-1 mb-2 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] p-2">{details}</div> : null}
         </div>)}
       </section> : null}
-      {!position.mobile && detail ? <section data-menu-level="3" aria-label="模型详情" data-testid="model-submenu" className={columnClass} style={columnStyle(2)}>{details}</section> : null}
+      {!position.mobile && detail ? <section data-menu-level="3" aria-label={t("menu.model.details")} data-testid="model-submenu" className={columnClass} style={columnStyle(2)}>{details}</section> : null}
     </div>, document.body) : null}
   </>;
 }
@@ -249,33 +261,34 @@ function ModelDetails({
   model: ModelInfo;
   onUse: () => void;
 }) {
+  const t = useT();
   const ctx = formatContextWindow(model.contextK);
   const badges: { key: string; label: string; className: string }[] = [];
   if (model.vision) {
     badges.push({
       key: "vision",
-      label: "视觉",
+      label: t("menu.model.badge.vision"),
       className: "bg-[color-mix(in_srgb,var(--md-sys-color-tertiary)_15%,transparent)] text-[var(--md-sys-color-tertiary)]",
     });
   }
   if (ctx) {
     badges.push({
       key: "ctx",
-      label: `上下文 ${ctx}`,
+      label: t("menu.model.badge.context", { window: ctx }),
       className: "bg-[var(--bg-muted)] text-[var(--ink-soft)]",
     });
   }
   if (model.thinking) {
     badges.push({
       key: "think",
-      label: model.thinkingRequired ? "思考不可关" : "思考",
+      label: model.thinkingRequired ? t("menu.model.badge.thinkingRequired") : t("menu.model.badge.thinking"),
       className: "bg-[var(--bg-muted)] text-[var(--ink-soft)]",
     });
   }
   if (model.type === "image") {
     badges.push({
       key: "image",
-      label: "生图",
+      label: t("menu.model.badge.image"),
       className: "bg-[color-mix(in_srgb,var(--md-sys-color-secondary)_18%,transparent)] text-[var(--md-sys-color-secondary)]",
     });
   }
@@ -283,7 +296,7 @@ function ModelDetails({
   return (
     <>
       <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-        模型信息
+        {t("menu.model.info")}
       </div>
       <div className="px-2 pb-2">
         <div className="text-[12.5px] font-medium text-[var(--ink)]">{model.label}</div>
@@ -316,7 +329,7 @@ function ModelDetails({
         onClick={onUse}
         className="mb-1 flex w-full items-center rounded-lg px-2 py-1.5 text-left text-[12.5px] font-medium text-[var(--ink)] hover:bg-[var(--bg-muted)]"
       >
-        选用此模型
+        {t("menu.model.use")}
       </button>
     </>
   );
@@ -335,6 +348,7 @@ function ThinkingSubmenu({
   thinkingEffort: ThinkingEffort;
   onPick: (next: { enabled: boolean; effort: ThinkingEffort }) => void;
 }) {
+  const t = useT();
   const levels = modelThinkingLevels(model);
   const options = THINKING_EFFORT_OPTIONS.filter((o) => levels.includes(o.value));
   const allowOff = modelAllowsDisableThinking(model);
@@ -344,7 +358,7 @@ function ThinkingSubmenu({
     <>
       <div className="my-1 h-px bg-[var(--line)]/60" />
       <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-        思考强度
+        {t("menu.thinking.strength")}
       </div>
       {allowOff && (
         <>
@@ -365,10 +379,10 @@ function ThinkingSubmenu({
             <span className="min-w-0 flex-1">
               <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--ink)]">
                 <AgentPauseIcon size={11} />
-                关闭
+                {t("menu.thinking.off.label")}
               </span>
               <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
-                不启用推理链，直接回答
+                {t("menu.thinking.off.hint")}
               </span>
             </span>
           </button>
@@ -395,7 +409,7 @@ function ThinkingSubmenu({
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-[12.5px] font-medium text-[var(--ink)]">{opt.label}</span>
-              <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">{opt.hint}</span>
+              <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">{t(opt.hintKey)}</span>
             </span>
           </button>
         );

@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { CloudSyncSection, ExportSection, RedemptionSection } from "./DataSection";
 import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
 import { loadCloudSyncUsage } from "@/lib/sync/engine";
+import type { CloudSyncUsage } from "@/lib/sync/usage";
 
 vi.mock("@/lib/ai/observability/downloadAgentLog", () => ({
   exportAgentLogs: vi.fn().mockResolvedValue({
@@ -19,20 +20,21 @@ vi.mock("@/lib/sync/engine", () => ({
   loadCloudSyncUsage: vi.fn(),
 }));
 
-const usageFixture = {
-  source: "cloud" as const,
+const usageFixture: CloudSyncUsage = {
+  source: "cloud",
   totalBytes: 3 * 1024 * 1024,
   limitBytes: 48 * 1024 * 1024,
+  // 名称 / 单位搬进词典后，这里给的是真实 key；下面的断言仍然校验 zh 渲染出来的那串中文。
   kinds: [
-    { kind: "chat-session" as const, label: "全部对话", unit: "条", bytes: 2 * 1024 * 1024, count: 4, limitBytes: 5 * 1024 * 1024 },
-    { kind: "artifact" as const, label: "演示", unit: "个", bytes: 256 * 1024, count: 2, limitBytes: Math.round(1.5 * 1024 * 1024) },
-    { kind: "document" as const, label: "文档", unit: "篇", bytes: 256 * 1024, count: 1, limitBytes: Math.round(2.5 * 1024 * 1024) },
-    { kind: "user-note" as const, label: "个人笔记", unit: "篇", bytes: 256 * 1024, count: 3, limitBytes: 2 * 1024 * 1024 },
-    { kind: "review-card" as const, label: "复习闪卡", unit: "张", bytes: 256 * 1024, count: 5, limitBytes: 256 * 1024 },
+    { kind: "chat-session" as const, labelKey: "panel.storage.kind.chatSession.label", unitKey: "panel.storage.kind.chatSession.unit", bytes: 2 * 1024 * 1024, count: 4, limitBytes: 5 * 1024 * 1024 },
+    { kind: "artifact" as const, labelKey: "panel.storage.kind.artifact.label", unitKey: "panel.storage.kind.artifact.unit", bytes: 256 * 1024, count: 2, limitBytes: Math.round(1.5 * 1024 * 1024) },
+    { kind: "document" as const, labelKey: "panel.storage.kind.document.label", unitKey: "panel.storage.kind.document.unit", bytes: 256 * 1024, count: 1, limitBytes: Math.round(2.5 * 1024 * 1024) },
+    { kind: "user-note" as const, labelKey: "panel.storage.kind.userNote.label", unitKey: "panel.storage.kind.userNote.unit", bytes: 256 * 1024, count: 3, limitBytes: 2 * 1024 * 1024 },
+    { kind: "review-card" as const, labelKey: "panel.storage.kind.reviewCard.label", unitKey: "panel.storage.kind.reviewCard.unit", bytes: 256 * 1024, count: 5, limitBytes: 256 * 1024 },
   ],
   pools: [
-    { id: "notes" as const, label: "笔记额度池", unit: "篇", bytes: 256 * 1024, count: 3, limitBytes: 20 * 1024 * 1024 },
-    { id: "flashcards" as const, label: "闪卡额度池", unit: "张", bytes: 256 * 1024, count: 5, limitBytes: 20 * 1024 * 1024 },
+    { id: "notes" as const, labelKey: "panel.storage.pool.notes.label", unitKey: "panel.storage.pool.notes.unit", bytes: 256 * 1024, count: 3, limitBytes: 20 * 1024 * 1024 },
+    { id: "flashcards" as const, labelKey: "panel.storage.pool.flashcards.label", unitKey: "panel.storage.pool.flashcards.unit", bytes: 256 * 1024, count: 5, limitBytes: 20 * 1024 * 1024 },
   ],
 };
 

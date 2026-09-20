@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { AgentCheckIcon, AgentChevronIcon } from '@/components/icons/AgentIcons';
 import type { AgentTraceModel } from '@/lib/chat/buildTrace';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import { useT, type Translate } from '@/lib/i18n';
 import { ToolTraceStep } from '@/components/chat/ToolTraceStep';
 import { ReasoningTraceStep } from '@/components/chat/ReasoningTraceStep';
 
@@ -19,33 +20,35 @@ export interface AgentTraceProps {
   summaryMode?: 'status' | 'process';
 }
 
-function completedLabel(trace: AgentTraceModel, durationMs?: number): string {
-  if (trace.interruptedCount > 0) return '处理已停止';
-  if (trace.waitingCount > 0) return '等待工具批准';
-  if (trace.errorCount > 0) return '处理结束，部分步骤未完成';
+function completedLabel(trace: AgentTraceModel, durationMs: number | undefined, t: Translate): string {
+  if (trace.interruptedCount > 0) return t('trace.summary.stopped');
+  if (trace.waitingCount > 0) return t('trace.summary.waiting');
+  if (trace.errorCount > 0) return t('trace.summary.partialError');
   if (durationMs != null && Number.isFinite(durationMs) && durationMs >= 0) {
-    if (durationMs < 1000) return '已处理不到 1 秒';
+    if (durationMs < 1000) return t('trace.summary.underOneSecond');
     const seconds = Math.round(durationMs / 1000);
-    if (seconds >= 60) return `已处理 ${Math.floor(seconds / 60)} 分 ${seconds % 60} 秒`;
-    return `已处理 ${seconds} 秒`;
+    if (seconds >= 60) return t('trace.summary.minutes', { minutes: Math.floor(seconds / 60), seconds: seconds % 60 });
+    return t('trace.summary.seconds', { seconds });
   }
-  return '处理完成';
+  return t('trace.status.done');
 }
 
 export function agentProcessingLabel(
   trace: AgentTraceModel,
-  isStreaming = false,
-  durationMs?: number,
+  isStreaming: boolean,
+  durationMs: number | undefined,
+  t: Translate,
 ): string {
-  if (!isStreaming) return completedLabel(trace, durationMs);
+  if (!isStreaming) return completedLabel(trace, durationMs, t);
   const activeStep = trace.steps.findLast((step) => step.status === 'running');
-  if (activeStep) return '正在处理…';
-  if (trace.waitingCount) return '等待工具批准';
-  if (trace.steps.length === 0) return '正在思考…';
-  return '正在整理回答…';
+  if (activeStep) return t('trace.summary.working');
+  if (trace.waitingCount) return t('trace.summary.waiting');
+  if (trace.steps.length === 0) return t('trace.summary.thinking');
+  return t('trace.summary.composing');
 }
 
 export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = false, durationMs, summaryMode = 'status' }: AgentTraceProps) {
+  const t = useT();
   const contentId = useId();
   const reducedMotion = useReducedMotion();
   const [expanded, setExpanded] = useProcessingDisclosure(isStreaming);
@@ -92,7 +95,7 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
   if (trace.steps.length === 0) {
     if (!isStreaming) return null;
     return (
-      <section className="agent-trace mb-1 min-w-0" aria-label="Agent 处理过程">
+      <section className="agent-trace mb-1 min-w-0" aria-label={t('trace.summary.aria')}>
         <p
           role="status"
           aria-live="polite"
@@ -104,7 +107,7 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
             animate={pulse ? { opacity: [0.6, 1, 0.6] } : { opacity: 1 }}
             transition={pulse ? { duration: 2.4, repeat: Infinity } : { duration: 0 }}
           >
-            正在思考…
+            {t('trace.summary.thinking')}
           </motion.span>
         </p>
       </section>
@@ -112,11 +115,11 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
   }
 
   const title = summaryMode === 'process'
-    ? '处理过程'
-    : agentProcessingLabel(trace, isStreaming, durationMs);
+    ? t('trace.summary.process')
+    : agentProcessingLabel(trace, isStreaming, durationMs, t);
 
   return (
-    <section className={`agent-trace min-w-0 ${expanded ? 'mb-3' : 'mb-1'}`} aria-label="Agent 处理过程">
+    <section className={`agent-trace min-w-0 ${expanded ? 'mb-3' : 'mb-1'}`} aria-label={t('trace.summary.aria')}>
       <button
         type="button"
         aria-expanded={expanded}
@@ -150,7 +153,7 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
       >
         {bodyMounted ? (
           <motion.ol
-            aria-label="按执行顺序排列的步骤"
+            aria-label={t('trace.summary.stepsAria')}
             initial={reducedMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reducedMotion ? 0 : 0.16 }}

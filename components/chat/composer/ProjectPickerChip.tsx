@@ -5,6 +5,7 @@ import { ChevronDown, Folder, FolderPlus, X } from "lucide-react";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
+import { useT } from "@/lib/i18n";
 
 /**
  * 输入框右下角的项目 chip：默认 No Projects（= 对话进 Recents）。
@@ -15,6 +16,7 @@ import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
  * - 系统项目的会话（笔记记录 / 划词摘录）不允许改挂，store 层会拒绝。
  */
 export default function ProjectPickerChip() {
+  const t = useT();
   const folders = useChatHistory((s) => s.folders);
   const sessionsMeta = useChatHistory((s) => s.sessionsMeta);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
@@ -46,7 +48,7 @@ export default function ProjectPickerChip() {
 
   return (
     <AnchoredMenu
-      label="对话所属项目"
+      label={t("menu.projectPicker.label")}
       placement="top"
       width={248}
       className="chat-input-project-chip"
@@ -61,9 +63,9 @@ export default function ProjectPickerChip() {
     >
       {(close) => (
         <>
-          <div className="app-menu-heading">最近项目</div>
+          <div className="app-menu-heading">{t("menu.projectPicker.recent")}</div>
           {recent.length === 0 ? (
-            <p className="px-2.5 py-1.5 text-[11.5px] text-[var(--ink-faint)]">还没有项目，先建一个。</p>
+            <p className="px-2.5 py-1.5 text-[11.5px] text-[var(--ink-faint)]">{t("menu.projectPicker.empty")}</p>
           ) : (
             recent.map((project) => (
               <button
@@ -79,7 +81,7 @@ export default function ProjectPickerChip() {
                 }}
               >
                 <span className="app-menu-check"><Folder size={13} /></span>
-                <span>{project.name}<small>{project.sessions.length} 个对话</small></span>
+                <span>{project.name}<small>{t("menu.projectPicker.sessionCount", { count: project.sessions.length })}</small></span>
               </button>
             ))
           )}
@@ -89,9 +91,9 @@ export default function ProjectPickerChip() {
               <input
                 autoFocus
                 value={draft}
-                aria-label="新项目名称"
+                aria-label={t("menu.projectPicker.nameAria")}
                 data-testid="composer-project-name"
-                placeholder="项目名称"
+                placeholder={t("menu.projectPicker.namePlaceholder")}
                 onChange={(event) => setDraft(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") commitNewProject(close);
@@ -105,7 +107,7 @@ export default function ProjectPickerChip() {
                 onClick={() => commitNewProject(close)}
                 className="shrink-0 rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1 text-[11.5px] font-medium text-[var(--md-sys-color-on-primary)]"
               >
-                建
+                {t("menu.projectPicker.create")}
               </button>
             </div>
           ) : (
@@ -117,7 +119,7 @@ export default function ProjectPickerChip() {
               onClick={() => setCreating(true)}
             >
               <span className="app-menu-check"><FolderPlus size={13} /></span>
-              <span>添加新项目<small>建好后当前对话就归它</small></span>
+              <span>{t("menu.projectPicker.add")}<small>{t("menu.projectPicker.addHint")}</small></span>
             </button>
           )}
           {currentProjectId ? (
@@ -132,7 +134,7 @@ export default function ProjectPickerChip() {
               }}
             >
               <span className="app-menu-check"><X size={13} /></span>
-              <span>不使用项目<small>回到 Recents</small></span>
+              <span>{t("menu.projectPicker.clear")}<small>{t("menu.projectPicker.clearHint")}</small></span>
             </button>
           ) : null}
         </>

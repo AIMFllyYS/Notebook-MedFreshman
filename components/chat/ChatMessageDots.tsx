@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useT, type Translate } from '@/lib/i18n';
 
 export const USER_DOT_LIMIT = 12;
 
@@ -70,9 +71,11 @@ export function activeUserDotIndex(entries: readonly UserDotEntry[], firstVisibl
   return current;
 }
 
-function previewLabel(preview: string, turn: number): string {
+function previewLabel(preview: string, turn: number, t: Translate): string {
   const clipped = preview.replace(/\s+/g, ' ').trim().slice(0, 44);
-  return clipped ? `第 ${turn} 次提问：${clipped}` : `第 ${turn} 次提问`;
+  return clipped
+    ? t('trace.dots.turnWithPreview', { turn, preview: clipped })
+    : t('trace.dots.turn', { turn });
 }
 
 export default function ChatMessageDots({
@@ -84,6 +87,7 @@ export default function ChatMessageDots({
   firstVisibleIndex: number;
   onJump: (index: number) => void;
 }) {
+  const t = useT();
   const activeIndex = activeUserDotIndex(entries, firstVisibleIndex);
   const items = useMemo(() => visibleUserDots(entries, activeIndex), [entries, activeIndex]);
   const [expandedRange, setExpandedRange] = useState<string | null>(null);
@@ -91,7 +95,7 @@ export default function ChatMessageDots({
   if (entries.length === 0) return null;
 
   return (
-    <nav className="chat-message-dots" aria-label="对话定位" data-testid="chat-message-dots">
+    <nav className="chat-message-dots" aria-label={t('trace.dots.aria')} data-testid="chat-message-dots">
       <span className="chat-message-dots-track" aria-hidden="true" />
       {items.map((item) => {
         if (item.type === 'dot') {
@@ -128,15 +132,15 @@ export default function ChatMessageDots({
               <button
                 type="button"
                 className="chat-message-dots-range"
-                aria-label={`第 ${item.startTurn}–${item.endTurn} 次提问`}
+                aria-label={t('trace.dots.range', { start: item.startTurn, end: item.endTurn })}
                 aria-expanded={false}
                 onClick={() => setExpandedRange(rangeId)}
                 onFocus={() => setExpandedRange(rangeId)}
               >
                 <span aria-hidden="true">···</span>
                 <span className="chat-message-dot-preview" aria-hidden="true">
-                  <strong>较早的提问</strong>
-                  <span>第 {item.startTurn}–{item.endTurn} 次，展开后可精确定位</span>
+                  <strong>{t('trace.dots.rangeTitle')}</strong>
+                  <span>{t('trace.dots.rangeHint', { start: item.startTurn, end: item.endTurn })}</span>
                 </span>
               </button>
             )}
@@ -158,7 +162,8 @@ function DotButton({
   current: boolean;
   onJump: (index: number) => void;
 }) {
-  const label = previewLabel(entry.preview, turn);
+  const t = useT();
+  const label = previewLabel(entry.preview, turn, t);
   return (
     <button
       type="button"
@@ -171,8 +176,8 @@ function DotButton({
     >
       <span className="chat-message-dot-mark" aria-hidden="true" />
       <span className="chat-message-dot-preview" aria-hidden="true">
-        <strong>第 {turn} 次提问{current ? ' · 当前' : ''}</strong>
-        <span>“{entry.preview.replace(/\s+/g, ' ').trim().slice(0, 96) || '空白提问'}”</span>
+        <strong>{t('trace.dots.turn', { turn })}{current ? t('trace.dots.current') : ''}</strong>
+        <span>{t('trace.dots.quoted', { preview: entry.preview.replace(/\s+/g, ' ').trim().slice(0, 96) || t('trace.dots.blank') })}</span>
       </span>
     </button>
   );

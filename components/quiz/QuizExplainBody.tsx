@@ -9,6 +9,7 @@ import ChatInput from "@/components/chat/ChatInput";
 import type { ChatContext, ChatAttachment, ChatOptions } from "@/lib/types/chat";
 import { QUIZ_EXPLAIN_SEED_PROMPT } from "@/lib/quiz/formatQuestionContext";
 import { useQuizExplain, type QuizExplainWin } from "@/lib/stores/quizExplain";
+import { useT } from "@/lib/i18n";
 
 type SendOpts = {
   quotedText?: string;
@@ -25,6 +26,7 @@ interface QuizExplainBodyProps {
 
 /** 深度解析窗体：复用 ChatThread / ChatInput / useChat，绑定本题独立 session。 */
 export default function QuizExplainBody({ win, chatContext, onModelChange }: QuizExplainBodyProps) {
+  const t = useT();
   const chatOptions = useMemo<ChatOptions>(() => ({ contextMode: "full" }), []);
   const { messages, isLoading, error, info, sendMessage, stopGeneration, clearError, clearInfo } = useChat(
     chatContext,
@@ -85,7 +87,7 @@ export default function QuizExplainBody({ win, chatContext, onModelChange }: Qui
         topic={chatContext.currentTopic}
         emptyState={
           <div style={{ padding: 16, textAlign: "center", color: "var(--ink-soft)", fontSize: 13, lineHeight: 1.6 }}>
-            小岸正在独立解答这道题。
+            {t("window.quiz.explain.working")}
           </div>
         }
       />

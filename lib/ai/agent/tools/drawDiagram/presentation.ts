@@ -2,9 +2,9 @@
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {
-  label: "绘制图示",
-  settingsLabel: "SVG 绘图",
-  description: "让 AI 绘制矢量示意图（分子/电路/光路/几何等）",
+  labelKey: "trace.tool.drawDiagram.label",
+  settingsLabelKey: "trace.tool.drawDiagram.settingsLabel",
+  descriptionKey: "trace.tool.drawDiagram.description",
   icon: "image",
   toggleable: true,
 };

@@ -9,6 +9,7 @@ import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
+import { useT } from '@/lib/i18n';
 
 type ArtifactApiEvent =
   | { type: 'ping'; t?: number }
@@ -52,8 +53,9 @@ export default function ArtifactCard({
   const [runId, setRunId] = useState(0);
   // 只取首帧 autoStart：主聊天结束导致 autoStart 翻转时，不中断或误标「数据缺失」。
   const [shouldAutoGen, setShouldAutoGen] = useState(autoStart);
+  const t = useT();
 
-  const title = titleProp || art?.title || '交互演示';
+  const title = titleProp || art?.title || t('window.artifact.defaultTitle');
   const html = streamHtml || art?.html || '';
   const reasoningText = reasoning || art?.reasoning || '';
   const streaming = status === 'streaming';
@@ -95,7 +97,7 @@ export default function ArtifactCard({
     const artifactModelInfo = getModelInfoWithCustom(artifactModelId, settings.customApiGroups);
     if (artifactModelInfo?.type === 'image') {
       setStatus('error');
-      setError(unsupportedReason || '当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。');
+      setError(unsupportedReason || t('window.artifact.imageModelUnsupported'));
       return;
     }
     (async () => {
@@ -113,11 +115,11 @@ export default function ArtifactCard({
         });
 
         if (!response.ok) {
-          throw new Error(`生成请求失败: ${response.status} ${response.statusText}`);
+          throw new Error(t('window.artifact.requestFailed', { status: response.status, statusText: response.statusText }));
         }
 
         const reader = response.body?.getReader();
-        if (!reader) throw new Error('流读取失败');
+        if (!reader) throw new Error(t('window.artifact.streamReadFailed'));
         const decoder = new TextDecoder('utf-8');
         let buffer = '';
         let htmlBuf = '';
@@ -154,18 +156,18 @@ export default function ArtifactCard({
             } else if (event.status === 'error') {
               terminal = true;
               setStatus('error');
-              setError(event.message || '交互演示生成失败');
+              setError(event.message || t('window.artifact.generateFailed'));
             }
           }
         }
         if (!terminal) {
           setStatus('error');
-          setError('生成中断，请重试');
+          setError(t('window.artifact.interrupted'));
         }
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') return;
         setStatus('error');
-        setError(err instanceof Error ? err.message : '交互演示生成失败');
+        setError(err instanceof Error ? err.message : t('window.artifact.generateFailed'));
       }
     })();
   }, [artifactId, art, modelId, prompt, saveDone, title, unsupportedReason, runId, shouldAutoGen]);
@@ -202,14 +204,14 @@ export default function ArtifactCard({
             style={{ color: onContainer }}
           >
             {streaming || preparing
-              ? `正在生成交互演示：${title}…`
+              ? t('window.artifact.generating', { title })
               : restoring
-                ? `正在恢复交互演示：${title}…`
+                ? t('window.artifact.restoring', { title })
                 : errored
-                  ? '交互演示生成失败'
+                  ? t('window.artifact.generateFailed')
                   : expired
-                    ? '交互演示数据缺失（可让助教重新生成）'
-                    : `交互演示已就绪：${title}`}
+                    ? t('window.artifact.dataMissingShort')
+                    : t('window.artifact.ready', { title })}
           </span>
         </div>
 
@@ -224,7 +226,7 @@ export default function ArtifactCard({
             className="artifact-open-demo press inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold"
             style={{ background: 'var(--md-sys-color-primary)', color: 'var(--md-sys-color-on-primary)' }}
           >
-            <AgentTerminalIcon size={14} /> 打开演示
+            <AgentTerminalIcon size={14} /> {t('window.artifact.openDemo')}
           </button>
         ) : null}
       </div>
@@ -244,7 +246,7 @@ export default function ArtifactCard({
             style={{ color: onContainer, background: 'transparent', border: 'none', cursor: 'pointer' }}
           >
             <AgentQuoteIcon size={13} className="shrink-0" />
-            生成依据
+            {t('window.artifact.basis')}
             <AgentChevronIcon size={13} style={{ transform: showPrompt ? 'rotate(180deg)' : undefined }} />
           </button>
           {showPrompt && (
@@ -280,7 +282,7 @@ export default function ArtifactCard({
               size={13}
               className={thinkingActive ? 'animate-pulse motion-reduce:animate-none' : undefined}
             />
-            {thinkingActive ? '思考中' : '思考过程'}
+            {thinkingActive ? t('window.artifact.thinking') : t('window.artifact.thinkingProcess')}
             <AgentChevronIcon size={13} style={{ transform: showThinking ? 'rotate(180deg)' : undefined }} />
           </button>
           {showThinking && (
@@ -291,7 +293,7 @@ export default function ArtifactCard({
             >
               {reasoningText
                 ? <MessageContent content={reasoningText} enableVisualizations={false} preserveLineBreaks />
-                : '正在思考生成方案…'}
+                : t('window.artifact.planning')}
             </div>
           )}
         </div>
@@ -309,21 +311,21 @@ export default function ArtifactCard({
             className="inline-flex items-center gap-1 text-[11.5px] font-medium"
             style={{ color: 'var(--md-sys-color-on-primary-container)', background: 'transparent', border: 'none', cursor: 'pointer' }}
           >
-            <AgentFileIcon size={13} /> {showCode ? '隐藏源码' : '查看源码'}
+            <AgentFileIcon size={13} /> {showCode ? t('window.artifact.hideCode') : t('window.artifact.viewCode')}
             <AgentChevronIcon size={13} style={{ transform: showCode ? 'rotate(180deg)' : undefined }} />
           </button>
           <span className="text-[11px]" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-            {streaming || preparing ? `生成中 · 已写入 ${codeChars} 字符` : `${codeChars} 字符`}
+            {streaming || preparing ? t('window.artifact.writingChars', { count: codeChars }) : t('window.artifact.chars', { count: codeChars })}
           </span>
           {done && (
             <button
               type="button"
               onClick={openExternal}
-              title="在新标签页打开"
+              title={t('window.artifact.openInNewTab')}
               className="ml-auto inline-flex items-center gap-1 text-[11.5px] font-medium"
               style={{ color: 'var(--md-sys-color-primary)', background: 'transparent', border: 'none', cursor: 'pointer' }}
             >
-              <AgentArrowUpRightIcon size={13} /> 新标签打开
+              <AgentArrowUpRightIcon size={13} /> {t('window.artifact.openNewTab')}
             </button>
           )}
         </div>
@@ -342,7 +344,7 @@ export default function ArtifactCard({
             color: 'var(--md-sys-color-on-surface-variant)',
           }}
         >
-          {html || '正在生成 HTML…'}
+          {html || t('window.artifact.generatingHtml')}
         </pre>
       )}
 
@@ -350,8 +352,8 @@ export default function ArtifactCard({
         <div className="flex items-center gap-2 px-3 pb-3 text-[12px]" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
           <span className="min-w-0 flex-1">
             {errored
-              ? (error || '该演示生成出错，可让助教重新生成，或改用文字讲解。')
-              : '交互演示数据缺失（可重新生成，或让助教再调用一次）。'}
+              ? (error || t('window.artifact.errorHint'))
+              : t('window.artifact.dataMissing')}
           </span>
           {prompt && (
             <button
@@ -370,7 +372,7 @@ export default function ArtifactCard({
               className="shrink-0 rounded-lg px-2 py-1 text-[11.5px] font-medium"
               style={{ background: 'var(--md-sys-color-primary)', color: 'var(--md-sys-color-on-primary)', border: 'none', cursor: 'pointer' }}
             >
-              重新生成
+              {t('window.artifact.regenerate')}
             </button>
           )}
         </div>

@@ -7,6 +7,7 @@ import type { UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/t
 import { isUsableOutput, proposalFromToolOutput, type NoteChangeStatus } from "@/lib/notes/noteChangeProposal";
 import { sessionIdOfMessage, useNoteChangeProposals } from "@/lib/stores/noteChangeProposals";
 import { useUserNotes } from "@/lib/stores/userNotes";
+import { useT, type Translate } from "@/lib/i18n";
 
 /**
  * 笔记变更确认卡。
@@ -39,6 +40,7 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
   const noteMarkdown = useUserNotes((s) => s.byId[output.noteId]?.markdown);
   const [expanded, setExpanded] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
+  const t = useT();
 
   useEffect(() => {
     const proposal = proposalFromToolOutput(output, {
@@ -58,7 +60,7 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
 
   const onApprove = () => {
     const result = approve(id);
-    setFailure(result.ok ? null : (result.reason ?? "这次写入没有执行。"));
+    setFailure(result.ok ? null : (result.reason ?? t("window.note.consent.writeFailed")));
   };
   const onDismiss = () => {
     setFailure(null);
@@ -66,13 +68,13 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
   };
 
   return (
-    <section className="note-consent" data-note-consent={id} aria-label="笔记变更确认">
+    <section className="note-consent" data-note-consent={id} aria-label={t("window.note.consent.aria")}>
       <header className="note-consent-head">
         <span className="note-consent-icon" aria-hidden>
           {isDelete ? <Trash2 size={13} /> : <Pencil size={13} />}
         </span>
         <div className="note-consent-title">
-          <span className="note-consent-eyebrow">{statusLabel(status)}</span>
+          <span className="note-consent-eyebrow">{statusLabel(status, t)}</span>
           <span className="note-consent-summary">{output.summary}</span>
         </div>
       </header>
@@ -81,7 +83,7 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
         <>
           {blocked ? (
             <p className="note-consent-warn">
-              <AlertTriangle size={12} aria-hidden /> 原文过长，模型只读到前面一部分。整篇替换会丢掉没读到的结尾，因此不能执行。
+              <AlertTriangle size={12} aria-hidden /> {t("window.note.consent.sourceIncomplete")}
             </p>
           ) : null}
 
@@ -94,14 +96,14 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
                 onClick={() => setExpanded((v) => !v)}
               >
                 <ChevronDown size={12} className={expanded ? "is-open" : undefined} aria-hidden />
-                {expanded ? "收起改动" : "查看改动"}
+                {expanded ? t("window.note.consent.collapseDiff") : t("window.note.consent.expandDiff")}
                 <span className="note-consent-count">
-                  +{diff.afterAdded.length} / −{diff.beforeRemoved.length} 行
+                  {t("window.note.consent.diffCount", { added: diff.afterAdded.length, removed: diff.beforeRemoved.length })}
                 </span>
               </button>
               {expanded ? (
                 <div className="note-consent-diff" data-no-drag>
-                  {diff.head > 0 ? <p className="note-consent-diff-note">前 {diff.head} 行未变</p> : null}
+                  {diff.head > 0 ? <p className="note-consent-diff-note">{t("window.note.consent.headUnchanged", { count: diff.head })}</p> : null}
                   {diff.beforeRemoved.map((line, index) => (
                     <p key={`b${index}`} className="note-consent-line is-removed">
                       <span aria-hidden>−</span>
@@ -114,7 +116,7 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
                       {line || " "}
                     </p>
                   ))}
-                  {diff.tail > 0 ? <p className="note-consent-diff-note">后 {diff.tail} 行未变</p> : null}
+                  {diff.tail > 0 ? <p className="note-consent-diff-note">{t("window.note.consent.tailUnchanged", { count: diff.tail })}</p> : null}
                 </div>
               ) : null}
             </>
@@ -130,11 +132,11 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
               onClick={onApprove}
             >
               <Check size={13} aria-hidden />
-              {isDelete ? "确认删除" : "同意修改"}
+              {isDelete ? t("window.note.consent.confirmDelete") : t("window.note.consent.confirmEdit")}
             </button>
             <button type="button" className="note-consent-btn" onClick={onDismiss}>
               <X size={13} aria-hidden />
-              取消
+              {t("menu.common.cancel")}
             </button>
           </div>
         </>
@@ -142,18 +144,18 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
         <p className="note-consent-result">
           {status === "applied"
             ? isDelete
-              ? "已删除，原笔记不再保留。"
-              : "已修改，笔记正文已更新。"
+              ? t("window.note.consent.appliedDelete")
+              : t("window.note.consent.appliedEdit")
             : status === "dismissed"
-              ? "已取消，原笔记没有改动。"
-              : "这次改动被阻止了。"}
+              ? t("window.note.consent.dismissed")
+              : t("window.note.consent.blocked")}
         </p>
       )}
 
       {status !== "pending" && failure ? <p className="note-consent-error">{failure}</p> : null}
       {status === "stale" || status === "blocked" ? (
         <p className="note-consent-warn">
-          <AlertTriangle size={12} aria-hidden /> 可以再让助手重新整理一次。
+          <AlertTriangle size={12} aria-hidden /> {t("window.note.consent.retryHint")}
         </p>
       ) : null}
     </section>
@@ -161,11 +163,11 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
 }
 
 /** 小标签只表达「进行到哪一步」；改的是哪一篇由 summary 说，避免两句同义话叠在一起。 */
-function statusLabel(status: NoteChangeStatus): string {
-  if (status === "applied") return "已完成";
-  if (status === "dismissed") return "已取消";
-  if (status === "stale" || status === "blocked") return "未执行";
-  return "待你确认";
+function statusLabel(status: NoteChangeStatus, t: Translate): string {
+  if (status === "applied") return t("window.note.consent.statusApplied");
+  if (status === "dismissed") return t("window.note.consent.statusDismissed");
+  if (status === "stale" || status === "blocked") return t("window.note.consent.statusNotApplied");
+  return t("window.note.consent.statusPending");
 }
 
 /** 逐行前后对照：掐掉公共前后缀，中间就是改动区间。 */

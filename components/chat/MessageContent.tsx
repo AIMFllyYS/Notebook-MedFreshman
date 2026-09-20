@@ -19,6 +19,7 @@ import { RawSvgViewer } from '@/components/canvas';
 import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
 import { VizErrorBoundary } from '@/components/chat/VizErrorBoundary';
 import { ensureSvgRoot } from '@/lib/canvas/normalize';
+import { useT, type Translate } from '@/lib/i18n';
 
 interface MessageContentProps {
   isStreaming?: boolean;
@@ -111,6 +112,7 @@ function renderMarkdownWithSvg(
   text: string,
   keyPrefix: string,
   remarkPlugins: typeof sharedRemarkPlugins,
+  t: Translate,
 ): React.ReactNode {
   const content = stripOrphanCustomTagMarkers(text || '');
   const md = (key: string, value: string) => (
@@ -123,7 +125,7 @@ function renderMarkdownWithSvg(
   if (!content.includes('<svg') && trimmed.startsWith('<') && BARE_SVG_CHILD_BLOCK_RE.test(trimmed)) {
     const rootedSvg = ensureSvgRoot(trimmed);
     return (
-      <VizErrorBoundary key={`${keyPrefix}-bare-svg`} label="图形" source={trimmed}>
+      <VizErrorBoundary key={`${keyPrefix}-bare-svg`} label={t("trace.viz.fallbackLabel")} source={trimmed}>
         <RawSvgViewer svg={sanitizeSvg(rootedSvg)} />
       </VizErrorBoundary>
     );
@@ -140,7 +142,7 @@ function renderMarkdownWithSvg(
     const before = content.slice(last, m.index);
     if (before.trim()) out.push(md(`${keyPrefix}-md-${i}`, stripBareSvgChildren(before)));
     out.push(
-      <VizErrorBoundary key={`${keyPrefix}-svg-${i}`} label="图形" source={m[0]}>
+      <VizErrorBoundary key={`${keyPrefix}-svg-${i}`} label={t("trace.viz.fallbackLabel")} source={m[0]}>
         <RawSvgViewer svg={sanitizeSvg(m[0])} />
       </VizErrorBoundary>,
     );
@@ -161,6 +163,8 @@ interface MessageRenderContext {
   repairModelId?: string;
   topic?: string;
   nextCanvasBlockIndex?: () => number;
+  /** 文案函数：由 MessageContent 的 useT() 注入，语言切换时错误边界 label 一起重算。 */
+  t: Translate;
 }
 
 /* ---- Render parsed blocks (supports nested Answer/Thinking re-parse) ---- */
@@ -169,7 +173,7 @@ function renderBlocks(
   keyPrefix: string,
   enableVisualizations: boolean | undefined,
   remarkPlugins: typeof sharedRemarkPlugins,
-  renderContext?: MessageRenderContext,
+  renderContext: MessageRenderContext,
 ): React.ReactNode {
   return blocks.map((block, idx) =>
     renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, remarkPlugins, renderContext),
@@ -180,9 +184,9 @@ function renderBlocks(
 const renderParsedBlock = (
   block: ParsedBlock,
   key: string,
-  enableVisualizations?: boolean,
+  enableVisualizations: boolean | undefined,
   remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins,
-  renderContext?: MessageRenderContext,
+  renderContext: MessageRenderContext,
 ) => {
   if (block.type === 'markdown') {
     const raw = block.content || '';
@@ -197,7 +201,7 @@ const renderParsedBlock = (
         );
       }
     }
-    return renderMarkdownWithSvg(raw, key, remarkPlugins);
+    return renderMarkdownWithSvg(raw, key, remarkPlugins, renderContext.t);
   }
 
   const { tagName, props: compProps, childrenText } = block;
@@ -214,7 +218,7 @@ const renderParsedBlock = (
         }
       : undefined;
     return (
-      <VizErrorBoundary key={key} label="图形" source={childrenText || ''}>
+      <VizErrorBoundary key={key} label={renderContext.t("trace.viz.fallbackLabel")} source={childrenText || ''}>
         <ChatMessageVisualizations
           tagName={tagName}
           props={compProps || {}}
@@ -266,6 +270,7 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
   topic,
   isStreaming = false,
 }) => {
+  const t = useT();
   const renderedContent = useStreamingText(content, isStreaming);
   const { blocks } = useMemo(() => {
     return parseChatContent(renderedContent);
@@ -284,10 +289,11 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
     repairModelId,
     topic,
     nextCanvasBlockIndex: () => canvasBlockCounter.current++,
+    t,
   };
 
   return renderBlocks(blocks, 'root', enableVisualizations, remarkPlugins, renderContext);
-  }, [blocks, enableVisualizations, remarkPlugins, sessionId, messageId, repairModelId, topic]);
+  }, [blocks, enableVisualizations, remarkPlugins, sessionId, messageId, repairModelId, topic, t]);
   return <>{rendered}</>;
 };
 

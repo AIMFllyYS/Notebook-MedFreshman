@@ -7,6 +7,7 @@ import { useFloatingChats } from '@/lib/hooks/useFloatingChats';
 import { useImageGen, type ImageGenSession } from '@/lib/hooks/useImageGen';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';
+import { useT } from '@/lib/i18n';
 
 interface ChatHistoryOverlayProps {
   /** 「对话」栏行点击：切换主对话会话。 */
@@ -24,6 +25,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
   onRestoreFloating,
   onClose,
 }) => {
+  const t = useT();
   const sessions = useChatHistory((s) => s.sessionsMeta);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const deleteSession = useChatHistory((s) => s.deleteSession);
@@ -51,31 +53,31 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
   const isFloating = tab === 'floating';
   const isImage = tab === 'image';
   const list = isFloating ? floatingSessions : mainSessions;
-  const pageTitle = isImage ? '生图记录' : isFloating ? '划词对话' : '对话记录';
+  const pageTitle = isImage ? t('menu.history.page.image') : isFloating ? t('menu.history.page.floating') : t('menu.history.page.main');
   const pageDescription = isImage
-    ? '查看曾经生成的图片任务与完成状态。'
+    ? t('menu.history.desc.image')
     : isFloating
-      ? '恢复由划词解释和追问创建的独立对话。'
-      : '继续此前的主对话，当前会话会保持高亮。';
+      ? t('menu.history.desc.floating')
+      : t('menu.history.desc.main');
 
-  const switchTab = (t: TabType) => { setTab(t); setConfirmId(null); };
+  const switchTab = (next: TabType) => { setTab(next); setConfirmId(null); };
 
-  const statusLabel: Record<string, string> = {
-    done: '已完成',
-    loading: '生成中',
-    error: '失败',
-    idle: '待批准',
+  const statusKeys: Record<string, string> = {
+    done: 'menu.history.status.done',
+    loading: 'menu.history.status.loading',
+    error: 'menu.history.status.error',
+    idle: 'menu.history.status.idle',
   };
 
   return (
     <div className="chat-history-overlay" data-testid="chat-history-workspace">
-      <aside className="chat-history-sidebar" aria-label="历史记录分类">
-        <button onClick={close} className="chat-settings-back" aria-label="返回对话">
-          <ArrowLeft size={15} /><span>返回对话</span>
+      <aside className="chat-history-sidebar" aria-label={t('menu.history.navAria')}>
+        <button onClick={close} className="chat-settings-back" aria-label={t('menu.history.back')}>
+          <ArrowLeft size={15} /><span>{t('menu.history.back')}</span>
         </button>
         <div className="chat-settings-brand">
           <span className="chat-settings-brand-icon"><Clock size={16} /></span>
-          <span><strong>历史记录</strong><small>AI Agent</small></span>
+          <span><strong>{t('menu.history.title')}</strong><small>AI Agent</small></span>
         </div>
         <nav className="chat-history-tabs">
         <button
@@ -83,21 +85,21 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
           aria-current={tab === 'main' ? 'page' : undefined}
           onClick={() => switchTab('main')}
         >
-          <MessageSquare size={15} /><span><strong>对话</strong><small>{mainSessions.length} 个会话</small></span>
+          <MessageSquare size={15} /><span><strong>{t('menu.history.tab.main')}</strong><small>{t('menu.history.sessionCount', { count: mainSessions.length })}</small></span>
         </button>
         <button
           className={`chat-history-tab ${isFloating ? 'chat-history-tab-active' : ''}`}
           aria-current={isFloating ? 'page' : undefined}
           onClick={() => switchTab('floating')}
         >
-          <PencilSparklesIcon size={15} /><span><strong>划词</strong><small>{floatingSessions.length} 个会话</small></span>
+          <PencilSparklesIcon size={15} /><span><strong>{t('menu.history.tab.floating')}</strong><small>{t('menu.history.sessionCount', { count: floatingSessions.length })}</small></span>
         </button>
         <button
           className={`chat-history-tab ${isImage ? 'chat-history-tab-active' : ''}`}
           aria-current={isImage ? 'page' : undefined}
           onClick={() => switchTab('image')}
         >
-          <ImagePlus size={15} /><span><strong>生图</strong><small>{imageSessionList.length} 个任务</small></span>
+          <ImagePlus size={15} /><span><strong>{t('menu.history.tab.image')}</strong><small>{t('menu.history.taskCount', { count: imageSessionList.length })}</small></span>
         </button>
         </nav>
       </aside>
@@ -110,9 +112,11 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
         <div className="chat-history-list">
         {isImage ? (
           imageSessionList.length === 0 ? (
-            <div className="chat-history-empty">暂无生图记录</div>
+            <div className="chat-history-empty">{t('menu.history.empty.image')}</div>
           ) : (
-            imageSessionList.map((s) => (
+            imageSessionList.map((s) => {
+              const statusKey = statusKeys[s.status];
+              return (
               <div
                 key={s.id}
                 className="chat-history-item"
@@ -121,7 +125,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
                   bringToFront(s.id);
                   onClose();
                 }}
-                title="点击查看生图弹窗"
+                title={t('menu.history.openImage')}
               >
                 <div className="flex items-center gap-2 min-w-0">
                   {s.images.length > 0 && (
@@ -146,8 +150,8 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
                               : 'var(--md-sys-color-on-surface-variant)',
                         }}
                       >
-                        {statusLabel[s.status] ?? s.status}
-                        {s.status === 'done' && s.images.length > 0 && ` · ${s.images.length} 张`}
+                        {statusKey ? t(statusKey) : s.status}
+                        {s.status === 'done' && s.images.length > 0 && ` · ${t('menu.history.imageCount', { count: s.images.length })}`}
                       </span>
                     </div>
                   </div>
@@ -155,35 +159,36 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
 
                 {confirmId === s.id ? (
                   <div className="chat-history-confirm" onClick={(e) => e.stopPropagation()}>
-                    <span className="chat-history-confirm-label">删除？</span>
+                    <span className="chat-history-confirm-label">{t('menu.history.confirmDelete')}</span>
                     <button
                       className="chat-history-confirm-yes"
                       onClick={(e) => { e.stopPropagation(); removeSession(s.id); setConfirmId(null); }}
                     >
-                      删除
+                      {t('menu.common.delete')}
                     </button>
                     <button
                       className="chat-history-confirm-no"
                       onClick={(e) => { e.stopPropagation(); setConfirmId(null); }}
                     >
-                      取消
+                      {t('menu.common.cancel')}
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={(e) => { e.stopPropagation(); setConfirmId(s.id); }}
                     className="chat-history-item-delete"
-                    title="删除"
+                    title={t('menu.common.delete')}
                   >
                     <Trash2 size={14} />
                   </button>
                 )}
               </div>
-            ))
+              );
+            })
           )
         ) : (
           list.length === 0 ? (
-            <div className="chat-history-empty">{isFloating ? '暂无划词记录' : '暂无历史记录'}</div>
+            <div className="chat-history-empty">{isFloating ? t('menu.history.empty.floating') : t('menu.history.empty.main')}</div>
           ) : (
             list.map((session) => (
               <div
@@ -194,35 +199,35 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
                   if (isFloating) onRestoreFloating(session.id);
                   else onSelectMain(session.id);
                 }}
-                title={isFloating ? '点击还原划词浮窗' : undefined}
+                title={isFloating ? t('menu.history.restoreFloating') : undefined}
               >
                 <div className="chat-history-item-title">{session.title}</div>
                 <div className="chat-history-item-meta">
                   <span>{new Date(session.updatedAt).toLocaleString()}</span>
-                  <span>{session.messageCount ?? 0} 条消息</span>
+                  <span>{t('menu.history.messageCount', { count: session.messageCount ?? 0 })}</span>
                 </div>
 
                 {confirmId === session.id ? (
                   <div className="chat-history-confirm" onClick={(e) => e.stopPropagation()}>
-                    <span className="chat-history-confirm-label">删除？</span>
+                    <span className="chat-history-confirm-label">{t('menu.history.confirmDelete')}</span>
                     <button
                       className="chat-history-confirm-yes"
                       onClick={(e) => { e.stopPropagation(); handleDelete(session.id); setConfirmId(null); }}
                     >
-                      删除
+                      {t('menu.common.delete')}
                     </button>
                     <button
                       className="chat-history-confirm-no"
                       onClick={(e) => { e.stopPropagation(); setConfirmId(null); }}
                     >
-                      取消
+                      {t('menu.common.cancel')}
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={(e) => { e.stopPropagation(); setConfirmId(session.id); }}
                     className="chat-history-item-delete"
-                    title="删除"
+                    title={t('menu.common.delete')}
                   >
                     <Trash2 size={14} />
                   </button>

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { Folder, FolderPlus } from "lucide-react";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
+import { useT } from "@/lib/i18n";
 
 /**
  * 「项目文件」没有项目时的引导弹窗。
@@ -30,6 +31,7 @@ export default function ProjectRequiredDialog({
   const setActiveProject = useChatHistory((s) => s.setActiveProject);
   const [creating, setCreating] = useState(false);
   const [draft, setDraft] = useState("");
+  const t = useT();
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -58,12 +60,12 @@ export default function ProjectRequiredDialog({
     <div className="app-dialog-backdrop" onPointerDown={(event) => {
       if (event.target === event.currentTarget) onCancel();
     }}>
-      <div role="dialog" aria-modal="true" aria-label="先选一个项目" className="app-dialog">
-        <div className="project-required-eyebrow">项目文件</div>
-        <h2>先选一个项目</h2>
+      <div role="dialog" aria-modal="true" aria-label={t("window.project.required.aria")} className="app-dialog">
+        <div className="project-required-eyebrow">{t("window.project.required.eyebrow")}</div>
+        <h2>{t("window.project.required.title")}</h2>
         <p>
-          项目文件按项目归档，当前这条对话还没有归属项目。
-          新建一个项目、或把它挪进已有项目后，就能在这里导入并索引本机文件。
+          {t("window.project.required.body1")}{" "}
+          {t("window.project.required.body2")}
         </p>
 
         {projects.length > 0 ? (
@@ -79,7 +81,7 @@ export default function ProjectRequiredDialog({
                 <span className="app-menu-check"><Folder size={13} /></span>
                 <span>
                   {project.name}
-                  <small>{project.sessions.length} 个对话</small>
+                  <small>{t("window.project.required.sessionCount", { count: project.sessions.length })}</small>
                 </span>
               </button>
             ))}
@@ -91,9 +93,9 @@ export default function ProjectRequiredDialog({
             <input
               autoFocus
               value={draft}
-              aria-label="新项目名称"
+              aria-label={t("window.project.required.newProjectNameAria")}
               data-testid="project-required-name"
-              placeholder="项目名称"
+              placeholder={t("window.project.required.projectNamePlaceholder")}
               onChange={(event) => setDraft(event.target.value)}
               onKeyDown={(event) => {
                 if (event.key === "Enter") commitNew();
@@ -107,7 +109,7 @@ export default function ProjectRequiredDialog({
               onClick={commitNew}
               className="shrink-0 rounded-md bg-[var(--md-sys-color-primary)] px-2.5 py-1 text-[11.5px] font-medium text-[var(--md-sys-color-on-primary)]"
             >
-              建好并用
+              {t("window.project.required.createAndUse")}
             </button>
           </div>
         ) : (
@@ -118,7 +120,7 @@ export default function ProjectRequiredDialog({
             onClick={() => setCreating(true)}
           >
             <span className="app-menu-check"><FolderPlus size={13} /></span>
-            <span>新建项目<small>建好后当前对话就归它</small></span>
+            <span>{t("window.project.required.createProject")}<small>{t("window.project.required.createProjectHint")}</small></span>
           </button>
         )}
 
@@ -128,7 +130,7 @@ export default function ProjectRequiredDialog({
           className="project-required-cancel"
           onClick={onCancel}
         >
-          取消
+          {t("menu.common.cancel")}
         </button>
       </div>
     </div>

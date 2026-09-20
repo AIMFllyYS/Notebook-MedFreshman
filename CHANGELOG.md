@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+### i18n 第二轮：非正文界面全量汉化
+
+- 新增 `lib/i18n/messages/parts/{zh,en}/` 分片词典，覆盖 **设置页 / 菜单 / 右侧面板 / 思考链 / 面板内业务窗口 / 应用外壳**，合计 1411 key × 中英各一份（key 集合由 `en.ts satisfies` 与单测双重锁死）。
+- **Studio 的章节名称与正文内容不做翻译**（用户口径：文本量巨大且无必要）；笔记正文 / 题目 / 来源标题等内容数据一律保持原样。
+- **思考链与工具展示可翻译**：`ToolPresentation` 的 `label` / `settingsLabel` / `description` 改成 `labelKey` / `settingsLabelKey` / `descriptionKey`（类型 `I18nKey`），21 个工具的展示元数据与步骤状态、摘要、耗时全部随语言切换。
+- 切换语言后：设置六个分节、模型与 API 分组、快捷键表、字体下拉、数据与账户、右栏窗口外壳、PDF / DOCX / PPTX 阅读器外壳、用量与计费面板、菜单与输入区、划词助手、灯箱与顶栏全部跟随。
+- 窗口标题在**开窗时**翻译后存入窗口管理器（通用 chrome 会原样渲染 `win.title`，存 key 会让标签条显示 key 本身）；代价是切换语言后已打开的窗需重开才更新标题。
+- 已知未覆盖：正文里的 directive 卡片外壳（概念卡 / 记忆卡 / 事件卡等，属正文渲染）、store/hook 层的窗口标题与 toast（需先解决 `lib/stores/settings.ts` 的 store↔i18n 循环依赖约束）、登录与人机验证页。
+
 ### Agent 页面 UX 收尾
 
 - 中央对话顶部新增「回答 / 来源 / 图片」分段开关；**回答页签只隐藏不卸载**对话，切换后划词助手仍然可用。

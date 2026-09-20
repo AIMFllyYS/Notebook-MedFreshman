@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight, Eye, EyeOff, Pencil, Plus, Trash2 } from "lu
 import { type CustomApiGroup, type CustomModelConfig, buildCustomModelRegistryId } from "@/lib/ai/models";
 import { EMPTY_FORM, inputCls, labelCls, modelToForm, ModelRow } from "./_shared";
 import { ModelForm } from "./ModelForm";
+import { useT } from "@/lib/i18n";
 
 /** 单个自定义 API 分组卡片（可折叠）。 */
 export function ApiGroupCard({
@@ -26,6 +27,7 @@ export function ApiGroupCard({
   onRemoveModel: (modelId: string) => void;
   onSetDefaultImage: (modelId: string) => void;
 }) {
+  const t = useT();
   const [expanded, setExpanded] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [editingName, setEditingName] = useState(false);
@@ -91,23 +93,23 @@ export function ApiGroupCard({
           </button>
         )}
         <span className="shrink-0 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-          {group.models.length} 个模型
+          {t("settings.apiGroups.modelCount", { count: group.models.length })}
         </span>
         <button
           onClick={() => {
             setNameDraft(group.name);
             setEditingName(true);
           }}
-          title="重命名分组"
+          title={t("settings.apiGroups.rename")}
           className="rounded p-1 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)]"
         >
           <Pencil size={12} />
         </button>
         <button
           onClick={() => {
-            if (confirm(`删除分组 ${group.name}？此操作不可撤销。`)) onRemove();
+            if (confirm(t("settings.apiGroups.removeConfirm", { name: group.name }))) onRemove();
           }}
-          title="删除分组"
+          title={t("settings.apiGroups.remove")}
           className="rounded p-1 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)]"
         >
           <Trash2 size={12} />
@@ -118,7 +120,7 @@ export function ApiGroupCard({
       {expanded && (
         <div className="flex flex-col gap-2.5 border-t border-[var(--md-sys-color-outline-variant)] p-3">
           <div>
-            <label className={labelCls}>API 端点（base URL，含 /v1）</label>
+            <label className={labelCls}>{t("settings.apiGroups.baseUrl")}</label>
             <input
               type="url"
               value={group.baseUrl}
@@ -128,7 +130,7 @@ export function ApiGroupCard({
             />
           </div>
           <div>
-            <label className={labelCls}>请求超时（毫秒，缺省 45000）</label>
+            <label className={labelCls}>{t("settings.apiGroups.timeout")}</label>
             <input
               type="number"
               min={5000}
@@ -143,7 +145,7 @@ export function ApiGroupCard({
             />
           </div>
           <div>
-            <label className={labelCls}>API 密钥</label>
+            <label className={labelCls}>{t("settings.apiGroups.apiKey")}</label>
             <div className="relative">
               <input
                 type={showKey ? "text" : "password"}
@@ -162,10 +164,10 @@ export function ApiGroupCard({
           </div>
 
           <div>
-            <label className={labelCls}>已添加模型（{group.models.length}）</label>
+            <label className={labelCls}>{t("settings.apiGroups.addedModels", { count: group.models.length })}</label>
             {group.models.length === 0 ? (
               <p className="py-2 text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-                暂无模型，点击下方按钮添加
+                {t("settings.apiGroups.noModels")}
               </p>
             ) : (
               <div className="flex flex-col gap-1.5">
@@ -184,7 +186,7 @@ export function ApiGroupCard({
                       }
                       onEdit={() => startEdit(m)}
                       onDelete={() => {
-                        if (confirm(`删除模型 ${m.label || m.id}？`)) onRemoveModel(m.id);
+                        if (confirm(t("settings.apiGroups.removeModelConfirm", { name: m.label || m.id }))) onRemoveModel(m.id);
                       }}
                       isEditing={editingModelId === m.id}
                     />
@@ -217,7 +219,7 @@ export function ApiGroupCard({
               data-testid="custom-api-add-model"
               className="press flex items-center gap-1.5 self-start rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
             >
-              <Plus size={13} /> 添加模型
+              <Plus size={13} /> {t("settings.apiGroups.addModel")}
             </button>
           )}
         </div>

@@ -3,8 +3,19 @@ import type { LocaleMessages } from "../types";
 /**
  * 英文词典。用 `satisfies` 而不是类型注解：既保证与中文词典 key 完全一致（多一个少一个都报错），
  * 又保留字面量类型，方便未来做「哪些 key 还没翻」的静态检查。
+ *
+ * 与 zh.ts 同样分片：四个新命名空间在 `parts/en/<namespace>.ts`，这里合并。
+ * 任何一边少一个 key，`satisfies LocaleMessages` 都会在 typecheck 阶段报错。
  */
+import { appEn } from "./parts/en/app";
+import { menuEn } from "./parts/en/menu";
+import { panelEn } from "./parts/en/panel";
+import { settingsEn } from "./parts/en/settings";
+import { traceEn } from "./parts/en/trace";
+import { windowEn } from "./parts/en/window";
+
 export const en = {
+  app: appEn,
   agent: {
     nav: {
       aria: "Agent section navigation",
@@ -72,6 +83,10 @@ export const en = {
     },
     sources: {
       title: "Sources",
+      // Window titles: the dock tab bar renders win.title verbatim.
+      traceWindowTitle: "Sources · {count}",
+      webWindowTitle: "Web sources · {count}",
+      untitled: "Untitled source",
       count: "Sources · {count}",
       openPanel: "Open sources panel",
       outline: "Source outline",
@@ -139,12 +154,9 @@ export const en = {
       shrink: "Shrink to panel",
     },
   },
-  settings: {
-    language: {
-      title: "Language",
-      zh: "Chinese",
-      en: "English",
-      desc: "Interface language, applied immediately",
-    },
-  },
+  settings: settingsEn,
+  menu: menuEn,
+  panel: panelEn,
+  trace: traceEn,
+  window: windowEn,
 } satisfies LocaleMessages;

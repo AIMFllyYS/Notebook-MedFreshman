@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { ExternalLink, Maximize2, Minimize2, Minus, X } from "lucide-react";
 import clsx from "clsx";
+import { useT } from "@/lib/i18n";
 
 interface WindowChromeProps {
   title: string;
@@ -67,6 +68,7 @@ export default function WindowChrome({
   bodyClassName,
   surface = "floating",
 }: WindowChromeProps) {
+  const t = useT();
   const compactSurface = surface === "dock" || surface === "sheet";
   const dockSurface = surface === "dock";
   // dock 窗口的标题、关闭、收起、扩展都已由右栏标签条承担：这一行只在有业务动作/外链时才出现。
@@ -88,20 +90,20 @@ export default function WindowChrome({
               type="button"
               data-no-drag
               onClick={onClose}
-              title="关闭"
+              title={t("panel.common.close")}
               className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)] hover:text-[var(--md-sys-color-error)]"
             >
               <X size={15} />
             </button>
           ) : (
             <>
-              <TrafficButton tone="close" title="关闭" onClick={onClose}>
+              <TrafficButton tone="close" title={t("panel.common.close")} onClick={onClose}>
                 <X size={9} strokeWidth={3} />
               </TrafficButton>
-              <TrafficButton tone="minimize" title="最小化" onClick={onMinimize}>
+              <TrafficButton tone="minimize" title={t("panel.window.minimize")} onClick={onMinimize}>
                 <Minus size={9} strokeWidth={3} />
               </TrafficButton>
-              <TrafficButton tone="fullscreen" title={isFullscreen ? "还原" : "全屏"} onClick={onFullscreen}>
+              <TrafficButton tone="fullscreen" title={t(isFullscreen ? "panel.window.restore" : "panel.window.fullscreen")} onClick={onFullscreen}>
                 {isFullscreen ? <Minimize2 size={8} strokeWidth={3} /> : <Maximize2 size={8} strokeWidth={3} />}
               </TrafficButton>
             </>
@@ -131,7 +133,7 @@ export default function WindowChrome({
               type="button"
               data-no-drag
               onClick={onExternalLink}
-              title={externalLinkLabel || "在新标签页打开"}
+              title={externalLinkLabel || t("panel.window.openInNewTab")}
               className={clsx(
                 "press flex h-7 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]",
                 externalLinkLabel

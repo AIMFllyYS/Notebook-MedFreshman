@@ -10,6 +10,7 @@ import {
   type ForcedComposerTool,
   skillForcedTool,
 } from "@/lib/chat/composerIntent";
+import { useT } from "@/lib/i18n";
 import { CompactContextIcon, ForcedToolIcon, PlanModeIcon, SkillIcon } from "./ComposerIcons";
 
 export type ComposerCommandId = "plan" | "compact" | ComposerForcedTool;
@@ -60,6 +61,7 @@ export default function ComposerCommandPanel({
   onSelectTool,
   onSelectSkill,
 }: ComposerCommandPanelProps) {
+  const t = useT();
   const items = listComposerCommands({ planAllowed, skills, query });
   const showPlan = items.some((item) => item.kind === "plan");
   const showCompact = items.some((item) => item.kind === "compact");
@@ -68,7 +70,7 @@ export default function ComposerCommandPanel({
   const selectedId = items[activeIndex]?.id;
 
   return (
-    <div className="composer-command-panel" data-testid="composer-command-panel" role="listbox" aria-label="对话命令">
+    <div className="composer-command-panel" data-testid="composer-command-panel" role="listbox" aria-label={t("menu.composer.aria")}>
       {showPlan && (
         <button
           type="button"
@@ -78,8 +80,8 @@ export default function ComposerCommandPanel({
           onClick={onSelectPlan}
         >
           <span className="app-menu-check"><PlanModeIcon /></span>
-          <span>{COMPOSER_PLAN_LABEL}</span>
-          {planMode ? <span className="composer-command-on">已开</span> : null}
+          <span>{t("menu.composer.plan")}</span>
+          {planMode ? <span className="composer-command-on">{t("menu.composer.on")}</span> : null}
         </button>
       )}
       {showCompact && (
@@ -91,11 +93,11 @@ export default function ComposerCommandPanel({
           onClick={onSelectCompact}
         >
           <span className="app-menu-check"><CompactContextIcon /></span>
-          <span>{COMPOSER_COMPACT_LABEL}</span>
+          <span>{t("menu.composer.compact")}</span>
         </button>
       )}
       {(showPlan || showCompact) && tools.length > 0 ? <div className="app-menu-separator" /> : null}
-      {tools.length > 0 ? <div className="app-menu-heading">特定工具</div> : null}
+      {tools.length > 0 ? <div className="app-menu-heading">{t("menu.composer.toolsHeading")}</div> : null}
       {tools.map((item) => {
         const tool = item.id as ForcedComposerTool;
         return (
@@ -108,13 +110,13 @@ export default function ComposerCommandPanel({
             onClick={() => onSelectTool(tool)}
           >
             <span className="app-menu-check"><ForcedToolIcon tool={tool} /></span>
-            <span>{FORCED_TOOL_LABELS[tool]}</span>
-            {forcedTool === tool ? <span className="composer-command-on">已选</span> : null}
+            <span>{t(`menu.composer.tool.${tool}`)}</span>
+            {forcedTool === tool ? <span className="composer-command-on">{t("menu.composer.selected")}</span> : null}
           </button>
         );
       })}
       {skillItems.length > 0 ? <div className="app-menu-separator" /> : null}
-      {skillItems.length > 0 ? <div className="app-menu-heading">已导入 Skills</div> : null}
+      {skillItems.length > 0 ? <div className="app-menu-heading">{t("menu.composer.skillsHeading")}</div> : null}
       {skillItems.map((item) => (
         <button
           key={item.skill!.id}
@@ -126,10 +128,10 @@ export default function ComposerCommandPanel({
         >
           <span className="app-menu-check"><SkillIcon /></span>
           <span>{item.skill!.name}</span>
-          {forcedTool === skillForcedTool(item.skill!.id) ? <span className="composer-command-on">已选</span> : null}
+          {forcedTool === skillForcedTool(item.skill!.id) ? <span className="composer-command-on">{t("menu.composer.selected")}</span> : null}
         </button>
       ))}
-      {items.length === 0 ? <div className="app-menu-heading">没有匹配的命令</div> : null}
+      {items.length === 0 ? <div className="app-menu-heading">{t("menu.composer.empty")}</div> : null}
     </div>
   );
 }

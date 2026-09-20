@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { estimateTokens } from "./estimateTokens.ts";
+import { translate } from "@/lib/i18n";
 import {
   FIRST_TURN_OVERHEAD_TOKENS,
   RING_APPROACHING_RATIO,
@@ -61,9 +62,12 @@ test("contextRingLevel：70–80% 中间态，>=80% 才是软上限红", () => {
   assert.equal(contextRingLevel(RING_APPROACHING_RATIO), "approaching");
   assert.equal(contextRingLevel(0.79), "approaching");
   assert.equal(contextRingLevel(SOFT_LIMIT_RATIO), "limit");
-  assert.equal(contextRingCaption("approaching"), "接近 80% 软上限");
-  assert.equal(contextRingCaption("limit"), "已达 80% 软上限");
+  // 文案搬进词典：函数只回 key，中文真值由 zh 真相源保证（与原来一字不差）。
+  assert.equal(contextRingCaption("approaching"), "panel.token.ringApproaching");
+  assert.equal(contextRingCaption("limit"), "panel.token.ringLimit");
   assert.equal(contextRingCaption("notice"), undefined);
+  assert.equal(translate("zh", "panel.token.ringApproaching"), "接近 80% 软上限");
+  assert.equal(translate("zh", "panel.token.ringLimit"), "已达 80% 软上限");
 });
 
 test("formatContextCacheValue：绑 cachedTokens 而不是本地 hash 布尔", () => {

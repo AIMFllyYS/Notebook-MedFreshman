@@ -4,13 +4,20 @@ export const SELECTION_ASSISTANT_ACTIONS = ["copy", "explain", "record", "note",
 export type SelectionAssistantAction = (typeof SELECTION_ASSISTANT_ACTIONS)[number];
 export type SelectionAssistantActions = Record<SelectionAssistantAction, boolean>;
 
+/**
+ * 动作 → 文案 key（**不再存中文字面量**）。
+ *
+ * 为什么存 key：本模块是纯数据 + 纯函数，拿不到 locale。
+ * 渲染方必须 `t(SELECTION_ASSISTANT_ACTION_LABELS[action])` 之后再显示；
+ * 直接把 value 渲染出来只会看到 "menu.selection.copy"。
+ */
 export const SELECTION_ASSISTANT_ACTION_LABELS: Record<SelectionAssistantAction, string> = {
-  copy: "复制",
-  explain: "解释",
-  record: "记录",
-  note: "笔记",
-  ask: "追问",
-  quote: "引用",
+  copy: "menu.selection.copy",
+  explain: "menu.selection.explain",
+  record: "menu.selection.record",
+  note: "menu.selection.note",
+  ask: "menu.selection.ask",
+  quote: "menu.selection.quote",
 };
 
 export const DEFAULT_SELECTION_ASSISTANT_ACTIONS: SelectionAssistantActions = {

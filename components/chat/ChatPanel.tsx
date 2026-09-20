@@ -25,6 +25,7 @@ import { AgentWelcomeExamples, AgentWelcomeGreeting } from '@/components/chat/Ag
 import ChatHistoryOverlay from '@/components/chat/ChatHistoryOverlay';
 import type { ChatContext, ChatOptions } from '@/lib/types/chat';
 import type { SendMessageOptions } from '@/lib/chat/sendMessage';
+import { useT } from '@/lib/i18n';
 
 interface ChatPanelProps {
   chatContext: ChatContext;
@@ -41,6 +42,7 @@ interface ChatPanelProps {
 }
 
 const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, emptyLayout = 'classic' }) => {
+  const t = useT();
   const [chatOptions] = useState<ChatOptions>({
     enableThinking: false,
     enableSearch: false,
@@ -256,7 +258,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
                 }}
               >
                 <AgentInfoIcon size={14} style={{ flexShrink: 0 }} />
-                <span style={{ flex: 1 }}>已经在一条新对话里了，直接说你想做什么就行。</span>
+                <span style={{ flex: 1 }}>{t('trace.panel.blankHint')}</span>
               </div>
             ) : null}
             {showWarning ? (
@@ -269,7 +271,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
           }}>
             <AgentAlertIcon size={14} style={{ flexShrink: 0 }} />
             <span style={{ flex: 1 }}>
-              {contextWarning || `上下文已使用 ${Math.round(ctxRatio * 100)}%，之后请求会自动压缩较早对话；你仍然可以继续输入。`}
+              {contextWarning || t('trace.panel.contextWarning', { percent: Math.round(ctxRatio * 100) })}
             </span>
             <button type="button" onClick={handleNewChat} style={{
               display: 'flex', alignItems: 'center', gap: 4,
@@ -277,7 +279,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
               background: 'var(--md-sys-color-error)', color: 'var(--md-sys-color-on-error)',
               fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
             }}>
-              <AgentPlusIcon size={12} /> 新建对话
+              <AgentPlusIcon size={12} /> {t('agent.menu.newChat')}
             </button>
           </div>
             ) : null}
@@ -307,7 +309,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
                     fontSize: 11, fontWeight: 600, cursor: 'pointer',
                   }}
                 >
-                  关闭
+                  {t('panel.common.close')}
                 </button>
               </div>
             ) : null}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import { ExternalLink, Loader2, RotateCw, ShieldAlert } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 export interface WebviewEl extends HTMLElement {
   loadURL(url: string): Promise<void>;
@@ -30,6 +31,7 @@ export default function WebviewSite({
   onUrlChange?: (url: string) => void;
 }) {
   const localRef = useRef<WebviewEl | null>(null);
+  const t = useT();
   const [initialUrl] = useState(() => url);
   const lastLoaded = useRef(url);
   const firstNonce = useRef(nonce);
@@ -60,12 +62,12 @@ export default function WebviewSite({
     const onFail = (event: Event) => {
       const detail = event as unknown as { errorCode?: number; errorDescription?: string; isMainFrame?: boolean };
       if (detail.isMainFrame && detail.errorCode !== -3) {
-        setError(`${detail.errorDescription || "加载失败"}（${detail.errorCode}）`);
+        setError(t("window.browser.loadFailedWithCode", { message: detail.errorDescription || t("window.state.failed"), code: String(detail.errorCode) }));
         setLoading(false);
       }
     };
     const onGone = () => {
-      setError("页面渲染进程已退出，请重试。");
+      setError(t("window.browser.rendererGone"));
       setLoading(false);
     };
 
@@ -117,13 +119,13 @@ export default function WebviewSite({
       />
       {loading && !error ? (
         <div className="absolute left-2 top-2 z-10 flex items-center gap-1.5 rounded-full bg-[var(--bg-panel)] px-2.5 py-1 text-[11px] text-[var(--ink-soft)] shadow">
-          <Loader2 size={12} className="animate-spin" /> 加载中…
+          <Loader2 size={12} className="animate-spin" /> {t("window.state.loading")}
         </div>
       ) : null}
       {error ? (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-[var(--bg-panel)] px-6 text-center">
           <ShieldAlert size={26} className="text-[var(--ink-soft)]" />
-          <p className="text-[14px] font-semibold text-[var(--ink)]">页面加载失败</p>
+          <p className="text-[14px] font-semibold text-[var(--ink)]">{t("window.state.pageLoadFailed")}</p>
           <p className="max-w-[300px] text-[12px] leading-relaxed text-[var(--ink-soft)]">{error}</p>
           <div className="flex items-center gap-2">
             <button
@@ -135,7 +137,7 @@ export default function WebviewSite({
               }}
               className="press inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-3.5 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
             >
-              <RotateCw size={13} /> 重试
+              <RotateCw size={13} /> {t("window.browser.retry")}
             </button>
             <a
               href={url || undefined}
@@ -143,7 +145,7 @@ export default function WebviewSite({
               rel="noreferrer"
               className="press inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3.5 py-1.5 text-[12.5px] text-[var(--ink-soft)]"
             >
-              <ExternalLink size={13} /> 系统浏览器打开
+              <ExternalLink size={13} /> {t("window.browser.openInSystemBrowser")}
             </a>
           </div>
         </div>

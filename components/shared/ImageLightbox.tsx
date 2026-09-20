@@ -5,8 +5,10 @@ import { createPortal } from "react-dom";
 import { X, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import { useLightbox } from "@/lib/stores/lightbox";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { useT } from "@/lib/i18n";
 
 export function ImageLightbox() {
+  const t = useT();
   const { src, alt, close } = useLightbox();
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -91,12 +93,12 @@ export function ImageLightbox() {
       onClick={close}
       role="dialog"
       aria-modal="true"
-      aria-label={alt || "图片查看"}
+      aria-label={alt || t("app.lightbox.label")}
     >
       <button
         className="image-lightbox-close"
         onClick={close}
-        aria-label="关闭"
+        aria-label={t("app.lightbox.close")}
         type="button"
       >
         <X size={24} />
@@ -106,16 +108,16 @@ export function ImageLightbox() {
         className="image-lightbox-controls"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={zoomOut} aria-label="缩小" type="button">
+        <button onClick={zoomOut} aria-label={t("app.lightbox.zoomOut")} type="button">
           <ZoomOut size={18} />
         </button>
         <span className="image-lightbox-zoom-label">
           {Math.round(zoom * 100)}%
         </span>
-        <button onClick={zoomIn} aria-label="放大" type="button">
+        <button onClick={zoomIn} aria-label={t("app.lightbox.zoomIn")} type="button">
           <ZoomIn size={18} />
         </button>
-        <button onClick={resetView} aria-label="重置" type="button">
+        <button onClick={resetView} aria-label={t("app.lightbox.reset")} type="button">
           <RotateCcw size={18} />
         </button>
       </div>

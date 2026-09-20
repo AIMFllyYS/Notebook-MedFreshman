@@ -27,20 +27,27 @@ import {
 } from "@/lib/notes/noteToc";
 import { DURATION, EASE } from "@/lib/motion";
 import { useWindowManager } from "@/lib/stores/windowManager";
+import { useT } from "@/lib/i18n";
 import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
 import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
 
 type EditorMode = "source" | "wysiwyg" | "split";
 
-const MODES: { id: EditorMode; label: string }[] = [
-  { id: "source", label: "源码" },
-  { id: "wysiwyg", label: "渲染编辑" },
-  { id: "split", label: "分栏" },
+const MODES: { id: EditorMode; labelKey: string }[] = [
+  { id: "source", labelKey: "window.note.editor.modeSource" },
+  { id: "wysiwyg", labelKey: "window.note.editor.modeWysiwyg" },
+  { id: "split", labelKey: "window.note.editor.modeSplit" },
 ];
+
+/** dynamic 的 loading 需要是组件（拿不到调用方的 t），单独包一层。 */
+function CrepeLoading() {
+  const t = useT();
+  return <div className="user-note-crepe-loading">{t("window.note.common.editorLoading")}</div>;
+}
 
 const MilkdownNoteEditor = dynamic(() => import("@/components/notes/MilkdownNoteEditor"), {
   ssr: false,
-  loading: () => <div className="user-note-crepe-loading">加载渲染编辑器…</div>,
+  loading: () => <CrepeLoading />,
 });
 
 export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
@@ -66,6 +73,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   // 用它区分「用户自己打字」与「外部写入」，前者不重挂（否则丢光标）。
   const lastEmitted = useRef(note?.markdown ?? "");
   const { cited, cite } = useCiteToChat();
+  const t = useT();
 
   const handleClose = useCallback(() => closeEditor(noteId), [closeEditor, noteId]);
   const handleMarkdown = useCallback(
@@ -108,12 +116,12 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
         type="button"
         data-no-drag
         className="user-note-refresh"
-        title="刷新渲染"
-        aria-label="刷新渲染"
+        title={t("window.note.editor.refreshRender")}
+        aria-label={t("window.note.editor.refreshRender")}
         onClick={refreshWysiwyg}
       >
         <RefreshCw size={13} />
-        <span>刷新</span>
+        <span>{t("window.note.editor.refresh")}</span>
       </button>
       {isFront ? (
         <MilkdownNoteEditor
@@ -129,7 +137,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
 
   const actions = (
     <div className="user-note-chrome-actions" data-no-drag>
-      <div className="user-note-modes" role="group" aria-label="编辑模式">
+      <div className="user-note-modes" role="group" aria-label={t("window.note.editor.modeGroup")}>
         {MODES.map((item) => (
           <button
             key={item.id}
@@ -139,38 +147,38 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
             className={clsx("user-note-mode", mode === item.id && "is-active")}
             onClick={() => setMode(item.id)}
           >
-            {item.label}
+            {t(item.labelKey)}
           </button>
         ))}
       </div>
       <button
         type="button"
         data-no-drag
-        title="引用到右侧对话"
-        aria-label="引用到右侧对话"
+        title={t("window.note.editor.citeToChat")}
+        aria-label={t("window.note.editor.citeToChat")}
         className="user-note-chrome-btn"
         onClick={() => {
           if (citeUserNoteToMainAgent(noteId)) cite(formatNoteQuote(note));
         }}
       >
         <Quote size={14} />
-        <span className="sr-only">{cited ? "已引用到对话" : "引用到对话"}</span>
+        <span className="sr-only">{cited ? t("window.note.common.cited") : t("window.note.common.cite")}</span>
       </button>
       <button
         type="button"
         data-no-drag
-        title="下载 Markdown"
-        aria-label="下载 Markdown"
+        title={t("window.common.downloadMarkdown")}
+        aria-label={t("window.common.downloadMarkdown")}
         className="user-note-chrome-btn"
-        onClick={() => downloadAsMarkdown(note.markdown, note.title || "无标题笔记")}
+        onClick={() => downloadAsMarkdown(note.markdown, note.title || t("window.note.common.untitled"))}
       >
         <Download size={14} />
       </button>
       <button
         type="button"
         data-no-drag
-        title="删除这篇笔记"
-        aria-label="删除这篇笔记"
+        title={t("window.note.editor.deleteNote")}
+        aria-label={t("window.note.editor.deleteNote")}
         className="user-note-chrome-btn is-danger"
         onClick={() => setConfirmDelete(true)}
       >
@@ -220,7 +228,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   return (
     <ManagedWindow
       windowId={userNoteWindowId(noteId)}
-      title={note.title || "无标题笔记"}
+      title={note.title || t("window.note.common.untitled")}
       icon={<NotebookFormulaIcon size={15} />}
       onClose={handleClose}
       fullscreenTarget="notes"
@@ -255,7 +263,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
 
       {confirmDelete && typeof document !== "undefined" ? (
         <DeleteNoteDialog
-          title={note.title || "无标题笔记"}
+          title={note.title || t("window.note.common.untitled")}
           onCancel={() => setConfirmDelete(false)}
           onConfirm={() => {
             setConfirmDelete(false);
@@ -305,6 +313,7 @@ function NoteEditorBody({
   onToggleAgent: () => void;
   onToggleToc: () => void;
 }) {
+  const t = useT();
   return (
     <div className="user-note-editor">
       <div className="user-note-editor-head" data-no-drag>
@@ -312,8 +321,8 @@ function NoteEditorBody({
           <button
             type="button"
             data-no-drag
-            title="显示目录"
-            aria-label="显示目录"
+            title={t("window.note.editor.showToc")}
+            aria-label={t("window.note.editor.showToc")}
             className="user-note-chrome-btn"
             onClick={onToggleToc}
           >
@@ -323,15 +332,15 @@ function NoteEditorBody({
         <input
           className="user-note-title-input"
           value={title}
-          placeholder="笔记标题"
-          aria-label="笔记标题"
+          placeholder={t("window.note.editor.titlePlaceholder")}
+          aria-label={t("window.note.editor.titlePlaceholder")}
           onChange={(event) => onTitleChange(event.target.value)}
         />
         <button
           type="button"
           data-no-drag
-          title={agentOpen ? "收起笔记对话" : "打开笔记对话"}
-          aria-label="笔记对话"
+          title={agentOpen ? t("window.note.editor.toggleAgentClose") : t("window.note.editor.toggleAgentOpen")}
+          aria-label={t("window.note.editor.agentAria")}
           aria-pressed={agentOpen}
           className={clsx("user-note-chrome-btn user-note-editor-ai", agentOpen && "is-active")}
           onClick={onToggleAgent}
@@ -367,6 +376,7 @@ function NoteSourcePane({
   value: string;
   onChange: (next: string) => void;
 }) {
+  const t = useT();
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     keepEditorShortcut(event);
     if (event.key !== "Tab" || event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return;
@@ -387,8 +397,8 @@ function NoteSourcePane({
       className="user-note-source"
       value={value}
       spellCheck={false}
-      aria-label="笔记正文（Markdown）"
-      placeholder="用 Markdown 写作，支持 GFM 表格与 $KaTeX$ 公式…"
+      aria-label={t("window.note.common.markdownBody")}
+      placeholder={t("window.note.editor.writingPlaceholder")}
       onChange={(event) => onChange(event.target.value)}
       onKeyDown={handleKeyDown}
     />
@@ -396,12 +406,13 @@ function NoteSourcePane({
 }
 
 function NotePreviewPane({ markdown }: { markdown: string }) {
+  const t = useT();
   return (
     <div className="user-note-preview prose-notes" data-no-drag>
       {markdown.trim() ? (
         <NoteRenderer content={markdown} />
       ) : (
-        <p className="note-citation-status">还没有内容。在左侧开始写吧。</p>
+        <p className="note-citation-status">{t("window.note.editor.emptyPreview")}</p>
       )}
     </div>
   );
@@ -416,18 +427,19 @@ function DeleteNoteDialog({
   onCancel: () => void;
   onConfirm: () => void;
 }) {
+  const t = useT();
   return createPortal(
     <div className="app-dialog-backdrop">
-      <div role="alertdialog" aria-modal="true" aria-label="删除笔记" className="app-dialog">
-        <div className="app-dialog-eyebrow">删除确认</div>
-        <h2>删除「{title}」？</h2>
-        <p>删除后无法从这台设备恢复；已登录时云端副本也会删除。</p>
+      <div role="alertdialog" aria-modal="true" aria-label={t("window.note.editor.deleteDialogAria")} className="app-dialog">
+        <div className="app-dialog-eyebrow">{t("window.note.common.deleteConfirmEyebrow")}</div>
+        <h2>{t("window.note.common.deleteConfirmTitle", { title })}</h2>
+        <p>{t("window.note.editor.deleteDialogBody")}</p>
         <div className="user-note-dialog-actions">
           <button type="button" className="user-note-dialog-cancel" onClick={onCancel}>
-            取消
+            {t("menu.common.cancel")}
           </button>
           <button type="button" className="app-dialog-confirm" onClick={onConfirm}>
-            删除
+            {t("window.common.delete")}
           </button>
         </div>
       </div>

@@ -1,4 +1,6 @@
 import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { translate } from '@/lib/i18n';
+import { useSettings } from '@/lib/stores/settings';
 import type { SourceRound, TraceSource } from '@/lib/chat/traceSources';
 import type { WebSearchSource } from '@/lib/types/chat';
 
@@ -23,7 +25,11 @@ export function openSourceTrace(
 ) {
   if (!sources.length) return;
   const id = options?.id ?? SOURCE_TRACE_WINDOW_ID;
-  const title = options?.title ?? `来源追踪 · ${sources.length} 条`;
+  // 窗口标题会经通用 chrome（任务栏 / 标签条）原样显示，所以必须在开窗时就翻好——
+  // 存 key 进 windowManager 会让标签条直接显示 "agent.sources.traceWindowTitle"。
+  const title =
+    options?.title ??
+    translate(useSettings.getState().locale, 'agent.sources.traceWindowTitle', { count: sources.length });
   const activeKey = options?.activeKey ?? sourceItemKey(sources[0], 0);
   const rounds = options?.rounds?.length ? options.rounds : null;
   const data = rounds ? { sources, activeKey, rounds } : { sources, activeKey };
@@ -49,7 +55,7 @@ export function openSourceTrace(
 export function openWebSearchSources(sources: WebSearchSource[], activeUrl?: string, activeIndex?: number) {
   const items: TraceSource[] = sources.map((source) => ({
     kind: 'web' as const,
-    title: source.title || source.url || '未命名来源',
+    title: source.title || source.url || translate(useSettings.getState().locale, 'agent.sources.untitled'),
     url: source.url ?? '',
     snippet: source.snippet ?? '',
   }));
@@ -61,7 +67,7 @@ export function openWebSearchSources(sources: WebSearchSource[], activeUrl?: str
   const firstUrl = items.find((item): item is Extract<TraceSource, { kind: 'web' }> => item.kind === 'web' && !!item.url)?.url;
   openSourceTrace(items, {
     id: `web-search:${firstUrl || items.length}`,
-    title: `联网来源 · ${items.length} 条`,
+    title: translate(useSettings.getState().locale, 'agent.sources.webWindowTitle', { count: items.length }),
     activeKey: sourceItemKey(active, index),
   });
 }

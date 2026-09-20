@@ -11,42 +11,43 @@ import { ToolsSection } from "./ToolsSection";
 import { ContextSection } from "./ContextSection";
 import { BillingSection, CloudSyncSection, ExportSection, RedemptionSection } from "./DataSection";
 import { SkillsSection } from "./SkillsSection";
+import { useT } from "@/lib/i18n";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { onSettingsFieldBlur, onSettingsFieldFocus } from "@/lib/settings/settingsSaveToast";
 
 type SectionId = "general" | "appearance" | "models" | "capabilities" | "skills" | "data";
-const SECTIONS: { id: SectionId; label: string; hint: string; icon: typeof Settings2 }[] = [
-  { id: "general", label: "通用", hint: "常规与对话默认", icon: SlidersHorizontal },
-  { id: "appearance", label: "外观", hint: "主题与阅读体验", icon: Palette },
-  { id: "models", label: "模型配置", hint: "模型、API 与生图", icon: PlugZap },
-  { id: "capabilities", label: "Agent 能力", hint: "工具与演示", icon: Orbit },
-  { id: "skills", label: "Skills", hint: "技能库与注入", icon: ScrollText },
-  { id: "data", label: "数据与账户", hint: "计费、同步与导出", icon: Database },
+const SECTIONS: { id: SectionId; labelKey: string; hintKey: string; icon: typeof Settings2 }[] = [
+  { id: "general", labelKey: "settings.section.general.label", hintKey: "settings.section.general.hint", icon: SlidersHorizontal },
+  { id: "appearance", labelKey: "settings.section.appearance.label", hintKey: "settings.section.appearance.hint", icon: Palette },
+  { id: "models", labelKey: "settings.section.models.label", hintKey: "settings.section.models.hint", icon: PlugZap },
+  { id: "capabilities", labelKey: "settings.section.capabilities.label", hintKey: "settings.section.capabilities.hint", icon: Orbit },
+  { id: "skills", labelKey: "settings.section.skills.label", hintKey: "settings.section.skills.hint", icon: ScrollText },
+  { id: "data", labelKey: "settings.section.data.label", hintKey: "settings.section.data.hint", icon: Database },
 ];
 
-const CONTENT: Record<SectionId, { title: string; description: string; body: ReactNode }> = {
+const CONTENT: Record<SectionId, { titleKey: string; descriptionKey: string; body: ReactNode }> = {
   general: {
-    title: "通用设置", description: "调整新对话默认行为、划词助手和全局补充上下文。",
+    titleKey: "settings.section.general.title", descriptionKey: "settings.section.general.desc",
     body: <><DefaultsSection /><RecordAssistantSection /><ContextSection /></>,
   },
   appearance: {
-    title: "外观", description: "这里与项目左下角的外观设置共用同一份配置，修改会立即同步。",
+    titleKey: "settings.section.appearance.title", descriptionKey: "settings.section.appearance.desc",
     body: <AppearanceSection />,
   },
   models: {
-    title: "模型配置", description: "集中管理内置模型、自定义 API、专用能力端点与图片生成流程。",
+    titleKey: "settings.section.models.title", descriptionKey: "settings.section.models.desc",
     body: <><BuiltinModelsSection /><ApiGroupsSection /><CapabilityEndpointsSection /><ImageSection /></>,
   },
   capabilities: {
-    title: "Agent 能力", description: "控制 Agent 可以调用的工具与交互能力，不影响模型或历史对话。",
+    titleKey: "settings.section.capabilities.title", descriptionKey: "settings.section.capabilities.desc",
     body: <ToolsSection />,
   },
   skills: {
-    title: "Skills", description: "维护可供 Agent 按需调用或固定注入的技能。",
+    titleKey: "settings.section.skills.title", descriptionKey: "settings.section.skills.desc",
     body: <SkillsSection />,
   },
   data: {
-    title: "数据与账户", description: "查看计费偏好、兑换、云同步与本地导出。",
+    titleKey: "settings.section.data.title", descriptionKey: "settings.section.data.desc",
     body: <><BillingSection /><RedemptionSection /><CloudSyncSection /><ExportSection /></>,
   },
 };
@@ -63,6 +64,7 @@ export default function ChatSettings({
   navPlacement?: "side" | "top";
 }) {
   const [active, setActive] = useState<SectionId>("general");
+  const t = useT();
   const close = useCallback(() => onClose?.(), [onClose]);
   useOverlayRegistration({
     id: "chat-settings-workspace",
@@ -79,15 +81,15 @@ export default function ChatSettings({
     onFocus={onSettingsFieldFocus}
     onBlur={onSettingsFieldBlur}
   >
-    <aside className="chat-settings-sidebar" aria-label="Agent 设置分类">
+    <aside className="chat-settings-sidebar" aria-label={t("settings.workspace.navAria")}>
       {showBack ? (
-        <button type="button" onClick={close} className="chat-settings-back" aria-label="返回对话">
-          <ArrowLeft size={15} /><span>返回对话</span>
+        <button type="button" onClick={close} className="chat-settings-back" aria-label={t("settings.workspace.back")}>
+          <ArrowLeft size={15} /><span>{t("settings.workspace.back")}</span>
         </button>
       ) : null}
       <div className="chat-settings-brand">
         <span className="chat-settings-brand-icon"><Settings2 size={16} /></span>
-        <span><strong>设置</strong><small>AI Agent</small></span>
+        <span><strong>{t("settings.workspace.brand")}</strong><small>AI Agent</small></span>
       </div>
       <nav className="chat-settings-nav">
         {SECTIONS.map((section) => {
@@ -95,15 +97,15 @@ export default function ChatSettings({
           const selected = active === section.id;
           return <button key={section.id} type="button" aria-current={selected ? "page" : undefined}
             className="chat-settings-nav-item" data-testid={`chat-settings-nav-${section.id}`} onClick={() => setActive(section.id)}>
-            <Icon size={15} /><span><strong>{section.label}</strong><small>{section.hint}</small></span>
+            <Icon size={15} /><span><strong>{t(section.labelKey)}</strong><small>{t(section.hintKey)}</small></span>
           </button>;
         })}
       </nav>
     </aside>
     <main className="chat-settings-main" tabIndex={-1}>
       <header className="chat-settings-content-header">
-        <h1 className="sr-only">{content.title}</h1>
-        <p>{content.description}</p>
+        <h1 className="sr-only">{t(content.titleKey)}</h1>
+        <p>{t(content.descriptionKey)}</p>
       </header>
       <div key={active} className="chat-settings-content" data-testid={`chat-settings-content-${active}`}>
         {content.body}

@@ -5,6 +5,7 @@ import { HelpCircle, Lightbulb } from 'lucide-react';
 import QuizMarkdown from '@/components/quiz/QuizMarkdown';
 import { openSourceTrace } from '@/lib/chat/openSourceTrace';
 import type { TraceSource } from '@/lib/chat/traceSources';
+import { useT } from '@/lib/i18n';
 
 interface FollowUpQuestionsProps {
   questions: string[];
@@ -16,23 +17,24 @@ interface FollowUpQuestionsProps {
 export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({
   questions,
   onSelect,
-  title = '你可能还想问',
+  title,
   sources = [],
 }) => {
+  const t = useT();
   if ((!questions || questions.length === 0) && sources.length === 0) return null;
 
   return (
     <div className="followup-card" data-testid="followups">
       <div className="followup-header">
         <Lightbulb size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
-        <span className="followup-title">{questions.length ? title : '本轮依据'}</span>
+        <span className="followup-title">{questions.length ? (title ?? t('trace.followUp.title')) : t('trace.followUp.sourcesOnly')}</span>
         {sources.length > 0 ? (
           <button
             type="button"
             className="followup-sources"
             onClick={() => openSourceTrace(sources)}
           >
-            来源 · {sources.length}
+            {t('agent.sources.count', { count: sources.length })}
           </button>
         ) : null}
       </div>
@@ -54,4 +56,3 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({
     </div>
   );
 };
-

@@ -106,3 +106,75 @@
 - **右栏内的笔记正文没有划词助手**：`SelectionPopover` 目前只挂在对话容器上，右栏文档里划词暂无动作。
 - **来源框是浮层而非独立右轨**：宽屏下落在对话栏右侧留白里；窗口很窄时理论上可能与正文叠。已在移动端隐藏。
 - `pnpm lint:knip` 的既有基线失败需要单独一轮清理，不属于本分支。
+
+---
+
+## 7. 第二轮：非正文界面全量汉化（同日追加）
+
+用户追加口径：把**所有非正文、非侧边栏板块**都补上 i18n。
+「正文 / 侧边栏」被明确定义为 **Studio 的章节名称与全部正文内容** —— 那部分文本量巨大且没有翻译价值，**不在范围内**。
+
+### 7.1 覆盖范围与规模
+
+| 命名空间 | key 数 | 覆盖 |
+|---|---|---|
+| `settings.*` | 366 | 设置页全部：通用 / 外观 / 模型 / Agent 能力 / Skills / 数据与账户、API 分组、生图、能力端点、账号弹窗、快捷键设置 |
+| `window.*` | 425 | 右侧面板里的**业务窗口**：来源查看器、笔记编辑器 / 笔记库 / 课堂便签 / 闪卡引用、项目文件、记忆收件箱、浏览器、画布、测验界面 |
+| `panel.*` | 191 | 面板与窗口外壳：右栏本体、标签条、窗口 chrome、文档阅读器外壳、用量 / 计费 / 额度 / 存储 |
+| `trace.*` | 175 | **思考链与工具展示**：步骤状态、折叠标题、工具名与摘要、消息外壳、欢迎页、可视化降级卡、21 个工具的展示元数据 |
+| `menu.*` | 143 | 菜单与浮层：模型菜单、思考力度、历史、右键菜单、输入区与命令面板、划词助手、快捷键浮层、模式切换 |
+| `app.*` | 18 | 应用级外壳：顶栏、加载态、灯箱、账户条 |
+| `agent.*` | 93 | 第一轮已完成的 Agent 面 |
+| **合计** | **1411 × 2** | zh / en 两侧 key 集合逐字一致（由 `en.ts satisfies LocaleMessages` 与 `index.test.ts` 双重锁死） |
+
+### 7.2 关键改动（不只是搬字符串）
+
+1. **`ToolPresentation` 改成 key 字段**：`label` / `settingsLabel` / `description` → `labelKey` / `settingsLabelKey` / `descriptionKey`，类型 `I18nKey`（type-only import，不会把 i18n 拖进工具模块）。
+   21 个 `presentation.ts` 全改，字段打错即编译错误。这是「调用了什么工具」能被翻译的根。
+2. **词典分片**：`lib/i18n/messages/parts/{zh,en}/<namespace>.ts`，六个命名空间各自一份文件。
+   分片是为了让六路并行迁移各改各的文件 —— 单文件词典在并行编辑下必然丢更新。`zh.ts`/`en.ts` 只做合并。
+3. **纯数据模块改成 key 形式**：`lib/keyboard/shortcuts.ts`、`lib/theme/appearance.ts`、`lib/sync/usage.ts`、`lib/notes/selectionAssistant.ts`、`lib/stores/agentProductPicker.ts`。
+4. **窗口标题在开窗时就翻好，不把 key 存进 windowManager**：窗口标题会经通用 chrome（`WindowTaskbar` / `AgentDockTabs` / `OverflowMenu`）**原样渲染**，
+   存 key 会让标签条直接显示 `panel.addMenu.document`。代价是切语言后已开的窗要重开才更新标题，这个取舍是有意的。
+5. **`buildTrace` 的 `t` 是可选第三参**（缺省按 store 当前语言取词），避免打断不在清单里的既有调用方；`agentProcessingLabel` 的 `t` 改成必填。
+
+### 7.3 闸门（第二轮）
+
+| 闸门 | 结果 |
+|---|---|
+| `pnpm typecheck` | 通过（0 错） |
+| `pnpm test:unit` | 1444 / 1444 |
+| `pnpm test:content` | 2157 / 2157 |
+| `pnpm test:react` | 全绿 |
+| `pnpm lint:eslint` | 0 error（94 warning，历史噪声基线内） |
+| `pnpm build` | 通过 |
+
+### 7.4 浏览器验收（切到 English）
+
+| 项 | 结果 |
+|---|---|
+| 设置页六个分节 + 语言行 | ✅ General / Appearance / Models / Agent capabilities / Skills / Data & account |
+| 顶栏 / 左栏 / 顶部分段 | ✅ New chat / My assets / Scheduled / Plugins / PROJECTS / RECENTS / Answer / Links / Images |
+| **思考链工具展示** | ✅ `Searched notes / done / Found 3 notes`、`Searched the web / done / 2 sources`、`Searched images` |
+| 消息外壳 | ✅ `Took 8s` / `Web search on` / `Activity` / `Done` / `Cited notes · 4` / `Web sources · 2` / `You might also ask` |
+| 右侧面板窗口标题 | ✅ `Sources · 8` / `Quiz · <卷面名>` |
+| 出题窗 | ✅ `Question 1 / 2` / `Single choice` / `Basic` / `2 pts` |
+| 正文与题目本体 | ✅ 保持中文（正确：那是内容，不是界面） |
+
+### 7.5 第二轮**有意不做**的（附理由，第三轮可挑）
+
+1. **`components/shared/directives/**` 的卡片外壳**（约 20 条）：概念卡 / 记忆卡 / 事件卡 / 时间轴 / 因果链 / 推导过程 / 核心要点 / 历史地图。
+   它们渲染在笔记与答案**正文里**，正是用户划定「正文不动」的那一类 —— 而且其中 `CauseEffect` 的 `因：/原因：/果：/结果：/影响：` **是解析模型输出的前缀**，翻了会直接打断解析。
+2. **`lib/stores/**` 的窗口标题 / toast / 错误串（约 50 条）：技术上可做，但它们跨 store 层，且 `lib/stores/settings.ts` 为了避开 store ↔ i18n 循环导入（该文件只依赖 `@/lib/i18n/types`）**不能**直接 `translate`。
+   要收这一批得先换机制（warning 存 code，或让 i18n 提供一个不反依赖 settings 的 translate）。
+3. **`lib/hooks/` 的账户条与图片附件提示（8 条）**、**`lib/chat/` 的若干 info/错误串**、**`lib/notes/` 的阻止原因**：同属 store/hook 层，同上。
+4. **`lib/quiz/types.ts` 的 `TYPE_LABELS`**：经核实它是**喂给模型的上下文**（`quizExplain` 的 seed → `sendMessage`），界面侧已在 `QuizQuestion` 的渲染点走词典。**不翻是对的。**
+5. **交互演示目录（`components/interactives/registry.ts`，约 35 条 title/description）**：属内容数据。
+6. **登录 / 人机验证**（`components/auth/**`）：用户没有点名，且只在退出登录时可见，本轮跳过。
+
+### 7.6 一处需要你知道的机制遗留
+
+`lib/stores/settings.ts` 的 `settingsLoadWarning`（设置页顶部告警横幅）**本轮没翻**：
+该文件第 18 行明确「只依赖 `@/lib/i18n/types`，避免 store ↔ i18n 运行时循环导入」，所以它拿不到 `translate`。
+同理 `lib/context/estimateFullContext.ts` 必须保持零依赖（`app/api/chat/route.ts` 会 import 它），它的 `formatContextCacheValue`（命中 / 未命中）也没翻。
+两处都要先解决机制问题，不适合顺手塞进来。

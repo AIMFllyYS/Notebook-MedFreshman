@@ -7,6 +7,7 @@ import { MessageContent } from '@/components/chat/MessageContent';
 import type { TraceTextStep } from '@/lib/chat/buildTrace';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 import { useStickToBottom } from '@/lib/hooks/useStickToBottom';
+import { useT } from '@/lib/i18n';
 
 export const ReasoningTraceStep = React.memo(function ReasoningTraceStep({ step }: { step: TraceTextStep }) {
   if (step.kind === 'text') {
@@ -26,6 +27,7 @@ export const ReasoningTraceStep = React.memo(function ReasoningTraceStep({ step 
 // Mounted only when this disclosure is open: collapsed reasoning does not keep a
 // requestAnimationFrame scroll-follow loop alive during a long streamed answer.
 function ReasoningContent({ step }: { step: TraceTextStep }) {
+  const t = useT();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { onScroll } = useStickToBottom(scrollRef, step.status === 'running');
 
@@ -36,7 +38,7 @@ function ReasoningContent({ step }: { step: TraceTextStep }) {
       onContextMenu={(event) => openMessageMenu(event, step.text)}
       className="chat-prose max-h-64 min-w-0 overflow-x-hidden overflow-y-auto break-words pr-2 [overflow-wrap:anywhere]"
     >
-      {step.text ? <MessageContent content={step.text} isStreaming={step.status === 'running'} enableVisualizations={false} preserveLineBreaks /> : <span>正在整理思路…</span>}
+      {step.text ? <MessageContent content={step.text} isStreaming={step.status === 'running'} enableVisualizations={false} preserveLineBreaks /> : <span>{t('trace.step.thinking')}</span>}
     </div>
   );
 }

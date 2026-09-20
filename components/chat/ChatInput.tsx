@@ -44,6 +44,7 @@ import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import ProjectPickerChip from '@/components/chat/composer/ProjectPickerChip';
 import { shouldBlockFocusSteal } from '@/lib/notes/selectionPopover';
+import { useT } from '@/lib/i18n';
 export interface ChatInputProps {
   onSend: (content: string, options?: SendMessageOptions) => void;
   onStop: () => void;
@@ -99,6 +100,7 @@ function countCharacters(text: string) {
 const MAX_TEXTAREA_HEIGHT = 120;
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, focusSignal, showProjectPicker = false, chatContext }) => {
+  const t = useT();
   const [input, setInput] = useState('');
   const [queuedMessages, setQueuedMessages] = useState<QueuedMessage[]>([]);
   const [editingQueuedId, setEditingQueuedId] = useState<string | null>(null);
@@ -326,7 +328,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
     const message: QueuedMessage = {
       id: crypto.randomUUID(),
-      content: trimmed || (attachedFiles.length > 0 ? '请阅读这些笔记' : '请阅读并分析附件'),
+      content: trimmed || (attachedFiles.length > 0 ? t('menu.chatInput.autoPrompt.files') : t('menu.chatInput.autoPrompt.attachments')),
       quotedText: effectiveQuote || undefined,
       attachments: toChatFormat(),
       planMode: effectivePlanMode || undefined,
@@ -344,7 +346,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       dispatchMessage(message);
     }
     clearDraft();
-  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft, effectivePlanMode, forcedTool]);
+  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft, effectivePlanMode, forcedTool, t]);
 
   useEffect(() => {
     if (isLoading) {
@@ -491,18 +493,18 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       {attachInfo ? <div className="chat-attachment-notice" role="status">{attachInfo}</div> : null}
 
       {queuedMessages.length > 0 && (
-        <div className="chat-input-queue" role="region" aria-label="等待发送">
+        <div className="chat-input-queue" role="region" aria-label={t('menu.chatInput.queue.title')}>
           <div className="chat-input-queue-heading">
-            <span className="chat-input-queue-label"><span className="chat-input-queue-pulse" />等待发送</span>
-            <span className="chat-input-queue-count">{queuedMessages.length} 条</span>
+            <span className="chat-input-queue-label"><span className="chat-input-queue-pulse" />{t('menu.chatInput.queue.title')}</span>
+            <span className="chat-input-queue-count">{t('menu.chatInput.queue.count', { count: queuedMessages.length })}</span>
           </div>
           <div className="chat-input-queue-list">
             {queuedMessages.map((message, index) => (
               <div className="chat-input-queue-item" key={message.id}>
                 <span className="chat-input-queue-index">{index + 1}</span>
                 <span className="chat-input-queue-text" title={message.content}>{message.content}</span>
-                <button type="button" className="chat-input-queue-action" onClick={() => editQueuedMessage(message)} aria-label={`编辑第 ${index + 1} 条排队内容`}>编辑</button>
-                <button type="button" className="chat-input-queue-action chat-input-queue-action-muted" onClick={() => cancelQueuedMessage(message.id)} aria-label={`取消第 ${index + 1} 条排队内容`}>取消</button>
+                <button type="button" className="chat-input-queue-action" onClick={() => editQueuedMessage(message)} aria-label={t('menu.chatInput.queue.editAria', { index: index + 1 })}>{t('menu.chatInput.queue.edit')}</button>
+                <button type="button" className="chat-input-queue-action chat-input-queue-action-muted" onClick={() => cancelQueuedMessage(message.id)} aria-label={t('menu.chatInput.queue.cancelAria', { index: index + 1 })}>{t('menu.common.cancel')}</button>
               </div>
             ))}
           </div>
@@ -514,7 +516,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           <AgentQuoteIcon size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--md-sys-color-tertiary)' }} />
           <div className="chat-input-quote-label">
             <AgentQuoteIcon size={10} />
-            <span>引用自当前页面</span>
+            <span>{t('menu.chatInput.quote.label')}</span>
           </div>
           <div className="chat-input-quote-text">
             {effectiveQuote}
@@ -522,14 +524,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           <button
             onClick={clearQuotedText}
             className="chat-input-quote-close"
-            title="移除引用"
+            title={t('menu.chatInput.quote.remove')}
           >
             <AgentCloseIcon size={14} />
           </button>
         </div>
       )}
 
-      <div className="chat-input-toolbar" aria-label="对话选项">
+      <div className="chat-input-toolbar" aria-label={t('menu.chatInput.toolbarAria')}>
         <div className="chat-input-toolbar-group chat-input-toolbar-options">
           {thinkingSupported && (
             <ThinkingMenuButton {...thinkingProps} />
@@ -539,28 +541,28 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             onClick={() => setEnableSearch(!enableSearch)}
             disabled={inputDisabled}
             className={`chat-input-toggle chat-input-toggle-search ${enableSearch ? 'chat-input-toggle-search-active' : ''} ${inputDisabled ? 'chat-input-toggle-disabled' : ''}`}
-            title="联网搜索（需配置搜索API）"
+            title={t('menu.chatInput.search.title')}
             aria-pressed={enableSearch}
           >
             <AgentGlobeIcon size={12} />
-            <span className="chat-input-toggle-text">联网搜索</span>
+            <span className="chat-input-toggle-text">{t('menu.chatInput.search.label')}</span>
             {enableSearch && <AgentCheckIcon size={10} />}
           </button>
         </div>
 
-        <AnchoredMenu label="更多对话选项" placement="top" width={250} disabled={inputDisabled}
+        <AnchoredMenu label={t('menu.chatInput.more')} placement="top" width={250} disabled={inputDisabled}
           className="chat-input-toggle chat-input-more" trigger={<>
             <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="3" cy="8" r="1.2" fill="currentColor" /><circle cx="8" cy="8" r="1.2" fill="currentColor" /><circle cx="13" cy="8" r="1.2" fill="currentColor" /></svg>
             {(effectiveEnableThinking || enableSearch) && <span className="chat-input-more-dot" />}
           </>}>
           {(close) => <>
             {thinkingSupported ? <ThinkingMenuItems {...thinkingProps} onChange={(next) => { thinkingProps.onChange(next); close(); }} />
-              : <div className="app-menu-heading">当前模型不支持深度思考</div>}
+              : <div className="app-menu-heading">{t('menu.thinking.unsupported')}</div>}
             <div className="app-menu-separator" />
             <button type="button" role="menuitemcheckbox" aria-checked={enableSearch} disabled={inputDisabled} className="app-menu-item"
               onClick={() => { setEnableSearch((value) => !value); close(); }}>
               <span className="app-menu-check"><AgentGlobeIcon size={13} /></span>
-              <span>联网搜索<small>使用搜索 API 获取最新信息</small></span>
+              <span>{t('menu.chatInput.search.label')}<small>{t('menu.chatInput.search.hint')}</small></span>
               {enableSearch && <AgentCheckIcon size={12} />}
             </button>
           </>}
@@ -601,8 +603,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           type="button"
           className="chat-input-plus"
           disabled={inputDisabled}
-          title="添加计划、工具或技能"
-          aria-label="添加计划、工具或技能"
+          title={t('menu.chatInput.addIntent')}
+          aria-label={t('menu.chatInput.addIntent')}
           aria-expanded={palette === "slash"}
           data-testid="composer-plus"
           onClick={() => {
@@ -634,7 +636,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             syncTrigger(next, e.currentTarget.selectionStart ?? next.length);
             if (countCharacters(next) > MAX_INPUT_CHARACTERS) setShowLimitDialog(true);
           }}
-          aria-label="输入问题"
+          aria-label={t('menu.chatInput.inputAria')}
           aria-describedby={showCharacterCount ? countId : undefined}
           aria-invalid={overLimit || undefined}
           onMouseDown={(e) => {
@@ -646,7 +648,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           onPaste={handlePaste}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? '继续输入，发送后将排队…' : '输入问题、引用笔记、计划或工具'}
+          placeholder={externalDisabled ? (disabledReason || t('menu.chatInput.placeholder.disabled')) : isLoading ? t('menu.chatInput.placeholder.queued') : t('menu.chatInput.placeholder.default')}
           disabled={inputDisabled}
           rows={1}
           className="chat-input-textarea"
@@ -663,7 +665,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
         {showCharacterCount && (
           <div id={countId} className={`chat-input-count ${overLimit ? 'chat-input-count-error' : ''}`} aria-live={overLimit ? 'assertive' : 'off'}>
-            <span>{characterCount.toLocaleString('en-US')} / 50,000 字</span>
+            <span>{t('menu.chatInput.charCount', { count: characterCount.toLocaleString('en-US') })}</span>
           </div>
         )}
 
@@ -678,7 +680,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             color: showStopButton ? 'var(--md-sys-color-on-error-container)' : ((!input.trim() && attachments.length === 0 && attachedFiles.length === 0) ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary)'),
             cursor: sendDisabled ? 'not-allowed' : 'pointer',
           }}
-          title={showStopButton ? '停止生成' : '发送'}
+          title={showStopButton ? t('menu.chatInput.stop') : t('menu.chatInput.send')}
         >
           {showStopButton ? <AgentStopIcon size={14} /> : <AgentArrowUpIcon size={14} />}
         </button>
@@ -688,7 +690,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         open={palette !== null}
         anchorRef={palette === "slash" && paletteAnchor === "plus" ? plusRef : textareaRef}
         ignoreRefs={[plusRef]}
-        label={palette === "hash" ? "引用笔记" : "对话命令"}
+        label={palette === "hash" ? t("menu.fileMention.aria") : t("menu.composer.aria")}
         onClose={closePalette}
       >
         {palette === "hash" ? (

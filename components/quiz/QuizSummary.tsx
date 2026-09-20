@@ -6,30 +6,31 @@ import { RotateCcw, ArrowLeft, Trophy, Check } from "lucide-react";
 import { useQuizStore, computeBreakdown } from "@/lib/quiz-store";
 import { getChapterProgress } from "@/lib/quiz-progress";
 import { useIsClient } from "@/lib/hooks/useIsClient";
+import { useT, type Translate } from "@/lib/i18n";
 
 const TYPE_LABELS: Record<string, string> = {
-  single_choice: "单选题",
-  multiple_choice: "多选题",
-  true_false: "判断题",
-  analysis: "辨析题",
-  fill_blank: "填空题",
-  essay: "简答/材料分析/论述",
+  single_choice: "window.quiz.type.singleChoice",
+  multiple_choice: "window.quiz.type.multipleChoice",
+  true_false: "window.quiz.type.trueFalse",
+  analysis: "window.quiz.type.analysis",
+  fill_blank: "window.quiz.type.fillBlank",
+  essay: "window.quiz.summary.typeEssay",
 };
 const SOURCE_LABELS: Record<string, string> = {
-  current_chapter: "本章题目",
-  review: "滚动复习",
+  current_chapter: "window.quiz.summary.sourceCurrent",
+  review: "window.quiz.summary.sourceReview",
 };
 const DIFFICULTY_LABELS: Record<string, string> = {
-  basic: "基础",
-  medium: "中等",
-  hard: "提高",
+  basic: "window.quiz.difficulty.basic",
+  medium: "window.quiz.difficulty.medium",
+  hard: "window.quiz.difficulty.hard",
 };
 
-function gradeOf(percent: number): { label: string; color: string } {
-  if (percent >= 90) return { label: "优秀", color: "var(--color-success)" };
-  if (percent >= 80) return { label: "良好", color: "var(--color-info)" };
-  if (percent >= 60) return { label: "及格", color: "var(--color-warning)" };
-  return { label: "待加强", color: "var(--md-sys-color-error)" };
+function gradeOf(percent: number, t: Translate): { label: string; color: string } {
+  if (percent >= 90) return { label: t("window.quiz.summary.gradeExcellent"), color: "var(--color-success)" };
+  if (percent >= 80) return { label: t("window.quiz.summary.gradeGood"), color: "var(--color-info)" };
+  if (percent >= 60) return { label: t("window.quiz.summary.gradePass"), color: "var(--color-warning)" };
+  return { label: t("window.quiz.summary.gradeWeak"), color: "var(--md-sys-color-error)" };
 }
 
 /** 一组分类统计的进度条列表。 */
@@ -42,6 +43,7 @@ function StatGroup({
   labels: Record<string, string>;
   data: Record<string, { earned: number; max: number; count: number }>;
 }) {
+  const t = useT();
   const entries = Object.entries(data);
   if (entries.length === 0) return null;
   return (
@@ -56,13 +58,13 @@ function StatGroup({
             <div key={key}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
                 <span style={{ fontSize: "13px", color: "var(--md-sys-color-on-surface)" }}>
-                  {labels[key] ?? key}
+                  {labels[key] ? t(labels[key]) : key}
                   <span style={{ color: "var(--md-sys-color-on-surface-variant)", marginLeft: "6px" }}>
-                    （{v.count} 题）
+                    {t("window.quiz.summary.groupCount", { count: v.count })}
                   </span>
                 </span>
                 <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--md-sys-color-on-surface-variant)" }}>
-                  {v.earned} / {v.max} 分 · {pct}%
+                  {t("window.quiz.summary.groupScore", { earned: v.earned, max: v.max, percent: pct })}
                 </span>
               </div>
               <div
@@ -94,13 +96,14 @@ function StatGroup({
 }
 
 export default function QuizSummary() {
+  const t = useT();
   const results = useQuizStore((s) => s.results);
   const restart = useQuizStore((s) => s.restart);
   const backToScoring = useQuizStore((s) => s.backToScoring);
   const subjectId = useQuizStore((s) => s.subjectId);
   const chapterId = useQuizStore((s) => s.chapterId);
   const breakdown = computeBreakdown(results);
-  const grade = gradeOf(breakdown.percent);
+  const grade = gradeOf(breakdown.percent, t);
 
   // finishScoring 已把成绩写入 localStorage；mounted 后读回展示「已保存 + 历史最佳」。
   const mounted = useIsClient();
@@ -120,10 +123,10 @@ export default function QuizSummary() {
         }}
       >
         <Check size={15} />
-        成绩已保存到本地
+        {t("window.quiz.summary.savedLocally")}
         {best !== null && (
           <span style={{ color: "var(--md-sys-color-on-surface-variant)", fontWeight: 500 }}>
-            · 历史最佳 {best} 分
+            {t("window.quiz.summary.bestPrefix")}{best}{t("window.quiz.summary.bestSuffix")}
           </span>
         )}
       </div>
@@ -169,7 +172,7 @@ export default function QuizSummary() {
               {breakdown.percent}
             </span>
             <span style={{ fontSize: "11px", color: "var(--md-sys-color-on-surface-variant)", marginTop: "2px" }}>
-              百分制
+              {t("window.quiz.summary.percentScale")}
             </span>
           </div>
         </div>
@@ -179,19 +182,19 @@ export default function QuizSummary() {
             <span style={{ fontSize: "20px", fontWeight: 800, color: grade.color }}>{grade.label}</span>
           </div>
           <div style={{ fontSize: "14px", color: "var(--md-sys-color-on-surface)" }}>
-            原始得分 <strong>{breakdown.earned}</strong> / {breakdown.max} 分
+            {t("window.quiz.summary.rawScorePrefix")}<strong>{breakdown.earned}</strong>{t("window.quiz.summary.rawScoreSuffix", { max: breakdown.max })}
           </div>
           <div style={{ fontSize: "13px", color: "var(--md-sys-color-on-surface-variant)", marginTop: "4px" }}>
-            共 {results.length} 题
+            {t("window.quiz.summary.questionCount", { count: results.length })}
           </div>
         </div>
       </motion.div>
 
       {/* 分类统计 */}
       <div style={{ display: "flex", flexDirection: "column", gap: "26px" }}>
-        <StatGroup title="按题型" labels={TYPE_LABELS} data={breakdown.byType} />
-        <StatGroup title="按来源（本章 vs 复习）" labels={SOURCE_LABELS} data={breakdown.bySource} />
-        <StatGroup title="按难度" labels={DIFFICULTY_LABELS} data={breakdown.byDifficulty} />
+        <StatGroup title={t("window.quiz.summary.eyebrow")} labels={TYPE_LABELS} data={breakdown.byType} />
+        <StatGroup title={t("window.quiz.summary.bySource")} labels={SOURCE_LABELS} data={breakdown.bySource} />
+        <StatGroup title={t("window.quiz.summary.byDifficulty")} labels={DIFFICULTY_LABELS} data={breakdown.byDifficulty} />
       </div>
 
       {/* 操作 */}
@@ -215,7 +218,7 @@ export default function QuizSummary() {
           }}
         >
           <ArrowLeft size={16} />
-          返回逐题评分
+          {t("window.quiz.summary.backToScoring")}
         </button>
         <button
           type="button"
@@ -236,7 +239,7 @@ export default function QuizSummary() {
           }}
         >
           <RotateCcw size={16} />
-          重做本套题
+          {t("window.quiz.summary.redoAll")}
         </button>
       </div>
     </div>

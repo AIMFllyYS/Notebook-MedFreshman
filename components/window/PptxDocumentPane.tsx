@@ -13,6 +13,8 @@ import {
 } from "@/lib/chat/pptxSlideList";
 import { useElementWidth } from "@/lib/hooks/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
+import { translate, useT } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 
 /** 首帧 / 没有 ResizeObserver 时的兜底可用宽度。 */
 const FALLBACK_WIDTH = 720;
@@ -53,7 +55,7 @@ async function sourceToBuffer(src: string): Promise<ArrayBuffer> {
     const response = await fetch(src);
     return response.arrayBuffer();
   }
-  throw new Error("无法读取该 PPTX");
+  throw new Error(translate(useSettings.getState().locale, "panel.pptx.readFailed"));
 }
 
 function deckMetrics(deck: PptxDeck): PptxSlideMetrics {
@@ -70,11 +72,13 @@ function renderTextFallback(slot: HTMLElement, number: number, text: string) {
   label.className = "pptx-page-fallback-label";
   label.textContent = `Slide ${number}`;
   const body = doc.createElement("p");
-  body.textContent = text || `幻灯片 ${number}`;
+  body.textContent = text || translate(useSettings.getState().locale, "panel.pptx.slide", { number });
   slot.replaceChildren(label, body);
 }
 
 export default function PptxDocumentPane({ src, name }: { src: string; name: string }) {
+  const t = useT();
+  const locale = useSettings((s) => s.locale);
   const hostRef = useRef<HTMLDivElement | null>(null);
   const pagesRef = useRef<HTMLDivElement | null>(null);
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -90,7 +94,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
   const [count, setCount] = useState(1);
   const [current, setCurrent] = useState(0);
   const [textStage, setTextStage] = useState(false);
-  const [status, setStatus] = useState<string | null>("正在准备幻灯片…");
+  const [status, setStatus] = useState<string | null>(() => translate(locale, "panel.pptx.loading"));
   const [error, setError] = useState<string | null>(null);
 
   // 宽度先过一道「变化 < 8px 不重建」的闸，displayWidth 才是重建预览器的唯一触发源。
@@ -124,7 +128,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     slotsRef.current = [];
 
     setError(null);
-    setStatus("正在准备幻灯片…");
+    setStatus(translate(useSettings.getState().locale, "panel.pptx.loading"));
     setTextStage(false);
 
     void (async () => {
@@ -134,7 +138,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       } catch (err) {
         if (cancelled) return;
         setStatus(null);
-        setError(err instanceof Error ? err.message : `无法打开 ${name}`);
+        setError(err instanceof Error ? err.message : translate(useSettings.getState().locale, "panel.reader.openFailed", { name }));
         return;
       }
 
@@ -255,7 +259,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       setCurrent(0);
       setStatus(null);
       setTextStage(true);
-      if (!titles.length) setError(`无法打开 ${name}`);
+      if (!titles.length) setError(translate(useSettings.getState().locale, "panel.reader.openFailed", { name }));
     })();
 
     return () => {
@@ -305,11 +309,11 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     slides ??
     Array.from({ length: count }, (_, index) => ({
       number: index + 1,
-      text: `幻灯片 ${index + 1}`,
+      text: t("panel.pptx.slide", { number: index + 1 }),
     }))
   ).map((slide) => ({
     id: String(slide.number),
-    title: slide.text.slice(0, 36) || `幻灯片 ${slide.number}`,
+    title: slide.text.slice(0, 36) || t("panel.pptx.slide", { number: slide.number }),
     meta: `Slide ${slide.number}`,
   }));
 
@@ -317,7 +321,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     return (
       <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
         <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />
-        <p className="text-[13px] font-semibold text-[var(--ink)]">PowerPoint 本地预览</p>
+        <p className="text-[13px] font-semibold text-[var(--ink)]">{t("panel.pptx.title")}</p>
         <p className="max-w-md text-[12px] leading-6 text-[var(--ink-soft)]">{error}</p>
       </div>
     );
@@ -330,18 +334,18 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       outline={outline}
       activeId={String(current + 1)}
       onSelect={(id) => goToSlide((Number(id) || 1) - 1)}
-      outlineLabel="幻灯片"
+      outlineLabel={t("panel.pptx.outline")}
       layoutKey="pptx"
       bodyRef={bodyRef}
       toolbar={
         <>
-          <button type="button" data-no-drag title="上一页" onClick={() => goToSlide(current - 1)}>
+          <button type="button" data-no-drag title={t("panel.reader.prevPage")} onClick={() => goToSlide(current - 1)}>
             <ChevronLeft size={13} />
           </button>
           <span>
             {current + 1} / {count}
           </span>
-          <button type="button" data-no-drag title="下一页" onClick={() => goToSlide(current + 1)}>
+          <button type="button" data-no-drag title={t("panel.reader.nextPage")} onClick={() => goToSlide(current + 1)}>
             <ChevronRight size={13} />
           </button>
         </>
@@ -363,7 +367,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
               Slide {current + 1}
             </div>
             <p className="whitespace-pre-wrap text-[15px] leading-7 text-[var(--ink)]">
-              {currentText ?? `幻灯片 ${current + 1}`}
+              {currentText ?? t("panel.pptx.slide", { number: current + 1 })}
             </p>
           </article>
         </div>

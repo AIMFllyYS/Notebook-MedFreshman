@@ -8,6 +8,7 @@ import { isAttachmentRef } from "@/lib/types/chat";
 import { loadBlobDataUrl } from "@/lib/storage/chatStorage";
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
+import { useT } from "@/lib/i18n";
 
 interface AttachmentThumbnailsProps {
   previews?: AttachmentPreview[];
@@ -60,8 +61,8 @@ function openPreviewItem(attachment: AttachmentPreview, key: string) {
   });
 }
 
-async function openStoredPreview(attachment: StoredChatAttachment, key: string) {
-  const name = attachment.name ?? "未命名附件";
+async function openStoredPreview(attachment: StoredChatAttachment, key: string, fallbackName: string) {
+  const name = attachment.name ?? fallbackName;
   const content = isAttachmentRef(attachment)
     ? await loadBlobDataUrl(attachment.id)
     : attachment.type === "image"
@@ -79,6 +80,7 @@ async function openStoredPreview(attachment: StoredChatAttachment, key: string) 
 }
 
 function ReadonlyImage({ attachment }: { attachment: StoredChatAttachment }) {
+  const t = useT();
   const [src, setSrc] = useState<string | null>(() => {
     if (attachment.type !== "image" || isAttachmentRef(attachment)) return null;
     return attachment.base64;
@@ -96,7 +98,7 @@ function ReadonlyImage({ attachment }: { attachment: StoredChatAttachment }) {
   if (!src) return <span className="chat-attachment-image-placeholder" aria-hidden="true" />;
   return (
     // eslint-disable-next-line @next/next/no-img-element -- IndexedDB blob/data URLs are not supported by next/image.
-    <img src={src} alt={attachment.name ?? "已上传图片"} className="chat-attachment-image" />
+    <img src={src} alt={attachment.name ?? t("window.attachment.uploadedImage")} className="chat-attachment-image" />
   );
 }
 
@@ -106,8 +108,9 @@ function DocumentCard({ name, mimeType, size, characterCount }: {
   size?: number;
   characterCount?: number;
 }) {
+  const t = useT();
   const detail = characterCount != null
-    ? `${characterCount.toLocaleString("zh-CN")} 字`
+    ? t("window.attachment.charCount", { count: characterCount.toLocaleString("zh-CN") })
     : formatSize(size);
   return (
     <span className="chat-attachment-document">
@@ -131,6 +134,7 @@ export default function AttachmentThumbnails({
   clickable = true,
   embedded = false,
 }: AttachmentThumbnailsProps) {
+  const t = useT();
   const previewItems = previews ?? [];
   const readonlyItems = readonlyAttachments ?? [];
   if (previewItems.length === 0 && readonlyItems.length === 0) return null;
@@ -139,7 +143,7 @@ export default function AttachmentThumbnails({
     <div
       className={`chat-attachment-shelf ${embedded ? "chat-attachment-shelf-embedded" : ""}`}
       style={{ ["--attachment-size" as string]: `${size}px` } as React.CSSProperties}
-      aria-label="附件"
+      aria-label={t("window.attachment.shelf")}
     >
       {previewItems.map((attachment, index) => {
         const name = isImagePreview(attachment) ? attachment.file.name : attachment.name;
@@ -150,8 +154,8 @@ export default function AttachmentThumbnails({
               type="button"
               className={`chat-attachment-preview-trigger ${clickable ? "chat-attachment-clickable" : ""}`}
               onClick={() => openPreviewItem(attachment, key)}
-              aria-label={`预览附件 ${name}`}
-              title={`预览 ${name}`}
+              aria-label={t("window.attachment.previewAttachment", { name })}
+              title={t("window.attachment.preview", { name })}
               disabled={!clickable}
             >
               {!isImagePreview(attachment) ? (
@@ -162,7 +166,7 @@ export default function AttachmentThumbnails({
               )}
             </button>
             {onRemove ? (
-              <button type="button" className="chat-attachment-remove" onClick={() => onRemove(index)} aria-label={`移除附件 ${name}`}>
+              <button type="button" className="chat-attachment-remove" onClick={() => onRemove(index)} aria-label={t("window.attachment.removeAttachment", { name })}>
                 <X size={11} />
               </button>
             ) : null}
@@ -171,20 +175,20 @@ export default function AttachmentThumbnails({
       })}
       {readonlyItems.map((attachment, index) => {
         const key = isAttachmentRef(attachment) ? attachment.id : `${attachment.type}:${attachment.name ?? index}`;
-        const name = attachment.name ?? "未命名附件";
+        const name = attachment.name ?? t("window.attachment.untitled");
         return (
           <span className="chat-attachment-item" key={key}>
             <button
               type="button"
               className={`chat-attachment-preview-trigger ${clickable ? "chat-attachment-clickable" : ""}`}
-              onClick={() => { void openStoredPreview(attachment, `stored:${key}`); }}
-              aria-label={`预览附件 ${name}`}
-              title={`预览 ${name}`}
+              onClick={() => { void openStoredPreview(attachment, `stored:${key}`, t("window.attachment.untitled")); }}
+              aria-label={t("window.attachment.previewAttachment", { name })}
+              title={t("window.attachment.preview", { name })}
               disabled={!clickable}
             >
               {attachment.type !== "image" ? (
                 <DocumentCard
-                  name={attachment.name ?? "未命名文档"}
+                  name={attachment.name ?? t("window.attachment.untitledDocument")}
                   mimeType={attachment.mimeType}
                   size={attachment.size}
                   characterCount={'characterCount' in attachment ? attachment.characterCount : undefined}

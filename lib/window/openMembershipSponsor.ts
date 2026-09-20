@@ -1,4 +1,6 @@
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { translate } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 
 export const MEMBERSHIP_SPONSOR_WINDOW_ID = "membership-sponsor";
 export const GITHUB_REPO_URL = "https://github.com/AIMFllyYS/Notebook-MedFreshman";
@@ -19,7 +21,7 @@ export function openMembershipSponsor(): void {
   winMgr.openWindow({
     id: MEMBERSHIP_SPONSOR_WINDOW_ID,
     type: "membership-sponsor",
-    title: "获取会员",
+    title: translate(useSettings.getState().locale, "panel.membership.title"),
     pos: {
       x: Math.max(16, Math.floor(window.innerWidth / 2 - width / 2)),
       y: Math.max(16, Math.floor(window.innerHeight / 2 - height / 2)),

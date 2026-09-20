@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { BookmarkPlus, Brain, Boxes, Globe, Star } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { useT } from "@/lib/i18n";
 import { MODELS, isPickerHiddenModel, getAllModels } from "@/lib/ai/models";
 import { Toggle, h3Cls, labelCls } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";
@@ -13,6 +14,7 @@ export function BuiltinModelsSection() {
   const defaultImageModelId = useSettings((s) => s.defaultImageModelId);
   const setDefaultImageModel = useSettings((s) => s.setDefaultImageModel);
   const [builtinExpanded, setBuiltinExpanded] = useState(false);
+  const t = useT();
 
   const builtinImageModels = MODELS.filter((m) => m.type === "image");
   const builtinTextModels = MODELS.filter((m) => m.type !== "image" && !isPickerHiddenModel(m.id));
@@ -20,13 +22,14 @@ export function BuiltinModelsSection() {
 
   return (
       <SettingsDisclosure expanded={builtinExpanded} onToggle={() => setBuiltinExpanded((v) => !v)}
-        icon={<Boxes size={14} />} title="内置模型" meta={`${builtinVisibleCount} 个 · 站点默认`}>
+        icon={<Boxes size={14} />} title={t("settings.models.builtin.title")}
+        meta={t("settings.models.builtin.meta", { count: builtinVisibleCount })}>
           <div className="flex flex-col gap-2">
             <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-              由部署方在 .env 配置，所有用户共享。下方仅展示，不可修改。
+              {t("settings.models.builtin.desc")}
             </p>
             <div>
-              <div className={labelCls}>文本模型（{builtinTextModels.length}）</div>
+              <div className={labelCls}>{t("settings.models.builtin.textModels", { count: builtinTextModels.length })}</div>
               <div className="flex flex-col gap-1.5">
                 {builtinTextModels.map((m) => (
                   <div
@@ -46,7 +49,7 @@ export function BuiltinModelsSection() {
                               color: "var(--md-sys-color-on-surface-variant)",
                             }}
                           >
-                            思考
+                            {t("settings.models.badge.thinking")}
                           </span>
                         )}
                         {m.vision && (
@@ -58,7 +61,7 @@ export function BuiltinModelsSection() {
                               color: "var(--md-sys-color-tertiary)",
                             }}
                           >
-                            视觉
+                            {t("settings.models.badge.vision")}
                           </span>
                         )}
                       </div>
@@ -85,7 +88,7 @@ export function BuiltinModelsSection() {
             </div>
             {builtinImageModels.length > 0 && (
               <div>
-                <div className={labelCls}>生图模型（{builtinImageModels.length}）</div>
+                <div className={labelCls}>{t("settings.models.builtin.imageModels", { count: builtinImageModels.length })}</div>
                 <div className="flex flex-col gap-1.5">
                   {builtinImageModels.map((m) => (
                     <div
@@ -105,7 +108,7 @@ export function BuiltinModelsSection() {
                               color: "var(--md-sys-color-secondary)",
                             }}
                           >
-                            生图
+                            {t("settings.models.badge.image")}
                           </span>
                         </div>
                         <div className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
@@ -114,11 +117,11 @@ export function BuiltinModelsSection() {
                       </div>
                       <button
                         onClick={() => setDefaultImageModel(m.id)}
-                        title={
+                        title={t(
                           defaultImageModelId === m.id
-                            ? "已是默认生图模型"
-                            : "设为默认生图模型"
-                        }
+                            ? "settings.models.imageDefault.is"
+                            : "settings.models.imageDefault.set",
+                        )}
                         className="rounded p-1 hover:bg-[var(--md-sys-color-surface-container-high)]"
                         style={{
                           color:
@@ -156,48 +159,48 @@ export function RecordAssistantSection() {
   const setSelectionAssistantAction = useSettings((s) => s.setSelectionAssistantAction);
   const blockForeignSelectionAssistants = useSettings((s) => s.blockForeignSelectionAssistants);
   const setBlockForeignSelectionAssistants = useSettings((s) => s.setBlockForeignSelectionAssistants);
+  const t = useT();
   const allTextModels = getAllModels(customApiGroups).filter((m) => m.type !== "image");
 
   return (
       <section className="flex flex-col gap-2">
         <div className="flex items-center gap-1.5">
           <BookmarkPlus size={14} className="text-[var(--md-sys-color-primary)]" />
-          <h3 className={h3Cls}>摘录与划词助手</h3>
+          <h3 className={h3Cls}>{t("settings.models.assistant.title")}</h3>
         </div>
         <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-          摘录（划词「记录」成卡）和划词助手（划词「解释/追问」浮窗）默认使用的模型。
-          独立于右侧主对话模型，避免因主对话切换自定义 API 而导致摘录报错。支持自定义 API 分组中的模型。
+          {t("settings.models.assistant.desc")}
         </p>
         <div>
-          <label className={labelCls}>摘录模型（划词「记录」成卡）</label>
-          <AppSelect label="摘录模型" value={recordModelId} onValueChange={setRecordModelId}
+          <label className={labelCls}>{t("settings.models.assistant.recordModel")}</label>
+          <AppSelect label={t("settings.models.assistant.recordModelAria")} value={recordModelId} onValueChange={setRecordModelId}
             options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
           <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-            默认内置 DeepSeek V4 Flash（性价比高、成卡稳定）。选择自定义模型时需确保对应 API 分组已配置密钥。
+            {t("settings.models.assistant.recordModelHint")}
           </div>
         </div>
         <div>
-          <label className={labelCls}>划词助手模型（「解释/追问」浮窗）</label>
-          <AppSelect label="划词助手模型" value={floatingChatModelId} onValueChange={setFloatingChatModelId}
+          <label className={labelCls}>{t("settings.models.assistant.floatingModel")}</label>
+          <AppSelect label={t("settings.models.assistant.floatingModelAria")} value={floatingChatModelId} onValueChange={setFloatingChatModelId}
             options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
           <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-            划词后弹出的浮窗对话使用的默认模型。可在浮窗内随时切换。
+            {t("settings.models.assistant.floatingModelHint")}
           </div>
         </div>
         <div>
-          <label className={labelCls}>答题 / 深度解答默认模型</label>
-          <AppSelect label="答题模型" value={quizModelId} onValueChange={setQuizModelId}
+          <label className={labelCls}>{t("settings.models.assistant.quizModel")}</label>
+          <AppSelect label={t("settings.models.assistant.quizModelAria")} value={quizModelId} onValueChange={setQuizModelId}
             options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
           <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-            出题与深度解答默认使用此模型，默认 DeepSeek。可在自定义 API 分组中另选。
+            {t("settings.models.assistant.quizModelHint")}
           </div>
         </div>
 
         <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
           <div>
-            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">开启本站划词助手</div>
+            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">{t("settings.models.assistant.enable")}</div>
             <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-              关掉后划词不再弹出本站动作条（解释、记录、笔记、引用等）
+              {t("settings.models.assistant.enableDesc")}
             </div>
           </div>
           <Toggle on={selectionAssistantEnabled} onClick={() => setSelectionAssistantEnabled(!selectionAssistantEnabled)} />
@@ -211,10 +214,9 @@ export function RecordAssistantSection() {
 
         <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
           <div className="min-w-0 pr-3">
-            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">尽量阻止其它划词助手</div>
+            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">{t("settings.models.assistant.blockForeign")}</div>
             <div className="text-[11px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-              前端可做：压掉选区右键菜单、关闭系统 touch callout、划词后立刻收起原生选区。
-              无法拦截系统级 Look Up / Copilot、浏览器扩展或厂商划词插件。
+              {t("settings.models.assistant.blockForeignDesc")}
             </div>
           </div>
           <Toggle on={blockForeignSelectionAssistants} onClick={() => setBlockForeignSelectionAssistants(!blockForeignSelectionAssistants)} />
@@ -230,23 +232,24 @@ export function DefaultsSection() {
   const setDefaultThinkingEffort = useSettings((s) => s.setDefaultThinkingEffort);
   const defaultSearch = useSettings((s) => s.defaultSearch);
   const setDefaultSearch = useSettings((s) => s.setDefaultSearch);
+  const t = useT();
 
   return (
       <section className="flex flex-col gap-2">
-        <h3 className={h3Cls}>新对话默认</h3>
+        <h3 className={h3Cls}>{t("settings.models.defaults.title")}</h3>
         {[
           {
             on: defaultThinking,
             set: setDefaultThinking,
-            label: "深度思考",
-            desc: "新对话默认开启深度推理",
+            label: t("settings.models.defaults.thinking"),
+            desc: t("settings.models.defaults.thinkingDesc"),
             icon: <Brain size={16} />,
           },
           {
             on: defaultSearch,
             set: setDefaultSearch,
-            label: "联网搜索",
-            desc: "新对话默认开启联网搜索",
+            label: t("settings.models.defaults.search"),
+            desc: t("settings.models.defaults.searchDesc"),
             icon: <Globe size={16} />,
           },
         ].map((it) => (
@@ -281,16 +284,16 @@ export function DefaultsSection() {
             </span>
             <div>
               <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
-                默认思考力度
+                {t("settings.models.defaults.effort")}
               </div>
               <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                新对话默认使用的思考深度（仅在开启深度思考时生效）
+                {t("settings.models.defaults.effortDesc")}
               </div>
             </div>
           </div>
           <div
             role="radiogroup"
-            aria-label="默认思考力度"
+            aria-label={t("settings.models.defaults.effort")}
             className="grid grid-cols-4 items-center rounded-md border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-variant)] p-0.5"
           >
             {(["low", "medium", "high", "max"] as const).map((lvl) => {

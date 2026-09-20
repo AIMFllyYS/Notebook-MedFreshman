@@ -40,6 +40,7 @@ import { useBrowserFullscreen } from "@/lib/hooks/useBrowserFullscreen";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
 import ModeSwitcher from "./ModeSwitcher";
+import { useT } from "@/lib/i18n";
 import MobileTopBar from "./MobileTopBar";
 import MobileBottomNav from "./MobileBottomNav";
 import MobileChapterPicker from "./MobileChapterPicker";
@@ -97,6 +98,7 @@ function TopBar({
   const sidebarShortcutEnabled = useKeyboardSettings((s) => s.isEnabled("global.toggleSidebar"));
 
   const { isFullscreen, toggleFullscreen } = useBrowserFullscreen();
+  const t = useT();
 
   /**
    * Agent 顶栏是**控件条**（网页全屏 + 右侧工作区开关），它自己没有「收起顶栏」入口，
@@ -124,10 +126,10 @@ function TopBar({
         onClick={toggleSidebar}
         title={
           sidebarShortcutEnabled
-            ? `${sidebarCollapsed ? "展开导航" : "收起导航"} ${formatShortcut("global.toggleSidebar")}`
-            : sidebarCollapsed ? "展开导航" : "收起导航"
+            ? `${sidebarCollapsed ? t("app.topbar.expandNav") : t("app.topbar.collapseNav")} ${formatShortcut("global.toggleSidebar")}`
+            : sidebarCollapsed ? t("app.topbar.expandNav") : t("app.topbar.collapseNav")
         }
-        aria-label={sidebarCollapsed ? "展开导航" : "收起导航"}
+        aria-label={sidebarCollapsed ? t("app.topbar.expandNav") : t("app.topbar.collapseNav")}
         aria-pressed={sidebarCollapsed}
         data-testid="sidebar-toggle"
         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
@@ -176,7 +178,7 @@ function TopBar({
         {!agentMode && (
           <button
             onClick={toggleTopBar}
-            title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
+            title={topBarCollapsed ? t("app.topbar.expandTopBar") : t("app.topbar.collapseTopBar")}
             aria-pressed={topBarCollapsed}
             className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
           >
@@ -189,8 +191,8 @@ function TopBar({
             这里用四角 Maximize / Minimize，右栏用对角箭头 Maximize2 / Minimize2。 */}
         <button
           onClick={toggleFullscreen}
-          title={isFullscreen ? "退出全屏" : "全屏"}
-          aria-label={isFullscreen ? "退出全屏" : "全屏"}
+          title={isFullscreen ? t("app.topbar.exitFullscreen") : t("app.topbar.enterFullscreen")}
+          aria-label={isFullscreen ? t("app.topbar.exitFullscreen") : t("app.topbar.enterFullscreen")}
           aria-pressed={isFullscreen}
           data-testid="browser-fullscreen"
           className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
@@ -200,8 +202,8 @@ function TopBar({
         {agentMode && (
           <button
             onClick={onToggleDock}
-            title={dockOpen ? "收起右侧工作区" : "展开右侧工作区"}
-            aria-label={dockOpen ? "收起右侧工作区" : "展开右侧工作区"}
+            title={dockOpen ? t("app.topbar.collapseDock") : t("app.topbar.expandDock")}
+            aria-label={dockOpen ? t("app.topbar.collapseDock") : t("app.topbar.expandDock")}
             aria-pressed={dockOpen}
             data-testid="agent-dock-toggle"
             className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
@@ -279,6 +281,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const rightCollapsedByProfile = useStore((s) => s.rightCollapsedByProfile);
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
 
+  const t = useT();
   const rightCollapsed = routeLayout.showRightPanel
     ? rightCollapsedByProfile[routeLayout.profile]
     : false;
@@ -445,7 +448,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 <button
                   type="button"
                   className="mobile-sidebar-backdrop"
-                  aria-label="关闭侧栏"
+                  aria-label={t("app.topbar.closeSidebar")}
                   data-testid="mobile-sidebar-backdrop"
                   onClick={() => closeMobileSidebar(false)}
                 />
@@ -598,8 +601,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   type="button"
                   data-expand-ai
                   onClick={() => setRightCollapsedForProfile(routeLayout.profile, false)}
-                  title="展开 AI 面板"
-                  aria-label="展开 AI 面板"
+                  title={t("app.topbar.expandAiPanel")}
+                  aria-label={t("app.topbar.expandAiPanel")}
                   className="absolute right-0 top-1/2 z-20 flex -translate-y-1/2 flex-col items-center gap-1 rounded-l-lg border border-r-0 border-[var(--line)] bg-[var(--bg-panel)] px-1.5 py-3 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]"
                 >
                   <PanelRightOpen size={16} />

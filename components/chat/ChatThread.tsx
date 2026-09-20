@@ -9,6 +9,7 @@ import { TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
 import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
 import { getMessageText } from '@/lib/chat/messageParts';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
+import { useT } from '@/lib/i18n';
 
 interface ChatThreadProps {
   messages: ChatMessageType[];
@@ -57,6 +58,7 @@ export default function ChatThread({
   topic,
   showFollowUps = true,
 }: ChatThreadProps) {
+  const t = useT();
   const internalRef = useRef<HTMLDivElement>(null);
   const scrollRef = scrollContainerRef ?? internalRef;
   const [stickActive, setStickActive] = useState(isLoading);
@@ -244,7 +246,7 @@ export default function ChatThread({
         {!hydrated ? (
           <div className="chat-loading">
             <AgentLoopIcon size={16} className="animate-pulse motion-reduce:animate-none" style={{ color: 'var(--ink-soft)' }} />
-            <span className="chat-loading-text">正在加载历史记录...</span>
+            <span className="chat-loading-text">{t('trace.thread.loadingHistory')}</span>
           </div>
         ) : displayMessages.length === 0 ? (
           emptyState ?? null
@@ -298,7 +300,7 @@ export default function ChatThread({
                 aria-hidden={!isLoading}
               >
                 <AgentLoopIcon size={16} className="animate-pulse motion-reduce:animate-none" style={{ color: 'var(--ink-soft)' }} />
-                <span className="chat-loading-text">AI 正在思考中...</span>
+                <span className="chat-loading-text">{t('trace.thread.thinking')}</span>
               </div>
             )}
           </>
@@ -309,7 +311,7 @@ export default function ChatThread({
             <AgentInfoIcon size={14} className="mt-0.5 shrink-0" />
             <span className="min-w-0 flex-1 break-words">{info}</span>
             {onClearInfo ? (
-              <button type="button" onClick={onClearInfo} aria-label="关闭连接提示" className="shrink-0 rounded p-0.5 focus-visible:outline-2 focus-visible:outline-offset-2">
+              <button type="button" onClick={onClearInfo} aria-label={t('trace.thread.closeInfo')} className="shrink-0 rounded p-0.5 focus-visible:outline-2 focus-visible:outline-offset-2">
                 <AgentCloseIcon size={14} />
               </button>
             ) : null}
@@ -320,7 +322,7 @@ export default function ChatThread({
           <div className="chat-error" role="alert">
             <AgentAlertIcon size={16} />
             <span className="min-w-0 flex-1 break-words">{error}</span>
-            <button type="button" onClick={onClearError} className="chat-error-close" aria-label="关闭错误提示">
+            <button type="button" onClick={onClearError} className="chat-error-close" aria-label={t('trace.thread.closeError')}>
               <AgentCloseIcon size={14} />
             </button>
           </div>
@@ -336,7 +338,7 @@ export default function ChatThread({
       ) : null}
 
       {!isAtBottom && (
-        <button onClick={jumpToBottom} className="chat-scroll-btn" title="跟随最新输出" style={safeBottomInset ? { bottom: safeBottomInset + 8 } : undefined}>
+        <button onClick={jumpToBottom} className="chat-scroll-btn" title={t('trace.thread.followOutput')} style={safeBottomInset ? { bottom: safeBottomInset + 8 } : undefined}>
           <AgentArrowUpIcon size={18} style={{ transform: 'rotate(180deg)' }} />
         </button>
       )}

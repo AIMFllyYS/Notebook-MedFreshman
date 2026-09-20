@@ -1,12 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
 import { THREAD_SILENT_TOOLS, TOOL_REGISTRY, TOOL_RESULT_CARDS } from "@/components/chat/toolCards/registry";
+import { translate } from "@/lib/i18n";
 
 describe("tool registry", () => {
   it("matches STUDY_TOOL_NAMES and requires ResultCard when resultKey exists", () => {
     expect(Object.keys(TOOL_REGISTRY).sort()).toEqual([...STUDY_TOOL_NAMES].sort());
     for (const name of STUDY_TOOL_NAMES) {
-      expect(TOOL_REGISTRY[name].presentation.label.trim().length).toBeGreaterThan(0);
+      // 展示文案只存词典 key：断言 key 落在 trace.tool 命名空间且中英都能取到词。
+      const { labelKey, settingsLabelKey, descriptionKey } = TOOL_REGISTRY[name].presentation;
+      for (const key of [labelKey, settingsLabelKey, descriptionKey]) {
+        expect(key).toMatch(/^trace\.tool\./);
+        expect(translate("zh", key)).not.toBe(key);
+        expect(translate("en", key)).not.toBe(key);
+      }
       if (TOOL_REGISTRY[name].resultKey) {
         expect(TOOL_REGISTRY[name].ResultCard).toBeTruthy();
       }

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { AgentChevronIcon } from '@/components/icons/AgentIcons';
+import { useT } from '@/lib/i18n';
 
 export default function AgentFoldHeader({
   icon,
@@ -16,6 +17,7 @@ export default function AgentFoldHeader({
   onToggle: () => void;
   action?: React.ReactNode;
 }) {
+  const t = useT();
   return (
     <div className="agent-fold-header">
       <button
@@ -32,7 +34,7 @@ export default function AgentFoldHeader({
         type="button"
         className="agent-fold-chevron"
         aria-expanded={expanded}
-        aria-label={expanded ? '收起' : '展开'}
+        aria-label={expanded ? t('panel.common.collapse') : t('trace.fold.expand')}
         onClick={onToggle}
       >
         <AgentChevronIcon

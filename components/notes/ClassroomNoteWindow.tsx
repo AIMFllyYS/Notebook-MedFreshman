@@ -11,10 +11,17 @@ import { userNoteWindowId } from "@/lib/notes/userNote";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
 import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
+import { useT } from "@/lib/i18n";
+
+/** dynamic 的 loading 需要是组件（拿不到调用方的 t），单独包一层。 */
+function CrepeLoading() {
+  const t = useT();
+  return <div className="user-note-crepe-loading">{t("window.note.common.stickyEditorLoading")}</div>;
+}
 
 const MilkdownNoteEditor = dynamic(() => import("@/components/notes/MilkdownNoteEditor"), {
   ssr: false,
-  loading: () => <div className="user-note-crepe-loading">加载批注编辑器…</div>,
+  loading: () => <CrepeLoading />,
 });
 
 /** 划词「笔记」弹出的小便签：复用完整 Milkdown，只是窗小、正文靠左。 */
@@ -30,6 +37,7 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   const isFront = shouldMountHeavyEditor(activeWindowId, windowId) && (presentation !== "dock" || visible);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [editorRev, setEditorRev] = useState(0);
+  const t = useT();
   // 同 UserNoteEditorWindow：区分「便签自己打的字」与「外部写入」，只有后者才重挂。
   const lastEmitted = useRef(note?.markdown ?? "");
 
@@ -54,7 +62,7 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   return (
     <ManagedWindow
       windowId={userNoteWindowId(noteId)}
-      title={note.title || "课堂笔记"}
+      title={note.title || t("window.note.common.classroom")}
       icon={<StickyNote size={15} />}
       onClose={handleClose}
       fullscreenTarget="notes"
@@ -66,8 +74,8 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
         <button
           type="button"
           data-no-drag
-          title="删除这条课堂笔记"
-          aria-label="删除这条课堂笔记"
+          title={t("window.note.classroom.deleteNote")}
+          aria-label={t("window.note.classroom.deleteNote")}
           className="user-note-chrome-btn is-danger"
           onClick={() => setConfirmDelete(true)}
         >
@@ -77,15 +85,15 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
     >
       <div className="classroom-note">
         <blockquote className="classroom-note-quote">
-          <div className="classroom-note-quote-label">原文</div>
-          {note.quote?.trim() || "（没有划词原文）"}
+          <div className="classroom-note-quote-label">{t("window.note.classroom.quoteLabel")}</div>
+          {note.quote?.trim() || t("window.note.common.noSelectionQuote")}
         </blockquote>
         <div className="classroom-note-head" data-no-drag>
           <input
             className="user-note-title-input"
             value={note.title}
-            placeholder="课堂笔记"
-            aria-label="课堂笔记标题"
+            placeholder={t("window.note.classroom.titlePlaceholder")}
+            aria-label={t("window.note.classroom.titleAria")}
             onChange={(event) => updateNote(noteId, { title: event.target.value })}
           />
           <SubjectPickerMenu
@@ -94,7 +102,7 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
             onChange={(next) => updateNote(noteId, { subjectId: next })}
           />
         </div>
-        <p className="classroom-note-meta">{note.source?.label || "课堂批注"}</p>
+        <p className="classroom-note-meta">{note.source?.label || t("window.note.common.classroomAnnotation")}</p>
         {isFront ? (
           <MilkdownNoteEditor key={`${noteId}:${editorRev}`} value={note.markdown} onChange={handleMarkdown} compact />
         ) : (
@@ -103,7 +111,7 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
             className="user-note-source"
             value={note.markdown}
             spellCheck={false}
-            aria-label="课堂批注"
+            aria-label={t("window.note.classroom.annotationAria")}
             onChange={(event) => handleMarkdown(event.target.value)}
           />
         )}
@@ -111,7 +119,7 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
 
       {confirmDelete && typeof document !== "undefined" ? (
         <DeleteStickyDialog
-          title={note.title || "课堂笔记"}
+          title={note.title || t("window.note.common.classroom")}
           onCancel={() => setConfirmDelete(false)}
           onConfirm={() => {
             setConfirmDelete(false);
@@ -132,18 +140,19 @@ function DeleteStickyDialog({
   onCancel: () => void;
   onConfirm: () => void;
 }) {
+  const t = useT();
   return createPortal(
     <div className="app-dialog-backdrop">
-      <div role="alertdialog" aria-modal="true" aria-label="删除课堂笔记" className="app-dialog">
-        <div className="app-dialog-eyebrow">删除确认</div>
-        <h2>删除「{title}」？</h2>
-        <p>课堂便签与个人笔记一起存在这台设备上，删除后无法恢复。</p>
+      <div role="alertdialog" aria-modal="true" aria-label={t("window.note.classroom.deleteDialogAria")} className="app-dialog">
+        <div className="app-dialog-eyebrow">{t("window.note.common.deleteConfirmEyebrow")}</div>
+        <h2>{t("window.note.common.deleteConfirmTitle", { title })}</h2>
+        <p>{t("window.note.classroom.deleteDialogBody")}</p>
         <div className="user-note-dialog-actions">
           <button type="button" className="user-note-dialog-cancel" onClick={onCancel}>
-            取消
+            {t("menu.common.cancel")}
           </button>
           <button type="button" className="app-dialog-confirm" onClick={onConfirm}>
-            删除
+            {t("window.common.delete")}
           </button>
         </div>
       </div>

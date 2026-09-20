@@ -15,6 +15,7 @@ import {
   type ModelFormState,
 } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";
+import { useT } from "@/lib/i18n";
 
 /** 模型表单（添加/编辑），支持文本/生图 Tab 切换 + 能力勾选。 */
 export function ModelForm({
@@ -29,6 +30,7 @@ export function ModelForm({
   onCancel: () => void;
 }) {
   const [form, setForm] = useState<ModelFormState>(initial);
+  const t = useT();
   const isImage = form.modelType === "image";
   const canSave =
     form.id.trim().length > 0 &&
@@ -45,7 +47,7 @@ export function ModelForm({
     <div className="flex flex-col gap-2 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] p-3">
       <div className="flex items-center justify-between">
         <span className="text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">
-          {isEditing ? "编辑模型" : "添加模型"}
+          {t(isEditing ? "settings.modelForm.edit" : "settings.modelForm.add")}
         </span>
         {/* Tab 切换：文本 / 生图 */}
         {!isEditing && (
@@ -67,7 +69,7 @@ export function ModelForm({
                     : "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              <Cpu size={11} /> 文本模型
+              <Cpu size={11} /> {t("settings.modelForm.typeText")}
             </button>
             <button
               onClick={() => setForm((f) => ({ ...f, modelType: "image" }))}
@@ -83,7 +85,7 @@ export function ModelForm({
                     : "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              <ImagePlus size={11} /> 生图模型
+              <ImagePlus size={11} /> {t("settings.modelForm.typeImage")}
             </button>
           </div>
         )}
@@ -91,7 +93,7 @@ export function ModelForm({
 
       <div className="grid grid-cols-2 gap-2">
         <div>
-          <label className={labelCls}>模型 ID（必填）</label>
+          <label className={labelCls}>{t("settings.modelForm.modelId")}</label>
           <input
             type="text"
             value={form.id}
@@ -102,7 +104,7 @@ export function ModelForm({
           />
         </div>
         <div>
-          <label className={labelCls}>显示名（可选）</label>
+          <label className={labelCls}>{t("settings.modelForm.label")}</label>
           <input
             type="text"
             value={form.label}
@@ -115,7 +117,7 @@ export function ModelForm({
         {!isImage && (
           <>
             <div>
-              <label className={labelCls}>上下文窗口 K（默认 128）</label>
+              <label className={labelCls}>{t("settings.modelForm.contextK")}</label>
               <input
                 type="number"
                 value={form.contextK}
@@ -124,7 +126,7 @@ export function ModelForm({
               />
             </div>
             <div>
-              <label className={labelCls}>缓存 TTL 秒（默认 300，计费按此）</label>
+              <label className={labelCls}>{t("settings.modelForm.cacheTtl")}</label>
               <input
                 type="number"
                 value={form.cacheTtlSec}
@@ -137,7 +139,7 @@ export function ModelForm({
 
         <div>
           <label className={labelCls}>
-            {isImage ? "单价 ¥/张（可选）" : "输入价格 ¥/百万（必填）"}
+            {t(isImage ? "settings.modelForm.imagePrice" : "settings.modelForm.inputPrice")}
           </label>
           <input
             type="number"
@@ -150,7 +152,7 @@ export function ModelForm({
         </div>
         <div>
           <label className={labelCls}>
-            {isImage ? "(占位，留空)" : "输出价格 ¥/百万（必填）"}
+            {t(isImage ? "settings.modelForm.imageOutputPrice" : "settings.modelForm.outputPrice")}
           </label>
           <input
             type="number"
@@ -166,24 +168,24 @@ export function ModelForm({
         {!isImage && (
           <>
             <div>
-              <label className={labelCls}>缓存命中价格（可选）</label>
+              <label className={labelCls}>{t("settings.modelForm.cachedInputPrice")}</label>
               <input
                 type="number"
                 step="0.001"
                 value={form.cachedInputPrice}
                 onChange={(e) => setForm({ ...form, cachedInputPrice: e.target.value })}
-                placeholder="不填=无缓存"
+                placeholder={t("settings.modelForm.noCache")}
                 className={inputCls}
               />
             </div>
             <div>
-              <label className={labelCls}>缓存写入价格（可选）</label>
+              <label className={labelCls}>{t("settings.modelForm.cacheWritePrice")}</label>
               <input
                 type="number"
                 step="0.001"
                 value={form.cacheWritePrice}
                 onChange={(e) => setForm({ ...form, cacheWritePrice: e.target.value })}
-                placeholder="不填=按缓存命中"
+                placeholder={t("settings.modelForm.cacheHit")}
                 className={inputCls}
               />
             </div>
@@ -194,7 +196,7 @@ export function ModelForm({
       {/* 能力勾选（文本模型） */}
       {!isImage && (
         <div className="flex flex-col gap-1.5 rounded-lg border border-[var(--md-sys-color-outline-variant)] p-2">
-          <div className={labelCls}>能力</div>
+          <div className={labelCls}>{t("settings.modelForm.capabilities")}</div>
           <div className="flex flex-wrap gap-3 text-[12px] text-[var(--md-sys-color-on-surface)]">
             <label className="inline-flex items-center gap-1.5">
               <input
@@ -202,7 +204,7 @@ export function ModelForm({
                 checked={form.vision}
                 onChange={(e) => setForm({ ...form, vision: e.target.checked })}
               />
-              <span>视觉（图片输入）</span>
+              <span>{t("settings.modelForm.vision")}</span>
             </label>
             <label className="inline-flex items-center gap-1.5">
               <input
@@ -222,7 +224,7 @@ export function ModelForm({
                   })
                 }
               />
-              <span>深度思考</span>
+              <span>{t("settings.modelForm.thinking")}</span>
             </label>
             <label className="inline-flex items-center gap-1.5">
               <input
@@ -230,13 +232,13 @@ export function ModelForm({
                 checked={form.tools}
                 onChange={(e) => setForm({ ...form, tools: e.target.checked })}
               />
-              <span>工具调用</span>
+              <span>{t("settings.modelForm.tools")}</span>
             </label>
           </div>
 
           {form.thinking && (
             <div className="mt-1.5 flex flex-col gap-1.5" data-testid="custom-model-thinking-levels">
-              <div className={labelCls}>思考强度（勾选该模型实际支持的档位）</div>
+              <div className={labelCls}>{t("settings.modelForm.thinkingLevels")}</div>
               <div className="flex flex-wrap gap-2">
                 {THINKING_EFFORT_VALUES.map((level) => {
                   const on = form.thinkingLevels.includes(level);
@@ -274,7 +276,7 @@ export function ModelForm({
                 })}
               </div>
               <p className="text-[10.5px]" style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
-                勾选的档位会出现在模型菜单和输入栏「深度思考」里，并按所选档位发给上游。一个都不勾则只保留思考开关，不发送强度。
+                {t("settings.modelForm.thinkingLevelsHint")}
               </p>
               <label className="inline-flex items-center gap-1.5 text-[12px] text-[var(--md-sys-color-on-surface)]">
                 <input
@@ -283,19 +285,19 @@ export function ModelForm({
                   data-testid="custom-model-thinking-required"
                   onChange={(e) => setForm({ ...form, thinkingRequired: e.target.checked })}
                 />
-                <span>思考不可关（如 GLM / Gemini 强制思考）</span>
+                <span>{t("settings.modelForm.thinkingRequired")}</span>
               </label>
             </div>
           )}
 
           {/* API 兼容格式（三选一） */}
           <div className="mt-1">
-            <div className={labelCls}>API 兼容格式</div>
+            <div className={labelCls}>{t("settings.modelForm.apiProtocol")}</div>
             <div className="grid grid-cols-3 gap-1.5">
               {[
                 { value: "openai", label: "OpenAI", hint: "OpenAI / DeepSeek / One-API" },
-                { value: "anthropic", label: "Anthropic", hint: "Claude 原生 /v1/messages" },
-                { value: "siliconflow", label: "SiliconFlow", hint: "硅基流动 / 原生 Qwen" },
+                { value: "anthropic", label: "Anthropic", hint: t("settings.modelForm.protocolAnthropicHint") },
+                { value: "siliconflow", label: "SiliconFlow", hint: t("settings.modelForm.protocolSiliconflowHint") },
               ].map((opt) => (
                 <label
                   key={opt.value}
@@ -339,7 +341,7 @@ export function ModelForm({
               className="mt-1 text-[10.5px]"
               style={{ color: "var(--md-sys-color-on-surface-variant)" }}
             >
-              选中后：请求路径、鉴权头、图片编码、思考参数、推理字段全部自动匹配。
+              {t("settings.modelForm.apiProtocolHint")}
             </div>
           </div>
 
@@ -356,32 +358,32 @@ export function ModelForm({
                 className="cursor-pointer text-[11px]"
                 style={{ color: "var(--md-sys-color-on-surface-variant)" }}
               >
-                高级：手动覆盖底层字段（多数用户无需展开）
+                {t("settings.modelForm.advanced")}
               </summary>
               <div className="mt-2 grid gap-2 md:grid-cols-2">
                 <div>
-                  <label className={labelCls}>推理字段（override）</label>
+                  <label className={labelCls}>{t("settings.modelForm.reasoningField")}</label>
                   <input
                     type="text"
                     value={form.reasoningField}
                     onChange={(e) => setForm({ ...form, reasoningField: e.target.value })}
-                    placeholder="留空=按格式自动"
+                    placeholder={t("settings.modelForm.reasoningFieldHint")}
                     className={inputCls}
                   />
                 </div>
                 <div>
-                  <label className={labelCls}>思考参数格式（override）</label>
-                  <AppSelect label="思考参数格式" value={form.thinkingRequestStyle}
+                  <label className={labelCls}>{t("settings.modelForm.thinkingStyle")}</label>
+                  <AppSelect label={t("settings.modelForm.thinkingStyleAria")} value={form.thinkingRequestStyle}
                     onValueChange={(thinkingRequestStyle) => setForm({ ...form, thinkingRequestStyle })}
                     options={[
                       { value: "siliconflow", label: "enable_thinking / thinking_budget" },
                       { value: "openai-reasoning-effort", label: "reasoning_effort" },
-                      { value: "openrouter-reasoning", label: "reasoning.effort（OpenRouter）" },
-                      { value: "deepseek-thinking", label: "thinking + reasoning_effort（DeepSeek）" },
-                      { value: "mimo-thinking", label: "thinking.type（MiMo）" },
-                      { value: "gemini-thinking-level", label: "thinking_level（Gemini 兼容）" },
-                      { value: "anthropic-thinking", label: "thinking.budget_tokens（Anthropic 原生）" },
-                      { value: "none", label: "不发送思考参数" },
+                      { value: "openrouter-reasoning", label: t("settings.modelForm.styleOpenrouter") },
+                      { value: "deepseek-thinking", label: t("settings.modelForm.styleDeepseek") },
+                      { value: "mimo-thinking", label: t("settings.modelForm.styleMimo") },
+                      { value: "gemini-thinking-level", label: t("settings.modelForm.styleGemini") },
+                      { value: "anthropic-thinking", label: t("settings.modelForm.styleAnthropic") },
+                      { value: "none", label: t("settings.modelForm.styleNone") },
                     ] as const} />
                 </div>
               </div>
@@ -393,7 +395,7 @@ export function ModelForm({
       {/* 生图参数 */}
       {isImage && (
         <div className="flex flex-col gap-2 rounded-lg border border-[var(--md-sys-color-outline-variant)] p-2">
-          <div className={labelCls}>支持尺寸（多选）</div>
+          <div className={labelCls}>{t("settings.modelForm.sizes")}</div>
           <div className="flex flex-wrap gap-2">
             {SIZE_OPTIONS.map((sz) => (
               <label
@@ -420,7 +422,7 @@ export function ModelForm({
             ))}
           </div>
           <div>
-            <label className={labelCls}>最大生成数量</label>
+            <label className={labelCls}>{t("settings.modelForm.maxCount")}</label>
             <input
               type="number"
               min={1}
@@ -431,13 +433,13 @@ export function ModelForm({
             />
           </div>
           <div>
-            <label className={labelCls}>生图 API 格式</label>
-            <AppSelect label="生图 API 格式" value={form.imageApiStyle}
+            <label className={labelCls}>{t("settings.modelForm.imageApiStyle")}</label>
+            <AppSelect label={t("settings.modelForm.imageApiStyle")} value={form.imageApiStyle}
               onValueChange={(imageApiStyle) => setForm({ ...form, imageApiStyle })}
               options={[
-                { value: "auto", label: "自动识别" },
+                { value: "auto", label: t("settings.modelForm.imageStyleAuto") },
                 { value: "openai", label: "OpenAI Images API" },
-                { value: "siliconflow", label: "SiliconFlow 图片接口" },
+                { value: "siliconflow", label: t("settings.modelForm.imageStyleSiliconflow") },
               ] as const} />
           </div>
         </div>
@@ -450,13 +452,13 @@ export function ModelForm({
           data-testid="custom-model-form-save"
           className="press rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
         >
-          保存
+          {t("settings.common.save")}
         </button>
         <button
           onClick={onCancel}
           className="press rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
         >
-          取消
+          {t("settings.common.cancel")}
         </button>
       </div>
     </div>

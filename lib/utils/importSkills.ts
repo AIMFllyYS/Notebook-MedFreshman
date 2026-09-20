@@ -1,5 +1,7 @@
 import { unzipSync, strFromU8 } from "fflate";
 import { parseSkillMarkdown, type ParsedSkillMd } from "@/lib/utils/skillFrontmatter";
+import { translate } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 
 export type SkillImportKind = "markdown" | "archive" | "unknown";
 
@@ -65,13 +67,13 @@ export async function importSkillFiles(files: Iterable<File>): Promise<SkillImpo
       const parsed = parseSkillArchive(bytes, file.name);
       if (parsed.length === 0) {
         rejected += 1;
-        errors.push(`${file.name} 里没有 SKILL.md 或 Markdown。`);
+        errors.push(translate(useSettings.getState().locale, "settings.skills.errorNoMarkdown", { file: file.name }));
         continue;
       }
       skills.push(...parsed);
     } catch {
       rejected += 1;
-      errors.push(`${file.name} 无法解析。`);
+      errors.push(translate(useSettings.getState().locale, "settings.skills.errorUnparsable", { file: file.name }));
     }
   }
 

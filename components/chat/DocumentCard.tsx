@@ -5,6 +5,7 @@ import { useDocuments, getDocumentMarkdown } from '@/lib/hooks/useDocuments';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
+import { useT, type Translate } from '@/lib/i18n';
 import type { DocumentApiEvent, DocumentSpec, DocumentSection } from '@/lib/documents/types';
 import { assembleDocumentMarkdown } from '@/lib/documents/types';
 import {
@@ -50,6 +51,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
   const writingRowRef = useRef<HTMLLIElement>(null);
   // 只取首帧 autoStart：主聊天结束导致 autoStart 翻转时，不中断正在生成的文档。
   const [shouldAutoGen] = useState(autoStart);
+  const t = useT();
 
   useEffect(() => {
     if (startedRef.current) return;
@@ -64,8 +66,8 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
     const docModelInfo = getModelInfoWithCustom(docModelId, settings.customApiGroups);
     if (docModelInfo?.type === 'image') {
       /* eslint-disable react-hooks/set-state-in-effect */
-      setStatus(documentId, 'error', unsupportedReason || '当前生图模型不支持长文档撰写，请切换文本模型后重试。');
-      setError(unsupportedReason || '当前生图模型不支持长文档撰写。');
+      setStatus(documentId, 'error', unsupportedReason || t('window.document.imageModelUnsupportedRetry'));
+      setError(unsupportedReason || t('window.document.imageModelUnsupported'));
       /* eslint-enable react-hooks/set-state-in-effect */
       return;
     }
@@ -90,11 +92,11 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
             customApiGroups,
           }),
         });
-        if (!outlineRes.ok) throw new Error(`大纲请求失败: ${outlineRes.status}`);
-        const outline = await consumeOutline(outlineRes, documentId, (delta) => {
+        if (!outlineRes.ok) throw new Error(t('window.document.outlineRequestFailed', { status: outlineRes.status }));
+        const outline = await consumeOutline(outlineRes, documentId, t, (delta) => {
           setReasoning((prev) => prev + delta);
         });
-        if (!outline.length) throw new Error('未能生成章节大纲');
+        if (!outline.length) throw new Error(t('window.document.outlineEmpty'));
 
         setSections(documentId, outline.map((o) => ({ ...o, status: 'pending' })));
         setStatus(documentId, 'writing');
@@ -115,13 +117,14 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
               customApiGroups,
             }),
           });
-          if (!sectionRes.ok) throw new Error(`第 ${i + 1} 节请求失败: ${sectionRes.status}`);
+          if (!sectionRes.ok) throw new Error(t('window.document.sectionRequestFailed', { index: i + 1, status: sectionRes.status }));
           await consumeSection(
             sectionRes,
             documentId,
             i,
             setSectionStatus,
             setSectionMarkdown,
+            t,
             (delta) => setReasoning((prev) => prev + delta),
           );
         }
@@ -129,7 +132,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
         setStatus(documentId, 'done');
       } catch (err) {
         if ((err as Error)?.name === 'AbortError') return;
-        const message = err instanceof Error ? err.message : '文档生成失败';
+        const message = err instanceof Error ? err.message : t('window.document.generateFailed');
         setStatus(documentId, 'error', message);
         setError(message);
       } finally {
@@ -178,7 +181,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
       <div className="my-3 rounded-2xl border border-[var(--md-sys-color-error)] bg-[var(--md-sys-color-error-container)] p-3 text-[13px] text-[var(--md-sys-color-on-error-container)]">
         <div className="flex items-center gap-2 font-semibold">
           <AgentAlertIcon size={16} />
-          无法撰写长文档
+          {t('window.document.unsupportedTitle')}
         </div>
         <div className="mt-1 opacity-90">{unsupportedReason}</div>
       </div>
@@ -216,7 +219,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
             style={{ background: 'var(--md-sys-color-primary)', color: 'var(--md-sys-color-on-primary)' }}
           >
             <AgentArrowUpRightIcon size={14} />
-            查看文档
+            {t('window.document.viewDocument')}
           </button>
         ) : null}
       </div>
@@ -232,7 +235,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
             style={{ color: onContainer, background: 'transparent', border: 'none', cursor: 'pointer' }}
           >
             <AgentQuoteIcon size={13} className="shrink-0" />
-            生成依据
+            {t('window.document.basis')}
             <AgentChevronIcon size={13} style={{ transform: showPrompt ? 'rotate(180deg)' : undefined }} />
           </button>
           {showPrompt ? (
@@ -264,7 +267,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
               size={13}
               className={thinkingActive ? 'animate-pulse motion-reduce:animate-none' : undefined}
             />
-            {thinkingActive ? '思考中' : '思考过程'}
+            {thinkingActive ? t('window.document.thinking') : t('window.document.thinkingProcess')}
             <AgentChevronIcon size={13} style={{ transform: showThinking ? 'rotate(180deg)' : undefined }} />
           </button>
           {showThinking ? (
@@ -275,7 +278,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
             >
               {reasoning
                 ? <MessageContent content={reasoning} enableVisualizations={false} preserveLineBreaks />
-                : '正在规划章节与写法…'}
+                : t('window.document.planningWriting')}
             </div>
           ) : null}
         </div>
@@ -289,12 +292,12 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
         <div className="mb-1.5 flex items-center justify-between gap-2 text-[11.5px]" style={{ color: onContainer }}>
           <span>
             {inFlight && !sections.length
-              ? '正在规划章节…'
+              ? t('window.document.planningSections')
               : writing
-                ? `正在写「${writing.title}」`
+                ? t('window.document.writingSection', { title: writing.title })
                 : done
-                  ? '章节已全部完成'
-                  : '章节进度'}
+                  ? t('window.document.sectionsDone')
+                  : t('window.document.sectionProgress')}
           </span>
           {progressText ? (
             <span className="font-medium" style={{ fontVariantNumeric: 'tabular-nums' }}>{progressText}</span>
@@ -302,7 +305,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
         </div>
         <UsageProgressBar
           ratio={documentProgressRatio(doneCount, sections.length)}
-          ariaLabel="章节进度"
+          ariaLabel={t('window.document.sectionProgress')}
           tone="completion"
           height={4}
           valueNow={doneCount}
@@ -315,10 +318,10 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
           {sections.map((section, index) => {
             const writingThis = section.status === 'streaming';
             const stateLabel =
-              section.status === 'done' ? '已完成'
-                : section.status === 'streaming' ? '撰写中'
-                  : section.status === 'error' ? '失败'
-                    : '待写';
+              section.status === 'done' ? t('window.document.statusDone')
+                : section.status === 'streaming' ? t('window.document.statusWriting')
+                  : section.status === 'error' ? t('window.common.failed')
+                    : t('window.document.statusWaiting');
             return (
               <li
                 key={`${index}-${section.title}`}
@@ -357,7 +360,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
             style={{ color: onContainer, background: 'transparent', border: 'none', cursor: 'pointer' }}
           >
             <AgentFileIcon size={13} />
-            {showPreview ? '隐藏正文' : '查看正文'}
+            {showPreview ? t('window.document.hideBody') : t('window.document.viewBody')}
             <AgentChevronIcon size={13} style={{ transform: showPreview ? 'rotate(180deg)' : undefined }} />
           </button>
           {showPreview ? (
@@ -378,7 +381,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
 
       {errored ? (
         <div className="px-3 pb-3 text-[12px]" style={{ color: 'var(--md-sys-color-error)' }}>
-          {doc?.error || error || '该文档生成出错，可让助教重新生成。'}
+          {doc?.error || error || t('window.document.errorHint')}
         </div>
       ) : null}
     </div>
@@ -388,10 +391,11 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
 async function consumeOutline(
   response: Response,
   documentId: string,
+  t: Translate,
   onReasoningDelta: (delta: string) => void,
 ): Promise<Pick<DocumentSection, 'title' | 'brief'>[]> {
   const reader = response.body?.getReader();
-  if (!reader) throw new Error('流读取失败');
+  if (!reader) throw new Error(t('window.document.streamReadFailed'));
   const decoder = new TextDecoder('utf-8');
   let buffer = '';
   let outline: Pick<DocumentSection, 'title' | 'brief'>[] = [];
@@ -407,7 +411,7 @@ async function consumeOutline(
       if (event.type !== 'document' || event.id !== documentId) continue;
       if (event.status === 'reasoning') onReasoningDelta(event.delta || '');
       if (event.status === 'outline') outline = event.outline || [];
-      if (event.status === 'error') throw new Error(event.message || '大纲生成失败');
+      if (event.status === 'error') throw new Error(event.message || t('window.document.outlineFailed'));
     }
   }
   return outline;
@@ -419,10 +423,11 @@ async function consumeSection(
   index: number,
   setSectionStatus: (id: string, index: number, status: DocumentSection['status'], error?: string) => void,
   setSectionMarkdown: (id: string, index: number, markdown: string) => void,
+  t: Translate,
   onReasoningDelta: (delta: string) => void,
 ): Promise<void> {
   const reader = response.body?.getReader();
-  if (!reader) throw new Error('流读取失败');
+  if (!reader) throw new Error(t('window.document.streamReadFailed'));
   const decoder = new TextDecoder('utf-8');
   let buffer = '';
   let markdown = '';
@@ -451,8 +456,8 @@ async function consumeSection(
         return;
       }
       if (event.status === 'error') {
-        setSectionStatus(documentId, index, 'error', event.message || '本节生成失败');
-        throw new Error(event.message || '本节生成失败');
+        setSectionStatus(documentId, index, 'error', event.message || t('window.document.sectionFailed'));
+        throw new Error(event.message || t('window.document.sectionFailed'));
       }
     }
   }

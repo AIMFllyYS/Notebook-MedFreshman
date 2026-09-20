@@ -11,6 +11,7 @@ import React from "react";
 import clsx from "clsx";
 import { refreshBillingFromLedger } from "@/lib/billing/syncUsageLedger";
 import { costCnyToUsd, filterLedgerByRange } from "@/lib/billing/ledgerView";
+import { useT } from "@/lib/i18n";
 
 type TimeRange = "7d" | "30d" | "all";
 
@@ -30,6 +31,7 @@ function ProviderStatCard({
   stat: { category: string; name: string; cost: number; count: number; tokens: number };
   exchangeRate: number;
 }) {
+  const t = useT();
   const [flipped, setFlipped] = useState(false);
 
   return (
@@ -62,7 +64,7 @@ function ProviderStatCard({
             ¥{stat.cost.toFixed(4)}
           </span>
           <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-[var(--ink-faint)]">
-            <span className="shrink-0">{stat.count} 次调用</span>
+            <span className="shrink-0">{t("panel.billing.calls", { count: stat.count })}</span>
             {stat.tokens > 0 && <span className="truncate">{(stat.tokens / 1000).toFixed(1)}k tokens</span>}
           </div>
         </div>
@@ -87,7 +89,7 @@ function ProviderStatCard({
             ${costCnyToUsd(stat.cost, exchangeRate).toFixed(4)}
           </span>
           <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-[var(--ink-faint)]">
-            <span className="shrink-0">{stat.count} 次调用</span>
+            <span className="shrink-0">{t("panel.billing.calls", { count: stat.count })}</span>
             {stat.tokens > 0 && <span className="truncate">{(stat.tokens / 1000000).toFixed(2)}M tokens</span>}
           </div>
         </div>
@@ -97,6 +99,7 @@ function ProviderStatCard({
 }
 
 function BillingDashboardWindow({ winId }: { winId: string }) {
+  const t = useT();
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === winId));
   const closeWindow = useWindowManager((s) => s.closeWindow);
 
@@ -210,11 +213,11 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
           type="button"
           data-no-drag
           onClick={() => exportToCsv(customGroups)}
-          title="导出 CSV"
+          title={t("panel.billing.exportCsv")}
           className="press flex h-7 items-center gap-1 rounded-lg px-2 text-xs font-medium text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]"
         >
           <Download size={13} />
-          <span className="hidden sm:inline">导出记录</span>
+          <span className="hidden sm:inline">{t("panel.billing.exportRecords")}</span>
         </button>
       }
       bodyClassName="flex min-h-0 flex-1 flex-col overflow-hidden"
@@ -224,24 +227,24 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
           <div className="flex shrink-0 items-center justify-between border-b border-[var(--line)] bg-[var(--bg-panel)] px-4 py-3">
             <div className="flex items-center gap-2">
               <div className="flex rounded-md bg-[var(--bg-muted)] p-0.5">
-                {(["7d", "30d", "all"] as TimeRange[]).map((t) => (
+                {(["7d", "30d", "all"] as TimeRange[]).map((range) => (
                   <button
-                    key={t}
-                    onClick={() => setTimeRange(t)}
+                    key={range}
+                    onClick={() => setTimeRange(range)}
                     className={clsx(
                       "rounded px-3 py-1 text-xs font-medium transition-colors",
-                      timeRange === t
+                      timeRange === range
                         ? "bg-white text-[var(--ink)] shadow-sm dark:bg-[#333]"
                         : "text-[var(--ink-faint)] hover:text-[var(--ink-soft)]"
                     )}
                   >
-                    {t === "7d" ? "最近 7 天" : t === "30d" ? "最近 30 天" : "全部历史"}
+                    {range === "7d" ? t("panel.billing.range.d7") : range === "30d" ? t("panel.billing.range.d30") : t("panel.billing.range.all")}
                   </button>
                 ))}
               </div>
             </div>
             <div className="text-xs text-[var(--ink-faint)]">
-              共 {filteredRecords.length} 条记录
+              {t("panel.billing.recordCount", { count: filteredRecords.length })}
             </div>
           </div>
 
@@ -252,14 +255,14 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
                 <ProviderStatCard key={stat.category} stat={stat} exchangeRate={usdExchangeRate} />
               ))}
               {providerStats.length === 0 && (
-                <div className="text-sm text-[var(--ink-faint)] p-2">暂无计费数据</div>
+                <div className="text-sm text-[var(--ink-faint)] p-2">{t("panel.billing.empty")}</div>
               )}
             </div>
 
             {/* Middle: Mini Chart */}
             {chartData.length > 0 && (
               <div className="shrink-0 rounded-lg border border-[var(--line)] bg-white p-4 dark:bg-[#222]">
-                <div className="mb-2 text-xs font-medium text-[var(--ink-soft)]">费用趋势</div>
+                <div className="mb-2 text-xs font-medium text-[var(--ink-soft)]">{t("panel.billing.trend")}</div>
                 <div className="flex h-24 items-end gap-[2px] sm:gap-1">
                   {chartData.map((d, i) => (
                     <div
@@ -289,12 +292,12 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
               <div className="flex-1 overflow-x-auto scrollbar-thin relative">
                 <div className="h-full flex flex-col min-w-[740px]">
                   <div className="flex shrink-0 border-b border-[var(--line)] bg-[var(--bg-muted)] px-3 py-2 text-xs font-medium text-[var(--ink-soft)]">
-                    <div className="w-[120px] shrink-0">时间</div>
-                    <div className="w-[160px] shrink-0">模型</div>
-                    <div className="w-[80px] shrink-0">类型</div>
-                    <div className="w-[140px] shrink-0 text-right">消耗 (In/Out/Cache)</div>
-                    <div className="w-[100px] shrink-0 text-right">费用</div>
-                    <div className="min-w-[100px] flex-1 text-right">供应商</div>
+                    <div className="w-[120px] shrink-0">{t("panel.billing.column.time")}</div>
+                    <div className="w-[160px] shrink-0">{t("panel.billing.column.model")}</div>
+                    <div className="w-[80px] shrink-0">{t("panel.billing.column.type")}</div>
+                    <div className="w-[140px] shrink-0 text-right">{t("panel.billing.column.tokens")}</div>
+                    <div className="w-[100px] shrink-0 text-right">{t("panel.billing.column.cost")}</div>
+                    <div className="min-w-[100px] flex-1 text-right">{t("panel.billing.column.provider")}</div>
                   </div>
                   <div ref={parentRef} className="flex-1 overflow-y-auto scrollbar-thin">
                     <div
@@ -333,12 +336,13 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
                             isImage ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300" 
                                     : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
                           )}>
-                            {isImage ? "生图" : "对话"}
+                            {t(isImage ? "panel.billing.typeImage" : "panel.billing.typeChat")}
                           </span>
                         </div>
                         <div className="w-[140px] shrink-0 text-right font-mono text-[11px] text-[var(--ink-faint)]">
                           {isImage ? (
-                            `${record.imageCount} 张`
+                            // imageCount 在账单里是可选的：String() 让渲染结果与旧模板字面量逐字一致。
+                            t("panel.billing.imageCount", { count: String(record.imageCount) })
                           ) : (
                             <>
                               <span className="text-[var(--ink-soft)]">{record.promptTokens}</span>/

@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
+import { useT } from "@/lib/i18n";
 
 /**
  * 目录分组标题。**文案一律由调用方给**（i18n 在调用方做），
@@ -36,7 +37,7 @@ function OutlineNav({
   activeId,
   onSelect,
   outlineLabel,
-  emptyLabel = "没有目录",
+  emptyLabel,
 }: {
   outline: DocumentOutlineItem[];
   activeId: string;
@@ -44,10 +45,11 @@ function OutlineNav({
   outlineLabel: string;
   emptyLabel?: string;
 }) {
+  const t = useT();
   return (
     <nav className="note-citation-outline" aria-label={outlineLabel}>
       {outline.length === 0 ? (
-        <p className="note-citation-status">{emptyLabel}</p>
+        <p className="note-citation-status">{emptyLabel ?? t("panel.reader.emptyOutline")}</p>
       ) : (
         outline.map((item, index) => {
           const selected = item.id === activeId;
@@ -166,7 +168,7 @@ export default function DocumentWorkspace({
   onSelect,
   toolbar,
   children,
-  outlineLabel = "目录",
+  outlineLabel,
   emptyLabel,
   layoutKey = "default",
   folderTree,
@@ -177,6 +179,7 @@ export default function DocumentWorkspace({
   onSelect: (id: string) => void;
   toolbar?: ReactNode;
   children: ReactNode;
+  /** 目录标题。不传就用词典里的「目录」；阅读器会传自己的（如「幻灯片」）。 */
   outlineLabel?: string;
   /** 目录为空时的说明。缺省「没有目录」。 */
   emptyLabel?: string;
@@ -190,6 +193,9 @@ export default function DocumentWorkspace({
   /** 正文滚动容器。连续滚动的阅读器靠它做滚动定位、当前页推导与宽度测量。 */
   bodyRef?: Ref<HTMLDivElement>;
 }) {
+  const t = useT();
+  // 目录标题缺省「目录」：文案在词典里，调用方传进来的优先级更高。
+  const navLabel = outlineLabel ?? t("panel.reader.outline");
   // Agent 右栏窄：目录列改挂右侧，并且可以整个收起来，把宽度让给正文。
   const agentSurface = useIsAgentSurface();
   const [navCollapsed, setNavCollapsed] = useState(false);
@@ -201,7 +207,7 @@ export default function DocumentWorkspace({
       outline={outline}
       activeId={activeId}
       onSelect={onSelect}
-      outlineLabel={outlineLabel}
+      outlineLabel={navLabel}
       emptyLabel={emptyLabel}
     />
   );
@@ -211,8 +217,8 @@ export default function DocumentWorkspace({
       type="button"
       data-no-drag
       data-testid="document-workspace-nav-toggle"
-      aria-label={showNav ? `收起${outlineLabel}` : `展开${outlineLabel}`}
-      title={showNav ? `收起${outlineLabel}` : `展开${outlineLabel}`}
+      aria-label={t(showNav ? "panel.reader.collapseOutline" : "panel.reader.expandOutline", { label: navLabel })}
+      title={t(showNav ? "panel.reader.collapseOutline" : "panel.reader.expandOutline", { label: navLabel })}
       aria-expanded={showNav}
       onClick={() => setNavCollapsed((value) => !value)}
       className="document-workspace-nav-toggle"

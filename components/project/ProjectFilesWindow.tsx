@@ -16,6 +16,7 @@ import { searchStudioRefs } from "@/lib/project/studioRefs";
 import type { ProjectFileEntry } from "@/lib/project/types";
 import { projectFilesWindowId } from "@/lib/project/openProjectFiles";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useT, type Translate } from "@/lib/i18n";
 
 /** 工具条按钮：四个按钮共用一份样式，避免各写各的以后漂移。 */
 const TOOLBAR_BUTTON =
@@ -23,11 +24,11 @@ const TOOLBAR_BUTTON =
 const TOOLBAR_DANGER_BUTTON =
   "flex shrink-0 items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2 py-1 text-[12px] text-[var(--md-sys-color-error)] hover:border-[var(--md-sys-color-error)]";
 
-function statusLabel(file: ProjectFileEntry): string {
-  if (file.status === "parsing") return "解析中…";
-  if (file.status === "error") return `解析失败：${file.error ?? "未知原因"}`;
-  if (file.kind === "studio-ref") return "教材引用";
-  return `${file.slices.length} 片 · ${file.charCount} 字`;
+function statusLabel(file: ProjectFileEntry, t: Translate): string {
+  if (file.status === "parsing") return t("window.project.statusParsing");
+  if (file.status === "error") return t("window.project.statusError", { reason: file.error ?? t("window.project.unknownReason") });
+  if (file.kind === "studio-ref") return t("window.project.kindStudioRef");
+  return t("window.project.sliceStats", { slices: file.slices.length, chars: file.charCount });
 }
 
 /**
@@ -47,6 +48,7 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
   const [busy, setBusy] = useState<string | null>(null);
   const [studioQuery, setStudioQuery] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const t = useT();
 
   const files = useMemo(() => listProjectFiles({ order: orders, byId }, projectId), [byId, orders, projectId]);
   const carry = useMemo(() => planCarry(files, projectId), [files, projectId]);
@@ -60,16 +62,16 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
         {
           id: `${activeFile.id}:index`,
           title: ".index.md",
-          kindLabel: "索引",
+          kindLabel: t("window.project.kindIndex"),
           // 这里以前放的是文件名，10px 等宽字截断成一条看不清的「面包屑」。
           // 文件名已经由下方文件树承担，这里改成这份索引的规模，短且有用。
-          meta: `${activeFile.slices.length} 片 · ${activeFile.charCount} 字`,
+          meta: t("window.project.sliceStats", { slices: activeFile.slices.length, chars: activeFile.charCount }),
         },
         ...activeFile.slices.map((slice) => ({
           id: `${activeFile.id}:${slice.id}`,
           title: slice.title,
-          kindLabel: slice.pinned ? "已带入" : undefined,
-          meta: `${slice.chars} 字`,
+          kindLabel: slice.pinned ? t("window.project.kindPinned") : undefined,
+          meta: t("window.project.charCount", { count: slice.chars }),
         })),
       ]
     : [];
@@ -94,12 +96,12 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
 
   const carryText =
     carry.mode === "all"
-      ? `已全部带入（${carry.totalSlices} 片 · ${carry.totalChars} 字）`
+      ? t("window.project.carryAll", { slices: carry.totalSlices, chars: carry.totalChars })
       : carry.mode === "pinned"
-        ? `带入 ${carry.sliceIds.length} 片 / 共 ${carry.totalSlices} 片`
+        ? t("window.project.carryPinned", { pinned: carry.sliceIds.length, total: carry.totalSlices })
         : carry.totalSlices > 0
-          ? `项目较大，暂未带入（共 ${carry.totalSlices} 片）：在切片行点「带入」`
-          : "还没有可带入的内容";
+          ? t("window.project.carryTooLarge", { total: carry.totalSlices })
+          : t("window.project.carryNone");
 
   const toolbar = (
     // 工具条高度固定 32px：状态文案自己截断，按钮组 shrink-0 且不换行，
@@ -114,11 +116,11 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
       </span>
       <div className="flex shrink-0 items-center gap-2">
       <button type="button" data-no-drag className={TOOLBAR_BUTTON} onClick={() => fileInputRef.current?.click()}>
-        <FilePlus2 size={13} /> 添加文件
+        <FilePlus2 size={13} /> {t("window.project.addFile")}
       </button>
       <AnchoredMenu
-        label="引用 Studio 教材"
-        trigger={<><Link2 size={13} /> 引用教材</>}
+        label={t("window.project.citeStudioLabel")}
+        trigger={<><Link2 size={13} /> {t("window.project.citeTextbook")}</>}
         width={280}
         className={TOOLBAR_BUTTON}
       >
@@ -127,15 +129,15 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
             <input
               autoFocus
               value={studioQuery}
-              aria-label="搜索 Studio 教材"
+              aria-label={t("window.project.studioSearchAria")}
               data-testid="project-studio-search"
-              placeholder="搜标题，例如「上皮」"
+              placeholder={t("window.project.studioSearchPlaceholder")}
               onChange={(event) => setStudioQuery(event.target.value)}
               className="mx-1.5 my-1 w-[calc(100%-0.75rem)] rounded-md border border-[var(--line)] bg-[var(--bg-muted)] px-2 py-1 text-[12px] text-[var(--ink)] outline-none"
             />
             {results.length === 0 ? (
               <p className="px-2.5 py-1.5 text-[11.5px] text-[var(--ink-faint)]">
-                {studioQuery.trim() ? "没有匹配的教材或笔记" : "输入关键词搜索 Studio 内容"}
+                {studioQuery.trim() ? t("window.project.studioNoMatch") : t("window.project.studioHint")}
               </p>
             ) : (
               results.map((ref) => (
@@ -161,11 +163,11 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
       </AnchoredMenu>
       {activeFile ? (
         <>
-          <button type="button" data-no-drag className={TOOLBAR_BUTTON} onClick={() => fileInputRef.current?.click()} title="重新导入同名文件即可重新解析">
-            <RefreshCw size={13} /> 重新导入
+          <button type="button" data-no-drag className={TOOLBAR_BUTTON} onClick={() => fileInputRef.current?.click()} title={t("window.project.reimportTitle")}>
+            <RefreshCw size={13} /> {t("window.project.reimport")}
           </button>
           <button type="button" data-no-drag className={TOOLBAR_DANGER_BUTTON} onClick={() => removeFile(activeFile.id)}>
-            <Trash2 size={13} /> 移除
+            <Trash2 size={13} /> {t("window.project.remove")}
           </button>
         </>
       ) : null}
@@ -179,8 +181,8 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
     <div className="flex flex-col gap-0.5 px-1.5 py-1" data-testid="project-file-tree">
       {files.length === 0 ? (
         <p className="px-3 py-2 text-[11.5px] leading-relaxed text-[var(--ink-faint)]">
-          还没有文件。点「添加文件」导入本机文件，或「引用教材」软链接一条 Studio 内容。
-          <br />（文件只在本机解析，不会上传。）
+          {t("window.project.emptyFiles")}
+          <br />{t("window.project.emptyFilesNote")}
         </p>
       ) : (
         files.map((file) => (
@@ -194,7 +196,7 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
                 ? <Link2 size={14} />
                 : <FileTypeIcon kind={resolveFileGlyphKind({ mimeType: file.mimeType, name: file.name })} mimeType={file.mimeType} name={file.name} size={15} />
             }
-            titleAttr={statusLabel(file)}
+            titleAttr={statusLabel(file, t)}
             ariaLabel={file.name}
             onClick={() => setActiveKey(`${file.id}:index`)}
           />
@@ -205,7 +207,7 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
 
   const body = !activeFile ? (
     <div className="flex h-full items-center justify-center px-6 text-center text-[12.5px] text-[var(--ink-soft)]">
-      这个项目还没有文件。
+      {t("window.project.emptyProject")}
     </div>
   ) : activeSliceId ? (
     (() => {
@@ -218,15 +220,15 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
             <span className="min-w-0 truncate text-[12.5px] font-medium text-[var(--ink)]" title={slice.title}>
               {slice.title}
             </span>
-            <span className="shrink-0 text-[11.5px] text-[var(--ink-faint)]">{slice.chars} 字</span>
+            <span className="shrink-0 text-[11.5px] text-[var(--ink-faint)]">{t("window.project.charCount", { count: slice.chars })}</span>
             <button
               type="button"
               data-testid="project-slice-pin"
               className={`ml-auto shrink-0 rounded-lg border px-2 py-1 text-[11.5px] ${slice.pinned ? "border-[var(--accent)] text-[var(--accent-ink)]" : "border-[var(--line-soft)] text-[var(--ink-soft)]"}`}
               onClick={() => setPinned(activeFile.id, slice.id, !slice.pinned)}
-              title={carry.mode === "all" ? "项目不大，已经全部带入" : "这一片是否随对话一起带给 Agent"}
+              title={carry.mode === "all" ? t("window.project.pinAllTitle") : t("window.project.pinTitle")}
             >
-              {slice.pinned ? "已带入对话" : "带入对话"}
+              {slice.pinned ? t("window.project.pinned") : t("window.project.pin")}
             </button>
           </div>
           <pre className="min-h-0 flex-1 overflow-auto whitespace-pre-wrap rounded-lg border border-[var(--line-soft)] bg-[var(--bg-panel)] p-3 text-[12.5px] leading-relaxed text-[var(--ink)]">
@@ -237,9 +239,9 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
     })()
   ) : (
     <div className="flex h-full flex-col gap-2">
-      <span className="text-[12.5px] font-medium text-[var(--ink)]">.index.md · 隐藏索引</span>
+      <span className="text-[12.5px] font-medium text-[var(--ink)]">{t("window.project.indexTitle")}</span>
       <pre className="min-h-0 flex-1 overflow-auto whitespace-pre-wrap rounded-lg border border-[var(--line-soft)] bg-[var(--bg-panel)] p-3 text-[12px] leading-relaxed text-[var(--ink-soft)]">
-        {activeFile.indexMarkdown || "（还没有索引：正在解析或解析失败）"}
+        {activeFile.indexMarkdown || t("window.project.indexEmpty")}
       </pre>
     </div>
   );
@@ -247,7 +249,7 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
   return (
     <ManagedWindow
       windowId={windowId}
-      title={`项目文件 · ${projectName ?? "未命名项目"}`}
+      title={t("window.project.windowTitle", { name: projectName ?? t("window.project.untitledProject") })}
       icon={<FilePlus2 size={15} />}
       onClose={() => useWindowManager.getState().closeWindow(windowId)}
       fullscreenTarget="notes"
@@ -269,17 +271,17 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
       />
       <DocumentWorkspace
         layoutKey="project-files"
-        outlineLabel={activeFile ? activeFile.name : "切片"}
+        outlineLabel={activeFile ? activeFile.name : t("window.project.sliceOutlineFallback")}
         outline={outline}
         activeId={currentId}
         onSelect={setActiveKey}
         toolbar={toolbar}
         folderTree={folderTree}
-        emptyLabel="这个文件还没有切片"
+        emptyLabel={t("window.project.emptySlices")}
       >
         {busy ? (
           <div role="status" className="flex h-full items-center justify-center text-[12.5px] text-[var(--ink-soft)]">
-            正在解析 {busy}…
+            {t("window.project.parsing", { name: busy })}
           </div>
         ) : (
           body

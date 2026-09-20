@@ -2,6 +2,8 @@ import type { ChatMessage } from "@/lib/types/chat";
 import { getMessageText } from "@/lib/chat/messageParts";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useTokenTracker } from "@/lib/stores/tokenTracker";
+import { translate } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 
 /** 与服务端 compactHistory 对齐：保留最近 N 轮原文。 */
 export const CHAT_COMPACT_KEEP_TURNS = 6;
@@ -67,6 +69,8 @@ export async function compactActiveSession(sessionId?: string | null): Promise<{
   const result = compactChatMessages(messages);
   if (!result.compacted) return { compacted: false };
   useChatHistory.getState().replaceMessages(sid, result.messages);
-  useTokenTracker.setState({ contextWarning: "已手动压缩较早对话" });
+  useTokenTracker.setState({
+    contextWarning: translate(useSettings.getState().locale, "trace.panel.manualCompacted"),
+  });
   return { compacted: true };
 }

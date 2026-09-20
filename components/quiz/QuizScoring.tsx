@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { useQuizStore, computeBreakdown } from "@/lib/quiz-store";
 import QuizQuestion from "./QuizQuestion";
+import { useT } from "@/lib/i18n";
 
 /** 主观题自评滑块。 */
 function SelfScoreSlider({
@@ -17,6 +18,7 @@ function SelfScoreSlider({
   max: number;
 }) {
   const setSelfScore = useQuizStore((s) => s.setSelfScore);
+  const t = useT();
   // 满分较小（如 ≤10）时按 0.5 步长，否则整数步长。
   const step = max <= 10 ? 0.5 : 1;
   return (
@@ -31,10 +33,10 @@ function SelfScoreSlider({
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
         <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--md-sys-color-on-surface)" }}>
-          对照评分要点为本题自评
+          {t("window.quiz.scoring.selfScore")}
         </span>
         <span style={{ fontSize: "14px", fontWeight: 700, color: "var(--md-sys-color-primary)" }}>
-          {awarded} / {max} 分
+          {t("window.quiz.scoring.scorePair", { awarded, max })}
         </span>
       </div>
       <input
@@ -63,7 +65,7 @@ function SelfScoreSlider({
               cursor: "pointer",
             }}
           >
-            {frac === 0 ? "未答对" : frac === 0.5 ? "部分正确" : "完全正确"}
+            {frac === 0 ? t("window.quiz.scoring.wrong") : frac === 0.5 ? t("window.quiz.scoring.partial") : t("window.quiz.scoring.full")}
           </button>
         ))}
       </div>
@@ -72,6 +74,7 @@ function SelfScoreSlider({
 }
 
 export default function QuizScoring() {
+  const t = useT();
   const results = useQuizStore((s) => s.results);
   const answers = useQuizStore((s) => s.answers);
   const finishScoring = useQuizStore((s) => s.finishScoring);
@@ -82,13 +85,13 @@ export default function QuizScoring() {
   return (
     <div className="mx-auto w-full max-w-3xl px-8 py-10">
       <div style={{ marginBottom: "8px", fontSize: "13px", fontWeight: 700, color: "var(--md-sys-color-primary)" }}>
-        逐题评分
+        {t("window.quiz.scoring.eyebrow")}
       </div>
       <h2 style={{ fontSize: "22px", fontWeight: 700, color: "var(--md-sys-color-on-surface)", margin: "0 0 6px" }}>
-        核对答案与自评
+        {t("window.quiz.scoring.title")}
       </h2>
       <p style={{ fontSize: "14px", color: "var(--md-sys-color-on-surface-variant)", margin: "0 0 8px" }}>
-        客观题已自动判分；{hasSubjective ? "主观题请对照参考答案与评分要点拖动滑块自评。" : "可查看每题解析。"}
+        {t("window.quiz.scoring.objectiveDone")}{hasSubjective ? t("window.quiz.scoring.subjectiveHint") : t("window.quiz.scoring.objectiveHint")}
       </p>
 
       {/* 当前累计得分 */}
@@ -108,12 +111,12 @@ export default function QuizScoring() {
           boxShadow: "var(--md-sys-elevation-level1)",
         }}
       >
-        <span style={{ fontSize: "13px", color: "var(--md-sys-color-on-surface-variant)" }}>当前得分</span>
+        <span style={{ fontSize: "13px", color: "var(--md-sys-color-on-surface-variant)" }}>{t("window.quiz.scoring.current")}</span>
         <span style={{ fontSize: "20px", fontWeight: 800, color: "var(--md-sys-color-primary)" }}>
           {breakdown.earned}
         </span>
         <span style={{ fontSize: "14px", color: "var(--md-sys-color-on-surface-variant)" }}>
-          / {breakdown.max} 分（{breakdown.percent} 分制）
+          {t("window.quiz.scoring.currentScale", { max: breakdown.max, percent: breakdown.percent })}
         </span>
       </div>
 
@@ -166,7 +169,7 @@ export default function QuizScoring() {
             boxShadow: "var(--md-sys-elevation-level1)",
           }}
         >
-          完成并查看总结
+          {t("window.quiz.scoring.finish")}
           <ChevronRight size={16} />
         </button>
       </div>

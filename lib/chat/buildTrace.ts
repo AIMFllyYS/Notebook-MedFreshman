@@ -3,6 +3,8 @@ import type { ChatToolPart } from '@/lib/chat/messageParts';
 import { hasStepStart } from '@/lib/chat/messageParts';
 import { splitThinkContent } from '@/lib/chat/rendering/parseChatContent';
 import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
+import { translate, type Translate } from '@/lib/i18n';
+import { useSettings } from '@/lib/stores/settings';
 
 export type TraceStatus = 'running' | 'complete' | 'error' | 'interrupted' | 'waiting';
 export type TraceToolPart = ChatToolPart | Extract<ChatMessagePart, { type: 'dynamic-tool' }>;
@@ -43,6 +45,13 @@ export interface AgentTraceModel {
   waitingCount: number;
 }
 
+/**
+ * 这个模块是纯函数，拿不到 React 上下文：默认按 store 的当前语言即时取词。
+ * 组件里一律把 `useT()` 的 t 传进来——那样换语言才会跟着重渲染，默认值只服务单测与
+ * 少数还在用旧签名的调用方（MemoryProposalCloud / useChat.test）。
+ */
+const translateCurrent: Translate = (key, vars) => translate(useSettings.getState().locale, key, vars);
+
 export function isTraceToolPart(part: ChatMessagePart): part is TraceToolPart {
   return part.type === 'dynamic-tool' || part.type.startsWith('tool-');
 }
@@ -62,10 +71,10 @@ function record(value: unknown): Record<string, unknown> {
     : {};
 }
 
-export function getTraceToolOutput(part: TraceToolPart): string {
+export function getTraceToolOutput(part: TraceToolPart, t: Translate = translateCurrent): string {
   if (part.state === 'output-error') return part.errorText;
-  if (part.state === 'output-denied') return part.approval.reason || '此次工具调用未获批准';
-  if (part.state === 'approval-responded' && !part.approval.approved) return part.approval.reason || '此次工具调用未获批准';
+  if (part.state === 'output-denied') return part.approval.reason || t('trace.tool.denied');
+  if (part.state === 'approval-responded' && !part.approval.approved) return part.approval.reason || t('trace.tool.denied');
   if (part.state !== 'output-available') return '';
   if (typeof part.output === 'string') return part.output;
   const output = record(part.output);
@@ -87,6 +96,7 @@ export function buildToolTraceStep(
   partIndex: number,
   isStreaming = false,
   stepDurationsMs?: Readonly<Record<string, number>>,
+  t: Translate = translateCurrent,
 ): TraceToolStep {
   const name = traceToolName(part);
   const status = getTraceToolStatus(part, isStreaming);
@@ -95,52 +105,66 @@ export function buildToolTraceStep(
   let summary = '';
 
   if (status === 'error') {
-    summary = getTraceToolOutput(part) || '此次工具调用未获批准';
+    summary = getTraceToolOutput(part, t) || t('trace.tool.denied');
   } else if (status === 'interrupted') {
-    summary = '已停止，未收到完整结果';
+    summary = t('trace.tool.interrupted');
   } else if (status === 'waiting') {
-    summary = '等待批准后继续';
+    summary = t('trace.tool.waitingApproval');
   } else if (output.deduped) {
-    summary = '已在上下文中，复用已加载内容';
+    summary = t('trace.tool.deduped');
   } else if (Array.isArray(output.images)) {
-    summary = `找到 ${output.images.length} 张笔记图片`;
+    summary = t('trace.tool.images', { count: output.images.length });
   } else if (Array.isArray(output.questions)) {
-    summary = `${output.questions.length} 道题${output.title ? ` · ${output.title}` : ''}`;
+    const count = output.questions.length;
+    summary = output.title
+      ? t('trace.tool.questionsWithTitle', { count, title: String(output.title) })
+      : t('trace.tool.questions', { count });
   } else if (output.documentId) {
     const docTitle = typeof output.spec === 'object' && output.spec ? (output.spec as Record<string, unknown>).title : undefined;
-    summary = `文档：${typeof docTitle === 'string' ? docTitle : '未命名'}`;
+    summary = t('trace.tool.document', { title: typeof docTitle === 'string' ? docTitle : t('trace.tool.untitled') });
   } else if (Array.isArray(output.sources)) {
-    summary = `${output.sources.length} ${name === 'imageSearch' ? '张图片' : '条来源'}${output.cacheHit ? ' · 缓存命中' : ''}`;
+    const count = output.sources.length;
+    summary = (name === 'imageSearch'
+      ? t('trace.tool.imageSources', { count })
+      : t('trace.tool.sources', { count })) + (output.cacheHit ? t('trace.tool.cacheHit') : '');
   } else if (Array.isArray(output.hits)) {
-    summary = `找到 ${output.hits.length} 条笔记`;
+    summary = t('trace.tool.hits', { count: output.hits.length });
   } else if (typeof output.skill === 'string') {
-    summary = `${output.found === false ? '未找到技能' : '已调用技能'}：${output.skill}`;
+    summary = output.found === false
+      ? t('trace.tool.skillMissing', { name: output.skill })
+      : t('trace.tool.skillUsed', { name: output.skill });
   } else if (output.kind === 'note' || output.kind === 'flashcard') {
     summary = typeof output.reason === 'string' && output.reason
       ? output.reason
-      : output.kind === 'note' ? '提议整理成笔记' : '提议整理成闪卡';
+      : output.kind === 'note' ? t('trace.tool.proposeNote') : t('trace.tool.proposeFlashcard');
   } else if (typeof output.noteId === 'string') {
-    summary = `笔记：${typeof output.title === 'string' && output.title ? output.title : '已写入'}`;
+    summary = t('trace.tool.note', {
+      title: typeof output.title === 'string' && output.title ? output.title : t('trace.tool.noteWritten'),
+    });
   } else if (Array.isArray(output.items) && (name === 'commitFlashcards' || output.mode)) {
-    summary = `${output.items.length} 张闪卡${typeof output.mode === 'string' ? ` · ${output.mode}` : ''}`;
+    const count = output.items.length;
+    summary = typeof output.mode === 'string'
+      ? t('trace.tool.flashcardsWithMode', { count, mode: output.mode })
+      : t('trace.tool.flashcards', { count });
   } else if (typeof output.title === 'string' && output.title) {
     summary = output.title;
   } else {
     summary = [input.query, input.title, input.name, input.path, input.sectionId]
       .find((value): value is string => typeof value === 'string' && value.length > 0)
       ?? (status === 'running'
-        ? (part.state === 'input-streaming' ? '正在准备参数…' : '正在运行…')
-        : getTraceToolOutput(part));
+        ? (part.state === 'input-streaming' ? t('trace.tool.preparing') : t('trace.tool.running'))
+        : getTraceToolOutput(part, t));
   }
 
   const id = `tool:${part.toolCallId}`;
+  const presentation = getToolPresentation(name);
   return {
     id,
     partIndex,
     kind: 'tool',
     status,
     name,
-    title: getToolPresentation(name)?.label ?? part.title ?? name,
+    title: (presentation ? t(presentation.labelKey) : undefined) ?? part.title ?? name,
     summary: preview(summary),
     durationMs: stepDurationsMs?.[id],
     part,
@@ -166,6 +190,7 @@ function pushTextStep(
   partIndex: number,
   streaming: boolean,
   isStreaming: boolean,
+  t: Translate,
   suffix = '',
   stepDurationsMs?: Readonly<Record<string, number>>,
 ): TraceTextStep | undefined {
@@ -177,8 +202,8 @@ function pushTextStep(
     partIndex,
     text,
     status: streaming ? (isStreaming ? 'running' : 'interrupted') : 'complete',
-    title: kind === 'reasoning' ? '思考' : '进展说明',
-    summary: preview(text) || '正在思考…',
+    title: t(kind === 'reasoning' ? 'trace.step.reasoningTitle' : 'trace.step.textTitle'),
+    summary: preview(text) || t('trace.step.thinking'),
     durationMs: stepDurationsMs?.[id],
   };
   steps.push(step);
@@ -193,16 +218,21 @@ function pushTextStep(
  * A later streamed tool can move a provisional two-bucket answer into the trace, but
  * it is never rendered in both places in the same snapshot.
  */
-export function buildTrace(message: Pick<ChatMessage, 'parts'> & Partial<Pick<ChatMessage, 'metadata'>>, isStreaming = false): AgentTraceModel {
+export function buildTrace(
+  message: Pick<ChatMessage, 'parts'> & Partial<Pick<ChatMessage, 'metadata'>>,
+  isStreaming = false,
+  t: Translate = translateCurrent,
+): AgentTraceModel {
   const stepDurationsMs = message.metadata?.stepDurationsMs;
   return hasStepStart(message.parts)
-    ? buildTimelineTrace(message.parts, isStreaming, stepDurationsMs)
-    : buildBucketTrace(message.parts, isStreaming, stepDurationsMs);
+    ? buildTimelineTrace(message.parts, isStreaming, t, stepDurationsMs)
+    : buildBucketTrace(message.parts, isStreaming, t, stepDurationsMs);
 }
 
 function buildBucketTrace(
   parts: readonly ChatMessagePart[],
   isStreaming: boolean,
+  t: Translate,
   stepDurationsMs?: Readonly<Record<string, number>>,
 ): AgentTraceModel {
   const steps: TraceStep[] = [];
@@ -217,16 +247,16 @@ function buildBucketTrace(
 
   parts.forEach((part, partIndex) => {
     if (isTraceToolPart(part)) {
-      steps.push(buildToolTraceStep(part, partIndex, isStreaming, stepDurationsMs));
+      steps.push(buildToolTraceStep(part, partIndex, isStreaming, stepDurationsMs, t));
     } else if (part.type === 'reasoning') {
-      pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming, '', stepDurationsMs);
+      pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming, t, '', stepDurationsMs);
     } else if (part.type === 'text') {
       const split = splitThinkContent(part.text);
       if (split.reasoning) {
-        pushTextStep(steps, 'reasoning', split.reasoning, partIndex, part.state === 'streaming' && !split.content.trim(), isStreaming, ':think', stepDurationsMs);
+        pushTextStep(steps, 'reasoning', split.reasoning, partIndex, part.state === 'streaming' && !split.content.trim(), isStreaming, t, ':think', stepDurationsMs);
       }
       if (partIndex <= lastToolIndex) {
-        pushTextStep(steps, 'text', split.content, partIndex, part.state === 'streaming', isStreaming, '', stepDurationsMs);
+        pushTextStep(steps, 'text', split.content, partIndex, part.state === 'streaming', isStreaming, t, '', stepDurationsMs);
       } else if (split.content.trim()) {
         answer.push(split.content);
       }
@@ -243,6 +273,7 @@ function buildBucketTrace(
 function buildTimelineTrace(
   parts: readonly ChatMessagePart[],
   isStreaming: boolean,
+  t: Translate,
   stepDurationsMs?: Readonly<Record<string, number>>,
 ): AgentTraceModel {
   const steps: TraceStep[] = [];
@@ -268,11 +299,11 @@ function buildTimelineTrace(
       return;
     }
     if (isTraceToolPart(part)) {
-      addStep(buildToolTraceStep(part, partIndex, isStreaming, stepDurationsMs));
+      addStep(buildToolTraceStep(part, partIndex, isStreaming, stepDurationsMs, t));
       return;
     }
     if (part.type === 'reasoning') {
-      const step = pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming, '', stepDurationsMs);
+      const step = pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming, t, '', stepDurationsMs);
       if (step) currentSteps.push(step);
       return;
     }
@@ -287,6 +318,7 @@ function buildTimelineTrace(
         partIndex,
         part.state === 'streaming' && !split.content.trim(),
         isStreaming,
+        t,
         ':think',
         stepDurationsMs,
       );

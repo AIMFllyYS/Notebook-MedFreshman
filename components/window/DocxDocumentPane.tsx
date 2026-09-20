@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { translate, useT } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 
 export default function DocxDocumentPane({ src, name }: { src: string; name: string }) {
+  const t = useT();
   const hostRef = useRef<HTMLDivElement | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,7 +28,9 @@ export default function DocxDocumentPane({ src, name }: { src: string; name: str
           breakPages: true,
         });
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : `无法打开 ${name}`);
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : translate(useSettings.getState().locale, "panel.reader.openFailed", { name }));
+        }
       }
     })();
     return () => {
@@ -36,7 +41,7 @@ export default function DocxDocumentPane({ src, name }: { src: string; name: str
   if (error) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
-        <p className="text-[13px] font-semibold text-[var(--ink)]">无法渲染 Word</p>
+        <p className="text-[13px] font-semibold text-[var(--ink)]">{t("panel.docx.renderFailed")}</p>
         <p className="max-w-sm text-[12px] leading-6 text-[var(--ink-soft)]">{error}</p>
       </div>
     );

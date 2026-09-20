@@ -12,7 +12,9 @@ import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { unwrapMark, wrapRange } from "@/lib/notes/crayonHighlight";
 import { createAndOpenClassroomNote } from "@/lib/notes/openUserNote";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { useT } from "@/lib/i18n";
 import {
+  SELECTION_ASSISTANT_ACTION_LABELS,
   hasVisibleSelectionActions,
   isSelectionActionVisible,
 } from "@/lib/notes/selectionAssistant";
@@ -64,6 +66,7 @@ export default function SelectionPopover({
   /** 课堂便签出处。Agent 面板传 agent，复习板传 review。 */
   noteSource?: ClassroomNoteSourceKind;
 }) {
+  const t = useT();
   const setQuotedText = useChatUI((s) => s.setQuotedText);
   const openWindow = useFloatingChats((s) => s.openWindow);
   const selectionAssistantEnabled = useSettings((s) => s.selectionAssistantEnabled);
@@ -275,25 +278,25 @@ export default function SelectionPopover({
             icon={SELECTION_ACTION_ICONS.copy}
             copiedIcon={Check}
             copied={copied}
-            title="复制"
+            title={t(SELECTION_ASSISTANT_ACTION_LABELS.copy)}
           />
         )}
         {showCopy && showMid && <SelectionPopoverDivider />}
         {showExplain && (
-          <SelectionPopBtn onClick={() => spawn("explain")} icon={SELECTION_ACTION_ICONS.explain} label="解释" />
+          <SelectionPopBtn onClick={() => spawn("explain")} icon={SELECTION_ACTION_ICONS.explain} label={t(SELECTION_ASSISTANT_ACTION_LABELS.explain)} />
         )}
         {showRecord && (
-          <SelectionPopBtn onClick={handleRecord} icon={SELECTION_ACTION_ICONS.record} label="记录" />
+          <SelectionPopBtn onClick={handleRecord} icon={SELECTION_ACTION_ICONS.record} label={t(SELECTION_ASSISTANT_ACTION_LABELS.record)} />
         )}
         {showNote && (
-          <SelectionPopBtn onClick={handleNote} icon={SELECTION_ACTION_ICONS.note} label="笔记" />
+          <SelectionPopBtn onClick={handleNote} icon={SELECTION_ACTION_ICONS.note} label={t(SELECTION_ASSISTANT_ACTION_LABELS.note)} />
         )}
         {showAsk && (
-          <SelectionPopBtn onClick={() => spawn("ask")} icon={SELECTION_ACTION_ICONS.ask} label="追问" />
+          <SelectionPopBtn onClick={() => spawn("ask")} icon={SELECTION_ACTION_ICONS.ask} label={t(SELECTION_ASSISTANT_ACTION_LABELS.ask)} />
         )}
         {showQuote && (showCopy || showMid) && <SelectionPopoverDivider />}
         {showQuote && (
-          <SelectionPopBtn onClick={handleQuote} icon={SELECTION_ACTION_ICONS.quote} label="引用" />
+          <SelectionPopBtn onClick={handleQuote} icon={SELECTION_ACTION_ICONS.quote} label={t(SELECTION_ASSISTANT_ACTION_LABELS.quote)} />
         )}
       </SelectionPopoverCard>
     </div>,

@@ -3,8 +3,10 @@
 import { useState, type ImgHTMLAttributes } from "react";
 import { ImageOff } from "lucide-react";
 import { useLightbox } from "@/lib/stores/lightbox";
+import { useT } from "@/lib/i18n";
 
 export function ChatImage({ src, alt, title, ...rest }: ImgHTMLAttributes<HTMLImageElement>) {
+  const t = useT();
   const [errored, setErrored] = useState(false);
   const openLightbox = useLightbox((s) => s.open);
 
@@ -14,7 +16,7 @@ export function ChatImage({ src, alt, title, ...rest }: ImgHTMLAttributes<HTMLIm
     return (
       <span className="figure-directive-error" role="img" aria-label={alt ?? "image"}>
         <ImageOff size={24} />
-        <span>{alt || "图片加载失败"}</span>
+        <span>{alt || t("trace.images.loadFailed")}</span>
       </span>
     );
   }

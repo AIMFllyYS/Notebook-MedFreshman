@@ -1,6 +1,7 @@
 import type { StudyToolName } from "@/lib/ai/agent/tools/names";
 import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
+import type { I18nKey } from "@/lib/i18n";
 import { presentation as getCurrentPage } from "@/lib/ai/agent/tools/getCurrentPage/presentation";
 import { presentation as getOutline } from "@/lib/ai/agent/tools/getOutline/presentation";
 import { presentation as getSection } from "@/lib/ai/agent/tools/getSection/presentation";
@@ -47,10 +48,17 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   readProjectSlices,
 };
 
-/** 设置面板「工具调用」区展示的工具，按 STUDY_TOOL_NAMES 顺序。 */
-export const TOGGLEABLE_TOOLS: readonly { name: StudyToolName; label: string; desc: string }[] = STUDY_TOOL_NAMES
+/**
+ * 设置面板「工具调用」区展示的工具，按 STUDY_TOOL_NAMES 顺序。
+ * 只给 key：设置面板自己 t() 取词，换语言不用重建这张表。
+ */
+export const TOGGLEABLE_TOOLS: readonly { name: StudyToolName; labelKey: I18nKey; descriptionKey: I18nKey }[] = STUDY_TOOL_NAMES
   .filter((name) => TOOL_PRESENTATION[name].toggleable)
-  .map((name) => ({ name, label: TOOL_PRESENTATION[name].settingsLabel, desc: TOOL_PRESENTATION[name].description }));
+  .map((name) => ({
+    name,
+    labelKey: TOOL_PRESENTATION[name].settingsLabelKey,
+    descriptionKey: TOOL_PRESENTATION[name].descriptionKey,
+  }));
 
 export function getToolPresentation(name: string): ToolPresentation | undefined {
   return (TOOL_PRESENTATION as Record<string, ToolPresentation | undefined>)[name];

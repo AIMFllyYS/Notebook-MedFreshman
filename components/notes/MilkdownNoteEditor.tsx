@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Crepe } from "@milkdown/crepe";
 import { keepEditorShortcut } from "@/lib/notes/editorShortcuts";
+import { useSettings } from "@/lib/hooks/useSettings";
+import { translate, useT, type Translate } from "@/lib/i18n";
 import "@milkdown/crepe/theme/common/style.css";
 import "@milkdown/crepe/theme/frame.css";
 
@@ -70,18 +72,20 @@ interface ToolbarBuilderLike {
 }
 
 function buildNoteToolbar(builder: ToolbarBuilderLike): void {
-  const group = builder.addGroup("note-heading", "标题");
+  // 工具栏在挂载时一次性建好，拿不到组件的 t：直接按当前语言取词。
+  const t: Translate = (key, vars) => translate(useSettings.getState().locale, key, vars);
+  const group = builder.addGroup("note-heading", t("window.note.milkdown.headingGroup"));
   for (const level of HEADING_LEVELS) {
     group.addItem(`h${level}`, {
       icon: headingIcon(`H${level}`),
-      label: `标题 ${level}`,
+      label: t("window.note.milkdown.headingLevel", { level }),
       active: ((ctx: unknown) => currentNode(ctx)?.level === level) as never,
       onRun: ((ctx: unknown) => applyHeading(ctx, level)) as never,
     });
   }
   group.addItem("paragraph", {
-    icon: headingIcon("正文"),
-    label: "正文",
+    icon: headingIcon(t("window.note.milkdown.paragraphIcon")),
+    label: t("window.note.milkdown.paragraph"),
     active: ((ctx: unknown) => currentNode(ctx)?.name === "paragraph") as never,
     onRun: ((ctx: unknown) => applyHeading(ctx, 0)) as never,
   });
@@ -98,6 +102,7 @@ export default function MilkdownNoteEditor({
   const rootRef = useRef<HTMLDivElement | null>(null);
   const onChangeRef = useRef(onChange);
   const [failed, setFailed] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -125,8 +130,8 @@ export default function MilkdownNoteEditor({
           featureConfigs: {
             [Crepe.Feature.Placeholder]: {
               text: compact
-                ? "写一句批注。支持 $KaTeX$。"
-                : "写短要点提纲。支持 $KaTeX$、表格、任务列表。输入 / 唤出块。",
+                ? t("window.note.milkdown.placeholderCompact")
+                : t("window.note.milkdown.placeholderFull"),
               mode: "doc",
             },
             // 划词工具栏出厂只有加粗/斜体/删除线/行内代码/链接，没有标题层级。
@@ -167,7 +172,7 @@ export default function MilkdownNoteEditor({
         className="user-note-source"
         value={value}
         spellCheck={false}
-        aria-label="笔记正文（Markdown）"
+        aria-label={t("window.note.common.markdownBody")}
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => keepEditorShortcut(event)}
       />
@@ -179,7 +184,7 @@ export default function MilkdownNoteEditor({
       ref={rootRef}
       className={compact ? "user-note-crepe is-compact" : "user-note-crepe"}
       data-no-drag
-      aria-label={compact ? "课堂批注" : "笔记渲染编辑"}
+      aria-label={compact ? t("window.note.milkdown.editorAriaCompact") : t("window.note.milkdown.editorAria")}
       onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => keepEditorShortcut(event)}
     />
   );

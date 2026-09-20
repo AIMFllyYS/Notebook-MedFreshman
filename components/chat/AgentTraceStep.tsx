@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { AgentAlertIcon, AgentChevronIcon, AgentPauseIcon } from '@/components/icons/AgentIcons';
 import type { TraceStatus } from '@/lib/chat/buildTrace';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import { useT, type I18nKey } from '@/lib/i18n';
 
 export interface AgentTraceStepProps {
   id: string;
@@ -19,16 +20,17 @@ export interface AgentTraceStepProps {
   expandWhileRunning?: boolean;
 }
 
-const STATUS_LABELS: Record<TraceStatus, string> = {
-  running: '进行中',
-  complete: '已完成',
-  error: '失败',
-  interrupted: '已停止',
-  waiting: '待批准',
+const STATUS_KEYS: Record<TraceStatus, I18nKey> = {
+  running: 'trace.step.status.running',
+  complete: 'trace.step.status.complete',
+  error: 'trace.step.status.error',
+  interrupted: 'trace.step.status.interrupted',
+  waiting: 'trace.step.status.waiting',
 };
 
 /** Flat activity row: one semantic glyph, one line of text, details on demand. */
 export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, title, summary, status, durationMs, icon, children, expandWhileRunning = false }: AgentTraceStepProps) {
+  const t = useT();
   const contentId = useId();
   const reducedMotion = useReducedMotion();
   const active = status === 'running';
@@ -37,7 +39,9 @@ export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, tit
   const exceptional = isError || status === 'interrupted' || status === 'waiting';
   const durationLabel = durationMs == null || !Number.isFinite(durationMs) || durationMs < 0
     ? null
-    : durationMs < 1000 ? '不到 1 秒' : `${Math.round(durationMs / 1000)} 秒`;
+    : durationMs < 1000
+      ? t('trace.step.underOneSecond')
+      : t('trace.step.seconds', { seconds: Math.round(durationMs / 1000) });
 
   return (
     <li className="agent-trace-step" data-trace-id={id} data-trace-kind={kind} data-trace-status={status}>
@@ -58,7 +62,7 @@ export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, tit
         </motion.span>
         <span className="flex min-w-0 items-center gap-1.5">
           <span className="max-w-[70%] shrink-0 truncate">{title}</span>
-          <span className={exceptional ? `shrink-0 text-[11px] ${isError ? 'text-[var(--md-sys-color-error)]' : 'text-[var(--md-sys-color-outline)]'}` : 'sr-only'}>{STATUS_LABELS[status]}</span>
+          <span className={exceptional ? `shrink-0 text-[11px] ${isError ? 'text-[var(--md-sys-color-error)]' : 'text-[var(--md-sys-color-outline)]'}` : 'sr-only'}>{t(STATUS_KEYS[status])}</span>
           {!expanded && summary ? <span className="min-w-0 truncate text-[12px] text-[var(--md-sys-color-outline)]">{summary}</span> : null}
           {durationLabel ? <span className="agent-trace-step-duration">{durationLabel}</span> : null}
           <span aria-hidden="true" className={`shrink-0 opacity-65 transition-transform motion-reduce:transition-none ${expanded ? 'rotate-180' : '-rotate-90'}`}>

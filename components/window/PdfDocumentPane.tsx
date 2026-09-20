@@ -7,6 +7,8 @@ import DocumentWorkspace, { type DocumentOutlineItem } from "@/components/window
 import PdfPageCanvas from "@/components/window/PdfPageCanvas";
 import { useElementWidth } from "@/lib/hooks/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
+import { translate, useT } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 
 type PdfjsModule = typeof import("pdfjs-dist/legacy/build/pdf.mjs");
 type PdfDocumentProxy = Awaited<ReturnType<PdfjsModule["getDocument"]>["promise"]>;
@@ -26,13 +28,16 @@ async function sourceToData(src: string): Promise<Uint8Array | { url: string }> 
     const response = await fetch(src);
     return new Uint8Array(await response.arrayBuffer());
   }
-  throw new Error("无法读取该 PDF");
+  throw new Error(translate(useSettings.getState().locale, "panel.pdf.readFailed"));
 }
 
 function flattenOutline(
   nodes: PdfOutlineNode[] | null | undefined,
   pdf: PdfDocumentProxy,
 ): Promise<DocumentOutlineItem[]> {
+  // 目录标题是「第 N 页」：纯函数里没有 hook，直接读当前语言。
+  const locale = useSettings.getState().locale;
+  const pageLabel = (page: number) => translate(locale, "panel.reader.page", { page });
   async function walk(items: PdfOutlineNode[], acc: DocumentOutlineItem[]): Promise<void> {
     for (const item of items) {
       let page = 1;
@@ -44,8 +49,8 @@ function flattenOutline(
       }
       acc.push({
         id: String(page),
-        title: (item.title || `第 ${page} 页`).trim() || `第 ${page} 页`,
-        meta: `第 ${page} 页`,
+        title: (item.title || pageLabel(page)).trim() || pageLabel(page),
+        meta: pageLabel(page),
       });
       if (item.items?.length) await walk(item.items as PdfOutlineNode[], acc);
     }
@@ -54,7 +59,7 @@ function flattenOutline(
     return Promise.resolve(
       Array.from({ length: pdf.numPages }, (_, index) => ({
         id: String(index + 1),
-        title: `第 ${index + 1} 页`,
+        title: pageLabel(index + 1),
       })),
     );
   }
@@ -103,6 +108,7 @@ const SCROLL_TOP_OFFSET = 8;
 const SIZE_EPSILON = 0.01;
 
 export default function PdfDocumentPane({ src, name }: { src: string; name: string }) {
+  const t = useT();
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const bodyWidth = useElementWidth(bodyRef);
   const [doc, setDoc] = useState<LoadedDocument | null>(null);
@@ -159,7 +165,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
         if (cancelled) return;
         // 加密 PDF 由 pdfjs 抛 PasswordException，给一句人能看懂的说明。
         setError({
-          message: err instanceof Error ? err.message : "无法打开 PDF",
+          message: err instanceof Error ? err.message : translate(useSettings.getState().locale, "panel.pdf.openFailed"),
           password: (err as { name?: string } | null)?.name === "PasswordException",
         });
       }
@@ -209,7 +215,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
   }, []);
 
   const handlePageError = useCallback((pageNumber: number, err: unknown) => {
-    const message = err instanceof Error ? err.message : "未知错误";
+    const message = err instanceof Error ? err.message : translate(useSettings.getState().locale, "panel.reader.unknownError");
     console.error(`[PdfDocumentPane] 第 ${pageNumber} 页渲染失败`, err);
     setFailedPages((prev) => (prev[pageNumber] === message ? prev : { ...prev, [pageNumber]: message }));
   }, []);
@@ -290,7 +296,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
         <p className="text-[13px] font-semibold text-[var(--ink)]">
-          {error.password ? "该 PDF 有密码保护，暂不支持预览" : "无法渲染 PDF"}
+          {t(error.password ? "panel.pdf.password" : "panel.pdf.renderFailed")}
         </p>
         <p className="max-w-sm text-[12px] leading-6 text-[var(--ink-soft)]">{error.message}</p>
       </div>
@@ -309,7 +315,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
       outline={outline}
       activeId={String(currentPage)}
       onSelect={(id) => scrollToPage(Number(id) || 1)}
-      outlineLabel={`${name} 目录`}
+      outlineLabel={t("panel.reader.outlineOf", { name })}
       layoutKey="pdf"
       bodyRef={bodyRef}
       toolbar={
@@ -318,7 +324,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
             <button
               type="button"
               data-no-drag
-              title="上一页"
+              title={t("panel.reader.prevPage")}
               disabled={currentPage <= 1}
               onClick={() => scrollToPage(currentPage - 1)}
             >
@@ -330,7 +336,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
             <button
               type="button"
               data-no-drag
-              title="下一页"
+              title={t("panel.reader.nextPage")}
               disabled={currentPage >= doc.numPages}
               onClick={() => scrollToPage(currentPage + 1)}
             >
@@ -340,7 +346,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
             <button
               type="button"
               data-no-drag
-              title="缩小"
+              title={t("panel.reader.zoomOut")}
               disabled={zoom <= MIN_ZOOM}
               onClick={() => setZoom((value) => Math.max(MIN_ZOOM, Number((value - ZOOM_STEP).toFixed(2))))}
             >
@@ -350,14 +356,14 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
             <button
               type="button"
               data-no-drag
-              title="放大"
+              title={t("panel.reader.zoomIn")}
               disabled={zoom >= MAX_ZOOM}
               onClick={() => setZoom((value) => Math.min(MAX_ZOOM, Number((value + ZOOM_STEP).toFixed(2))))}
             >
               +
             </button>
-            <button type="button" data-no-drag title="重置" onClick={() => setZoom(1)}>
-              重置
+            <button type="button" data-no-drag title={t("panel.reader.reset")} onClick={() => setZoom(1)}>
+              {t("panel.reader.reset")}
             </button>
           </>
         ) : null
@@ -377,7 +383,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
                 style={{ width: displayWidth, height: pageHeight(pageNumber) }}
               >
                 {failure ? (
-                  <p className="pdf-pages-status">第 {pageNumber} 页渲染失败：{failure}</p>
+                  <p className="pdf-pages-status">{t("panel.reader.pageRenderFailed", { page: pageNumber, error: failure })}</p>
                 ) : mounted ? (
                   <PdfPageCanvas
                     pdf={doc.pdf}
@@ -393,7 +399,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
             );
           })
         ) : (
-          <p className="pdf-pages-status">正在载入 PDF…</p>
+          <p className="pdf-pages-status">{t("panel.pdf.loading")}</p>
         )}
       </div>
     </DocumentWorkspace>

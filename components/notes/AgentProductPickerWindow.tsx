@@ -9,6 +9,7 @@ import { useArtifacts } from "@/lib/stores/artifacts";
 import { useDocuments } from "@/lib/stores/documents";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { AGENT_PRODUCT_PICKER_WINDOW_ID } from "@/lib/notes/userNote";
+import { useT } from "@/lib/i18n";
 
 function formatUpdatedAt(timestamp: number): string {
   const date = new Date(timestamp);
@@ -31,6 +32,7 @@ function AgentProductPicker() {
   const artifactOrder = useArtifacts((s) => s.order);
   const openDocument = useDocuments((s) => s.openViewer);
   const openArtifact = useArtifacts((s) => s.openViewer);
+  const t = useT();
 
   const documentItems = useMemo(
     () =>
@@ -38,10 +40,10 @@ function AgentProductPicker() {
         .sort((a, b) => b.updatedAt - a.updatedAt)
         .map((doc) => ({
           id: doc.id,
-          title: doc.spec.title || "未命名长文本",
-          meta: `${formatUpdatedAt(doc.updatedAt)} · ${doc.status === "done" ? "已完成" : "生成中"}`,
+          title: doc.spec.title || t("window.note.picker.untitledDocument"),
+          meta: `${formatUpdatedAt(doc.updatedAt)} · ${doc.status === "done" ? t("window.note.picker.statusDone") : t("window.note.picker.statusGenerating")}`,
         })),
-    [documents],
+    [documents, t],
   );
 
   const artifactItems = useMemo(
@@ -51,10 +53,10 @@ function AgentProductPicker() {
         .filter((item): item is NonNullable<typeof item> => Boolean(item))
         .map((art) => ({
           id: art.id,
-          title: art.title || "未命名演示",
-          meta: "可交互 HTML",
+          title: art.title || t("window.note.picker.untitledArtifact"),
+          meta: t("window.note.picker.interactiveHtml"),
         })),
-    [artifactOrder, artifacts],
+    [artifactOrder, artifacts, t],
   );
 
   const items = kind === "document" ? documentItems : artifactItems;
@@ -77,14 +79,14 @@ function AgentProductPicker() {
         <div className="user-note-stage">
           <p className="user-note-empty">
             {kind === "document"
-              ? "还没有长文本。在对话里让 Agent 调用「撰写长文档」（writeDocument）后会出现在这里。"
-              : "还没有可交互 HTML。在对话里让 Agent 调用「生成可交互演示」（renderInteractive）后会出现在这里。"}
+              ? t("window.note.picker.emptyDocument")
+              : t("window.note.picker.emptyArtifact")}
           </p>
         </div>
       ) : (
         <DocumentWorkspace
           layoutKey="product-picker"
-          outlineLabel={kind === "document" ? "长文本" : "可交互 HTML"}
+          outlineLabel={kind === "document" ? t("window.note.picker.outlineDocument") : t("window.note.picker.outlineArtifact")}
           outline={items.map((item) => ({
             id: item.id,
             title: item.title,
@@ -96,10 +98,10 @@ function AgentProductPicker() {
             else openArtifact(id);
             closePicker();
           }}
-          emptyLabel={kind === "document" ? "还没有长文本" : "还没有可交互 HTML"}
+          emptyLabel={kind === "document" ? t("window.note.picker.emptyOutlineDocument") : t("window.note.picker.emptyOutlineArtifact")}
         >
           <div className="user-note-stage">
-            <p className="user-note-empty">点左侧条目即可打开已有产物，不会重新生成。</p>
+            <p className="user-note-empty">{t("window.note.picker.hint")}</p>
           </div>
         </DocumentWorkspace>
       )}

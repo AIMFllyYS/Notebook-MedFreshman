@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from "react";
 import { Plug, Plus } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { isElectronDesktop } from "@/lib/stores/apiSecrets";
+import { useT } from "@/lib/i18n";
 import { inputCls, labelCls } from "./_shared";
 import { ApiGroupCard } from "./_ApiGroupCard";
 import { ApiConfigurationRecovery } from './ApiConfigurationRecovery';
@@ -19,6 +20,7 @@ export function ApiGroupsSection() {
   const removeModelFromGroup = useSettings((s) => s.removeModelFromGroup);
   const defaultImageModelId = useSettings((s) => s.defaultImageModelId);
   const setDefaultImageModel = useSettings((s) => s.setDefaultImageModel);
+  const t = useT();
   const [customExpanded, setCustomExpanded] = useState(true);
   const [showNewGroupForm, setShowNewGroupForm] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
@@ -31,7 +33,7 @@ export function ApiGroupsSection() {
   );
 
   const handleCreateGroup = () => {
-    const name = newGroupName.trim() || `API 分组 ${customApiGroups.length + 1}`;
+    const name = newGroupName.trim() || t("settings.apiGroups.defaultName", { index: customApiGroups.length + 1 });
     addApiGroup({
       id: `g_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       name,
@@ -47,19 +49,18 @@ export function ApiGroupsSection() {
 
   return (
     <SettingsDisclosure expanded={customExpanded} onToggle={() => setCustomExpanded((v) => !v)}
-      icon={<Plug size={14} />} title="自定义 API" meta={`${customApiGroups.length} 个分组 · 与站点默认并存`}>
+      icon={<Plug size={14} />} title={t("settings.apiGroups.title")}
+      meta={t("settings.apiGroups.meta", { count: customApiGroups.length })}>
         <div className="flex flex-col gap-2">
           <ApiConfigurationRecovery />
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-            可创建多个 API 分组，每组独立 baseUrl/apiKey + 模型列表，全部出现在模型菜单中。
+            {t("settings.apiGroups.desc")}
           </p>
           <p
             data-testid="api-key-storage-notice"
             className="text-[11px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"
           >
-            {desktop
-              ? "桌面端：API 密钥由操作系统加密保存（Windows 为 DPAPI），不会以明文写入设置 JSON。"
-              : "网页端：API 密钥保存在本机浏览器（独立存储、轻量混淆），不进入云端。这不是加密，本机扩展或取证仍可能读取；请勿在公共电脑上保存密钥。"}
+            {t(desktop ? "settings.apiGroups.keyNoticeDesktop" : "settings.apiGroups.keyNoticeWeb")}
           </p>
 
           {customApiGroups.map((group) => (
@@ -79,20 +80,20 @@ export function ApiGroupsSection() {
           {showNewGroupForm ? (
             <div className="flex flex-col gap-2 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] p-3">
               <span className="text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">
-                新建 API 分组
+                {t("settings.apiGroups.newGroup")}
               </span>
               <div>
-                <label className={labelCls}>分组名称</label>
+                <label className={labelCls}>{t("settings.apiGroups.name")}</label>
                 <input
                   type="text"
                   value={newGroupName}
                   onChange={(e) => setNewGroupName(e.target.value)}
-                  placeholder="我的 API"
+                  placeholder={t("settings.apiGroups.namePlaceholder")}
                   className={inputCls}
                 />
               </div>
               <div>
-                <label className={labelCls}>API 端点（base URL，含 /v1）</label>
+                <label className={labelCls}>{t("settings.apiGroups.baseUrl")}</label>
                 <input
                   type="url"
                   value={newGroupBaseUrl}
@@ -102,7 +103,7 @@ export function ApiGroupsSection() {
                 />
               </div>
               <div>
-                <label className={labelCls}>API 密钥</label>
+                <label className={labelCls}>{t("settings.apiGroups.apiKey")}</label>
                 <input
                   type="password"
                   value={newGroupApiKey}
@@ -116,7 +117,7 @@ export function ApiGroupsSection() {
                   onClick={handleCreateGroup}
                   className="press rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)]"
                 >
-                  创建
+                  {t("settings.common.create")}
                 </button>
                 <button
                   onClick={() => {
@@ -127,7 +128,7 @@ export function ApiGroupsSection() {
                   }}
                   className="press rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
                 >
-                  取消
+                  {t("settings.common.cancel")}
                 </button>
               </div>
             </div>
@@ -136,7 +137,7 @@ export function ApiGroupsSection() {
               onClick={() => setShowNewGroupForm(true)}
               className="press flex items-center gap-1.5 self-start rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
             >
-              <Plus size={13} /> 新建 API 分组
+              <Plus size={13} /> {t("settings.apiGroups.newGroup")}
             </button>
           )}
         </div>

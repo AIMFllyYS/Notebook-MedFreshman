@@ -9,13 +9,15 @@ import {
   type SyncQuotaPool,
 } from "./types";
 import { payloadByteSize } from "./payload";
+import type { I18nKey } from "@/lib/i18n";
 
 export type CloudSyncUsageSource = "cloud" | "local";
 
 export interface CloudSyncKindUsage {
   kind: CloudSyncKind;
-  label: string;
-  unit: string;
+  /** 名称 / 单位的文案 key（值见 panel.storage.kind.*）；渲染处 t() 取词。 */
+  labelKey: I18nKey;
+  unitKey: I18nKey;
   bytes: number;
   count: number;
   limitBytes: number;
@@ -23,8 +25,8 @@ export interface CloudSyncKindUsage {
 
 export interface CloudSyncPoolUsage {
   id: SyncQuotaPool;
-  label: string;
-  unit: string;
+  labelKey: I18nKey;
+  unitKey: I18nKey;
   bytes: number;
   count: number;
   limitBytes: number;
@@ -39,18 +41,18 @@ export interface CloudSyncUsage {
   error?: string;
 }
 
-export const SYNC_KIND_META: Record<CloudSyncKind, { label: string; unit: string }> = {
-  "chat-session": { label: "全部对话", unit: "条" },
-  artifact: { label: "演示", unit: "个" },
-  document: { label: "文档", unit: "篇" },
-  "user-note": { label: "个人笔记", unit: "篇" },
-  "review-card": { label: "复习闪卡", unit: "张" },
-  "chat-project": { label: "对话项目", unit: "个" },
+export const SYNC_KIND_META: Record<CloudSyncKind, { labelKey: I18nKey; unitKey: I18nKey }> = {
+  "chat-session": { labelKey: "panel.storage.kind.chatSession.label", unitKey: "panel.storage.kind.chatSession.unit" },
+  artifact: { labelKey: "panel.storage.kind.artifact.label", unitKey: "panel.storage.kind.artifact.unit" },
+  document: { labelKey: "panel.storage.kind.document.label", unitKey: "panel.storage.kind.document.unit" },
+  "user-note": { labelKey: "panel.storage.kind.userNote.label", unitKey: "panel.storage.kind.userNote.unit" },
+  "review-card": { labelKey: "panel.storage.kind.reviewCard.label", unitKey: "panel.storage.kind.reviewCard.unit" },
+  "chat-project": { labelKey: "panel.storage.kind.chatProject.label", unitKey: "panel.storage.kind.chatProject.unit" },
 };
 
-export const SYNC_POOL_META: Record<SyncQuotaPool, { label: string; unit: string }> = {
-  notes: { label: "笔记额度池", unit: "篇" },
-  flashcards: { label: "闪卡额度池", unit: "张" },
+export const SYNC_POOL_META: Record<SyncQuotaPool, { labelKey: I18nKey; unitKey: I18nKey }> = {
+  notes: { labelKey: "panel.storage.pool.notes.label", unitKey: "panel.storage.pool.notes.unit" },
+  flashcards: { labelKey: "panel.storage.pool.flashcards.label", unitKey: "panel.storage.pool.flashcards.unit" },
 };
 
 function emptyPools(): CloudSyncPoolUsage[] {

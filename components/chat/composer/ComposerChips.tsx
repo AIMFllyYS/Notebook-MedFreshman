@@ -2,12 +2,11 @@
 
 import { AgentCloseIcon, AgentFileIcon } from "@/components/icons/AgentIcons";
 import {
-  COMPOSER_PLAN_LABEL,
-  FORCED_TOOL_LABELS,
   isForcedComposerTool,
   type AttachedFileRef,
   type ComposerForcedTool,
 } from "@/lib/chat/composerIntent";
+import { useT } from "@/lib/i18n";
 import { ForcedToolIcon, PlanModeIcon } from "./ComposerIcons";
 
 export default function ComposerChips({
@@ -27,14 +26,15 @@ export default function ComposerChips({
   onClearTool: () => void;
   onRemoveFile: (path: string) => void;
 }) {
+  const t = useT();
   if (!planMode && !forcedTool && attachedFiles.length === 0) return null;
   return (
     <div className="composer-chips" data-testid="composer-chips">
       {planMode ? (
         <span className="composer-chip composer-chip-plan" data-testid="composer-chip-plan">
           <PlanModeIcon />
-          <span>{COMPOSER_PLAN_LABEL}</span>
-          <button type="button" aria-label="关闭计划模式" onClick={onClearPlan}>
+          <span>{t("menu.composer.plan")}</span>
+          <button type="button" aria-label={t("menu.composer.clearPlan")} onClick={onClearPlan}>
             <AgentCloseIcon size={12} />
           </button>
         </span>
@@ -43,9 +43,9 @@ export default function ComposerChips({
         <span className="composer-chip composer-chip-tool" data-testid="composer-chip-tool">
           {isForcedComposerTool(forcedTool) ? <ForcedToolIcon tool={forcedTool} /> : null}
           <span>
-            {isForcedComposerTool(forcedTool) ? FORCED_TOOL_LABELS[forcedTool] : (forcedSkillName || "技能")}
+            {isForcedComposerTool(forcedTool) ? t(`menu.composer.tool.${forcedTool}`) : (forcedSkillName || t("menu.composer.skill"))}
           </span>
-          <button type="button" aria-label="取消指定工具" onClick={onClearTool}>
+          <button type="button" aria-label={t("menu.composer.clearTool")} onClick={onClearTool}>
             <AgentCloseIcon size={12} />
           </button>
         </span>
@@ -54,7 +54,7 @@ export default function ComposerChips({
         <span key={file.path} className="composer-chip composer-chip-file" data-testid="composer-chip-file" title={file.address}>
           <AgentFileIcon size={14} />
           <span>{file.title}</span>
-          <button type="button" aria-label={`移除 ${file.title}`} onClick={() => onRemoveFile(file.path)}>
+          <button type="button" aria-label={t("menu.composer.removeFile", { title: file.title })} onClick={() => onRemoveFile(file.path)}>
             <AgentCloseIcon size={12} />
           </button>
         </span>

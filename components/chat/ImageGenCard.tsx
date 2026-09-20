@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AgentImageIcon, AgentFileIcon, AgentCheckIcon, AgentCloseIcon } from "@/components/icons/AgentIcons";
 import { useImageGen } from "@/lib/hooks/useImageGen";
 import { MessageContent } from "@/components/chat/MessageContent";
+import { useT } from "@/lib/i18n";
 
 /**
  * AI 生图请求批准卡片：内嵌在助教对话气泡中，展示生图提示词、尺寸、数量，
@@ -30,9 +31,10 @@ export default function ImageGenCard({
   const openViewer = useImageGen((s) => s.openViewer);
   const bringToFront = useImageGen((s) => s.bringToFront);
   const [cancelled, setCancelled] = useState(false);
+  const t = useT();
 
   const effectivePrompt = session?.prompt ?? prompt ?? "";
-  const effectiveTitle = session?.title ?? title ?? "AI 生图";
+  const effectiveTitle = session?.title ?? title ?? t("window.imageGen.card.defaultTitle");
   const effectiveSize = session?.size ?? size ?? "1024x1024";
   const effectiveCount = session?.count ?? count ?? 1;
 
@@ -71,7 +73,7 @@ export default function ImageGenCard({
         }}
       >
         <AgentCloseIcon size={14} />
-        <span>已取消生图请求：{effectiveTitle}</span>
+        <span>{t("window.imageGen.card.cancelled", { title: effectiveTitle })}</span>
       </div>
     );
   }
@@ -96,7 +98,7 @@ export default function ImageGenCard({
           className="min-w-0 flex-1 truncate text-[12.5px] font-semibold"
           style={{ color: "var(--md-sys-color-on-surface)" }}
         >
-          {isApproved ? `生图：${effectiveTitle}` : `AI 想为你生成图片：${effectiveTitle}`}
+          {isApproved ? t("window.imageGen.card.approved", { title: effectiveTitle }) : t("window.imageGen.card.proposed", { title: effectiveTitle })}
         </span>
         <span
           className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium"
@@ -106,7 +108,7 @@ export default function ImageGenCard({
             color: "var(--md-sys-color-tertiary)",
           }}
         >
-          {effectiveSize} · {effectiveCount} 张
+          {t("window.imageGen.sizeCount", { size: effectiveSize, count: effectiveCount })}
         </span>
       </div>
 
@@ -121,7 +123,7 @@ export default function ImageGenCard({
           }}
         >
           <span style={{ fontWeight: 600 }}>
-            <AgentFileIcon size={11} className="inline align-text-bottom" /> 生图提示词：
+            <AgentFileIcon size={11} className="inline align-text-bottom" /> {t("window.imageGen.card.promptPrefix")}
           </span>
           <MessageContent content={effectivePrompt} enableVisualizations={false} preserveLineBreaks />
         </div>
@@ -145,7 +147,7 @@ export default function ImageGenCard({
                 color: "var(--md-sys-color-on-tertiary)",
               }}
             >
-              <AgentCheckIcon size={13} /> 批准生成
+              <AgentCheckIcon size={13} /> {t("window.imageGen.card.approve")}
             </button>
             <button
               type="button"
@@ -156,13 +158,13 @@ export default function ImageGenCard({
                 color: "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              <AgentCloseIcon size={13} /> 取消
+              <AgentCloseIcon size={13} /> {t("menu.common.cancel")}
             </button>
             <span
               className="ml-auto text-[10.5px]"
               style={{ color: "var(--md-sys-color-on-surface-variant)" }}
             >
-              批准后会打开独立弹窗生成图片
+              {t("window.imageGen.card.approveHint")}
             </span>
           </>
         ) : (
@@ -177,17 +179,17 @@ export default function ImageGenCard({
               }}
             >
               <AgentImageIcon size={13} />{" "}
-              {status === "loading" && "生成中…"}
-              {status === "done" && (hasImages ? "查看图片" : "已生成")}
-              {status === "error" && "查看错误"}
+              {status === "loading" && t("window.imageGen.card.generating")}
+              {status === "done" && (hasImages ? t("window.imageGen.card.viewImages") : t("window.imageGen.card.generated"))}
+              {status === "error" && t("window.imageGen.card.viewError")}
             </button>
             <span
               className="ml-auto text-[10.5px]"
               style={{ color: "var(--md-sys-color-on-surface-variant)" }}
             >
-              {status === "loading" && "正在生成…"}
-              {status === "done" && hasImages && `已生成 ${session?.images.length ?? 0} 张`}
-              {status === "error" && "生成失败，可在弹窗内重试"}
+              {status === "loading" && t("window.imageGen.card.working")}
+              {status === "done" && hasImages && t("window.imageGen.card.generatedCount", { count: session?.images.length ?? 0 })}
+              {status === "error" && t("window.imageGen.card.errorHint")}
             </span>
           </>
         )}

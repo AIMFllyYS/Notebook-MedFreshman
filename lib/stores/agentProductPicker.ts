@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { useWindowManager, type AgentProductKind } from "@/lib/stores/windowManager";
 import { AGENT_PRODUCT_PICKER_WINDOW_ID } from "@/lib/notes/userNote";
+import { translate, type I18nKey } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 
 interface AgentProductPickerState {
   open: boolean;
@@ -9,8 +11,13 @@ interface AgentProductPickerState {
   closePicker: () => void;
 }
 
-function pickerTitle(kind: AgentProductKind): string {
-  return kind === "document" ? "导入长文本" : "导入可交互 HTML";
+/**
+ * 窗口标题的文案 key（值见 panel.addMenu.document / artifact，与右栏「＋」菜单同一批入口）。
+ * 标题要经 windowManager 的通用窗口 chrome 渲染（任务栏 / 标签条都直接读 win.title），
+ * 所以这里在开窗时就把 key 翻成当前语言，而不是让 chrome 每个渲染点各 t() 一次。
+ */
+function pickerTitleKey(kind: AgentProductKind): I18nKey {
+  return kind === "document" ? "panel.addMenu.document" : "panel.addMenu.artifact";
 }
 
 function pickerWindowGeometry() {
@@ -37,7 +44,7 @@ export const useAgentProductPicker = create<AgentProductPickerState>((set) => ({
     useWindowManager.getState().openWindow({
       id: AGENT_PRODUCT_PICKER_WINDOW_ID,
       type: "agent-product-picker",
-      title: pickerTitle(kind),
+      title: translate(useSettings.getState().locale, pickerTitleKey(kind)),
       pos,
       size,
       data: { kind },

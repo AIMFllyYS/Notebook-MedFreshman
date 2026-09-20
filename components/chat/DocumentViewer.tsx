@@ -6,6 +6,7 @@ import { useDocuments, getDocumentMarkdown } from "@/lib/hooks/useDocuments";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
 import { MessageContent } from "@/components/chat/MessageContent";
 import { downloadAsMarkdown } from "@/lib/documents/export";
+import { useT } from "@/lib/i18n";
 import ManagedWindow from "@/components/window/ManagedWindow";
 
 function documentWindowId(id: string) {
@@ -24,6 +25,7 @@ function DocumentViewerSingle({ documentId }: { documentId: string }) {
   const doc = useDocuments((s) => s.byId[documentId]);
   const closeViewer = useDocuments((s) => s.closeViewer);
   const handleClose = useCallback(() => closeViewer(), [closeViewer]);
+  const t = useT();
 
   if (!doc) return null;
 
@@ -37,7 +39,7 @@ function DocumentViewerSingle({ documentId }: { documentId: string }) {
         type="button"
         data-no-drag
         onClick={() => downloadAsMarkdown(markdown, doc.spec.title)}
-        title="下载 Markdown"
+        title={t("window.common.downloadMarkdown")}
         className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]"
       >
         <FileText size={15} />

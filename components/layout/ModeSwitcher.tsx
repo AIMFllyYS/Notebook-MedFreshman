@@ -16,12 +16,14 @@ import {
   type AppMode,
 } from "@/lib/constants/app-mode";
 import { useAppMode } from "@/lib/stores/appMode";
+import { useT } from "@/lib/i18n";
 import BrandLogo from "./BrandLogo";
 
-const MODE_HINTS: Record<AppMode, string> = {
-  studio: "当前主界面",
-  agent: "对话工作区",
-  class: "开发中",
+/** 模式说明文案的 key；模式代号本身中英一致，不进词典。 */
+const MODE_HINT_KEYS: Record<AppMode, string> = {
+  studio: "menu.mode.hint.studio",
+  agent: "menu.mode.hint.agent",
+  class: "menu.mode.hint.class",
 };
 
 export default function ModeSwitcher({
@@ -32,6 +34,7 @@ export default function ModeSwitcher({
   /** 手机：切 Agent 不进 /agent 桌面工作区，标题仍显示 Agent。 */
   stayOnStudioForAgent?: boolean;
 }) {
+  const t = useT();
   const pathname = usePathname() ?? "/";
   const router = useRouter();
   const persisted = useAppMode((s) => s.mode);
@@ -44,7 +47,7 @@ export default function ModeSwitcher({
 
   return (
     <AnchoredMenu
-      label="切换模式"
+      label={t("menu.mode.switch")}
       role="menu"
       width={240}
       testId="app-mode-switcher"
@@ -92,7 +95,7 @@ export default function ModeSwitcher({
                 <span className="app-menu-check">{selected && <Check size={13} />}</span>
                 <span>
                   <span>{APP_MODE_LABELS[item]}</span>
-                  <small>{MODE_HINTS[item]}</small>
+                  <small>{t(MODE_HINT_KEYS[item])}</small>
                 </span>
               </button>
             );

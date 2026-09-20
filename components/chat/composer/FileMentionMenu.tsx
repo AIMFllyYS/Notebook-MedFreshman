@@ -3,6 +3,19 @@
 import type { AttachedFileRef } from "@/lib/chat/composerIntent";
 import { flattenFileMentions, type FileMentionGroup } from "@/lib/chat/fileMentions";
 import { AgentFileIcon } from "@/components/icons/AgentIcons";
+import { useT, type Translate } from "@/lib/i18n";
+
+/** fileMentions 给出的分组名 → 词典 key；未知分组原样显示，避免把 key 漏到界面上。 */
+const GROUP_LABEL_KEYS: Record<string, string> = {
+  "当前页附近": "menu.fileMention.group.nearby",
+  "父层级": "menu.fileMention.group.parent",
+  "匹配的笔记": "menu.fileMention.group.matched",
+};
+
+function groupLabel(t: Translate, label: string): string {
+  const key = GROUP_LABEL_KEYS[label];
+  return key ? t(key) : label;
+}
 
 export interface FileMentionMenuProps {
   groups: FileMentionGroup[];
@@ -11,13 +24,14 @@ export interface FileMentionMenuProps {
 }
 
 export default function FileMentionMenu({ groups, activeIndex = 0, onSelect }: FileMentionMenuProps) {
+  const t = useT();
   const flat = flattenFileMentions(groups);
   const selectedPath = flat[activeIndex]?.path;
   return (
-    <div className="file-mention-menu" data-testid="file-mention-menu" role="listbox" aria-label="引用笔记">
+    <div className="file-mention-menu" data-testid="file-mention-menu" role="listbox" aria-label={t("menu.fileMention.aria")}>
       {groups.map((group) => (
         <div key={group.id}>
-          <div className="app-menu-heading">{group.label}</div>
+          <div className="app-menu-heading">{groupLabel(t, group.label)}</div>
           {group.items.map((item) => {
             return (
               <button
@@ -38,7 +52,7 @@ export default function FileMentionMenu({ groups, activeIndex = 0, onSelect }: F
           })}
         </div>
       ))}
-      {flat.length === 0 ? <div className="app-menu-heading">没有可引用的笔记</div> : null}
+      {flat.length === 0 ? <div className="app-menu-heading">{t("menu.fileMention.empty")}</div> : null}
     </div>
   );
 }

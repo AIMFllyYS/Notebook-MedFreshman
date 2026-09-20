@@ -7,6 +7,7 @@ import WebviewSite, { type WebviewEl } from "@/components/browser/WebviewSite";
 import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useT } from "@/lib/i18n";
 
 /** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */
 export default function BrowserTab() {
@@ -19,6 +20,7 @@ export default function BrowserTab() {
   const goHome = useBrowser((s) => s.goHome);
   const setViewMode = useBrowser((s) => s.setViewMode);
   const frameMode: ViewMode = isPhone ? "desktop" : viewMode;
+  const t = useT();
 
   const [addr, setAddr] = useState(currentUrl);
   const [prevUrl, setPrevUrl] = useState(currentUrl);
@@ -48,7 +50,7 @@ export default function BrowserTab() {
       <div className="mobile-browser-toolbar flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-2 py-1.5">
         <button
           onClick={goHome}
-          title="主页 / 必应搜索"
+          title={t("window.browser.home")}
           className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           <Home size={15} />
@@ -57,7 +59,7 @@ export default function BrowserTab() {
           <>
             <button
               onClick={() => webviewRef.current?.goBack()}
-              title="后退"
+              title={t("window.browser.back")}
               disabled={!currentUrl}
               className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
             >
@@ -65,7 +67,7 @@ export default function BrowserTab() {
             </button>
             <button
               onClick={() => webviewRef.current?.goForward()}
-              title="前进"
+              title={t("window.browser.forward")}
               disabled={!currentUrl}
               className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
             >
@@ -75,7 +77,7 @@ export default function BrowserTab() {
         )}
         <button
           onClick={reload}
-          title="刷新"
+          title={t("window.browser.refresh")}
           disabled={!currentUrl}
           className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
         >
@@ -89,13 +91,13 @@ export default function BrowserTab() {
             onKeyDown={(e) => {
               if (e.key === "Enter") go();
             }}
-            placeholder="输入网址或搜索内容…"
+            placeholder={t("window.browser.addressPlaceholder")}
             className="min-w-0 flex-1 bg-transparent text-[13px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
           />
         </div>
         <button
           onClick={go}
-          title="访问"
+          title={t("window.browser.go")}
           className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--accent-ink)] hover:bg-[var(--accent-weak)]"
         >
           <ArrowRight size={15} />
@@ -103,7 +105,7 @@ export default function BrowserTab() {
         {!isPhone && (
         <button
           onClick={toggleView}
-          title={viewMode === "mobile" ? "当前：手机视图（点击切桌面）" : "当前：桌面视图（点击切手机）"}
+          title={viewMode === "mobile" ? t("window.browser.viewMobileHint") : t("window.browser.viewDesktopHint")}
           className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           {viewMode === "mobile" ? <Smartphone size={15} /> : <Monitor size={15} />}
@@ -113,7 +115,7 @@ export default function BrowserTab() {
           href={currentUrl || undefined}
           target="_blank"
           rel="noreferrer"
-          title="在新标签页打开（适用于禁止内嵌的站点）"
+          title={t("window.browser.openInNewTabHint")}
           className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] aria-disabled:opacity-40"
           aria-disabled={!currentUrl}
           onClick={(e) => {
@@ -139,8 +141,8 @@ export default function BrowserTab() {
               url={currentUrl}
               reason={reason}
               onForce={forceEmbed}
-              title="该站点禁止被内嵌"
-              actionLabel="在新标签页打开"
+              title={t("window.browser.embedBlockedBySite")}
+              actionLabel={t("window.browser.openInNewTab")}
             />
           ) : (
             <FramedSite url={currentUrl} nonce={reloadNonce} viewMode={frameMode} />
@@ -158,6 +160,7 @@ export default function BrowserTab() {
  * 让所有站点都拿到"手机视口"并完整放进右侧窄面板（无横向溢出）；桌面视图按面板原宽 1:1。
  */
 function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; viewMode: ViewMode }) {
+  const t = useT();
   const wrapRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
 
@@ -182,7 +185,7 @@ function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; view
         <iframe
           key={`${url}:${nonce}:${viewMode}`}
           src={url}
-          title="内置浏览器"
+          title={t("window.browser.builtInBrowser")}
           style={{
             width: logicalW,
             height: logicalH,
@@ -201,6 +204,7 @@ function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; view
 
 /** 必应搜索起始页（浏览器标签的默认页）：本地深色搜索框 → 走 bing.com/search 结果页（可内嵌）。 */
 function BingStartPage({ onSearch }: { onSearch: (q: string) => void }) {
+  const t = useT();
   const [q, setQ] = useState("");
   const submit = () => {
     if (q.trim()) onSearch(q.trim());
@@ -210,8 +214,8 @@ function BingStartPage({ onSearch }: { onSearch: (q: string) => void }) {
       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent-weak)] text-[var(--accent-ink)]">
         <Search size={28} />
       </div>
-      <p className="text-[17px] font-semibold tracking-tight text-[var(--ink)]">必应搜索</p>
-      <p className="mt-1 text-[12px] text-[var(--ink-soft)]">搜索网页，或直接输入网址访问</p>
+      <p className="text-[17px] font-semibold tracking-tight text-[var(--ink)]">{t("window.browser.bingTitle")}</p>
+      <p className="mt-1 text-[12px] text-[var(--ink-soft)]">{t("window.browser.bingSubtitle")}</p>
 
       <div className="mt-5 flex w-full max-w-[360px] items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--bg-muted)] px-4 py-2.5 focus-within:border-[var(--accent)]">
         <Search size={15} className="shrink-0 text-[var(--ink-faint)]" />
@@ -220,13 +224,13 @@ function BingStartPage({ onSearch }: { onSearch: (q: string) => void }) {
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && submit()}
           autoFocus
-          placeholder="搜索内容或网址…"
+          placeholder={t("window.browser.searchPlaceholder")}
           className="min-w-0 flex-1 bg-transparent text-[14px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
         />
         <button
           onClick={submit}
           disabled={!q.trim()}
-          title="搜索"
+          title={t("window.browser.search")}
           className="press flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
         >
           <ArrowRight size={15} />
@@ -234,7 +238,7 @@ function BingStartPage({ onSearch }: { onSearch: (q: string) => void }) {
       </div>
 
       <p className="mt-6 max-w-[300px] text-[11px] leading-relaxed text-[var(--ink-faint)]">
-        常用站点（如 B 站）已固定在上方标签栏，点击即可切换；用右上角「＋」可新增固定标签。
+        {t("window.browser.bingFootnote")}
       </p>
     </div>
   );

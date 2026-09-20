@@ -2,16 +2,23 @@ import type { ComponentType } from "react";
 import type { ToolUIPart } from "ai";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { StudyToolName, StudyTools } from "@/lib/ai/agent/tools/names";
+// 只借字面量联合类型做 key 校验（type-only，不进任何运行时 bundle）。
+import type { I18nKey } from "@/lib/i18n";
 
 export type ToolIconKind = "search" | "file" | "image" | "gallery" | "skill" | "terminal" | "quiz" | "document";
 
+/**
+ * 工具的用户可见文案一律存**词典 key**，不存中文字面量：
+ * 展示元数据跟着工具定义走，语言却由 i18n 决定，两边解耦后设置面板与思考链共用同一份词条。
+ * 消费方用 `t(presentation.labelKey)` 取词；key 打错会在 typecheck 阶段被 I18nKey 拦下。
+ */
 export interface ToolPresentation {
   /** 思考链步骤标题（动词短语）。 */
-  label: string;
+  labelKey: I18nKey;
   /** 设置面板开关名。 */
-  settingsLabel: string;
+  settingsLabelKey: I18nKey;
   /** 设置面板描述。 */
-  description: string;
+  descriptionKey: I18nKey;
   icon: ToolIconKind;
   /** 是否在设置面板中提供开关；imageSearch 随「联网搜索」开关，useSkill 随技能库。 */
   toggleable: boolean;

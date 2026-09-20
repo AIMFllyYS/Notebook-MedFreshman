@@ -2,6 +2,8 @@
 
 import React, { useSyncExternalStore } from 'react';
 import { Globe, Layers, MousePointerClick, NotebookPen } from 'lucide-react';
+import { translate, useT, type I18nKey, type Translate } from '@/lib/i18n';
+import { useSettings } from '@/lib/stores/settings';
 
 /**
  * Agent 空对话欢迎页：问候语在上、输入框居中、示例清单在下（对齐 ChatGPT 官网那种首页）。
@@ -11,26 +13,33 @@ import { Globe, Layers, MousePointerClick, NotebookPen } from 'lucide-react';
  */
 export interface AgentWelcomeExample {
   id: string;
-  text: string;
+  /** 起手式文案的词典 key（点下去等于把这句话发出去）。 */
+  textKey: I18nKey;
   icon: React.ReactNode;
 }
 
-/** 起手式覆盖 Agent 真正能做的几类事：整理笔记 / 出闪卡 / 交互演示 / 联网查资料。 */
-export const AGENT_WELCOME_EXAMPLES: readonly AgentWelcomeExample[] = [
-  { id: 'outline', text: '把今天的课堂笔记整理成复习提纲', icon: <NotebookPen size={15} /> },
-  { id: 'flashcards', text: '按我的笔记出 5 张复习闪卡', icon: <Layers size={15} /> },
-  { id: 'demo', text: '做一个可拖动的演示，帮我理解一个公式', icon: <MousePointerClick size={15} /> },
-  { id: 'brief', text: '查一下最新资料，整理成一页简报', icon: <Globe size={15} /> },
-];
+/**
+ * 纯函数也要能取词：默认按 store 的当前语言即时解析。
+ * 组件内部一律显式传 `useT()` 的 t，换语言才能跟着重渲染。
+ */
+const translateCurrent: Translate = (key, vars) => translate(useSettings.getState().locale, key, vars);
+
+/** 起手式清单：文案进词典（textKey），起手式本身仍是固定可点的四条。 */
+export const AGENT_WELCOME_EXAMPLES = [
+  { id: 'outline', textKey: 'trace.welcome.example.outline', icon: <NotebookPen size={15} /> },
+  { id: 'flashcards', textKey: 'trace.welcome.example.flashcards', icon: <Layers size={15} /> },
+  { id: 'demo', textKey: 'trace.welcome.example.demo', icon: <MousePointerClick size={15} /> },
+  { id: 'brief', textKey: 'trace.welcome.example.brief', icon: <Globe size={15} /> },
+] as const satisfies readonly { id: string; textKey: I18nKey; icon: React.ReactNode }[];
 
 /** 按本机时间分档打招呼；纯函数，方便单测直接钉住每一档。 */
-export function welcomeGreeting(hour: number): string {
-  if (hour < 5) return '夜深了，想做点什么？';
-  if (hour < 11) return '早上好，今天想做点什么？';
-  if (hour < 13) return '中午好，想做点什么？';
-  if (hour < 18) return '下午好，今天想做点什么？';
-  if (hour < 23) return '晚上好，想做点什么？';
-  return '夜深了，想做点什么？';
+export function welcomeGreeting(hour: number, t: Translate = translateCurrent): string {
+  if (hour < 5) return t('trace.welcome.earlyMorning');
+  if (hour < 11) return t('trace.welcome.morning');
+  if (hour < 13) return t('trace.welcome.noon');
+  if (hour < 18) return t('trace.welcome.afternoon');
+  if (hour < 23) return t('trace.welcome.evening');
+  return t('trace.welcome.earlyMorning');
 }
 
 /**
@@ -42,28 +51,30 @@ const readHour = () => new Date().getHours();
 const readHourOnServer = () => -1;
 
 export function AgentWelcomeGreeting() {
+  const t = useT();
   const hour = useSyncExternalStore(subscribeClock, readHour, readHourOnServer);
   if (hour < 0) return null;
   return (
     <p className="chat-welcome-greeting animate-fade-up" data-testid="agent-welcome-greeting">
-      {welcomeGreeting(hour)}
+      {welcomeGreeting(hour, t)}
     </p>
   );
 }
 
 export function AgentWelcomeExamples({ onSelect }: { onSelect: (text: string) => void }) {
+  const t = useT();
   return (
     <div className="chat-welcome-examples animate-fade-up" data-testid="agent-welcome-examples">
       {AGENT_WELCOME_EXAMPLES.map((example) => (
         <button
           key={example.id}
           type="button"
-          onClick={() => onSelect(example.text)}
+          onClick={() => onSelect(t(example.textKey))}
           className="chat-welcome-example press"
           data-testid={`agent-welcome-example-${example.id}`}
         >
           <span className="chat-welcome-example-icon" aria-hidden>{example.icon}</span>
-          <span className="chat-welcome-example-text">{example.text}</span>
+          <span className="chat-welcome-example-text">{t(example.textKey)}</span>
         </button>
       ))}
     </div>

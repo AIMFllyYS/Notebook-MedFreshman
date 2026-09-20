@@ -5,6 +5,7 @@ import { Upload, Trash2, FileText, Pin } from 'lucide-react';
 import { useSkills, MAX_SKILLS } from '@/lib/hooks/useSkills';
 import { useHydrated } from '@/lib/hooks/useHydrated';
 import { importSkillFiles } from '@/lib/utils/importSkills';
+import { useT } from '@/lib/i18n';
 
 function fmtSize(content: string): string {
   const bytes = new Blob([content]).size;
@@ -40,6 +41,7 @@ export default function SkillsManager() {
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [err, setErr] = useState('');
+  const t = useT();
 
   const atLimit = skills.length >= MAX_SKILLS;
 
@@ -55,14 +57,14 @@ export default function SkillsManager() {
     for (const parsed of imported.skills) {
       const ok = addSkill({ name: parsed.name, description: parsed.description, content: parsed.content });
       if (!ok) {
-        setErr(`最多 ${MAX_SKILLS} 个技能，部分文件未添加。`);
+        setErr(t('settings.skills.maxReached', { max: MAX_SKILLS }));
         break;
       }
       added += 1;
     }
     const messages = [...imported.errors];
     if (imported.rejected > 0 && added === 0 && imported.skills.length === 0) {
-      messages.push('仅支持 .md / .markdown / .zip / .skill。');
+      messages.push(t('settings.skills.unsupported'));
     }
     if (messages.length) setErr((p) => p || messages[0] || '');
     e.target.value = '';
@@ -85,7 +87,7 @@ export default function SkillsManager() {
           disabled={atLimit}
           className="press flex items-center gap-1.5 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
         >
-          <Upload size={14} /> 导入技能
+          <Upload size={14} /> {t('settings.skills.import')}
         </button>
         <span className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
           {skills.length} / {MAX_SKILLS} · .md / ZIP / .skill
@@ -95,10 +97,10 @@ export default function SkillsManager() {
       {err && <div className="text-[11.5px] text-[var(--md-sys-color-error)]">{err}</div>}
 
       {!hydrated ? (
-        <div className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">正在加载技能库…</div>
+        <div className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">{t('settings.skills.loading')}</div>
       ) : skills.length === 0 ? (
         <div className="rounded-lg border border-dashed border-[var(--md-sys-color-outline-variant)] px-3 py-4 text-center text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-          还没有技能。导入 .md，或含 SKILL.md 的 ZIP / .skill 包（frontmatter 的 name/description 会自动填入，可在下方编辑）。
+          {t('settings.skills.empty')}
         </div>
       ) : (
         <div className="flex flex-col gap-2">
@@ -112,18 +114,18 @@ export default function SkillsManager() {
                 <input
                   value={sk.name}
                   onChange={(e) => updateSkill(sk.id, { name: e.target.value })}
-                  placeholder="技能名称"
+                  placeholder={t('settings.skills.name')}
                   className={input + ' font-medium'}
                 />
                 <span className="shrink-0 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
                   {fmtSize(sk.content)}
                 </span>
-                <span title={sk.pinned ? '固定开启：每轮强制注入全文' : '关闭：由 AI 按需调用'}>
+                <span title={t(sk.pinned ? 'settings.skills.pinTitle' : 'settings.skills.unpinTitle')}>
                   <Toggle on={sk.pinned} onClick={() => togglePin(sk.id)} />
                 </span>
                 <button
                   onClick={() => deleteSkill(sk.id)}
-                  title="删除技能"
+                  title={t('settings.skills.remove')}
                   className="shrink-0 rounded p-1 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--md-sys-color-error)]"
                 >
                   <Trash2 size={14} />
@@ -132,12 +134,12 @@ export default function SkillsManager() {
               <input
                 value={sk.description}
                 onChange={(e) => updateSkill(sk.id, { description: e.target.value })}
-                placeholder="技能描述（供 AI 判断何时调用）"
+                placeholder={t('settings.skills.description')}
                 className={input}
               />
               {sk.pinned && (
                 <div className="flex items-center gap-1 text-[10.5px] text-[var(--md-sys-color-primary)]">
-                  <Pin size={10} style={{ transform: 'rotate(-45deg)' }} /> 已固定：每轮注入全文，不进可调用菜单
+                  <Pin size={10} style={{ transform: 'rotate(-45deg)' }} /> {t('settings.skills.pinnedNote')}
                 </div>
               )}
             </div>

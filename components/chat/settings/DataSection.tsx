@@ -11,29 +11,31 @@ import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
 import { clearCloudSyncMessage, useCloudSyncStatus } from "@/lib/sync/status";
 import { MAX_FLASHCARDS_POOL_BYTES, MAX_NOTES_POOL_BYTES, MAX_USER_SYNC_BYTES } from "@/lib/sync/types";
 import { h3Cls, inputCls } from "./_shared";
+import { useT } from "@/lib/i18n";
 
 export function RedemptionSection() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [ok, setOk] = useState(false);
+  const t = useT();
 
   return (
     <section className="flex flex-col gap-2">
       <div className="flex items-center gap-1.5">
         <Ticket size={14} className="text-[var(--md-sys-color-primary)]" />
-        <h3 className={h3Cls}>兑换码</h3>
+        <h3 className={h3Cls}>{t("settings.data.redeem.title")}</h3>
       </div>
       <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-        输入兑换码升级档位。失败不会提示该码是否存在。
+        {t("settings.data.redeem.desc")}
       </p>
       <div className="flex items-center gap-2">
         <input
           type="text"
           autoComplete="off"
           spellCheck={false}
-          placeholder="输入兑换码"
-          aria-label="兑换码"
+          placeholder={t("settings.data.redeem.placeholder")}
+          aria-label={t("settings.data.redeem.title")}
           value={code}
           onChange={(e) => setCode(e.target.value)}
           className={`${inputCls} flex-1`}
@@ -55,23 +57,23 @@ export function RedemptionSection() {
                 const body = (await res.json().catch(() => null)) as { error?: string; tier?: string } | null;
                 if (!res.ok) {
                   setOk(false);
-                  setMessage(typeof body?.error === "string" ? body.error : "兑换失败，请检查兑换码后重试。");
+                  setMessage(typeof body?.error === "string" ? body.error : t("settings.data.redeem.failed"));
                   return;
                 }
                 setOk(true);
                 notifyAccountUsageChanged();
                 setCode("");
-                setMessage(body?.tier ? `已兑换为 ${body.tier.toUpperCase()} 档` : "兑换成功");
+                setMessage(body?.tier ? t("settings.data.redeem.successTier", { tier: body.tier.toUpperCase() }) : t("settings.data.redeem.success"));
               })
               .catch(() => {
                 setOk(false);
-                setMessage("兑换失败，请检查兑换码后重试。");
+                setMessage(t("settings.data.redeem.failed"));
               })
               .finally(() => setBusy(false));
           }}
           className="press shrink-0 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-50"
         >
-          {busy ? "兑换中…" : "兑换"}
+          {t(busy ? "settings.data.redeem.busy" : "settings.data.redeem.submit")}
         </button>
       </div>
       {message && (
@@ -91,19 +93,20 @@ export function RedemptionSection() {
 export function BillingSection() {
   const usdExchangeRate = useSettings((s) => s.usdExchangeRate);
   const setUsdExchangeRate = useSettings((s) => s.setUsdExchangeRate);
+  const t = useT();
 
   return (
       <section className="flex flex-col gap-2">
         <div className="flex items-center gap-1.5">
           <DollarSign size={14} className="text-[var(--md-sys-color-primary)]" />
-          <h3 className={h3Cls}>计费与汇率</h3>
+          <h3 className={h3Cls}>{t("settings.data.billing.title")}</h3>
         </div>
         <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-          计费大盘中支持翻转卡片将人民币 (¥) 切换为美元 ($)。你可以在这里自定义兑换汇率。
+          {t("settings.data.billing.desc")}
         </p>
         <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
           <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
-            美元汇率 (USD/CNY)
+            {t("settings.data.billing.rate")}
           </div>
           <input
             type="number"
@@ -131,20 +134,24 @@ export function CloudSyncSection() {
   const cloudSync = useCloudSyncStatus();
   const signedIn = status === "signedIn";
   const limitMb = Math.round((MAX_USER_SYNC_BYTES / (1024 * 1024)) * 10) / 10;
+  const t = useT();
 
   return (
     <section className="flex flex-col gap-2">
       <div className="flex items-center gap-1.5">
         <Cloud size={14} className="text-[var(--md-sys-color-primary)]" />
-        <h3 className={h3Cls}>云端同步</h3>
+        <h3 className={h3Cls}>{t("settings.data.cloudSync.title")}</h3>
       </div>
       <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-        登录后同步对话文本、演示 HTML、长文档、个人笔记和复习闪卡。用户上传的图片与 PDF 不上云。工具读过的笔记以摘要同步，全文在教材包。生图会话和 API 密钥不会上传。
-        单用户上限约 {limitMb} MB；笔记额度池 {Math.round(MAX_NOTES_POOL_BYTES / (1024 * 1024))} MB，闪卡额度池 {Math.round(MAX_FLASHCARDS_POOL_BYTES / (1024 * 1024))} MB。超限时本机仍保留，并在对话区提示。
+        {t("settings.data.cloudSync.desc", {
+          limitMb,
+          notesPoolMb: Math.round(MAX_NOTES_POOL_BYTES / (1024 * 1024)),
+          flashcardsPoolMb: Math.round(MAX_FLASHCARDS_POOL_BYTES / (1024 * 1024)),
+        })}
       </p>
       <StorageQuotaBlock />
       <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-        {signedIn ? "已登录，换设备后可拉回历史对话与产物。" : "未登录时数据只留在本机。"}
+        {t(signedIn ? "settings.data.cloudSync.signedIn" : "settings.data.cloudSync.signedOut")}
       </p>
       {cloudSync.message ? (
         <div className="flex items-start justify-between gap-2">
@@ -163,7 +170,7 @@ export function CloudSyncSection() {
             className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]"
             onClick={clearCloudSyncMessage}
           >
-            关闭
+            {t("panel.common.close")}
           </button>
         </div>
       ) : null}
@@ -174,25 +181,26 @@ export function CloudSyncSection() {
 export function ExportSection() {
   const [exportMsg, setExportMsg] = useState<string | null>(null);
   const [logExportMsg, setLogExportMsg] = useState<string | null>(null);
+  const t = useT();
 
   return (
       <section className="flex flex-col gap-2">
         <div className="flex items-center gap-1.5">
           <Download size={14} className="text-[var(--md-sys-color-primary)]" />
-          <h3 className={h3Cls}>数据</h3>
+          <h3 className={h3Cls}>{t("settings.data.export.title")}</h3>
         </div>
         <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-          把全部聊天记录（主对话 + 划词）导出为本地 JSON 文件备份。仅保存到你选择的位置，绝不上传任何服务器。
+          {t("settings.data.export.desc")}
         </p>
         <button
           onClick={() => {
             void exportAllChats().then((r) => {
-              setExportMsg(r.ok ? `已导出 ${r.count} 个会话` : "暂无可导出的聊天数据");
+              setExportMsg(r.ok ? t("settings.data.export.done", { count: r.count }) : t("settings.data.export.empty"));
             });
           }}
           className="press flex items-center gap-1.5 self-start rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
         >
-          <Download size={13} /> 导出所有聊天数据
+          <Download size={13} /> {t("settings.data.export.chats")}
         </button>
         {exportMsg && (
           <span className="text-[11px] font-medium text-[var(--md-sys-color-primary)]">
@@ -200,19 +208,19 @@ export function ExportSection() {
           </span>
         )}
         <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-          导出已落盘的 Agent 生命周期日志，保持原始 JSONL，不做清洗。
+          {t("settings.data.export.logsDesc")}
         </p>
         <button
           type="button"
-          aria-label="导出全部日志"
+          aria-label={t("settings.data.export.logs")}
           onClick={() => {
             void exportAgentLogs().then((r) => {
-              setLogExportMsg(r.ok ? (r.empty ? "暂无日志" : "已导出") : (r.error ?? "导出失败"));
+              setLogExportMsg(r.ok ? (r.empty ? t("settings.data.export.noLogs") : t("settings.data.export.logExported")) : (r.error ?? t("settings.data.export.failed")));
             });
           }}
           className="press flex items-center gap-1.5 self-start rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
         >
-          <Download size={13} /> 导出全部日志
+          <Download size={13} /> {t("settings.data.export.logs")}
         </button>
         {logExportMsg && (
           <span className="text-[11px] font-medium text-[var(--md-sys-color-primary)]">

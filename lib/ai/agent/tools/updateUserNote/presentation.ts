@@ -2,9 +2,9 @@
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {
-  label: "改写笔记",
-  settingsLabel: "改写笔记",
-  description: "按 id 改写或删除个人笔记；正在编辑时也可直接写回当前篇",
+  labelKey: "trace.tool.updateUserNote.label",
+  settingsLabelKey: "trace.tool.updateUserNote.settingsLabel",
+  descriptionKey: "trace.tool.updateUserNote.description",
   icon: "document",
   toggleable: false,
 };

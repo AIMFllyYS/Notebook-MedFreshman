@@ -4,8 +4,20 @@
  * 为什么中文是真相源：仓库现有文案全是中文，迁移时只做「把字面量搬进字典」这一件事，
  * 不做二次创作；en.ts 用 `satisfies LocaleMessages` 对齐它的形状，漏 key 会在 typecheck 直接报错。
  * 取值统一走 dot-path（如 `agent.nav.assets`），嵌套只用于分组，不参与拼 key。
+ *
+ * 本文件只留 `agent`（上一轮迁完的那一批）。设置 / 菜单 / 面板 / 思考链四块各自在
+ * `parts/zh/<namespace>.ts` 里维护，在这里合并 —— 分片是为了让几路并行迁移时
+ * 各改各的文件，不在合并阶段互相覆盖。
  */
+import { appZh } from "./parts/zh/app";
+import { menuZh } from "./parts/zh/menu";
+import { panelZh } from "./parts/zh/panel";
+import { settingsZh } from "./parts/zh/settings";
+import { traceZh } from "./parts/zh/trace";
+import { windowZh } from "./parts/zh/window";
+
 export const zh = {
+  app: appZh,
   agent: {
     nav: {
       aria: "Agent 板块导航",
@@ -73,6 +85,10 @@ export const zh = {
     },
     sources: {
       title: "来源",
+      // 窗口标题（右侧面板标签条会原样显示 win.title）
+      traceWindowTitle: "来源追踪 · {count} 条",
+      webWindowTitle: "联网来源 · {count} 条",
+      untitled: "未命名来源",
       count: "来源 · {count}",
       openPanel: "打开来源面板",
       outline: "来源目录",
@@ -140,12 +156,9 @@ export const zh = {
       shrink: "缩小到右栏",
     },
   },
-  settings: {
-    language: {
-      title: "语言",
-      zh: "中文",
-      en: "English",
-      desc: "界面语言，切换后立即生效",
-    },
-  },
+  settings: settingsZh,
+  menu: menuZh,
+  panel: panelZh,
+  trace: traceZh,
+  window: windowZh,
 };

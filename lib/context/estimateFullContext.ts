@@ -1,5 +1,6 @@
 // 双端共用的全量上下文估算与软上限口径。无 Node 依赖，客户端/服务端都可导入。
 import { estimateTokens } from "@/lib/context/estimateTokens";
+import type { I18nKey } from "@/lib/i18n";
 
 /** 软上限：占用 / 窗口 >= 该比例时走压缩而非硬切。 */
 export const SOFT_LIMIT_RATIO = 0.8;
@@ -66,9 +67,10 @@ export function contextRingColor(level: ContextRingLevel): string {
   return "#10b981";
 }
 
-export function contextRingCaption(level: ContextRingLevel): string | undefined {
-  if (level === "limit") return "已达 80% 软上限";
-  if (level === "approaching") return "接近 80% 软上限";
+/** 环下方说明的文案 key（值见 panel.token.ring*）；渲染处 t() 取词，本模块不引入语料依赖。 */
+export function contextRingCaption(level: ContextRingLevel): I18nKey | undefined {
+  if (level === "limit") return "panel.token.ringLimit";
+  if (level === "approaching") return "panel.token.ringApproaching";
   return undefined;
 }
 

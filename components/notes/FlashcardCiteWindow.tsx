@@ -17,13 +17,14 @@ import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
 import { FLASHCARD_CITE_WINDOW_ID, formatFlashcardQuote, plainSnippet } from "@/lib/notes/userNote";
 import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";
 import type { CardStatus, ReviewCard } from "@/lib/review/types";
+import { useT } from "@/lib/i18n";
 
-const STATUS_LABEL: Record<CardStatus, string> = {
-  saved: "待处理",
-  processing: "处理中",
-  parsing: "处理中",
-  ready: "已成卡",
-  error: "失败",
+const STATUS_LABEL_KEYS: Record<CardStatus, string> = {
+  saved: "window.note.flashcard.statusSaved",
+  processing: "window.note.flashcard.statusProcessing",
+  parsing: "window.note.flashcard.statusProcessing",
+  ready: "window.note.flashcard.statusReady",
+  error: "window.common.failed",
 };
 
 export default function FlashcardCiteWindow() {
@@ -43,6 +44,7 @@ function FlashcardCitePicker() {
   const order = useReviewCards((s) => s.order);
   const { cited, cite } = useCiteToChat();
   const router = useRouter();
+  const t = useT();
 
   const cards = useMemo(
     () =>
@@ -69,7 +71,7 @@ function FlashcardCitePicker() {
           if (active) cite(formatFlashcardQuote(active));
         }}
       >
-        {cited ? <Check size={13} /> : <Quote size={13} />} {cited ? "已引用到对话" : "引用到对话"}
+        {cited ? <Check size={13} /> : <Quote size={13} />} {cited ? t("window.note.common.cited") : t("window.note.common.cite")}
       </button>
       <button
         type="button"
@@ -80,16 +82,16 @@ function FlashcardCitePicker() {
           if (active) downloadFlashcardMarkdown(active);
         }}
       >
-        <Download size={12} /> 下载这张
+        <Download size={12} /> {t("window.note.flashcard.downloadOne")}
       </button>
       <button
         type="button"
         data-no-drag
         className="user-note-toolbar-link"
         disabled={cards.length === 0}
-        onClick={() => downloadFlashcardsCsv(cards, subjectId ? `复习闪卡-${subjectId}` : "复习闪卡")}
+        onClick={() => downloadFlashcardsCsv(cards, subjectId ? `${t("window.note.flashcard.exportName")}-${subjectId}` : t("window.note.flashcard.exportName"))}
       >
-        <Download size={12} /> 下载 CSV
+        <Download size={12} /> {t("window.note.flashcard.downloadCsv")}
       </button>
       <button
         type="button"
@@ -97,7 +99,7 @@ function FlashcardCitePicker() {
         className="user-note-toolbar-link"
         onClick={() => router.push(subjectId ? `/${subjectId}/review` : "/")}
       >
-        <ExternalLink size={12} /> 打开复习板
+        <ExternalLink size={12} /> {t("window.note.flashcard.openBoard")}
       </button>
       <button
         type="button"
@@ -110,7 +112,7 @@ function FlashcardCitePicker() {
           useRecordPreviews.getState().open(active.id, { x: e.clientX, y: e.clientY });
         }}
       >
-        <PenLine size={12} /> 编辑
+        <PenLine size={12} /> {t("window.note.flashcard.edit")}
       </button>
     </div>
   );
@@ -129,24 +131,24 @@ function FlashcardCitePicker() {
     >
       <DocumentWorkspace
         layoutKey="flashcard-cite"
-        outlineLabel="复习闪卡"
+        outlineLabel={t("window.note.flashcard.outline")}
         outline={cards.map((card) => ({
           id: card.id,
-          kindLabel: STATUS_LABEL[card.status],
-          title: plainSnippet(card.front || card.originalText, 80) || "（空白卡）",
+          kindLabel: t(STATUS_LABEL_KEYS[card.status]),
+          title: plainSnippet(card.front || card.originalText, 80) || t("window.note.flashcard.blankCard"),
           meta: card.sourceLabel,
         }))}
         activeId={active?.id ?? ""}
         onSelect={setActiveCardId}
         toolbar={cards.length > 0 ? toolbar : undefined}
-        emptyLabel="还没有闪卡"
+        emptyLabel={t("window.note.flashcard.empty")}
         folderTree={<YearSubjectFolderTree selectedId={subjectId} onSelect={setSubjectId} />}
       >
         {active ? (
           <FlashcardStage key={active.id} card={active} />
         ) : (
           <div className="user-note-stage">
-            <p className="user-note-empty">还没有复习闪卡。在正文划词或右键消息选择『记录』即可生成。</p>
+            <p className="user-note-empty">{t("window.note.flashcard.emptyDetail")}</p>
             <div className="user-note-stage-actions" style={{ padding: "0 20px 20px" }} data-no-drag>
               <button
                 type="button"
@@ -154,7 +156,7 @@ function FlashcardCitePicker() {
                 className="user-note-action"
                 onClick={() => router.push(subjectId ? `/${subjectId}/review` : "/")}
               >
-                <ExternalLink size={12} /> 打开复习板
+                <ExternalLink size={12} /> {t("window.note.flashcard.openBoard")}
               </button>
             </div>
           </div>
@@ -172,6 +174,7 @@ function applyFlashcardSubject(cardId: string, next: string | null) {
 }
 
 function FlashcardStage({ card }: { card: ReviewCard }) {
+  const t = useT();
   const [flipped, setFlipped] = useState(false);
   const subjectMenu = (
     <SubjectPickerMenu value={card.subjectId} onChange={(next) => applyFlashcardSubject(card.id, next)} />
@@ -182,13 +185,13 @@ function FlashcardStage({ card }: { card: ReviewCard }) {
       <div className="user-note-stage">
         <div className="user-note-stage-head flashcard-cite-stage-head" data-no-drag>
           <div>
-            <div className="user-note-stage-title">{STATUS_LABEL[card.status]}</div>
+            <div className="user-note-stage-title">{t(STATUS_LABEL_KEYS[card.status])}</div>
             <div className="user-note-stage-meta">{card.sourceLabel}</div>
           </div>
           {subjectMenu}
         </div>
         <div className="user-note-preview chat-prose">
-          <p className="note-citation-status">这张卡还没有成卡，下面是记录下来的原文。</p>
+          <p className="note-citation-status">{t("window.note.flashcard.notReady")}</p>
           <QuizMarkdown className="chat-prose">{card.originalText}</QuizMarkdown>
         </div>
       </div>

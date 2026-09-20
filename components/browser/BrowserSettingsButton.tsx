@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { Bookmark, Trash2, Star, Home, Globe } from "lucide-react";
 import { useBrowser } from "@/lib/hooks/useBrowser";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { useT } from "@/lib/i18n";
 
 /** 右侧 Tab 栏最右的「＋」功能按钮：新增收藏网址（生成固定 Tab）、管理收藏、设置主页。 */
 export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => void }) {
@@ -28,6 +29,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
   const btnRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ top: 0, left: 0 });
+  const t = useT();
 
   // 定位（按钮下方右对齐）
   useLayoutEffect(() => {
@@ -77,8 +79,8 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
       <button
         ref={btnRef}
         onClick={() => setOpen((v) => !v)}
-        title="收藏 / 浏览器设置"
-        aria-label="收藏 / 浏览器设置"
+        title={t("window.browser.settingsTitle")}
+        aria-label={t("window.browser.settingsTitle")}
         className="press flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
       >
         <Bookmark size={15} />
@@ -93,13 +95,13 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
           >
             {/* 新增收藏 */}
             <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-              <Star size={12} /> 新增收藏网址
+              <Star size={12} /> {t("window.browser.newBookmark")}
             </div>
             <div className="flex flex-col gap-1.5">
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="名称（可选）"
+                placeholder={t("window.browser.namePlaceholder")}
                 className={inputCls}
               />
               <input
@@ -114,7 +116,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
                 disabled={!url.trim()}
                 className="press rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
               >
-                添加为标签
+                {t("window.browser.addAsTab")}
               </button>
             </div>
 
@@ -122,7 +124,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
             {bookmarks.length > 0 && (
               <div className="mt-3 border-t border-[var(--line)] pt-2">
                 <div className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-                  我的收藏
+                  {t("window.browser.myBookmarks")}
                 </div>
                 <div className="flex max-h-[160px] flex-col gap-0.5 overflow-y-auto">
                   {bookmarks.map((bm) => (
@@ -144,7 +146,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
                       </button>
                       <button
                         onClick={() => removeBookmark(bm.id)}
-                        title="删除"
+                        title={t("window.browser.deleteBookmark")}
                         className="shrink-0 rounded p-1 text-[var(--ink-faint)] opacity-0 transition-opacity hover:text-[var(--md-sys-color-error)] group-hover:opacity-100"
                       >
                         <Trash2 size={13} />
@@ -158,20 +160,20 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
             {/* 主页设置 */}
             <div className="mt-3 border-t border-[var(--line)] pt-2">
               <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-                <Home size={12} /> 主页
+                <Home size={12} /> {t("window.browser.homeLabel")}
               </div>
               <div className="flex gap-1.5">
                 <input
                   value={home}
                   onChange={(e) => setHome(e.target.value)}
-                  placeholder="留空则显示起始页"
+                  placeholder={t("window.browser.homePlaceholder")}
                   className={inputCls}
                 />
                 <button
                   onClick={() => setHomeUrl(home)}
                   className="press shrink-0 rounded-lg border border-[var(--line)] px-2.5 py-1.5 text-[12px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
                 >
-                  保存
+                  {t("window.browser.save")}
                 </button>
               </div>
             </div>
