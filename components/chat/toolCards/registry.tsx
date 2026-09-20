@@ -13,6 +13,7 @@ import CreateQuizResultCard from "@/components/chat/toolCards/createQuizCard";
 import SearchNoteImagesResultCard from "@/components/chat/toolCards/searchNoteImagesCard";
 import WriteDocumentResultCard from "@/components/chat/toolCards/writeDocumentCard";
 import ImageSearchResultCard from "@/components/chat/toolCards/imageSearchCard";
+import NoteChangeConsentCard from "@/components/notes/NoteChangeConsentCard";
 
 function moduleOf<N extends StudyToolName>(
   name: N,
@@ -86,13 +87,17 @@ export const TOOL_REGISTRY = {
   proposeMemory: moduleOf("proposeMemory"),
   commitNotes: moduleOf("commitNotes"),
   commitFlashcards: moduleOf("commitFlashcards"),
-  updateUserNote: moduleOf("updateUserNote"),
+  // 笔记变更必须由用户点「同意修改 / 确认删除」才落盘，所以它需要一张结果卡（不再是静默工具）。
+  updateUserNote: moduleOf("updateUserNote", {
+    ResultCard: NoteChangeConsentCard,
+    resultKey: (part) => (part.state === "output-available" ? part.output.proposalId : null),
+  }),
   // 项目文件：索引与切片都只进模型上下文，对话里不出现卡片（同 getSection）。
   getProjectFiles: moduleOf("getProjectFiles"),
   readProjectSlices: moduleOf("readProjectSlices"),
 } satisfies { [N in StudyToolName]: ToolModule<N> };
 
-export const THREAD_SILENT_TOOLS = ["proposeMemory", "commitNotes", "commitFlashcards", "updateUserNote"] as const satisfies readonly StudyToolName[];
+export const THREAD_SILENT_TOOLS = ["proposeMemory", "commitNotes", "commitFlashcards"] as const satisfies readonly StudyToolName[];
 
 /** 现网 ChatMessage 卡片顺序（不是 STUDY_TOOL_NAMES）。imageSearch 追加在末尾，与收回前的气泡顺序一致。 */
 export const RESULT_CARD_ORDER = [
@@ -104,6 +109,7 @@ export const RESULT_CARD_ORDER = [
   "searchNoteImages",
   "writeDocument",
   "imageSearch",
+  "updateUserNote",
 ] as const satisfies readonly StudyToolName[];
 
 export interface ToolResultCardEntry {

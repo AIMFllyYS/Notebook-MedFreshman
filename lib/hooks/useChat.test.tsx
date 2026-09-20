@@ -429,7 +429,13 @@ describe('useChat SDK transport regression', () => {
     const { result } = renderHook(() => useChat(context, undefined, { sessionId: 'note-s', editingUserNoteId: noteId }));
     act(() => { result.current.sendMessage('把分类补全'); });
     await settle();
-    expect(requests[0].body.editingUserNote).toEqual({ id: noteId, title: '被覆上皮', markdown: '# 被覆上皮\n\n旧稿' });
+    // updatedAt 随正文一起上行，作为候选稿的并发校验基线（见 noteChangeProposal）。
+    expect(requests[0].body.editingUserNote).toEqual({
+      id: noteId,
+      title: '被覆上皮',
+      markdown: '# 被覆上皮\n\n旧稿',
+      updatedAt: useUserNotes.getState().byId[noteId]!.updatedAt,
+    });
     expect(requests[0].body.noteWindowAgent).toBe(true);
     expect(requests[0].body.userNotes).toEqual([]);
     expect(requests[0].body.flashcards).toEqual([]);

@@ -197,7 +197,7 @@ export const chatRequestSchema = z.object({
     .transform((v): AcademicYearId => (isAcademicYearId(v) ? v : DEFAULT_ACADEMIC_YEAR)),
   /** 学生确认沉淀后，本轮才暴露 commitNotes / commitFlashcards。 */
   memoryCommit: z.enum(["note", "flashcards"]).optional(),
-  /** 笔记编辑窗点开助教时，当前个人笔记 id + markdown。 */
+  /** 笔记编辑窗点开助教时，当前个人笔记 id + markdown + 版本戳。 */
   editingUserNote: z
     .object({
       id: z.string(),
@@ -207,6 +207,8 @@ export const chatRequestSchema = z.object({
         .max(REQUEST_LIMITS.textPartChars, `正在编辑的笔记过长（最多 ${REQUEST_LIMITS.textPartChars} 字）。`)
         .optional()
         .default(""),
+      /** 草稿依据的正文版本（UserNote.updatedAt），用于点同意时的乐观并发校验。 */
+      updatedAt: z.number().optional(),
     })
     .optional(),
   /** 窗内笔记 Agent：与主对话共用前缀，但可收窄工具。 */

@@ -28,6 +28,8 @@ export const PERSIST_KEYS = {
   imports: "agent-imports",
   /** 项目文件的本地索引与切片（不上云）。 */
   projectFiles: "project-files",
+  /** 笔记变更候选稿的幂等账本（已应用 / 已取消的 proposalId，不上云）。 */
+  noteChangeProposals: "note-change-proposals",
 } as const;
 
 export const CHAT_SESSION_KEY_PREFIX = "chat-session:";

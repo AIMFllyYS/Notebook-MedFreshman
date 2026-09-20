@@ -17,7 +17,7 @@ import {
   buildChatRequestBody, kickoffSessionTitle, classifySendError, executeChatRequest,
   type SendMessageOptions,
 } from '@/lib/chat/sendMessage';
-import { selectEditingUserNote } from '@/lib/notes/applyUserNoteAgent';
+import { selectEditingUserNote } from '@/lib/notes/selectEditingNote';
 import { collectFlashcardCatalog, collectUserNoteCatalog } from '@/lib/ai/agent/tools/memoryCatalog';
 import { useUserNotes } from '@/lib/stores/userNotes';
 import { useReviewCards } from '@/lib/stores/reviewCards';
