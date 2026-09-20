@@ -3,8 +3,7 @@ import type { ChatToolPart } from '@/lib/chat/messageParts';
 import { hasStepStart } from '@/lib/chat/messageParts';
 import { splitThinkContent } from '@/lib/chat/rendering/parseChatContent';
 import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
-import { translate, type Translate } from '@/lib/i18n';
-import { useSettings } from '@/lib/stores/settings';
+import { translateNow, type Translate } from "@/lib/i18n";
 
 export type TraceStatus = 'running' | 'complete' | 'error' | 'interrupted' | 'waiting';
 export type TraceToolPart = ChatToolPart | Extract<ChatMessagePart, { type: 'dynamic-tool' }>;
@@ -50,7 +49,6 @@ export interface AgentTraceModel {
  * 组件里一律把 `useT()` 的 t 传进来——那样换语言才会跟着重渲染，默认值只服务单测与
  * 少数还在用旧签名的调用方（MemoryProposalCloud / useChat.test）。
  */
-const translateCurrent: Translate = (key, vars) => translate(useSettings.getState().locale, key, vars);
 
 export function isTraceToolPart(part: ChatMessagePart): part is TraceToolPart {
   return part.type === 'dynamic-tool' || part.type.startsWith('tool-');
@@ -71,7 +69,7 @@ function record(value: unknown): Record<string, unknown> {
     : {};
 }
 
-export function getTraceToolOutput(part: TraceToolPart, t: Translate = translateCurrent): string {
+export function getTraceToolOutput(part: TraceToolPart, t: Translate = translateNow): string {
   if (part.state === 'output-error') return part.errorText;
   if (part.state === 'output-denied') return part.approval.reason || t('trace.tool.denied');
   if (part.state === 'approval-responded' && !part.approval.approved) return part.approval.reason || t('trace.tool.denied');
@@ -96,7 +94,7 @@ export function buildToolTraceStep(
   partIndex: number,
   isStreaming = false,
   stepDurationsMs?: Readonly<Record<string, number>>,
-  t: Translate = translateCurrent,
+  t: Translate = translateNow,
 ): TraceToolStep {
   const name = traceToolName(part);
   const status = getTraceToolStatus(part, isStreaming);
@@ -221,7 +219,7 @@ function pushTextStep(
 export function buildTrace(
   message: Pick<ChatMessage, 'parts'> & Partial<Pick<ChatMessage, 'metadata'>>,
   isStreaming = false,
-  t: Translate = translateCurrent,
+  t: Translate = translateNow,
 ): AgentTraceModel {
   const stepDurationsMs = message.metadata?.stepDurationsMs;
   return hasStepStart(message.parts)

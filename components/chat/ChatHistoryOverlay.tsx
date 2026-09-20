@@ -170,7 +170,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
                       className="chat-history-confirm-no"
                       onClick={(e) => { e.stopPropagation(); setConfirmId(null); }}
                     >
-                      {t('menu.common.cancel')}
+                      {t('common.cancel')}
                     </button>
                   </div>
                 ) : (
@@ -220,7 +220,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
                       className="chat-history-confirm-no"
                       onClick={(e) => { e.stopPropagation(); setConfirmId(null); }}
                     >
-                      {t('menu.common.cancel')}
+                      {t('common.cancel')}
                     </button>
                   </div>
                 ) : (

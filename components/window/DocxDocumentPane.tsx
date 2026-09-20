@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { translate, useT } from "@/lib/i18n";
-import { useSettings } from "@/lib/stores/settings";
+import { translateNow, useT } from "@/lib/i18n";
 
 export default function DocxDocumentPane({ src, name }: { src: string; name: string }) {
   const t = useT();
@@ -29,7 +28,7 @@ export default function DocxDocumentPane({ src, name }: { src: string; name: str
         });
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : translate(useSettings.getState().locale, "panel.reader.openFailed", { name }));
+          setError(err instanceof Error ? err.message : translateNow("panel.reader.openFailed", { name }));
         }
       }
     })();

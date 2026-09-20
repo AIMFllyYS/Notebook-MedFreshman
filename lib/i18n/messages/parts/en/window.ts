@@ -15,6 +15,8 @@ export const windowEn = {
   // Actions and short status words shared across windows.
   common: {
     delete: "Delete",
+    // "Failed" as the RESULT of an action. Not the same tone as the status words
+    // trace.step.status.error / menu.history.status.error ("failed"). Keep both.
     failed: "Failed",
     downloadHtml: "Download HTML",
     downloadMarkdown: "Download Markdown",
@@ -62,7 +64,6 @@ export const windowEn = {
     promptLabel: "Prompt:",
     sizeCount: "{size} · {count} images",
     unknownError: "Unknown error",
-    retry: "Retry",
     empty: "Generation finished but returned no images",
     regenerate: "Regenerate",
     urlExpiry: "Image URLs expire in 1 hour — download them soon",
@@ -79,6 +80,7 @@ export const windowEn = {
       viewImages: "View images",
       generated: "Generated",
       viewError: "View error",
+      // "Generating…" an IMAGE — not share.dialog.creating (a share link). Keep separate.
       working: "Generating…",
       generatedCount: "{count} images generated",
       errorHint: "Generation failed — retry from the popup window",
@@ -353,7 +355,6 @@ export const windowEn = {
     forceEmbed: "Try embedding anyway (may render blank)",
     loadFailedWithCode: "{message} ({code})",
     rendererGone: "The page renderer exited. Please retry.",
-    retry: "Retry",
     openInSystemBrowser: "Open in system browser",
     home: "Home / Bing search",
     back: "Back",

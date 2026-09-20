@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { join } from "node:path";
+import { AGENT_CHAT_MAX_PX } from "@/lib/constants/layout";
 
 const root = process.cwd();
 
@@ -106,11 +107,11 @@ test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，默认�
 test("Agent 中央对话：不贴满左右面板（空隙 + 可读宽度居中）", () => {
   const globals = readFile("app/globals.css");
   const thread = readFile("components/chat/ChatThread.tsx");
-  // 两个变量挂在 agent 外壳的对话面板上
   // 变量挂在 [data-agent-shell] 根节点上：顶栏那三个切面也要读同一条内边距（挂 .chat-panel 上它读不到）。
   assert.match(globals, /\[data-agent-shell\] \{\s*\n\s*--agent-chat-inline: clamp\(20px, 2\.6vw, 44px\);/);
   // 用户口径：Agent 这一栏要比 Codex 再收一点（780，原 920），两侧留白多一些才协调。
-  assert.match(globals, /--agent-chat-max: 780px;/);
+  // 数字取自 AGENT_CHAT_MAX_PX：与 globals.css 的一致性由下面「阅读宽度单一真相源」那条测试守着。
+  assert.match(globals, new RegExp(`--agent-chat-max: ${AGENT_CHAT_MAX_PX}px;`));
   // 消息流两侧留白（!important 盖住「有跳转点时内联的 18px」）
   assert.match(globals, /\[data-agent-shell\] \.chat-messages \{\s*\n\s*padding-left: var\(--agent-chat-inline\) !important;/);
   assert.match(globals, /padding-right: var\(--agent-chat-inline\) !important;/);
@@ -125,6 +126,22 @@ test("Agent 中央对话：不贴满左右面板（空隙 + 可读宽度居中�
   assert.match(globals, /\[data-agent-shell\] \.chat-scroll-btn \{\s*\n\s*right: max\(12px, calc\(\(100% - var\(--agent-chat-max\)\) \/ 2 \+ 2px\)\);/);
   // 只作用于 Agent 外壳：Studio/浮窗的 .chat-messages 不受影响
   assert.doesNotMatch(globals, /^\s*\.chat-messages \{\s*\n\s*padding-left: var\(--agent-chat-inline/m);
+});
+
+test("阅读宽度单一真相源：--agent-chat-max 只声明一次，分享页用同一个常量", () => {
+  const globals = readFile("app/globals.css");
+  const declared = globals.match(/--agent-chat-max:\s*(\d+)px;/);
+  assert.ok(declared, "globals.css 里找不到 --agent-chat-max 的 px 声明");
+  // 只有一处声明：多一处就又是一次「两边各写一个数」的漂移起点
+  assert.equal(globals.match(/--agent-chat-max:\s*\d+px;/g)?.length, 1);
+  assert.equal(Number(declared[1]), AGENT_CHAT_MAX_PX);
+  // 公开分享页是裸壳（根节点没有 [data-agent-shell]，读不到那条 CSS 变量），
+  // 它的内联宽度必须来自同一个常量 —— 曾经这里是 max-w-[var(--agent-chat-max,920px)]，
+  // 兜底值 920 永远生效，比站内宽 140px。
+  const sharePage = readFile("components/share/SharePage.tsx");
+  assert.match(sharePage, /style=\{\{ maxWidth: AGENT_CHAT_MAX_PX \}\}/);
+  // 回归点：这里曾经是 max-w-[var(--agent-chat-max,920px)]，兜底值 920 永远生效
+  assert.doesNotMatch(sharePage, /max-w-\[var\(--agent-chat-max/);
 });
 
 test("骨架懒加载：资产页与详情页都压约 1 秒最小时长", () => {

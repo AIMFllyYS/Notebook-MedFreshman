@@ -1,3 +1,4 @@
+import { translateNow } from "@/lib/i18n";
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
@@ -83,7 +84,8 @@ export const useImageGen = createPersistedStore<ImageGenState>(
         const session: ImageGenSession = existing ?? {
           id,
           prompt: init.prompt,
-          title: init.title || "AI 生图",
+          // 对话里的生图卡也是这个兜底标题（ImageGenCard → window.imageGen.card.defaultTitle）。
+          title: init.title || translateNow("window.imageGen.card.defaultTitle"),
           size: init.size || "1024x1024",
           count: init.count || 1,
           modelId: init.modelId,

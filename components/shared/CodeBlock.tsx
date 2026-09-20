@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { Check, Copy } from 'lucide-react';
+import { copyTextToClipboard } from '@/lib/clipboard/copyText';
 
 interface CodeBlockProps {
   className?: string;
@@ -13,8 +14,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ className, children }) => {
   const language = className?.replace('language-', '') || '';
 
   const handleCopy = useCallback(() => {
-    const text = extractText(children);
-    navigator.clipboard.writeText(text).then(() => {
+    // 走 copyTextToClipboard：http / 无 clipboard 权限的环境里它有 execCommand 兜底，
+    // 直接用 navigator.clipboard.writeText 会静默失败（按钮毫无反应）。
+    void copyTextToClipboard(extractText(children)).then((ok) => {
+      if (!ok) return;
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });

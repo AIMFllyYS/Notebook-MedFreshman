@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Crepe } from "@milkdown/crepe";
 import { keepEditorShortcut } from "@/lib/notes/editorShortcuts";
-import { useSettings } from "@/lib/hooks/useSettings";
-import { translate, useT, type Translate } from "@/lib/i18n";
+import { translateNow, useT, type Translate } from "@/lib/i18n";
 import "@milkdown/crepe/theme/common/style.css";
 import "@milkdown/crepe/theme/frame.css";
 
@@ -73,7 +72,7 @@ interface ToolbarBuilderLike {
 
 function buildNoteToolbar(builder: ToolbarBuilderLike): void {
   // 工具栏在挂载时一次性建好，拿不到组件的 t：直接按当前语言取词。
-  const t: Translate = (key, vars) => translate(useSettings.getState().locale, key, vars);
+  const t: Translate = translateNow;
   const group = builder.addGroup("note-heading", t("window.note.milkdown.headingGroup"));
   for (const level of HEADING_LEVELS) {
     group.addItem(`h${level}`, {

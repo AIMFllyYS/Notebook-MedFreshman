@@ -12,6 +12,17 @@ export const RIGHT_PANEL_ID = "right-panel";
 /** Stable portal target below the Agent dock tabs and built-in tool chrome. */
 export const AGENT_DOCK_CONTENT_ID = "agent-dock-content";
 
+/**
+ * Agent 中央对话的可读宽度上限（px）。
+ *
+ * **必须与 `app/globals.css` 里 `[data-agent-shell]` 的 `--agent-chat-max` 相等** ——
+ * 站内所有消费方读那个 CSS 变量；公开分享页（`components/share/SharePage.tsx`）是裸壳，
+ * 根节点上没有 `[data-agent-shell]`，读不到变量，只能拿这个常量写内联宽度。
+ * 两边曾经漂过 140px（Agent 780 / 分享页兜底 920），`tests/agentShellControls.test.ts`
+ * 现在会断言二者相等：改一处必须改另一处。
+ */
+export const AGENT_CHAT_MAX_PX = 780;
+
 export type FullscreenTarget = "viewport" | "notes" | "right" | (() => DOMRect | null);
 
 function panelRect(id: string): DOMRect | null {

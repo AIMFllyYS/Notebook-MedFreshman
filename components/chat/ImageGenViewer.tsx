@@ -203,7 +203,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                   color: "var(--md-sys-color-on-primary)",
                 }}
               >
-                <RefreshCw size={13} /> {t("window.imageGen.retry")}
+                <RefreshCw size={13} /> {t("common.retry")}
               </button>
             </div>
           )}

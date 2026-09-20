@@ -84,7 +84,7 @@ export default function MessageContextMenu() {
       }}
       className="animate-fade-up"
     >
-      <Item onClick={handleCopy} icon={Copy} label={t("menu.contextMenu.copy")} />
+      <Item onClick={handleCopy} icon={Copy} label={t("common.copy")} />
       <Item onClick={handleQuote} icon={Quote} label={t("menu.contextMenu.quote")} />
       <Item onClick={handleAsk} icon={MessageSquare} label={t("menu.contextMenu.ask")} />
       <div style={{ height: 1, margin: "3px 6px", background: "var(--md-sys-color-outline-variant)" }} />

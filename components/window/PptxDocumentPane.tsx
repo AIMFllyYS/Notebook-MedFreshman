@@ -13,7 +13,7 @@ import {
 } from "@/lib/chat/pptxSlideList";
 import { useElementWidth } from "@/lib/hooks/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
-import { translate, useT } from "@/lib/i18n";
+import { translate, translateNow, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
 
 /** 首帧 / 没有 ResizeObserver 时的兜底可用宽度。 */
@@ -55,7 +55,7 @@ async function sourceToBuffer(src: string): Promise<ArrayBuffer> {
     const response = await fetch(src);
     return response.arrayBuffer();
   }
-  throw new Error(translate(useSettings.getState().locale, "panel.pptx.readFailed"));
+  throw new Error(translateNow("panel.pptx.readFailed"));
 }
 
 function deckMetrics(deck: PptxDeck): PptxSlideMetrics {
@@ -72,7 +72,7 @@ function renderTextFallback(slot: HTMLElement, number: number, text: string) {
   label.className = "pptx-page-fallback-label";
   label.textContent = `Slide ${number}`;
   const body = doc.createElement("p");
-  body.textContent = text || translate(useSettings.getState().locale, "panel.pptx.slide", { number });
+  body.textContent = text || translateNow("panel.pptx.slide", { number });
   slot.replaceChildren(label, body);
 }
 
@@ -128,7 +128,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     slotsRef.current = [];
 
     setError(null);
-    setStatus(translate(useSettings.getState().locale, "panel.pptx.loading"));
+    setStatus(translateNow("panel.pptx.loading"));
     setTextStage(false);
 
     void (async () => {
@@ -138,7 +138,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       } catch (err) {
         if (cancelled) return;
         setStatus(null);
-        setError(err instanceof Error ? err.message : translate(useSettings.getState().locale, "panel.reader.openFailed", { name }));
+        setError(err instanceof Error ? err.message : translateNow("panel.reader.openFailed", { name }));
         return;
       }
 
@@ -259,7 +259,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       setCurrent(0);
       setStatus(null);
       setTextStage(true);
-      if (!titles.length) setError(translate(useSettings.getState().locale, "panel.reader.openFailed", { name }));
+      if (!titles.length) setError(translateNow("panel.reader.openFailed", { name }));
     })();
 
     return () => {

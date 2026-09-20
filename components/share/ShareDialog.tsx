@@ -82,14 +82,14 @@ export default function ShareDialog({
             <button
               type="button"
               onClick={() => void copy()}
-              title={copied ? t("share.dialog.copied") : t("share.dialog.copy")}
-              aria-label={copied ? t("share.dialog.copied") : t("share.dialog.copy")}
+              title={copied ? t("common.copied") : t("common.copy")}
+              aria-label={copied ? t("common.copied") : t("common.copy")}
               aria-live="polite"
               data-testid="share-link-copy"
               className="press flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-[12px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]"
             >
               {copied ? <Check size={14} /> : <Copy size={14} />}
-              {copied ? t("share.dialog.copied") : t("share.dialog.copy")}
+              {copied ? t("common.copied") : t("common.copy")}
             </button>
           </div>
         ) : (
@@ -123,7 +123,7 @@ export default function ShareDialog({
                 onClick={onClose}
                 className="press rounded-lg px-3 py-1.5 text-[12.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
               >
-                {t("share.dialog.cancel")}
+                {t("common.cancel")}
               </button>
               <button
                 type="button"

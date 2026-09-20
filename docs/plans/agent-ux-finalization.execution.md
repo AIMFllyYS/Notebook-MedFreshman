@@ -14,7 +14,7 @@
 | 2 | Agent 自动出题，参考 Perplexity | `createQuiz` 在 Agent 面不再渲染折叠答题卡，改开右栏 `quiz-dock` 窗；对话里只留一条瘦行 | 截图：右栏出题窗 + 「已出题 · 2 题 / 在右侧作答」 |
 | 3 | 顶部 Answer / Links / Images 可切换 | `AgentCenterTabs`（回答 / 来源 / 图片，带计数徽标） | 截图：顶部三页签 |
 | 4 | 生成 HTML / 图片仍在对话里跑 | 回答页签只**隐藏**不卸载 ChatPanel；生成类工具卡一个没动 | — |
-| 5 | 来源框固定在右上角 | `AgentSourceDock`（absolute 定位于中央区右上） | 截图：右栏收起时右上角出现「来源 · 8」 |
+| 5 | 来源框固定在右上角 | `AgentSourceDock`（浮层）→ 右侧固定栏 → `AgentSourcePanel`（占宽的浮层卡片，最终；见第 8 节） | 截图：右栏收起时右上角出现「来源 · 8」 |
 | 6 | 拉开右侧面板时来源框自动隐藏 | `hidden={isMobile \|\| !agentDockCollapsed \|\| centerTab !== "answer"}` | 截图：右栏展开后来源框消失 |
 | 7 | 点来源框 → 右侧拉出面板，右导航 + 核心页两栏 | 复用 `openSourceTrace` → `source-trace-viewer`（`DocumentWorkspace`），目录按轮次分组 | 截图：来源面板 4 组 + 正文 |
 | 8 | 出题直接在右侧面板 | 同上（自动开右栏、每 quizId 只自动弹一次） | 截图 |
@@ -32,9 +32,9 @@
 | `lib/hooks/useSessionSources.ts` | 会话级检索轮次（`rounds` / `sources` / `total`），返回稳定引用 |
 | `lib/quiz-dock/open.ts` | 出题窗唯一入口（幂等 + sessionStorage 去重，刷新不重弹旧题） |
 | `components/agent/AgentCenterTabs.tsx` | 顶部分段开关 |
-| `components/agent/AgentSourceDock.tsx` | 右上角固定来源框 |
+| `components/agent/AgentSourcePanel.tsx` | 右上角来源框（**终版**：占真实宽度的浮层卡片；初版是 `AgentSourceDock` 浮层，见第 8 节） |
 | `components/agent/AgentLinksPane.tsx` / `AgentImagesPane.tsx` | 来源 / 图片两个页签 |
-| `components/agent/sourceRoundLabel.ts` | 把轮次文案统一成词典口径（否则面板会显示 TOOL_PRESENTATION 的旧措辞） |
+| `components/agent/sourceRoundLabel.ts` | 轮次标题 → `trace.tool.<tool>.label` 的映射（与思考链工具卡片同一句话；早期的 `agent.sources.round.*` 已删） |
 | `components/quiz/QuizRunner.tsx` | 从 ChatQuizCard 抽出的作答主体，对话卡与右栏窗共用 |
 | `components/quiz/AgentQuizWindow.tsx` | 右栏出题窗图层 |
 
@@ -52,7 +52,9 @@
    保证中英 key 集合一致，漏翻在 typecheck 阶段就报错。
 3. **i18n 只覆盖 Agent 面**：全应用全量迁移是机械但巨大的后续工作，本期不做（见第 6 节）。
    为并行开发方便，`TranslateKey` 允许任意字符串：先引用未落地 key 不会编译失败，运行时回退中文并开发期告警。
-4. **来源轮次自带 `label`**：面板内部只有旧措辞，调用方在打开前贴词典文案，避免同一件事两个名字。
+4. **来源轮次标题只有一个来源**：`SourceTraceViewer` 的兜底就是工具展示名（`trace.tool.<tool>.label`），
+   与思考链里的工具卡片同源。曾经为了绕开措辞分歧，调用方会在打开面板前把 `agent.sources.round.*` 的文案
+   贴进 `round.label` —— 那套同义 key 与本层一起删了；`label` 字段保留给显式覆盖用。
 5. **出题自动开窗用 sessionStorage 去重**：刷新页面重放历史消息时不会把旧题重新弹出来（与「刷新不自动弹出历史窗口」的既有语义一致）。
 6. **划词前缀加在窗口标题而不是会话标题**：会话标题会被 `/api/chat-title` 自动改写，贴在那里等于白贴。
 
@@ -104,7 +106,7 @@
   后续按模块把字面量搬进 `lib/i18n/messages/zh.ts` 即可（`en.ts` 漏 key 会被 typecheck 拦下）。
 - **设置浮层仍在中央**（`AgentSettingsOverlay` 是居中 dialog），没进右栏 —— 属 `agent-right-panel-unification` 的第二阶段。
 - **右栏内的笔记正文没有划词助手**：`SelectionPopover` 目前只挂在对话容器上，右栏文档里划词暂无动作。
-- **来源框是浮层而非独立右轨**：宽屏下落在对话栏右侧留白里；窗口很窄时理论上可能与正文叠。已在移动端隐藏。
+- **来源框的最终形态是「占真实宽度的浮层卡片」**（见第 8 节）：看起来像浮层，但它是一条实打实的列，正文会让开，因此不存在与正文叠的问题；移动端仍隐藏。
 - `pnpm lint:knip` 的既有基线失败需要单独一轮清理，不属于本分支。
 
 ---
@@ -126,6 +128,10 @@
 | `app.*` | 18 | 应用级外壳：顶栏、加载态、灯箱、账户条 |
 | `agent.*` | 93 | 第一轮已完成的 Agent 面 |
 | **合计** | **1411 × 2** | zh / en 两侧 key 集合逐字一致（由 `en.ts satisfies LocaleMessages` 与 `index.test.ts` 双重锁死） |
+
+> 上表是第二轮结束时的快照（保留作历史）。2026-09 代码清洗后的实测值是 **1424**：
+> 删掉 36 条死 key / 同义重复 key（21 条零引用 + 3 条轮次同义 + 12 条动作词同义），
+> 新增顶层 `common.*` 4 条；其余差额来自该轮之后新增的 `share.*` 等命名空间。
 
 ### 7.2 关键改动（不只是搬字符串）
 
@@ -178,3 +184,19 @@
 该文件第 18 行明确「只依赖 `@/lib/i18n/types`，避免 store ↔ i18n 运行时循环导入」，所以它拿不到 `translate`。
 同理 `lib/context/estimateFullContext.ts` 必须保持零依赖（`app/api/chat/route.ts` 会 import 它），它的 `formatContextCacheValue`（命中 / 未命中）也没翻。
 两处都要先解决机制问题，不适合顺手塞进来。
+
+---
+
+## 8. 演进记录：来源框的三种形态（第三轮追加）
+
+需求 5「来源框固定在右上角」前后落地过三版，前两版的产物已经不在代码里，但**验收结论仍然有效**
+（每一项验收的都是"右上角有一块来源框 + 右栏展开时让位"这个行为，三版都满足）：
+
+| 版本 | 形态 | 产物 | 结局 |
+|---|---|---|---|
+| v1 | 浮在正文之上的浮层卡片（`position:absolute; top; right`，会压住正文） | `components/agent/AgentSourceDock.tsx` | 已删除 |
+| v2 | 右侧固定栏（Perplexity 口径，占满一列） | 复用 `AgentSourceDock` 的位置 | 已改回 |
+| v3（最终） | **看起来像浮层卡片（圆角 + 阴影 + 可拖动改大小），实际占真实宽度** | `components/agent/AgentSourcePanel.tsx` | 当前 |
+
+保留这条记录是因为 v3 是**反直觉**的：它长得像浮层，所以很容易被后来者当成"绝对定位、会压正文"而"修"回 v1；
+判断口径写死在 `lib/stores/agentCenter.ts` 的 JSDoc 里 —— **尺寸可调 ⇒ 像浮层；占真实宽度 ⇒ 不是浮层**。

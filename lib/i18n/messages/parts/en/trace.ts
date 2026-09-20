@@ -10,7 +10,6 @@
 export const traceEn = {
   // Status words for the agent trace.
   status: {
-    running: "Working",
     done: "Done",
   },
   // The collapsed header row of the trace disclosure.

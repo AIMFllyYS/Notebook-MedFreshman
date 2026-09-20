@@ -15,7 +15,10 @@ function flatten(source: Record<string, unknown>, prefix = ""): string[] {
   return keys;
 }
 
-/** 其它子智能体正在并行写的组件按字面量引用这些 key：名字和存在性都是对外契约。 */
+/**
+ * 其它子智能体正在并行写的组件按字面量引用这些 key：名字和存在性都是对外契约。
+ * 这是跨模块契约清单，不是词典镜像；并行开发期结束后已收窄（死 key 与同义重复项已删）。
+ */
 const REQUIRED_KEYS = [
   "agent.nav.newChat", "agent.nav.assets", "agent.nav.scheduled", "agent.nav.plugins",
   "agent.sidebar.title", "agent.sidebar.search", "agent.sidebar.collapse",
@@ -25,18 +28,15 @@ const REQUIRED_KEYS = [
   "agent.sidebar.empty.recents", "agent.sidebar.empty.archived",
   "agent.sidebar.backToList", "agent.sidebar.viewArchived",
   "agent.center.tab.answer", "agent.center.tab.links", "agent.center.tab.images", "agent.center.tabs.aria",
-  "agent.sources.title", "agent.sources.count", "agent.sources.openPanel", "agent.sources.outline",
-  "agent.sources.round.web", "agent.sources.round.notes", "agent.sources.round.images",
+  "agent.sources.count", "agent.sources.openPanel",
   "agent.sources.query",
-  "agent.sources.empty", "agent.sources.kind.note", "agent.sources.kind.web", "agent.sources.noLink",
-  "agent.sources.snippet", "agent.sources.reading", "agent.sources.missing",
-  "agent.sources.openOriginal", "agent.sources.summary", "agent.sources.rawJson",
+  "agent.sources.empty", "agent.sources.noLink",
   "agent.links.empty", "agent.images.empty", "agent.images.search", "agent.images.generated",
   "agent.quiz.dock.title", "agent.quiz.dock.open", "agent.quiz.dock.created",
   "agent.quiz.intent.check", "agent.quiz.intent.diagnose", "agent.quiz.intent.practice", "agent.quiz.intent.exam",
   "agent.quiz.empty", "agent.quiz.reveal.blank", "agent.quiz.reveal.multiple", "agent.quiz.reveal.default",
   "agent.quiz.progress", "agent.quiz.redo", "agent.quiz.dropped",
-  "agent.selection.title", "agent.selection.explain", "agent.selection.ask", "agent.selection.example",
+  "agent.selection.title",
   "agent.dock.collapse", "agent.dock.global", "agent.dock.shrink",
   "settings.language.title", "settings.language.zh", "settings.language.en", "settings.language.desc",
 ];
@@ -64,12 +64,12 @@ test("变量插值：{name} / {count} 按 vars 替换，位数为 0 的值也不
 
 test("目标语言缺 key 时回退中文（而不是显示 key）", () => {
   const dict = en.agent.sources as Record<string, unknown>;
-  const saved = dict.title;
-  delete dict.title;
+  const saved = dict.count;
+  delete dict.count;
   try {
-    assert.equal(translate("en", "agent.sources.title"), "来源");
+    assert.equal(translate("en", "agent.sources.count"), "来源 · {count}");
   } finally {
-    dict.title = saved;
+    dict.count = saved;
   }
 });
 

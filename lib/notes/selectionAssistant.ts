@@ -9,10 +9,10 @@ export type SelectionAssistantActions = Record<SelectionAssistantAction, boolean
  *
  * 为什么存 key：本模块是纯数据 + 纯函数，拿不到 locale。
  * 渲染方必须 `t(SELECTION_ASSISTANT_ACTION_LABELS[action])` 之后再显示；
- * 直接把 value 渲染出来只会看到 "menu.selection.copy"。
+ * 直接把 value 渲染出来只会看到 "common.copy"。
  */
 export const SELECTION_ASSISTANT_ACTION_LABELS: Record<SelectionAssistantAction, string> = {
-  copy: "menu.selection.copy",
+  copy: "common.copy",
   explain: "menu.selection.explain",
   record: "menu.selection.record",
   note: "menu.selection.note",

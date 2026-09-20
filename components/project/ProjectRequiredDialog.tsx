@@ -130,7 +130,7 @@ export default function ProjectRequiredDialog({
           className="project-required-cancel"
           onClick={onCancel}
         >
-          {t("menu.common.cancel")}
+          {t("common.cancel")}
         </button>
       </div>
     </div>

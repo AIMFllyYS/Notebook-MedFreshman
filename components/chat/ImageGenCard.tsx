@@ -158,7 +158,7 @@ export default function ImageGenCard({
                 color: "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              <AgentCloseIcon size={13} /> {t("menu.common.cancel")}
+              <AgentCloseIcon size={13} /> {t("common.cancel")}
             </button>
             <span
               className="ml-auto text-[10.5px]"

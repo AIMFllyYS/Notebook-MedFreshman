@@ -112,7 +112,7 @@ export default function AgentPanelMenu({
                   className="rounded-md px-2 py-1 text-[11.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
                   onClick={onCancelDeleteProject}
                 >
-                  {t("agent.menu.cancel")}
+                  {t("common.cancel")}
                 </button>
                 <button
                   type="button"
@@ -203,7 +203,7 @@ export default function AgentPanelMenu({
               className="rounded-md px-2 py-1 text-[11.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
               onClick={onCancelDelete}
             >
-              {t("agent.menu.cancel")}
+              {t("common.cancel")}
             </button>
             <button
               type="button"

@@ -136,7 +136,7 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
             </button>
             <button type="button" className="note-consent-btn" onClick={onDismiss}>
               <X size={13} aria-hidden />
-              {t("menu.common.cancel")}
+              {t("common.cancel")}
             </button>
           </div>
         </>

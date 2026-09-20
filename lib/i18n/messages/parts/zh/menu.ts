@@ -8,28 +8,24 @@
 export const menuZh = {
   // 菜单通用动作（对话框 / 右键菜单 / 下拉共用）
   common: {
-    cancel: "取消",
-    confirm: "确定",
     delete: "删除",
     close: "关闭",
     select: "请选择",
   },
-  // 消息右键菜单（复制 / 引用 / 追问 / 记录）
+  // 消息右键菜单（引用 / 追问 / 记录；「复制」走 common.copy）
   contextMenu: {
-    copy: "复制",
     quote: "引用到对话",
     ask: "追问",
     record: "记录到复习板",
   },
   // 划词助手动作条：key 与 SELECTION_ASSISTANT_ACTION_LABELS 的动作 id 一一对应
+  // （copy / copied 两条已并进 common.copy / common.copied）
   selection: {
-    copy: "复制",
     explain: "解释",
     record: "记录",
     note: "笔记",
     ask: "追问",
     quote: "引用",
-    copied: "已复制",
     hidden: "已隐藏「{label}」",
   },
   // 深度思考（输入栏按钮 + 模型二级菜单共用）
@@ -41,6 +37,7 @@ export const menuZh = {
     active: "开",
     strength: "思考强度",
     off: {
+      // 「关闭」= 关掉深度思考这个开关（英文 Off），不是 panel.common.close 的「关闭窗口」。
       label: "关闭",
       hint: "不启用推理链，直接回答",
     },
@@ -194,6 +191,7 @@ export const menuZh = {
     status: {
       done: "已完成",
       loading: "生成中",
+      // 同上：状态语气，不并进 window.common.failed。
       error: "失败",
       idle: "待批准",
     },

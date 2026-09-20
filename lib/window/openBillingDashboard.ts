@@ -1,6 +1,5 @@
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { translate } from "@/lib/i18n";
-import { useSettings } from "@/lib/stores/settings";
+import { translateNow } from "@/lib/i18n";
 
 const BILLING_ID = "billing-dashboard-main";
 
@@ -16,7 +15,7 @@ export function openBillingDashboard(): void {
   winMgr.openWindow({
     id: BILLING_ID,
     type: "billing-dashboard",
-    title: translate(useSettings.getState().locale, "panel.billing.windowTitle"),
+    title: translateNow("panel.billing.windowTitle"),
     pos: { x: window.innerWidth / 2 - 350, y: window.innerHeight / 2 - 250 },
     size: { width: 700, height: 500 },
     data: {},

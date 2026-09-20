@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { translateNow } from "@/lib/i18n";
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
@@ -38,7 +39,8 @@ export const useRecordPreviews = create<RecordPreviewsState>((set, get) => ({
     useWindowManager.getState().openWindow({
       id,
       type: "record-preview",
-      title: card?.sourceLabel ? `记录到复习板 · ${card.sourceLabel}` : "记录到复习板",
+      // 与右键菜单那条「记录到复习板」同名（menu.contextMenu.record），有来源卡名时缀在后面。
+      title: `${translateNow("menu.contextMenu.record")}${card?.sourceLabel ? ` · ${card.sourceLabel}` : ""}`,
       pos,
       size,
       data: { cardId },

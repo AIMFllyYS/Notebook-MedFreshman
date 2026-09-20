@@ -12,7 +12,6 @@
 export const traceZh = {
   // 处理过程（思考链）的状态词
   status: {
-    running: "处理中",
     done: "处理完成",
   },
   // 折叠入口那一行的标题
@@ -35,6 +34,7 @@ export const traceZh = {
     status: {
       running: "进行中",
       complete: "已完成",
+      // 状态语气（「状态：失败」）。跟结果语气的 window.common.failed（「失败」）是两份，别并。
       error: "失败",
       interrupted: "已停止",
       waiting: "待批准",

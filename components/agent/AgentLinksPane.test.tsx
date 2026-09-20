@@ -32,9 +32,9 @@ describe("AgentLinksPane", () => {
 
   it("shows every search round together with the query that produced it", () => {
     render(<AgentLinksPane rounds={rounds} sources={all} />);
-    // 分组标题取轮次自己的 label，没给才退回工具名——这里锁的是"每一轮都看得见"。
-    expect(screen.getAllByText(zh("agent.sources.round.notes")).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(zh("agent.sources.round.web")).length).toBeGreaterThan(0);
+    // 分组标题走工具的展示名（trace.tool.*.label，与思考链里的工具卡片是同一句话）——这里锁的是"每一轮都看得见"。
+    expect(screen.getAllByText(zh("trace.tool.searchNotes.label")).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(zh("trace.tool.webSearch.label")).length).toBeGreaterThan(0);
     expect(screen.getByText(zh("agent.sources.query", { query: "心肌" }))).toBeVisible();
     expect(screen.getByText(zh("agent.sources.query", { query: "细胞膜" }))).toBeVisible();
     expect(screen.getByText("心肌的结构")).toBeVisible();

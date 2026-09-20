@@ -137,7 +137,7 @@ export default function WebviewSite({
               }}
               className="press inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-3.5 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
             >
-              <RotateCw size={13} /> {t("window.browser.retry")}
+              <RotateCw size={13} /> {t("common.retry")}
             </button>
             <a
               href={url || undefined}

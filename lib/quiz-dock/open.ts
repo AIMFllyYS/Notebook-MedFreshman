@@ -1,6 +1,5 @@
 import { useWindowManager, type AgentQuizData } from "@/lib/stores/windowManager";
-import { translate } from "@/lib/i18n";
-import { useSettings } from "@/lib/stores/settings";
+import { translateNow } from "@/lib/i18n";
 import type { QuizQuestion } from "@/lib/quiz/types";
 
 /** 右栏出题窗的 ManagedWindowType（窗口 type 字段）。 */
@@ -82,7 +81,7 @@ export function resetAutoOpenedQuizzes(): void {
  * 所以在这里翻好再存进 windowManager —— 存 key 会让标签条直接显示 key 本身。
  */
 function quizWindowTitle(title: string): string {
-  const prefix = translate(useSettings.getState().locale, "agent.quiz.dock.title");
+  const prefix = translateNow("agent.quiz.dock.title");
   const trimmed = title.trim();
   return trimmed ? `${prefix} · ${trimmed}` : prefix;
 }

@@ -504,7 +504,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
                 <span className="chat-input-queue-index">{index + 1}</span>
                 <span className="chat-input-queue-text" title={message.content}>{message.content}</span>
                 <button type="button" className="chat-input-queue-action" onClick={() => editQueuedMessage(message)} aria-label={t('menu.chatInput.queue.editAria', { index: index + 1 })}>{t('menu.chatInput.queue.edit')}</button>
-                <button type="button" className="chat-input-queue-action chat-input-queue-action-muted" onClick={() => cancelQueuedMessage(message.id)} aria-label={t('menu.chatInput.queue.cancelAria', { index: index + 1 })}>{t('menu.common.cancel')}</button>
+                <button type="button" className="chat-input-queue-action chat-input-queue-action-muted" onClick={() => cancelQueuedMessage(message.id)} aria-label={t('menu.chatInput.queue.cancelAria', { index: index + 1 })}>{t('common.cancel')}</button>
               </div>
             ))}
           </div>

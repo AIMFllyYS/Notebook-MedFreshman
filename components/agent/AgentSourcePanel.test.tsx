@@ -30,12 +30,12 @@ afterEach(() => {
 
 describe("AgentSourcePanel", () => {
   it("renders nothing when this conversation produced no sources", () => {
-    render(<AgentSourcePanel rounds={[]} sources={[]} />);
+    render(<AgentSourcePanel rounds={[]} sources={[]} open />);
     expect(screen.queryByTestId("agent-source-panel")).not.toBeInTheDocument();
   });
 
   it("looks like a floating card but reserves real width so it never covers the conversation", () => {
-    render(<AgentSourcePanel rounds={rounds} sources={sources} />);
+    render(<AgentSourcePanel rounds={rounds} sources={sources} open />);
     // 卡片本身是浮起来的（圆角 + 阴影 + 留白），像悬浮窗而不是占满整列的侧栏。
     const card = screen.getByTestId("agent-source-panel");
     expect(card.className).toContain("rounded-xl");
@@ -47,8 +47,19 @@ describe("AgentSourcePanel", () => {
     expect(column.style.width).toBe(`${SOURCES_PANEL_DEFAULT_SIZE.width + 24}px`);
   });
 
+  it("collapses to zero width instead of unmounting, so the shared pane easing can run", () => {
+    render(<AgentSourcePanel rounds={rounds} sources={sources} open={false} />);
+    // 关键是"还在树上"：条件渲染会让宽度过渡没有起止两端，动画就跑不起来。
+    const column = screen.getByTestId("agent-source-column");
+    expect(column).toBeInTheDocument();
+    expect(column.style.width).toBe("0px");
+    expect(column).toHaveAttribute("aria-hidden", "true");
+    expect(column.className).toContain("agent-source-column");
+    expect(column.className).toContain("overflow-hidden");
+  });
+
   it("shows the count plus every source's title, snippet and host", () => {
-    render(<AgentSourcePanel rounds={rounds} sources={sources} />);
+    render(<AgentSourcePanel rounds={rounds} sources={sources} open />);
     expect(screen.getByText(zh("agent.sources.count", { count: 2 }))).toBeVisible();
     expect(screen.getByText("细胞膜的结构")).toBeVisible();
     expect(screen.getByText("磷脂双分子层构成基本骨架。")).toBeVisible();
@@ -58,14 +69,14 @@ describe("AgentSourcePanel", () => {
   });
 
   it("opens the source panel and expands the right dock when a card is clicked", () => {
-    render(<AgentSourcePanel rounds={rounds} sources={sources} />);
+    render(<AgentSourcePanel rounds={rounds} sources={sources} open />);
     fireEvent.click(screen.getByText("心肌"));
     expect(useStore.getState().agentDockCollapsed).toBe(false);
     expect(useWindowManager.getState().windows.some((win) => win.type === "source-trace-viewer")).toBe(true);
   });
 
   it("is resizable from the left edge (drag left = wider)", () => {
-    render(<AgentSourcePanel rounds={rounds} sources={sources} />);
+    render(<AgentSourcePanel rounds={rounds} sources={sources} open />);
     const handle = screen.getByTestId("agent-source-panel-resize-x");
     pointer(handle, "pointerdown", 500, 100);
     pointer(handle, "pointermove", 420, 100);
@@ -74,7 +85,7 @@ describe("AgentSourcePanel", () => {
   });
 
   it("is resizable from the bottom edge and clamps to the minimum", () => {
-    render(<AgentSourcePanel rounds={rounds} sources={sources} />);
+    render(<AgentSourcePanel rounds={rounds} sources={sources} open />);
     const handle = screen.getByTestId("agent-source-panel-resize-y");
     pointer(handle, "pointerdown", 100, 300);
     pointer(handle, "pointermove", 100, -5000);

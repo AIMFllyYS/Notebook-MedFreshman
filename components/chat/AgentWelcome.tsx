@@ -2,8 +2,7 @@
 
 import React, { useSyncExternalStore } from 'react';
 import { Globe, Layers, MousePointerClick, NotebookPen } from 'lucide-react';
-import { translate, useT, type I18nKey, type Translate } from '@/lib/i18n';
-import { useSettings } from '@/lib/stores/settings';
+import { translateNow, useT, type I18nKey, type Translate } from "@/lib/i18n";
 
 /**
  * Agent 空对话欢迎页：问候语在上、输入框居中、示例清单在下（对齐 ChatGPT 官网那种首页）。
@@ -22,7 +21,6 @@ export interface AgentWelcomeExample {
  * 纯函数也要能取词：默认按 store 的当前语言即时解析。
  * 组件内部一律显式传 `useT()` 的 t，换语言才能跟着重渲染。
  */
-const translateCurrent: Translate = (key, vars) => translate(useSettings.getState().locale, key, vars);
 
 /** 起手式清单：文案进词典（textKey），起手式本身仍是固定可点的四条。 */
 export const AGENT_WELCOME_EXAMPLES = [
@@ -33,7 +31,7 @@ export const AGENT_WELCOME_EXAMPLES = [
 ] as const satisfies readonly { id: string; textKey: I18nKey; icon: React.ReactNode }[];
 
 /** 按本机时间分档打招呼；纯函数，方便单测直接钉住每一档。 */
-export function welcomeGreeting(hour: number, t: Translate = translateCurrent): string {
+export function welcomeGreeting(hour: number, t: Translate = translateNow): string {
   if (hour < 5) return t('trace.welcome.earlyMorning');
   if (hour < 11) return t('trace.welcome.morning');
   if (hour < 13) return t('trace.welcome.noon');

@@ -9,10 +9,11 @@ import { create } from "zustand";
 export type AgentCenterTab = "answer" | "links" | "images";
 
 /**
- * 来源**悬浮窗**的默认尺寸与可调范围。
+ * 来源列的默认尺寸与可调范围。
  *
- * 注意它是悬浮窗不是侧栏（用户口径）：侧栏那种东西才该进 Agent 右侧统一面板，
- * 而这块是浮在正文之上、可拖动改变大小的一块轻量预览。
+ * **反直觉点（写死口径，别再被它骗一次）**：它看起来像悬浮卡片（圆角 + 阴影 + 可拖动改大小），
+ * 但**占掉真实宽度** —— 正文会真的让出一列，而不是被浮层压在底下。
+ * 演进路径是「浮层卡片 → 右侧固定栏 → 占宽的浮层卡片（最终）」，「像浮层」不等于「是浮层」。
  */
 /** 卡片四周留白：卡片是浮起来的（圆角 + 阴影），但**占的是真实宽度**，所以留白也算进那一列的宽度。 */
 export const SOURCES_PANEL_INSET = 12;
@@ -48,7 +49,7 @@ function readSavedSize(): { width: number; height: number } {
 interface AgentCenterState {
   centerTab: AgentCenterTab;
   setCenterTab: (tab: AgentCenterTab) => void;
-  /** 来源悬浮窗是否显示。用户口径：默认显示，顶栏有开关。 */
+  /** 来源列是否显示。用户口径：默认显示，顶栏有开关。 */
   sourcesPanelOpen: boolean;
   toggleSourcesPanel: () => void;
   /** 用户拖出来的尺寸；只记尺寸，位置恒为右上角。 */

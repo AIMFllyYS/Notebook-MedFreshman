@@ -40,7 +40,7 @@ describe("ShareDialog", () => {
     expect(link).toHaveTextContent("https://x/s/abc");
     fireEvent.click(screen.getByTestId("share-link-copy"));
     await waitFor(() => expect(writeText).toHaveBeenCalledWith("https://x/s/abc"));
-    expect(await screen.findByText(zh("share.dialog.copied"))).toBeVisible();
+    expect(await screen.findByText(zh("common.copied"))).toBeVisible();
   });
 
   it("returns to the confirm state with an error when creation fails", async () => {

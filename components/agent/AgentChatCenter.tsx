@@ -16,9 +16,9 @@ import { useStore } from "@/lib/stores/ui";
 /**
  * Agent 中央对话（`/agent` 的内容）。左栏与右侧工作区分别由 AgentShell / AppShell 承载。
  *
- * 版面与 Perplexity / Codex 一致：正文占满中央，**来源是一块浮在右上角的悬浮窗**
- * （不是侧栏 —— 侧栏那种东西才该进右侧统一面板）。它可拖动改大小，右栏一展开就整条让位，
- * 顶栏还有一个开关按钮控制它显示与否（默认显示）。
+ * 版面与 Perplexity / Codex 一致：正文占满中央，**来源是一块「看起来像悬浮卡片、实际占真实宽度」的列**
+ * 钉在右上角（不是右侧那套统一面板 —— 那套要能装多种查看器，是另一回事）。它可拖动改大小，
+ * 右栏一展开就整条让位，顶栏还有一个开关按钮控制它显示与否（默认显示）。
  *
  * **回答页签只隐藏、不卸载** ChatPanel：ChatThread 的划词容器 ref 是它挂载时绑定的，
  * 卸载再挂载会让 SelectionPopover 错过新节点，Agent 里就再也选不中文字（见 ChatPanel 注释）。
@@ -32,7 +32,7 @@ export default function AgentChatCenter() {
   const dockCollapsed = useStore((state) => state.agentDockCollapsed);
   const isMobile = useIsMobile();
 
-  // 悬浮窗尺寸存在 localStorage：首帧之后读回来，避免 SSR/水合不一致。
+  // 来源列尺寸存在 localStorage：首帧之后读回来，避免 SSR/水合不一致。
   useEffect(() => {
     hydrateSourcesPanelSize();
   }, []);
@@ -66,7 +66,8 @@ export default function AgentChatCenter() {
         {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} /> : null}
         {centerTab === "images" ? <AgentImagesPane images={images} /> : null}
       </div>
-      {showSourcesPanel ? <AgentSourcePanel rounds={rounds} sources={sources} /> : null}
+      {/* 常驻（不是条件渲染）：宽度过渡才能跑起来，见 AgentSourcePanel 的 open。 */}
+      <AgentSourcePanel rounds={rounds} sources={sources} open={showSourcesPanel} />
     </div>
   );
 }

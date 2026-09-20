@@ -1,25 +1,23 @@
 import type { SourceRound } from "@/lib/chat/traceSources";
-import type { Translate } from "@/lib/i18n";
 
 /**
- * 检索轮次的分组文案。
+ * 检索轮次的分组文案 key。
  *
- * 为什么要有这一层：来源面板内部只有 TOOL_PRESENTATION 那套旧措辞（「搜索网页 / 检索笔记 / 检索笔记图片」），
- * 与词典里的「联网搜索 / 笔记检索 / 图片检索」并存会让同一件事在对话页签与右侧面板里叫两个名字。
- * 轮次自带可选的 label 字段，所以调用方在打开面板前把词典文案贴上去，面板只管显示。
+ * **单一真相源**：轮次标题直接用工具自己的展示名（`trace.tool.<tool>.label`）—— 也就是思考链里
+ * 那张工具卡片显示的同一句话。历史上这里另立过一套 `agent.sources.round.*`
+ * （「联网搜索 / 笔记检索 / 图片检索」），跟工具卡片口径（「搜索网页 / 检索笔记 / 检索笔记图片」）
+ * 并存，同一批检索在两个地方叫两个名字；2026-09 已收敛掉，**不要再引入第二套措辞**。
+ *
+ * `SourceRound.label` 字段仍然保留：面板支持调用方显式覆盖（`SourceTraceViewer` 优先读它），
+ * 但常规调用方不必再贴一遍 —— 兜底值本来就是同一个 key。
  */
 const ROUND_LABEL_KEY: Record<SourceRound["tool"], string> = {
-  searchNotes: "agent.sources.round.notes",
-  searchNoteImages: "agent.sources.round.notes",
-  imageSearch: "agent.sources.round.images",
-  webSearch: "agent.sources.round.web",
+  searchNotes: "trace.tool.searchNotes.label",
+  searchNoteImages: "trace.tool.searchNoteImages.label",
+  imageSearch: "trace.tool.imageSearch.label",
+  webSearch: "trace.tool.webSearch.label",
 };
 
 export function sourceRoundLabelKey(tool: SourceRound["tool"]): string {
   return ROUND_LABEL_KEY[tool];
-}
-
-/** 复制轮次并贴上词典文案；sources 数组保持同一引用（调用方还在按 indexOf 取下标）。 */
-export function labelRounds(rounds: readonly SourceRound[], t: Translate): SourceRound[] {
-  return rounds.map((round) => ({ ...round, label: t(sourceRoundLabelKey(round.tool)) }));
 }

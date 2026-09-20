@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { translateNow } from "@/lib/i18n";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import {
@@ -188,7 +189,9 @@ function openCloud(proposal: MemoryProposal, index: number) {
   useWindowManager.getState().openWindow({
     id: memoryProposalWindowId(proposal.id),
     type: "memory-proposal",
-    title: proposal.kind === "note" ? "整理成笔记？" : "整理成闪卡？",
+    // 标签条标题与窗内标题（MemoryProposalCloud → window.memory.titleNote）用同一个 key：
+    // 以前标签条写「整理成笔记？」、窗内写「笔记提议」，同一个窗两个名字。
+    title: proposal.kind === "note" ? translateNow("window.memory.titleNote") : translateNow("window.memory.titleFlashcard"),
     pos,
     size,
     data: { proposalId: proposal.id },
@@ -299,7 +302,7 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
       },
     }));
     useWindowManager.getState().updateWindow(memoryProposalWindowId(id), {
-      title: prev.kind === "note" ? "正在整理笔记" : "正在整理闪卡",
+      title: prev.kind === "note" ? translateNow("window.memory.committingNote") : translateNow("window.memory.committingFlashcard"),
       size: { width: 380, height: 420 },
     });
     void startMemoryCommit(id);

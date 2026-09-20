@@ -3,18 +3,14 @@ import type { LocaleMessages } from "../../../types";
 /** share namespace — conversation sharing (the C deep link and the public S page). */
 export const shareEn = {
   action: "Share",
-  creating: "Creating share link…",
-  copied: "Link copied",
   failed: "Could not create the share link. Please try again.",
   empty: "There is nothing to share in this chat yet.",
   loginRequired: "Sign in to create a share link.",
-  linkLabel: "Share link",
   page: {
     badge: "Shared chat",
     readonly: "Read-only",
     cta: "Open in StudySolo",
     notFound: "This share does not exist or was revoked.",
-    expired: "This share link has expired.",
     imagePlaceholder: "Image not included in this share",
   },
   dialog: {
@@ -25,11 +21,10 @@ export const shareEn = {
     itemArtifacts: "Artifacts generated in this chat",
     warning: "Images are not included in a share (cloud sync strips media), so the shared page shows placeholders.",
     confirm: "Create link",
-    cancel: "Cancel",
+    // "Creating…" here means the SHARE LINK is being created — not the same subject as
+    // window.imageGen.card.working ("Generating…" an image). Keep them separate.
     creating: "Creating…",
     linkTitle: "Your link is ready",
-    copy: "Copy",
-    copied: "Copied",
     hint: "The link stays live until you turn it off under Assets → Shared links.",
   },
   assets: {
@@ -42,6 +37,7 @@ export const shareEn = {
     enabled: "On",
     disabled: "Off",
     enable: "Turn on",
+    // Turning a switch off — not panel.common.close ("Close" a window). Both are kept on purpose.
     disable: "Turn off",
     open: "Open",
     createdAt: "Created {time}",

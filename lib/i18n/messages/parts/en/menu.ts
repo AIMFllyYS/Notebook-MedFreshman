@@ -8,28 +8,24 @@
 export const menuEn = {
   // Shared actions for dialogs, context menus and dropdowns.
   common: {
-    cancel: "Cancel",
-    confirm: "Confirm",
     delete: "Delete",
     close: "Close",
     select: "Select…",
   },
-  // Message right-click menu.
+  // Message right-click menu ("Copy" now lives in common.copy).
   contextMenu: {
-    copy: "Copy",
     quote: "Quote in chat",
     ask: "Follow up",
     record: "Save to review board",
   },
-  // Selection assistant action bar; keys mirror the action ids.
+  // Selection assistant action bar; keys mirror the action ids
+  // (copy / copied now live in common.copy / common.copied).
   selection: {
-    copy: "Copy",
     explain: "Explain",
     record: "Save",
     note: "Note",
     ask: "Follow up",
     quote: "Quote",
-    copied: "Copied",
     hidden: "“{label}” is hidden",
   },
   // Deep thinking: shared by the composer button and the model submenu.
@@ -41,6 +37,7 @@ export const menuEn = {
     active: "On",
     strength: "Thinking effort",
     off: {
+      // Turning the deep-thinking switch off — not panel.common.close ("Close" a window).
       label: "Off",
       hint: "Answer directly without a reasoning chain",
     },

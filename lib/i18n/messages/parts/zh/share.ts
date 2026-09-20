@@ -3,18 +3,14 @@
  */
 export const shareZh = {
   action: "分享",
-  creating: "正在生成分享链接…",
-  copied: "链接已复制",
   failed: "分享失败，请稍后重试。",
   empty: "这条对话还没有内容可以分享。",
   loginRequired: "登录后才能生成分享链接。",
-  linkLabel: "分享链接",
   page: {
     badge: "分享的对话",
     readonly: "只读",
     cta: "在 StudySolo 里打开",
     notFound: "分享不存在或已被撤回。",
-    expired: "这个分享链接已过期。",
     imagePlaceholder: "图片未随分享同步",
   },
   dialog: {
@@ -25,11 +21,9 @@ export const shareZh = {
     itemArtifacts: "对话里生成过的演示",
     warning: "图片不会随分享同步（云端同步本来就会剥掉媒体），分享页上只显示占位。",
     confirm: "生成分享链接",
-    cancel: "取消",
+    // 「正在生成…」的主语是**分享链接**，不要跟 window.imageGen.card.working 合并（那边是图片）。
     creating: "正在生成…",
     linkTitle: "分享链接已生成",
-    copy: "复制",
-    copied: "已复制",
     hint: "链接长期有效，可在「我的资产 → 分享的链接」里随时关闭。",
   },
   assets: {
@@ -42,6 +36,8 @@ export const shareZh = {
     enabled: "已开启",
     disabled: "已关闭",
     enable: "开启",
+    // 这里是「把这个分享链接关掉」（英文 Turn off），不是 panel.common.close 的「关闭窗口」——
+    // 中文同形、英文不同形，所以两份都留着。
     disable: "关闭",
     open: "打开",
     createdAt: "创建于 {time}",

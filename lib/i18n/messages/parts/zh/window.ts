@@ -17,6 +17,8 @@ export const windowZh = {
   // 跨窗口复用的动作与短状态词
   common: {
     delete: "删除",
+    // 「失败」= 一次操作失败**的结果**。**不要**跟状态词 trace.step.status.error /
+    // menu.history.status.error 合并：那两个是「状态：失败」的语气（英文小写 failed）。
     failed: "失败",
     downloadHtml: "下载 HTML",
     downloadMarkdown: "下载 Markdown",
@@ -64,7 +66,6 @@ export const windowZh = {
     promptLabel: "提示词：",
     sizeCount: "{size} · {count} 张",
     unknownError: "未知错误",
-    retry: "重试",
     empty: "生图完成，但未返回任何图片",
     regenerate: "重新生成",
     urlExpiry: "图片 URL 1 小时后失效，请及时下载",
@@ -81,6 +82,7 @@ export const windowZh = {
       viewImages: "查看图片",
       generated: "已生成",
       viewError: "查看错误",
+      // 「正在生成…」的主语是**图片**。不要跟 share.dialog.creating 合并（那边是分享链接）。
       working: "正在生成…",
       generatedCount: "已生成 {count} 张",
       errorHint: "生成失败，可在弹窗内重试",
@@ -355,7 +357,6 @@ export const windowZh = {
     forceEmbed: "仍要尝试内嵌（可能显示空白）",
     loadFailedWithCode: "{message}（{code}）",
     rendererGone: "页面渲染进程已退出，请重试。",
-    retry: "重试",
     openInSystemBrowser: "系统浏览器打开",
     home: "主页 / 必应搜索",
     back: "后退",

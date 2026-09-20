@@ -29,7 +29,7 @@ import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
 import { ContextUsageRing } from '@/components/chat/ContextUsageRing';
 import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 import { compactActiveSession } from '@/lib/context/compactChatSession';
-import { translate, useT } from '@/lib/i18n';
+import { translateNow, useT } from "@/lib/i18n";
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -55,7 +55,7 @@ function fmtMoneyPair(yuan: number, rate: number): string {
 }
 
 function fmtDuration(sec: number): string {
-  if (sec <= 0) return translate(useSettings.getState().locale, 'panel.token.expired');
+  if (sec <= 0) return translateNow('panel.token.expired');
   const h = Math.floor(sec / 3600);
   const m = Math.floor((sec % 3600) / 60);
   const s = Math.floor(sec % 60);

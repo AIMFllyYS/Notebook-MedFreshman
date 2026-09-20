@@ -7,7 +7,7 @@ import DocumentWorkspace, { type DocumentOutlineItem } from "@/components/window
 import PdfPageCanvas from "@/components/window/PdfPageCanvas";
 import { useElementWidth } from "@/lib/hooks/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
-import { translate, useT } from "@/lib/i18n";
+import { translate, translateNow, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
 
 type PdfjsModule = typeof import("pdfjs-dist/legacy/build/pdf.mjs");
@@ -28,7 +28,7 @@ async function sourceToData(src: string): Promise<Uint8Array | { url: string }> 
     const response = await fetch(src);
     return new Uint8Array(await response.arrayBuffer());
   }
-  throw new Error(translate(useSettings.getState().locale, "panel.pdf.readFailed"));
+  throw new Error(translateNow("panel.pdf.readFailed"));
 }
 
 function flattenOutline(
@@ -165,7 +165,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
         if (cancelled) return;
         // 加密 PDF 由 pdfjs 抛 PasswordException，给一句人能看懂的说明。
         setError({
-          message: err instanceof Error ? err.message : translate(useSettings.getState().locale, "panel.pdf.openFailed"),
+          message: err instanceof Error ? err.message : translateNow("panel.pdf.openFailed"),
           password: (err as { name?: string } | null)?.name === "PasswordException",
         });
       }
@@ -215,7 +215,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
   }, []);
 
   const handlePageError = useCallback((pageNumber: number, err: unknown) => {
-    const message = err instanceof Error ? err.message : translate(useSettings.getState().locale, "panel.reader.unknownError");
+    const message = err instanceof Error ? err.message : translateNow("panel.reader.unknownError");
     console.error(`[PdfDocumentPane] 第 ${pageNumber} 页渲染失败`, err);
     setFailedPages((prev) => (prev[pageNumber] === message ? prev : { ...prev, [pageNumber]: message }));
   }, []);

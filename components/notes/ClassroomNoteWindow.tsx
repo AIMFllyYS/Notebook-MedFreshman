@@ -149,7 +149,7 @@ function DeleteStickyDialog({
         <p>{t("window.note.classroom.deleteDialogBody")}</p>
         <div className="user-note-dialog-actions">
           <button type="button" className="user-note-dialog-cancel" onClick={onCancel}>
-            {t("menu.common.cancel")}
+            {t("common.cancel")}
           </button>
           <button type="button" className="app-dialog-confirm" onClick={onConfirm}>
             {t("window.common.delete")}

@@ -65,6 +65,21 @@ export function translate(locale: Locale, key: TranslateKey, vars?: TranslateVar
   return vars ? interpolate(template, vars) : template;
 }
 
+/**
+ * 非 React 上下文取词：事件回调、`lib/` 里的「开窗时翻标题」、模块级函数。
+ *
+ * 为什么必须有这一层：窗口标题会经通用 chrome（`WindowTaskbar` / `AgentDockTabs` / `OverflowMenu`）
+ * **原样渲染**，把 key 存进 `windowManager` 会让标签条直接显示 `panel.addMenu.document`,
+ * 所以标题必须在**开窗那一刻**就按当前语言翻好。这套理由原先在每个调用点抄一遍
+ * （`translate(useSettings.getState().locale, …)` 满仓 24 处），现在只留在本文档上。
+ *
+ * 代价（有意为之）：切语言后**已经开着的**窗口标题不会跟着变，重开才更新。
+ * 组件内取词一律继续用 `useT()` —— 它会跟着 locale 重新渲染。
+ */
+export function translateNow(key: TranslateKey, vars?: TranslateVars): string {
+  return translate(useSettings.getState().locale, key, vars);
+}
+
 function collectKeys(source: Record<string, unknown>, prefix = ""): string[] {
   const keys: string[] = [];
   for (const [name, value] of Object.entries(source)) {

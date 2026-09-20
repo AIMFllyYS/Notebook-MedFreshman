@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import {
   SPOTLIGHT_BACKDROP_CLASS,
   SPOTLIGHT_CLOSE_CLASS,
@@ -27,6 +28,7 @@ export default function SpotlightDialog({
   input,
   children,
 }: SpotlightDialogProps) {
+  const t = useT();
   if (!open || typeof document === "undefined") return null;
   return createPortal(
     <div
@@ -46,7 +48,13 @@ export default function SpotlightDialog({
         <div className={SPOTLIGHT_HEADER_CLASS}>
           {icon}
           {input}
-          <button type="button" onClick={onClose} title="关闭" className={SPOTLIGHT_CLOSE_CLASS}>
+          <button
+            type="button"
+            onClick={onClose}
+            title={t("panel.common.close")}
+            aria-label={t("panel.common.close")}
+            className={SPOTLIGHT_CLOSE_CLASS}
+          >
             <X size={16} />
           </button>
         </div>

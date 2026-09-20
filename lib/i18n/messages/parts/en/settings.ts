@@ -14,8 +14,6 @@ export const settingsEn = {
   },
   // Shared actions used across the settings sections.
   common: {
-    cancel: "Cancel",
-    confirm: "Confirm",
     save: "Save",
     create: "Create",
   },

@@ -93,7 +93,7 @@ export function SelectionPopIconBtn({
 }) {
   const t = useT();
   const ActiveIcon = copied && CopiedIcon ? CopiedIcon : Icon;
-  const label = copied ? t("menu.selection.copied") : title;
+  const label = copied ? t("common.copied") : title;
   return (
     <button
       type="button"

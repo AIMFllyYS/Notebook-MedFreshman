@@ -17,8 +17,6 @@ export const settingsZh = {
   },
   // 设置页通用动作（各分节可复用）
   common: {
-    cancel: "取消",
-    confirm: "确定",
     save: "保存",
     create: "创建",
   },

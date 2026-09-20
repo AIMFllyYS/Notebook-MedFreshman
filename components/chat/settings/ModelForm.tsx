@@ -458,7 +458,7 @@ export function ModelForm({
           onClick={onCancel}
           className="press rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
         >
-          {t("settings.common.cancel")}
+          {t("common.cancel")}
         </button>
       </div>
     </div>

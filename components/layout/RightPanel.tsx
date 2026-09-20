@@ -105,7 +105,7 @@ class RightPanelTabBoundary extends Component<
           onClick={() => this.setState({ error: null })}
           className="press rounded-full bg-[var(--accent)] px-4 py-2 text-[13px] font-medium text-[var(--md-sys-color-on-primary)]"
         >
-          {translate(locale, "panel.common.retry")}
+          {translate(locale, "common.retry")}
         </button>
       </div>
     );

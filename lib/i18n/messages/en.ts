@@ -8,6 +8,7 @@ import type { LocaleMessages } from "../types";
  * 任何一边少一个 key，`satisfies LocaleMessages` 都会在 typecheck 阶段报错。
  */
 import { appEn } from "./parts/en/app";
+import { commonEn } from "./parts/en/common";
 import { menuEn } from "./parts/en/menu";
 import { panelEn } from "./parts/en/panel";
 import { settingsEn } from "./parts/en/settings";
@@ -17,6 +18,7 @@ import { windowEn } from "./parts/en/window";
 
 export const en = {
   app: appEn,
+  common: commonEn,
   agent: {
     nav: {
       aria: "Agent section navigation",
@@ -69,7 +71,6 @@ export const en = {
       deleteProject: "Delete project",
       deleteSessionConfirm: "The cloud record is deleted as well and cannot be recovered.",
       deleteProjectConfirm: "Chats inside move back to Recents; the chats themselves are kept.",
-      cancel: "Cancel",
       confirmDelete: "Delete",
     },
     center: {
@@ -83,32 +84,15 @@ export const en = {
       },
     },
     sources: {
-      title: "Sources",
       // Window titles: the dock tab bar renders win.title verbatim.
       traceWindowTitle: "Sources · {count}",
       webWindowTitle: "Web sources · {count}",
       untitled: "Untitled source",
       count: "Sources · {count}",
       openPanel: "Open sources panel",
-      outline: "Source outline",
       query: "Searched “{query}”",
       empty: "No references to trace in this round.",
       noLink: "No link",
-      snippet: "Matched excerpt",
-      reading: "Loading note…",
-      missing: "Full text not found; showing the matched excerpt.",
-      openOriginal: "Open original page",
-      summary: "Page summary",
-      rawJson: "Raw JSON",
-      round: {
-        web: "Web search",
-        notes: "Note search",
-        images: "Image search",
-      },
-      kind: {
-        note: "Note",
-        web: "Web",
-      },
     },
     links: {
       empty: "No traceable sources in this chat yet.",
@@ -145,9 +129,6 @@ export const en = {
     },
     selection: {
       title: "Selection · {snippet}",
-      explain: "Explain",
-      ask: "Ask follow-up",
-      example: "Give examples",
     },
     dock: {
       collapse: "Collapse panel",

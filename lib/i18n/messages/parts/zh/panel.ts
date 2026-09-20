@@ -11,9 +11,10 @@
 export const panelZh = {
   // 面板与窗口外壳的通用动作
   common: {
+    // 「关闭」= 关掉窗口 / 浮层本身。**不要**跟 menu.thinking.off.label、share.assets.disable
+    // 那两个「关闭」合并 —— 那两个是「关掉一个开关」，英文是 Off / Turn off，跟 Close 不是一回事。
     close: "关闭",
     collapse: "收起",
-    retry: "重试",
     open: "打开",
   },
 

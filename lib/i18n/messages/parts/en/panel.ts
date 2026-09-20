@@ -12,9 +12,10 @@
 export const panelEn = {
   // Shared actions for the side panel and window chrome.
   common: {
+    // "Close" dismisses a window/overlay. Do NOT merge with menu.thinking.off.label or
+    // share.assets.disable: those turn a switch off ("Off" / "Turn off"), not "Close".
     close: "Close",
     collapse: "Collapse",
-    retry: "Retry",
     open: "Open",
   },
 

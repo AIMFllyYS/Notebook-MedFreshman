@@ -10,6 +10,7 @@
  * 各改各的文件，不在合并阶段互相覆盖。
  */
 import { appZh } from "./parts/zh/app";
+import { commonZh } from "./parts/zh/common";
 import { menuZh } from "./parts/zh/menu";
 import { panelZh } from "./parts/zh/panel";
 import { settingsZh } from "./parts/zh/settings";
@@ -19,6 +20,7 @@ import { windowZh } from "./parts/zh/window";
 
 export const zh = {
   app: appZh,
+  common: commonZh,
   agent: {
     nav: {
       aria: "Agent 板块导航",
@@ -71,7 +73,6 @@ export const zh = {
       deleteProject: "删除项目",
       deleteSessionConfirm: "删除后云端记录一并删除，无法恢复。",
       deleteProjectConfirm: "删除项目后，里面的对话会退回 Recents（对话本身不删）。",
-      cancel: "取消",
       confirmDelete: "删除",
     },
     center: {
@@ -85,32 +86,15 @@ export const zh = {
       },
     },
     sources: {
-      title: "来源",
       // 窗口标题（右侧面板标签条会原样显示 win.title）
       traceWindowTitle: "来源追踪 · {count} 条",
       webWindowTitle: "联网来源 · {count} 条",
       untitled: "未命名来源",
       count: "来源 · {count}",
       openPanel: "打开来源面板",
-      outline: "来源目录",
       query: "搜索「{query}」",
       empty: "本轮没有可追踪的引用依据。",
       noLink: "暂无链接",
-      snippet: "检索片段",
-      reading: "正在读取笔记正文…",
-      missing: "未找到完整正文，已显示检索片段。",
-      openOriginal: "打开原页面",
-      summary: "页面摘要",
-      rawJson: "原始 JSON",
-      round: {
-        web: "联网搜索",
-        notes: "笔记检索",
-        images: "图片检索",
-      },
-      kind: {
-        note: "笔记",
-        web: "网页",
-      },
     },
     links: {
       empty: "这次对话还没有可追溯的来源。",
@@ -147,9 +131,6 @@ export const zh = {
     },
     selection: {
       title: "划词 · {snippet}",
-      explain: "解释",
-      ask: "追问",
-      example: "举例",
     },
     dock: {
       collapse: "收起右侧面板",

@@ -61,11 +61,21 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
     const observer = new ResizeObserver(sync);
     observer.observe(left);
     return () => {
+      // 只断开观测：这个 effect 会因为拖拽/收起重建，而重建后的 sync() 在右栏全局态下
+      // 会提前 return（见上面那行）。在这里摘变量 = 全局态下切一次侧栏宽度就永久回落到
+      // CSS 兜底的 15rem —— 摘变量挪到下面那个「真正卸载外壳」的 effect。
       observer.disconnect();
-      rootStyle.removeProperty("--agent-left-width");
     };
     // leftDragging 进依赖：拖拽中不记录舒适宽度，所以观测器要跟着这个状态重建。
   }, [sidebarCollapsed, leftDragging]);
+
+  // 卸载整个 Agent 外壳时才摘掉 --agent-left-width（<html> 上的变量不该留给别的页面）。
+  useEffect(
+    () => () => {
+      document.documentElement.style.removeProperty("--agent-left-width");
+    },
+    [],
+  );
 
   /**
    * 被压到 minSize 以下时，分栏库会吸附到彻底收起。这一段交接要**很快**

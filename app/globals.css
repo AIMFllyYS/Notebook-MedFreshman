@@ -150,25 +150,7 @@
   --glass-bg: rgba(19, 19, 24, 0.75);
   --glass-border: rgba(255, 255, 255, 0.12);
 
-  /* ── studysolo-glass 令牌（自 docs/design-snapshots/2026-09-studysolo-glass 移植，深炭取值）── */
-  --glass-window-fill: rgba(255, 255, 255, 0.06);
-  --glass-panel-fill: rgba(255, 255, 255, 0.10);
-  --glass-popover-fill: rgba(255, 255, 255, 0.18);
-  --glass-control-fill: rgba(255, 255, 255, 0.14);
-  --glass-highlight: rgba(255, 255, 255, 0.14);
-  --glass-blur-deep: 28px;
-  --glass-saturate: 1.6;
-  --glass-scrim: rgba(0, 0, 0, 0.35);
-  --mac-close: #ff5f57;
-  --mac-min: #febc2e;
-  --mac-zoom: #28c840;
-  --mac-inactive: #7d7d7d;
-  /* 环境光晕（深炭） */
-  --ambient-1: #7c6cf0;
-  --ambient-2: #3f83f0;
-  --ambient-3: #22c7d6;
-  --ambient-4: #b06cf0;
-  /* 学科强调色（深炭） */
+  /* ── studysolo-glass 学科强调色（深炭取值，自 docs/design-snapshots 移植）── */
   --subj-prob: #9a8cff;
   --subj-phy: #58b8ff;
   --subj-chem: #43d6a0;
@@ -294,19 +276,7 @@
   --glass-bg: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(0, 0, 0, 0.08);
 
-  /* ── studysolo-glass 令牌（浅色·雾蓝取值）── */
-  --glass-window-fill: rgba(255, 255, 255, 0.55);
-  --glass-panel-fill: rgba(255, 255, 255, 0.62);
-  --glass-popover-fill: rgba(255, 255, 255, 0.8);
-  --glass-control-fill: rgba(255, 255, 255, 0.6);
-  --glass-highlight: rgba(255, 255, 255, 0.75);
-  --glass-scrim: rgba(15, 20, 34, 0.32);
-  /* 环境光晕（雾蓝） */
-  --ambient-1: #8ab0ff;
-  --ambient-2: #6fd6f2;
-  --ambient-3: #b69bff;
-  --ambient-4: #8fe0d2;
-  /* 学科强调色（雾蓝） */
+  /* ── studysolo-glass 学科强调色（浅色·雾蓝取值，自 docs/design-snapshots 移植）── */
   --subj-prob: #6750a4;
   --subj-phy: #1286c4;
   --subj-chem: #20894f;
@@ -975,6 +945,23 @@ html:not([data-theme="light"]) [data-agent-shell] {
   /* 用户口径：Agent 这一栏要比 Codex 再收一点，两侧留白多一些，整体才协调。 */
   --agent-chat-max: 780px;
 }
+/* 来源列的拉开 / 收起：与左右面板**同一条横向缓动**（同样的时长与曲线），
+   这样「点来源 → 对话列让位」跟「拉左右栏」是同一个手感。
+   - 拖拽改尺寸时不参与动画（跟手迟滞），所以把 [data-resizing] 与列自己的 data-resizing 都关掉；
+   - 同样挂在 data-panels-ready 之后：首帧布局写回不参与动画。 */
+html[data-panels-ready] [data-agent-shell] .agent-source-column {
+  transition: width var(--duration-pane) var(--ease-decelerate);
+}
+[data-resizing] [data-agent-shell] .agent-source-column,
+[data-agent-shell] .agent-source-column[data-resizing] {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-panels-ready] [data-agent-shell] .agent-source-column {
+    transition: none;
+  }
+}
+
 /* 顶栏那三个切面（回答 / 来源 / 图片）跟正文共用一条左边界：
    左边 = 对话栏宽度 + 正文内边距（与 .chat-messages 的 padding 同一个表达式），右边让开来源列。 */
 [data-agent-shell] .agent-center-tabs-overlay {

@@ -7,8 +7,7 @@ import { fetchQuota } from '@/lib/billing/fetchQuota';
 import { ACCOUNT_USAGE_CHANGED, type QuotaView } from '@/lib/billing/quotaView';
 import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
 import { openMembershipSponsor } from '@/lib/window/openMembershipSponsor';
-import { translate, useT } from '@/lib/i18n';
-import { useSettings } from '@/lib/stores/settings';
+import { translateNow, useT } from "@/lib/i18n";
 
 const TIER_KEYS = { free: 'panel.quota.tier.free', plus: 'panel.quota.tier.plus', pro: 'panel.quota.tier.pro' };
 const money = (n: number) => `¥${Math.max(0, n).toFixed(n > 0 && n < 0.01 ? 4 : 2)}`;
@@ -43,7 +42,7 @@ export function AccountQuota({ variant = "context" }: { variant?: "context" | "p
         const data = await fetchQuota(userId);
         if (!disposed) setState({ userId, data });
       } catch (error) {
-        if (!disposed) setState((old) => ({ userId, data: old.userId === userId ? old.data : undefined, error: error instanceof Error ? error.message : translate(useSettings.getState().locale, 'panel.quota.unavailable') }));
+        if (!disposed) setState((old) => ({ userId, data: old.userId === userId ? old.data : undefined, error: error instanceof Error ? error.message : translateNow('panel.quota.unavailable') }));
       } finally { refreshing = false; }
     };
     void refresh();

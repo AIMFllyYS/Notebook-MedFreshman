@@ -17,7 +17,7 @@
 | 2 | Agent 自动出题，参考 Perplexity | 出题移到右侧面板（不再在线性对话流里答题） |
 | 3 | 顶部导航栏 Answer / Links / Images，顶部可微切换 | Agent 中央区顶部分段控件 |
 | 4 | 生成 HTML / 图片仍在正常对话里跑 | Answer 页签 = 现有对话，不搬家 |
-| 5 | 来源框固定在 Agent 对话界面右上角 | `AgentSourceDock` |
+| 5 | 来源框固定在 Agent 对话界面右上角 | 演进：`AgentSourceDock`（浮层卡片）→ 右侧固定栏 → `AgentSourcePanel`（占宽的浮层卡片，最终） |
 | 6 | 拉开右侧面板时，来源框自动隐藏 | 读 `agentDockCollapsed` |
 | 7 | 点来源框 → 从右侧拉出面板（右导航 + 核心页两栏），复用现有来源设计 | 复用 `SourceTraceViewer` + `DocumentWorkspace`，按搜索轮次分组 |
 | 8 | 出题直接在右侧面板 | `quiz-dock` 窗口 + 自动开右栏 |
@@ -79,9 +79,11 @@ lib/i18n/
   - `collectMessageSourceRounds(parts)`、`collectSessionSourceRounds(messages)`（跨消息、按轮次保序、按 key 去重）
   - `TraceSource` 增可选 `query?: string`、`roundId?: string`
   - `collectMessageSources` **保持原样**（兼容既有调用与测试）
-- `components/agent/AgentSourceDock.tsx`：中央区右上角固定来源框（`position:absolute; top; right`），
-  显示「来源 · N」+ 前几个来源的 host / 标题 chip。点击 → `openSourceTrace()`（右栏面板）+ 展开右栏。
-  **隐藏条件**：右栏已展开（`!agentDockCollapsed`）、没有来源、移动端、`centerTab !== 'answer'`。
+- 来源框形态**改过三版，终版是 `components/agent/AgentSourcePanel.tsx`**：
+  浮层卡片（初版 `AgentSourceDock`，`position:absolute; top; right`）→ 右侧固定栏 → **占真实宽度的浮层卡片**（终版：
+  看起来是浮层，实际占掉对话列旁边的一列，正文让开而不是被压住）。
+  三版都是「来源 · N」+ 前几个来源的 host / 标题 chip，点击 → `openSourceTrace()`（右栏面板）+ 展开右栏。
+  **隐藏条件**（三版一致）：右栏已展开（`!agentDockCollapsed`）、没有来源、移动端、`centerTab !== 'answer'`。
 - `SourceTraceViewer` 增分组渲染：目录里按轮次插分组标题（query 行），点分组标题可展开/收起（默认展开）。
 
 ### 3.4 出题（右栏）

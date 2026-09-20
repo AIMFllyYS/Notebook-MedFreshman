@@ -7,6 +7,7 @@ import BrandLogo from "@/components/layout/BrandLogo";
 import ChatThread from "@/components/chat/ChatThread";
 import { ShareViewProvider } from "@/components/share/ShareViewContext";
 import { APP_NAME } from "@/lib/constants/app-mode";
+import { AGENT_CHAT_MAX_PX } from "@/lib/constants/layout";
 import { useT } from "@/lib/i18n";
 import { readSharedConversation } from "@/lib/share/read";
 import type { SharedConversationSnapshot } from "@/lib/share/types";
@@ -143,9 +144,10 @@ function SharedConversation({
       </div>
 
       <ShareViewProvider imagePlaceholder={t("share.page.imagePlaceholder")} artifacts={snapshot.artifacts}>
-        {/* 正文收进与 Agent 页同一条阅读宽度（--agent-chat-max）并居中：
-            裸壳没有 [data-agent-shell]，那条居中规则不会自动生效。 */}
-        <div className="mx-auto flex min-h-0 w-full max-w-[var(--agent-chat-max,920px)] flex-1 flex-col">
+        {/* 正文收进与 Agent 页同一条阅读宽度并居中：裸壳没有 [data-agent-shell]，
+            读不到那条 CSS 变量里 --agent-chat-max，所以宽度直接取 AGENT_CHAT_MAX_PX
+            （两边的相等关系由 tests/agentShellControls.test.ts 钉住）。 */}
+        <div className="mx-auto flex min-h-0 w-full flex-1 flex-col" style={{ maxWidth: AGENT_CHAT_MAX_PX }}>
           <ChatThread
             messages={snapshot.messages}
             isLoading={false}

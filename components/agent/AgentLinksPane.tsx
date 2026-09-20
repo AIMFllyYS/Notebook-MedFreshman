@@ -6,7 +6,7 @@ import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { useStore } from "@/lib/stores/ui";
 import { useT } from "@/lib/i18n";
-import { labelRounds, sourceRoundLabelKey } from "./sourceRoundLabel";
+import { sourceRoundLabelKey } from "./sourceRoundLabel";
 
 /**
  * 「来源」页签：这条对话检索过的**所有轮次**，每轮带着它的搜索词。
@@ -27,10 +27,11 @@ export default function AgentLinksPane({
   const openAll = useCallback(
     (activeKey: string) => {
       if (!sources.length) return;
-      openSourceTrace(sources, { rounds: labelRounds(rounds, t), activeKey });
+      // 不再预贴 label：SourceTraceViewer 的兜底就是 trace.tool.<tool>.label，与上面那行同源。
+      openSourceTrace(sources, { rounds, activeKey });
       setAgentDockCollapsed(false);
     },
-    [rounds, setAgentDockCollapsed, sources, t],
+    [rounds, setAgentDockCollapsed, sources],
   );
 
   if (rounds.length === 0) {

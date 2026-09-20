@@ -1,3 +1,4 @@
+import { translateNow } from "@/lib/i18n";
 import type { NoteImageHit, SearchHit } from '@/lib/ai/agent/toolTypes';
 import { getToolPartsByName } from '@/lib/chat/messageParts';
 import type { ChatMessagePart, WebSearchSource } from '@/lib/types/chat';
@@ -103,7 +104,7 @@ function webSourcesOf(items: readonly WebSearchSource[]): TraceSource[] {
   return items.map((source) => ({
     kind: 'web' as const,
     // imageSearch 的条目常常只有 alt 没有 title，别让目录里出现空白标题。
-    title: source.title || source.alt || source.url || '未命名来源',
+    title: source.title || source.alt || source.url || translateNow('agent.sources.untitled'),
     url: source.url ?? '',
     snippet: source.snippet ?? '',
   }));

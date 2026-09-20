@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { useWindowManager, type AgentProductKind } from "@/lib/stores/windowManager";
 import { AGENT_PRODUCT_PICKER_WINDOW_ID } from "@/lib/notes/userNote";
-import { translate, type I18nKey } from "@/lib/i18n";
-import { useSettings } from "@/lib/stores/settings";
+import { translateNow, type I18nKey } from "@/lib/i18n";
 
 interface AgentProductPickerState {
   open: boolean;
@@ -44,7 +43,7 @@ export const useAgentProductPicker = create<AgentProductPickerState>((set) => ({
     useWindowManager.getState().openWindow({
       id: AGENT_PRODUCT_PICKER_WINDOW_ID,
       type: "agent-product-picker",
-      title: translate(useSettings.getState().locale, pickerTitleKey(kind)),
+      title: translateNow(pickerTitleKey(kind)),
       pos,
       size,
       data: { kind },

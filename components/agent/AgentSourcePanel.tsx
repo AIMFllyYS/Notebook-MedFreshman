@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import clsx from "clsx";
 import { BookOpen, Globe, Link2 } from "lucide-react";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { useStore } from "@/lib/stores/ui";
 import { SOURCES_PANEL_INSET as INSET, clampSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
 import { useT } from "@/lib/i18n";
-import { labelRounds } from "./sourceRoundLabel";
 
 type ResizeAxes = "x" | "y" | "xy";
 
@@ -22,34 +22,46 @@ function sourceMeta(source: TraceSource): string {
 }
 
 /**
- * 来源**悬浮窗**（用户口径，也是 Perplexity / Codex 的做法）。
+ * 来源列（用户口径，也是 Perplexity / Codex 的做法）。
  *
- * 它不是侧栏：侧栏那种要占满一列的东西才该进 Agent 右侧统一面板；
- * 这块是浮在正文之上、**可以拖动改大小**的轻量预览 —— 看一眼来源就够了，
- * 想细看再点卡片开右侧面板。
+ * **反直觉点**：它看起来像一块悬浮卡片（圆角 + 阴影 + **可以拖动改大小**），但**占掉真实宽度** ——
+ * 它是对话列旁边实打实的一列，正文会真的让开，不会被压住。演进路径是
+ * 「浮层卡片 → 右侧固定栏 → 占宽的浮层卡片（最终）」，所以这里写死口径：像浮层 ≠ 是浮层。
+ *
+ * 它也不是右栏那套统一面板：右栏要占满一列、能装多种查看器；这块只是「看一眼来源」的轻量预览，
+ * 想细看再点卡片，把内容交给右侧统一面板。
  *
  * 位置恒在右上角（跟另外两个顶栏按钮一样不跟鼠标乱跑），只让用户改宽高。
  */
 export default function AgentSourcePanel({
   rounds,
   sources,
+  open,
 }: {
   rounds: SourceRound[];
   sources: TraceSource[];
+  /**
+   * 是否展开。**不卸载**：列常驻、宽度在 0 ↔ 满宽之间过渡，
+   * 这样「拉开 / 收起」才能复用全局面板那条横向缓动（见 globals.css 的 .agent-source-column）。
+   */
+  open: boolean;
 }) {
   const t = useT();
   const size = useAgentCenter((state) => state.sourcesPanelSize);
   const setSize = useAgentCenter((state) => state.setSourcesPanelSize);
   const setAgentDockCollapsed = useStore((state) => state.setAgentDockCollapsed);
+  /** 拖拽改尺寸期间关掉过渡，否则跟手迟滞（与 [data-resizing] 对全局面板的处理同一个道理）。 */
+  const [resizing, setResizing] = useState(false);
 
   const openAt = useCallback(
     (source: TraceSource, index: number) => {
       if (!sources.length) return;
-      openSourceTrace(sources, { rounds: labelRounds(rounds, t), activeKey: sourceItemKey(source, index) });
-      // 点开就是「我要细看」：把它交给右侧统一面板，悬浮窗随右栏展开自动让位。
+      // 轮次标题交给 SourceTraceViewer 的兜底（trace.tool.<tool>.label），不在这里再贴一遍。
+      openSourceTrace(sources, { rounds, activeKey: sourceItemKey(source, index) });
+      // 点开就是「我要细看」：把它交给右侧统一面板，来源列随右栏展开自动让位。
       setAgentDockCollapsed(false);
     },
-    [rounds, setAgentDockCollapsed, sources, t],
+    [rounds, setAgentDockCollapsed, sources],
   );
 
   /**
@@ -67,6 +79,7 @@ export default function AgentSourcePanel({
       const startY = event.clientY;
       const startSize = size;
       const pointerId = event.pointerId;
+      setResizing(true);
       try {
         handle.setPointerCapture(pointerId);
       } catch {
@@ -81,6 +94,7 @@ export default function AgentSourcePanel({
         );
       };
       const onEnd = () => {
+        setResizing(false);
         handle.removeEventListener("pointermove", onMove);
         handle.removeEventListener("pointerup", onEnd);
         handle.removeEventListener("pointercancel", onEnd);
@@ -98,18 +112,27 @@ export default function AgentSourcePanel({
   return (
     /**
      * 这一列**占真实宽度**（卡片宽 + 两侧留白）：中间的对话列因此被压窄，正文永远不会钻到卡片底下。
-     * 卡片本身仍是浮起来的（圆角 + 阴影 + 左上留白），看起来是悬浮窗而不是侧栏。
-     * 隐藏时整列消失，对话列拿回整宽 —— flex 兄弟会自动让它在「左栏右侧那块区域」里重新居中。
+     * 卡片本身仍是浮起来的（圆角 + 阴影 + 左上留白），看起来是悬浮卡片而不是侧栏。
+     *
+     * **宽度是可动画的**：open=false 时宽度归 0（列常驻、不卸载），横向缓动与全局面板同一套
+     * （globals.css 的 .agent-source-column）；拖拽中由 data-resizing 关掉过渡。
      */
     <aside
       data-testid="agent-source-column"
-      className="relative flex h-full shrink-0 flex-col"
-      style={{ width: size.width + INSET * 2 }}
+      data-open={open || undefined}
+      data-resizing={resizing || undefined}
+      aria-hidden={!open || undefined}
+      className={clsx(
+        "agent-source-column relative flex h-full shrink-0 flex-col overflow-hidden",
+        !open && "pointer-events-none",
+      )}
+      style={{ width: open ? size.width + INSET * 2 : 0 }}
     >
+    {/* 卡片宽度写死：列变窄时它不被压扁，而是被 overflow-hidden 裁掉 —— 看起来就是「往右滑出去」。 */}
     <div
       data-testid="agent-source-panel"
-      className="relative ml-3 mt-3 flex min-h-0 flex-col overflow-hidden rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
-      style={{ height: size.height }}
+      className="relative ml-3 mt-3 flex min-h-0 shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
+      style={{ width: size.width, height: size.height }}
     >
       <header className="flex h-9 shrink-0 items-center gap-1.5 border-b border-[var(--line-soft)] px-3">
         <Link2 size={13} className="shrink-0 text-[var(--accent)]" />
