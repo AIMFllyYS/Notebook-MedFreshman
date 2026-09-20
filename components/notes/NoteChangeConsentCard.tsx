@@ -72,7 +72,7 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
           {isDelete ? <Trash2 size={13} /> : <Pencil size={13} />}
         </span>
         <div className="note-consent-title">
-          <span>{statusLabel(status, isDelete)}</span>
+          <span className="note-consent-eyebrow">{statusLabel(status)}</span>
           <span className="note-consent-summary">{output.summary}</span>
         </div>
       </header>
@@ -160,12 +160,12 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
   );
 }
 
-function statusLabel(status: NoteChangeStatus, isDelete: boolean): string {
-  if (status === "applied") return isDelete ? "已删除" : "已修改";
+/** 小标签只表达「进行到哪一步」；改的是哪一篇由 summary 说，避免两句同义话叠在一起。 */
+function statusLabel(status: NoteChangeStatus): string {
+  if (status === "applied") return "已完成";
   if (status === "dismissed") return "已取消";
-  if (status === "stale") return "未执行（原文已变）";
-  if (status === "blocked") return "未执行（原文过长）";
-  return isDelete ? "请求删除这篇笔记" : "请求修改这篇笔记";
+  if (status === "stale" || status === "blocked") return "未执行";
+  return "待你确认";
 }
 
 /** 逐行前后对照：掐掉公共前后缀，中间就是改动区间。 */

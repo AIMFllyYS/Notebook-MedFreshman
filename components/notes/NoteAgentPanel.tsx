@@ -99,6 +99,7 @@ export default function NoteAgentPanel({
           bottomInset={composerInset}
           sessionId={sessionId}
           topic={chatContext.currentTopic}
+          showFollowUps={false}
           emptyState={
             <div className="note-agent-empty">
               就这篇笔记问小岸，或让它改稿。对话只属于这篇笔记，不会写进右侧主对话。
