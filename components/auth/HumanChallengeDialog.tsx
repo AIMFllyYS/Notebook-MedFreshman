@@ -49,7 +49,6 @@ function TrackSegment({
       className="auth-seg"
       role="tablist"
       aria-label="验证科目"
-      style={{ ["--auth-seg-accent" as string]: TRACK_ACCENT[track] }}
     >
       <span
         className="auth-seg-thumb"
@@ -198,10 +197,6 @@ export default function HumanChallengeDialog({
     <div
       className="auth-overlay human-challenge-overlay"
       data-testid="human-challenge-overlay"
-      style={{
-        ["--auth-ambient-a" as string]: accent,
-        ["--auth-ambient-b" as string]: "var(--md-sys-color-primary)",
-      }}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -222,7 +217,7 @@ export default function HumanChallengeDialog({
               title="关闭"
               onClick={onClose}
             >
-              <X size={8} strokeWidth={3} />
+              <X size={9} strokeWidth={3} />
             </button>
             <span className="auth-light" data-tone="min" aria-hidden="true" />
             <span className="auth-light" data-tone="zoom" aria-hidden="true" />

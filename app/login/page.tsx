@@ -1,12 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { BookOpen, GraduationCap, Sparkles } from "lucide-react";
+import { BookOpen, GraduationCap, Sparkles, X } from "lucide-react";
 import BrandLogo from "@/components/layout/BrandLogo";
 import LoginForm from "@/components/auth/LoginForm";
 
 /**
- * 独立登录页：左侧品牌叙事区（环境光晕 + 大字 slogan）+ 右侧 Mac 玻璃登录卡。
+ * 独立登录页：左侧品牌叙事区 + 右侧 Mac 窗壳登录卡。
+ * 背景 = 页面底色（--bg-app），无虚化、无光效（用户口径：登录不要背景效果）。
  * 窄屏（<900px）退化为单栏：品牌区收成居中头部。
  */
 export default function LoginPage() {
@@ -21,18 +22,6 @@ export default function LoginPage() {
         if (event.target === event.currentTarget) goHome();
       }}
     >
-      {/* 环境光晕（与 auth-overlay 同源，两团慢漂移） */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          className="absolute -left-[12vmax] -top-[18vmax] h-[46vmax] w-[46vmax] rounded-full opacity-[0.16] blur-[90px]"
-          style={{ background: "var(--ambient-1)", animation: "auth-ambient-drift 22s ease-in-out infinite alternate" }}
-        />
-        <div
-          className="absolute -bottom-[20vmax] -right-[14vmax] h-[46vmax] w-[46vmax] rounded-full opacity-[0.16] blur-[90px]"
-          style={{ background: "var(--ambient-2)", animation: "auth-ambient-drift 26s ease-in-out infinite alternate-reverse" }}
-        />
-      </div>
-
       <div className="login-page-grid">
         <section className="login-brand">
           <div className="flex items-center gap-3">
@@ -76,9 +65,7 @@ export default function LoginPage() {
                   title="关闭"
                   onClick={goHome}
                 >
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1.6">
-                    <path d="M1.5 1.5 L6.5 6.5 M6.5 1.5 L1.5 6.5" />
-                  </svg>
+                  <X size={9} strokeWidth={3} />
                 </button>
                 <span className="auth-light" data-tone="min" aria-hidden="true" />
                 <span className="auth-light" data-tone="zoom" aria-hidden="true" />

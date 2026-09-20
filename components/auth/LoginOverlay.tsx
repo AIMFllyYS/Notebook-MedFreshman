@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import LoginForm from "./LoginForm";
@@ -38,9 +39,7 @@ export default function LoginOverlay() {
               title="关闭"
               onClick={onClose}
             >
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M1.5 1.5 L6.5 6.5 M6.5 1.5 L1.5 6.5" />
-              </svg>
+              <X size={9} strokeWidth={3} />
             </button>
             <span className="auth-light" data-tone="min" aria-hidden="true" />
             <span className="auth-light" data-tone="zoom" aria-hidden="true" />
