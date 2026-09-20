@@ -1,5 +1,6 @@
 import { extractSnippet, matchFlashcard, matchUserNote } from "@/lib/search/globalSearch";
 import { subjectLabel } from "@/lib/notes/userNote";
+import { markdownDigest } from "@/lib/notes/noteChangeProposal";
 
 /** 请求里随身带的本机笔记/闪卡目录上限：只给工具按需取，不进 system 全文。 */
 export const MAX_MEMORY_NOTES = 24;
@@ -14,6 +15,10 @@ export interface UserNoteCatalogItem {
   subjectId: string | null;
   markdown: string;
   updatedAt: number;
+  /** 正文被 MAX_MEMORY_NOTE_CHARS 截断过；截断的原文不能用于整篇替换。 */
+  truncated?: boolean;
+  /** 笔记正文（不含 quote）的指纹，供 updateUserNote 做并发校验。 */
+  markdownDigest?: string;
   kind?: "personal" | "classroom";
 }
 
@@ -48,14 +53,19 @@ export function collectUserNoteCatalog(
   return [...notes]
     .sort((a, b) => b.updatedAt - a.updatedAt)
     .slice(0, limit)
-    .map((note) => ({
-      id: note.id,
-      title: note.title,
-      subjectId: note.subjectId,
-      markdown: clip([note.quote, note.markdown].filter(Boolean).join("\n\n"), MAX_MEMORY_NOTE_CHARS),
-      updatedAt: note.updatedAt,
-      kind: note.kind,
-    }));
+    .map((note) => {
+      const full = [note.quote, note.markdown].filter(Boolean).join("\n\n");
+      return {
+        id: note.id,
+        title: note.title,
+        subjectId: note.subjectId,
+        markdown: clip(full, MAX_MEMORY_NOTE_CHARS),
+        updatedAt: note.updatedAt,
+        truncated: full.length > MAX_MEMORY_NOTE_CHARS,
+        markdownDigest: markdownDigest(note.markdown),
+        kind: note.kind,
+      };
+    });
 }
 
 /** 从复习板摊平出请求目录：按创建顺序倒序（新的在前）。 */
@@ -191,5 +201,5 @@ export function formatMemoryCatalogLine(
   cards: readonly FlashcardCatalogItem[],
 ): string {
   if (!notes.length && !cards.length) return "";
-  return `【本机记忆】个人笔记 ${notes.length} 篇，闪卡 ${cards.length} 张。需要对照时先 searchNotes(scope="personal") 或 searchFlashcards 看列表，再按 id 取一篇/一张，不要一次展开全文。窗内整理当前篇请直接 updateUserNote，不要翻整库。`;
+  return `【本机记忆】个人笔记 ${notes.length} 篇，闪卡 ${cards.length} 张。需要对照时先 searchNotes(scope="personal") 或 searchFlashcards 看列表，再按 id 取一篇/一张，不要一次展开全文。要改当前篇就调 updateUserNote 产出候选稿（学生会点同意后才写入），不要翻整库。`;
 }

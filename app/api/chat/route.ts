@@ -324,8 +324,14 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      // FollowUp 兜底：模型未输出 <FollowUp> 标签时，用轻量模型生成追问
-      if (!automaticModels && finalText && !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(finalText)) {
+      // FollowUp 兜底：模型未输出 <FollowUp> 标签时，用轻量模型生成追问。
+      // 窗内笔记对话不生成：它的产出是笔记候选稿，教学式追问属于聊天套话，与笔记角色冲突。
+      if (
+        !automaticModels &&
+        !body.noteWindowAgent &&
+        finalText &&
+        !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(finalText)
+      ) {
         const questions = await generateFallbackFollowUps({
           userText,
           answerText: finalText,

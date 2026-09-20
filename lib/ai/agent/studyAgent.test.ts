@@ -160,7 +160,7 @@ test("createStudyAgent：主对话目录只报数量，不 dump 笔记正文", (
   assert.doesNotMatch(windowed.promptParts.volatile, /本机记忆/);
 });
 
-test("createStudyAgent：主对话始终暴露 updateUserNote / 查找工具；窗内收窄且不改稳定前缀", () => {
+test("createStudyAgent：主对话始终暴露 updateUserNote / 查找工具；窗内收窄并走独立笔记前缀", () => {
   const model = new MockLanguageModelV4();
   const idle = createStudyAgent(baseInput(model));
   assert.ok("updateUserNote" in idle.tools);
@@ -189,7 +189,42 @@ test("createStudyAgent：主对话始终暴露 updateUserNote / 查找工具；�
   assert.ok(!("generateImage" in windowed.tools));
   assert.ok(!("writeDocument" in windowed.tools));
   assert.ok(!("proposeMemory" in windowed.tools));
-  assert.equal(idle.promptParts.instructions.slice(0, locIdle), windowed.promptParts.instructions.slice(0, windowed.promptParts.instructions.indexOf("【当前位置】")));
+
+  // 笔记角色自成一条稳定前缀：与教学前缀不相等，且同角色两次构造逐字节一致。
+  const windowedHead = windowed.promptParts.instructions.slice(
+    0,
+    windowed.promptParts.instructions.indexOf("【当前位置】"),
+  );
+  assert.notEqual(idle.promptParts.instructions.slice(0, locIdle), windowedHead);
+  assert.match(windowedHead, /个人学习笔记的编辑助手/);
+  assert.doesNotMatch(windowedHead, /引导优于代劳|示范再渐隐|每讲完一个完整知识点/);
+  // 教学前缀要求「每次回答末尾必须追加追问」，笔记前缀恰恰相反。
+  assert.doesNotMatch(windowedHead, /每次回答末尾\*\*必须\*\*追加追问标签/);
+  assert.match(windowedHead, /不要输出 <FollowUp> 标签/);
+  const windowedAgain = createStudyAgent(baseInput(model, {
+    editingUserNote: { id: "note_1", title: "被覆上皮", markdown: "# 被覆上皮" },
+    noteWindowAgent: true,
+  }));
+  assert.equal(
+    windowedHead,
+    windowedAgain.promptParts.instructions.slice(
+      0,
+      windowedAgain.promptParts.instructions.indexOf("【当前位置】"),
+    ),
+  );
+});
+
+test("createStudyAgent：笔记场景不带教学式前缀，但共享公式与防幻觉规范", () => {
+  const model = new MockLanguageModelV4();
+  const note = createStudyAgent(baseInput(model, {
+    editingUserNote: { id: "note_1", title: "被覆上皮", markdown: "# 被覆上皮" },
+    noteWindowAgent: true,
+  }));
+  const head = note.promptParts.instructions;
+  assert.match(head, /KaTeX/);
+  assert.match(head, /绝不编造/);
+  assert.match(head, /同意修改/);
+  assert.match(head, /当前科目：/);
 });
 
 test("createStudyAgent：技能菜单进入 instructions 且 useSkill 以 enum 暴露；enableSearch 控制联网工具", () => {
