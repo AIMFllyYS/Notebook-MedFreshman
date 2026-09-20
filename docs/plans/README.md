@@ -12,5 +12,8 @@
 | [`agent-right-panel-unification.execution.md`](./agent-right-panel-unification.execution.md) | 右栏统一的落地记录（含附一～附十一） |
 | [`agent-sidebar-assets.md`](./agent-sidebar-assets.md) | Agent 左栏体系化 + 我的资产 / 项目 / 项目文件：规划 |
 | [`agent-sidebar-assets.execution.md`](./agent-sidebar-assets.execution.md) | 同上：落地记录（附一～附五 + 质量门） |
+| [`document-readers-rebuild.md`](./document-readers-rebuild.md) | 文档阅读器重建（PDF / DOCX / PPTX）：规划 |
+| [`agent-ux-finalization.md`](./agent-ux-finalization.md) | Agent 页面 UX 收尾：来源 / 出题 / 顶栏 / i18n / 划词（规划与需求拆解） |
+| [`agent-ux-finalization.execution.md`](./agent-ux-finalization.execution.md) | 同上：实施记录（落点对照 · 决定 · 验收 · 已知边界） |
 | [`notes-flashcards-cloud-sync.md`](./notes-flashcards-cloud-sync.md) | 笔记 / 闪卡云同步（0005 迁移） |
 | [`app-users-nickname.md`](./app-users-nickname.md) | 昵称（0006 迁移） |

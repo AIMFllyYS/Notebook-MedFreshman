@@ -5,17 +5,25 @@ import { BookOpen, Globe } from 'lucide-react';
 import EmbedFallback from '@/components/browser/EmbedFallback';
 import WebviewSite from '@/components/browser/WebviewSite';
 import ManagedWindow from '@/components/window/ManagedWindow';
-import DocumentWorkspace from '@/components/window/DocumentWorkspace';
+import DocumentWorkspace, { type DocumentOutlineGroup } from '@/components/window/DocumentWorkspace';
 import NoteRenderer from '@/components/notes/NoteRenderer';
 import PlainTextReader from '@/components/notes/PlainTextReader';
 import { SOURCE_TRACE_WINDOW_ID, sourceItemKey } from '@/lib/chat/openSourceTrace';
-import type { TraceSource } from '@/lib/chat/traceSources';
+import type { SourceRound, TraceSource } from '@/lib/chat/traceSources';
+import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
 import { noteBreadcrumb, noteHref, parseNotePath } from '@/lib/content/notePath';
 import { useEmbeddable } from '@/lib/hooks/useEmbeddable';
 import { useWindowManager } from '@/lib/hooks/useWindowManager';
 
 type LoadState = 'idle' | 'loading' | 'done' | 'missing' | 'error';
 type SectionFormat = 'markdown' | 'text' | 'html';
+
+/** 目录里的一条来源。group 只在窗口带 rounds 时出现（同组连续项共用一条标题）。 */
+interface TraceOutlineEntry {
+  key: string;
+  source: TraceSource;
+  group?: DocumentOutlineGroup;
+}
 
 export default function SourceTraceViewer() {
   const windows = useWindowManager((s) => s.windows);
@@ -40,9 +48,40 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
     const raw = (managed?.data as { sources?: TraceSource[] } | undefined)?.sources;
     return Array.isArray(raw) ? raw : [];
   }, [managed?.data]);
-  const activeKey = (managed?.data as { activeKey?: string } | undefined)?.activeKey ?? (sources[0] ? sourceItemKey(sources[0], 0) : '');
-  const activeIndex = Math.max(0, sources.findIndex((source, index) => sourceItemKey(source, index) === activeKey));
-  const active = sources[activeIndex] ?? sources[0];
+  const rounds = useMemo(() => {
+    const raw = (managed?.data as { rounds?: SourceRound[] } | undefined)?.rounds;
+    return Array.isArray(raw) ? raw : [];
+  }, [managed?.data]);
+
+  // 目录项：带 rounds 时按检索轮次铺（每组首条挂分组标题），否则维持旧的「一条来源一项」。
+  const entries = useMemo<TraceOutlineEntry[]>(() => {
+    if (!rounds.length) {
+      return sources.map((source, index) => ({ key: sourceItemKey(source, index), source }));
+    }
+    const items: TraceOutlineEntry[] = [];
+    let index = 0;
+    for (const round of rounds) {
+      // 组标题用工具既有的展示名（TOOL_PRESENTATION），不新增文案；round.label 留给调用方覆盖。
+      const label = round.label || getToolPresentation(round.tool)?.label || round.tool;
+      for (const source of round.sources) {
+        items.push({
+          key: sourceItemKey(source, index),
+          source,
+          group: { id: round.id, label, meta: round.query || undefined },
+        });
+        index += 1;
+      }
+    }
+    return items;
+  }, [rounds, sources]);
+
+  // 索引仍按扁平列表数：entries 与窗口 data 的 sources 同序，点选键因此与旧版一致。
+  const activeKey = (managed?.data as { activeKey?: string } | undefined)?.activeKey ?? (entries[0] ? entries[0].key : '');
+  const activeIndex = Math.max(0, entries.findIndex((entry) => entry.key === activeKey));
+  const activeEntry = entries[activeIndex] ?? entries[0];
+  const active = activeEntry?.source ?? sources[0];
+  // 选中键一律回落到真实存在的目录项：data 里的 activeKey 可能是上一次的残留。
+  const activeEntryKey = activeEntry?.key ?? activeKey;
 
   if (!managed) return null;
 
@@ -69,21 +108,27 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
       bodyClassName="flex min-h-0 min-w-0 flex-1 overflow-hidden"
       unmountWhenMinimized
     >
-      {sources.length === 0 ? (
+      {entries.length === 0 ? (
         <p className="source-trace-empty">本轮没有可追踪的引用依据。</p>
       ) : (
         <DocumentWorkspace
           layoutKey="source-trace"
           outlineLabel="来源目录"
-          outline={sources.map((source, index) => ({
-            id: sourceItemKey(source, index),
-            kindLabel: source.kind === 'note' ? '笔记' : '网页',
-            title: source.title,
-            meta: source.kind === 'note' ? source.path : source.url || '暂无链接',
-            metaWrap: source.kind === 'web',
+          outline={entries.map((entry) => ({
+            id: entry.key,
+            kindLabel: entry.source.kind === 'note' ? '笔记' : '网页',
+            title: entry.source.title,
+            meta: entry.source.kind === 'note' ? entry.source.path : entry.source.url || '暂无链接',
+            metaWrap: entry.source.kind === 'web',
+            group: entry.group,
           }))}
-          activeId={sourceItemKey(active, activeIndex)}
-          onSelect={(id) => updateWindow(windowId, { data: { sources, activeKey: id } })}
+          activeId={activeEntryKey}
+          onSelect={(id) =>
+            // rounds 必须一起写回：updateWindow 是整块替换 data，漏了它点一次来源分组就没了。
+            updateWindow(windowId, {
+              data: rounds.length ? { sources, rounds, activeKey: id } : { sources, activeKey: id },
+            })
+          }
         >
           {active.kind === 'note' ? <NoteSourceStage source={active} /> : <WebSourceStage source={active} />}
         </DocumentWorkspace>

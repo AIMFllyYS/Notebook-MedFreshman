@@ -17,6 +17,9 @@ import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import FloatingChatBody from "@/components/chat/FloatingChatBody";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
+import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
+import { translate } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 
 export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   const managed = useWindowManager((state) => state.windows.find((item) => item.id === win.id));
@@ -26,6 +29,8 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   const sessionTitle = useChatHistory(
     (state) => state.sessionsMeta.find((item) => item.id === win.sessionId)?.title,
   );
+  const isAgentSurface = useIsAgentSurface();
+  const locale = useSettings((state) => state.locale);
 
   const activeSubjectId = useStore((state) => state.activeSubjectId);
   const activeCategoryId = useStore((state) => state.activeCategoryId);
@@ -42,11 +47,27 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
     [activeSubjectId, activeCategoryId, activeItemId, academicYear],
   );
 
+  const baseTitle =
+    sessionTitle && sessionTitle !== "新对话"
+      ? sessionTitle
+      : win.seedMode === "explain"
+        ? "AI 解释"
+        : win.seedMode === "example"
+          ? "AI 举例"
+          : "AI 追问";
+  // Agent 右栏是标签式的：主对话的产物与划词助手并排挂在同一条标签栏上，
+  // 只写会话标题分不出哪个是划词出来的。前缀加在**窗口标题**上而不是会话标题上——
+  // 会话标题会被 /api/chat-title 自动改写，贴在那里等于白贴。
+  const titleLabel = isAgentSurface
+    ? translate(locale, "agent.selection.title", { snippet: baseTitle })
+    : baseTitle;
+
   useEffect(() => {
-    if (sessionTitle && managed && managed.title !== sessionTitle) {
-      updateManagedWindow(win.id, { title: sessionTitle });
+    // 标签条读的是窗口标题：这里必须写 titleLabel，写回 sessionTitle 会把「划词 ·」前缀冲掉。
+    if (managed && managed.title !== titleLabel) {
+      updateManagedWindow(win.id, { title: titleLabel });
     }
-  }, [managed, sessionTitle, updateManagedWindow, win.id]);
+  }, [managed, titleLabel, updateManagedWindow, win.id]);
 
   useEffect(() => {
     function onResize() {
@@ -76,15 +97,6 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
     useFloatingTokenTracker.getState().resetSession(win.sessionId);
     closeFloatingWindow(win.id);
   }
-
-  const titleLabel =
-    sessionTitle && sessionTitle !== "新对话"
-      ? sessionTitle
-      : win.seedMode === "explain"
-        ? "AI 解释"
-        : win.seedMode === "example"
-          ? "AI 举例"
-          : "AI 追问";
 
   return (
     <ManagedWindow

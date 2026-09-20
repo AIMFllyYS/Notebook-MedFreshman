@@ -84,8 +84,9 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(sidebar, /from "\.\/LeftDock"/);
   // 左栏结构：固定四行导航 + 一起滚动的 Projects / Recents（详见 tests/agentNavStructure.test.ts）
   assert.match(sidebar, /AgentNavRows/);
-  assert.match(sidebar, /label="Projects"/);
-  assert.match(sidebar, /label="Recents"/);
+  // 分组标题文案走 i18n 词典（zh 值「项目 / 最近」，en 值 Projects / Recents）
+  assert.match(sidebar, /label=\{t\("agent\.sidebar\.projects"\)\}/);
+  assert.match(sidebar, /label=\{t\("agent\.sidebar\.recents"\)\}/);
   assert.match(appShell, /hideWindowTaskbar/);
   assert.match(placeholder, /开发中/);
 

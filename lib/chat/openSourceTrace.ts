@@ -1,5 +1,5 @@
 import { useWindowManager } from '@/lib/hooks/useWindowManager';
-import type { TraceSource } from '@/lib/chat/traceSources';
+import type { SourceRound, TraceSource } from '@/lib/chat/traceSources';
 import type { WebSearchSource } from '@/lib/types/chat';
 
 export const SOURCE_TRACE_WINDOW_ID = 'source-trace-viewer';
@@ -11,19 +11,27 @@ export function sourceItemKey(source: TraceSource, index = 0): string {
   return source.url ? `web:${source.url}` : `web:${index}:${source.title || 'untitled'}`;
 }
 
+/**
+ * 打开来源面板。
+ *
+ * `rounds` 可选：带上它，目录就按检索轮次分组（"搜了什么 → 查到什么"）；
+ * 只传 sources 时窗口 data 的形状与旧版完全一致（不写空的 rounds 字段）。
+ */
 export function openSourceTrace(
   sources: TraceSource[],
-  options?: { id?: string; title?: string; activeKey?: string },
+  options?: { id?: string; title?: string; activeKey?: string; rounds?: SourceRound[] },
 ) {
   if (!sources.length) return;
   const id = options?.id ?? SOURCE_TRACE_WINDOW_ID;
   const title = options?.title ?? `来源追踪 · ${sources.length} 条`;
   const activeKey = options?.activeKey ?? sourceItemKey(sources[0], 0);
+  const rounds = options?.rounds?.length ? options.rounds : null;
+  const data = rounds ? { sources, activeKey, rounds } : { sources, activeKey };
   const { pos, size } = sourceTraceGeometry();
   const wm = useWindowManager.getState();
   const existing = wm.windows.find((win) => win.id === id);
   if (existing) {
-    wm.updateWindow(id, { title, data: { sources, activeKey } });
+    wm.updateWindow(id, { title, data });
     if (existing.minimized) wm.restoreWindow(id);
     else wm.bringToFront(id);
     return;
@@ -34,7 +42,7 @@ export function openSourceTrace(
     title,
     pos,
     size,
-    data: { sources, activeKey },
+    data,
   });
 }
 

@@ -2,6 +2,7 @@
 
 import { createPortal } from "react-dom";
 import { Archive, ChevronRight, Folder, FolderPlus, PenLine, Trash2 } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import type { ChatFolder, SessionMeta } from "@/lib/storage/chatStorage";
 
 export type AgentMenuTarget =
@@ -58,6 +59,8 @@ export default function AgentPanelMenu({
   close: () => void;
   actions: AgentPanelMenuActions;
 }) {
+  // hook 必须在提前 return 之前调用，渲染路径不同时 hook 顺序也要一致。
+  const t = useT();
   if (typeof document === "undefined") return null;
   const session = target.kind === "session" ? target.session : null;
   const systemSession = session?.kind === "note" || session?.kind === "floating";
@@ -65,7 +68,7 @@ export default function AgentPanelMenu({
   return createPortal(
     <div
       role="menu"
-      aria-label="对话整理"
+      aria-label={t("agent.menu.aria")}
       data-testid="agent-panel-menu"
       style={{ position: "fixed", left: x, top: y }}
       className="z-[12000] w-56 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-1.5 shadow-xl"
@@ -75,11 +78,11 @@ export default function AgentPanelMenu({
         <>
           <button type="button" role="menuitem" className={ITEM_CLASS} onClick={() => { actions.newChat(); close(); }}>
             <PenLine size={14} className="text-[var(--md-sys-color-primary)]" />
-            新建对话
+            {t("agent.menu.newChat")}
           </button>
           <button type="button" role="menuitem" className={ITEM_CLASS} onClick={() => { actions.newProject(); close(); }}>
             <FolderPlus size={14} className="text-[var(--md-sys-color-primary)]" />
-            新建项目
+            {t("agent.sidebar.newProject")}
           </button>
         </>
       )}
@@ -89,11 +92,11 @@ export default function AgentPanelMenu({
           <div className="truncate px-2.5 py-1 text-[11px] text-[var(--ink-faint)]">{target.folder.name}</div>
           <button type="button" role="menuitem" className={ITEM_CLASS} onClick={() => { actions.newChatInProject(target.folder.id); close(); }}>
             <PenLine size={14} className="text-[var(--md-sys-color-primary)]" />
-            在此新建对话
+            {t("agent.menu.newChatInProject")}
           </button>
           <button type="button" role="menuitem" className={ITEM_CLASS} onClick={() => { actions.renameProject(target.folder.id); close(); }}>
             <PenLine size={14} />
-            重命名项目
+            {t("agent.sidebar.project.rename")}
           </button>
           {target.folder.system ? null : pendingDeleteProjectId === target.folder.id ? (
             <div
@@ -101,7 +104,7 @@ export default function AgentPanelMenu({
               className="mt-1 rounded-lg border border-[color-mix(in_srgb,var(--md-sys-color-error)_45%,transparent)] p-2"
             >
               <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-error)]">
-                删除项目后，里面的对话会退回 Recents（对话本身不删）。
+                {t("agent.menu.deleteProjectConfirm")}
               </p>
               <div className="mt-1.5 flex items-center justify-end gap-1.5">
                 <button
@@ -109,14 +112,14 @@ export default function AgentPanelMenu({
                   className="rounded-md px-2 py-1 text-[11.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
                   onClick={onCancelDeleteProject}
                 >
-                  取消
+                  {t("agent.menu.cancel")}
                 </button>
                 <button
                   type="button"
                   className="rounded-md bg-[var(--md-sys-color-error)] px-2.5 py-1 text-[11.5px] font-semibold text-[var(--md-sys-color-on-error)]"
                   onClick={() => onConfirmDeleteProject(target.folder.id)}
                 >
-                  删除项目
+                  {t("agent.menu.deleteProject")}
                 </button>
               </div>
             </div>
@@ -128,7 +131,7 @@ export default function AgentPanelMenu({
               onClick={() => onRequestDeleteProject(target.folder.id)}
             >
               <Trash2 size={14} />
-              删除项目
+              {t("agent.menu.deleteProject")}
             </button>
           )}
         </>
@@ -136,14 +139,14 @@ export default function AgentPanelMenu({
 
       {session && (
         <>
-          <div className="truncate px-2.5 py-1 text-[11px] text-[var(--ink-faint)]">{session.title || "新对话"}</div>
+          <div className="truncate px-2.5 py-1 text-[11px] text-[var(--ink-faint)]">{session.title || t("agent.session.untitled")}</div>
           <button type="button" role="menuitem" className={ITEM_CLASS} onClick={() => { actions.renameSession(session.id); close(); }}>
             <PenLine size={14} />
-            重命名
+            {t("agent.menu.renameSession")}
           </button>
           {!systemSession && userProjects.length > 0 && (
             <>
-              <div className="px-2.5 pb-0.5 pt-1.5 text-[11px] text-[var(--ink-faint)]">移动到项目</div>
+              <div className="px-2.5 pb-0.5 pt-1.5 text-[11px] text-[var(--ink-faint)]">{t("agent.menu.moveToProject")}</div>
               {userProjects.map((folder) => (
                 <button
                   key={folder.id}
@@ -164,14 +167,14 @@ export default function AgentPanelMenu({
                   onClick={() => { actions.moveSession(session.id, null); close(); }}
                 >
                   <ChevronRight size={13} />
-                  移出项目
+                  {t("agent.menu.removeFromProject")}
                 </button>
               ) : null}
             </>
           )}
           {systemSession ? (
             <p className="px-2.5 pb-1 pt-0.5 text-[10.5px] leading-relaxed text-[var(--ink-faint)]">
-              这一组由来源决定（{session.kind === "note" ? "笔记窗内的 Agent" : "划词助手"}），不能改挂到别的项目。
+              {session.kind === "note" ? t("agent.menu.systemNote") : t("agent.menu.systemFloating")}
             </p>
           ) : null}
           <button
@@ -181,7 +184,7 @@ export default function AgentPanelMenu({
             onClick={() => { actions.archiveSession(session.id, true); close(); }}
           >
             <Archive size={14} className="text-[var(--md-sys-color-primary)]" />
-            归档
+            {t("agent.menu.archive")}
           </button>
         </>
       )}
@@ -192,7 +195,7 @@ export default function AgentPanelMenu({
           className="mt-1 rounded-lg border border-[color-mix(in_srgb,var(--md-sys-color-error)_45%,transparent)] p-2"
         >
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-error)]">
-            删除后云端记录一并删除，无法恢复。
+            {t("agent.menu.deleteSessionConfirm")}
           </p>
           <div className="mt-1.5 flex items-center justify-end gap-1.5">
             <button
@@ -200,14 +203,14 @@ export default function AgentPanelMenu({
               className="rounded-md px-2 py-1 text-[11.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
               onClick={onCancelDelete}
             >
-              取消
+              {t("agent.menu.cancel")}
             </button>
             <button
               type="button"
               className="rounded-md bg-[var(--md-sys-color-error)] px-2.5 py-1 text-[11.5px] font-semibold text-[var(--md-sys-color-on-error)]"
               onClick={() => onConfirmDelete(pendingDeleteId)}
             >
-              删除
+              {t("agent.menu.confirmDelete")}
             </button>
           </div>
         </div>
@@ -219,7 +222,7 @@ export default function AgentPanelMenu({
           onClick={() => onRequestDelete(session.id)}
         >
           <Trash2 size={14} />
-          删除对话
+          {t("agent.menu.deleteSession")}
         </button>
       ) : null}
     </div>,

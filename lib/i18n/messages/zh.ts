@@ -1,0 +1,151 @@
+/**
+ * 中文词典——本期 i18n 的**唯一真相源**。
+ *
+ * 为什么中文是真相源：仓库现有文案全是中文，迁移时只做「把字面量搬进字典」这一件事，
+ * 不做二次创作；en.ts 用 `satisfies LocaleMessages` 对齐它的形状，漏 key 会在 typecheck 直接报错。
+ * 取值统一走 dot-path（如 `agent.nav.assets`），嵌套只用于分组，不参与拼 key。
+ */
+export const zh = {
+  agent: {
+    nav: {
+      aria: "Agent 板块导航",
+      newChat: "新对话",
+      assets: "我的资产",
+      scheduled: "定时任务",
+      plugins: "插件市场",
+    },
+    sidebar: {
+      title: "对话",
+      search: "全局搜索",
+      collapse: "折叠侧边栏",
+      projects: "项目",
+      recents: "最近",
+      archived: "已归档",
+      newProject: "新建项目",
+      backToList: "返回对话列表",
+      viewArchived: "查看已归档对话",
+      more: "还有 {count} 个",
+      project: {
+        name: "项目名称",
+        newChat: "在「{name}」里新建对话",
+        rename: "重命名项目",
+      },
+      empty: {
+        project: "空项目",
+        notes: "暂无笔记对话",
+        selection: "暂无划词对话",
+        recents: "暂无对话",
+        archived: "没有归档的对话",
+      },
+    },
+    session: {
+      rename: "对话名称",
+      untitled: "新对话",
+      empty: "空对话",
+      messageCount: "{count} 条消息",
+    },
+    menu: {
+      aria: "对话整理",
+      newChat: "新建对话",
+      newChatInProject: "在此新建对话",
+      renameSession: "重命名",
+      moveToProject: "移动到项目",
+      removeFromProject: "移出项目",
+      systemNote: "这一组由来源决定（笔记窗内的 Agent），不能改挂到别的项目。",
+      systemFloating: "这一组由来源决定（划词助手），不能改挂到别的项目。",
+      archive: "归档",
+      deleteSession: "删除对话",
+      deleteProject: "删除项目",
+      deleteSessionConfirm: "删除后云端记录一并删除，无法恢复。",
+      deleteProjectConfirm: "删除项目后，里面的对话会退回 Recents（对话本身不删）。",
+      cancel: "取消",
+      confirmDelete: "删除",
+    },
+    center: {
+      tab: {
+        answer: "回答",
+        links: "来源",
+        images: "图片",
+      },
+      tabs: {
+        aria: "内容视图",
+      },
+    },
+    sources: {
+      title: "来源",
+      count: "来源 · {count}",
+      openPanel: "打开来源面板",
+      outline: "来源目录",
+      query: "搜索「{query}」",
+      empty: "本轮没有可追踪的引用依据。",
+      noLink: "暂无链接",
+      snippet: "检索片段",
+      reading: "正在读取笔记正文…",
+      missing: "未找到完整正文，已显示检索片段。",
+      openOriginal: "打开原页面",
+      summary: "页面摘要",
+      rawJson: "原始 JSON",
+      round: {
+        web: "联网搜索",
+        notes: "笔记检索",
+        images: "图片检索",
+      },
+      kind: {
+        note: "笔记",
+        web: "网页",
+      },
+    },
+    links: {
+      empty: "这次对话还没有可追溯的来源。",
+    },
+    images: {
+      empty: "这次对话还没有图片。",
+      search: "搜索到的图片",
+      generated: "生成的图片",
+    },
+    quiz: {
+      empty: "出题失败：没有可渲染的题目。",
+      card: {
+        title: "{title} · {count} 题",
+      },
+      redo: "重做",
+      progress: "已反馈 {done} / {total}",
+      dropped: "（有 {count} 道题因结构不完整被丢弃）",
+      dock: {
+        title: "出题",
+        open: "在右侧作答",
+        created: "已出题 · {count} 题",
+      },
+      intent: {
+        check: "即时检验",
+        diagnose: "漏洞诊断",
+        practice: "练习",
+        exam: "小测",
+      },
+      reveal: {
+        blank: "查看答案",
+        multiple: "确认并查看对错",
+        default: "查看解析",
+      },
+    },
+    selection: {
+      title: "划词 · {snippet}",
+      explain: "解释",
+      ask: "追问",
+      example: "举例",
+    },
+    dock: {
+      collapse: "收起右侧面板",
+      global: "全屏显示这个板块",
+      shrink: "缩小到右栏",
+    },
+  },
+  settings: {
+    language: {
+      title: "语言",
+      zh: "中文",
+      en: "English",
+      desc: "界面语言，切换后立即生效",
+    },
+  },
+};

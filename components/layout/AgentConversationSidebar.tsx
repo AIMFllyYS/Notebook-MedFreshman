@@ -11,6 +11,7 @@ import AgentSectionHeader from "@/components/agent/AgentSectionHeader";
 import AgentSessionList from "@/components/agent/AgentSessionList";
 import AgentPanelMenu, { type AgentMenuTarget } from "@/components/agent/AgentPanelMenu";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
+import { useT } from "@/lib/i18n";
 import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
@@ -37,6 +38,7 @@ interface PanelMenuState {
 export default function AgentConversationSidebar({ chatContext }: { chatContext: ChatContext }) {
   const pathname = usePathname();
   const router = useRouter();
+  const t = useT();
   /** 只有在对话页（/agent）才谈得上「切换会话」；在资产页等子页面点会话要先把人送回来。 */
   const onChatRoute = pathname === "/agent";
   const goToChat = useCallback(() => {
@@ -200,14 +202,14 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
             color: "var(--md-sys-color-outline)",
           }}
         >
-          对话
+          {t("agent.sidebar.title")}
         </span>
         <div className="ml-auto flex items-center gap-0.5">
           <button
             type="button"
             onClick={() => useGlobalSearch.getState().setOpen(true)}
-            title="全局搜索"
-            aria-label="全局搜索"
+            title={t("agent.sidebar.search")}
+            aria-label={t("agent.sidebar.search")}
             className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
           >
             <Search size={15} />
@@ -215,8 +217,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
           <button
             type="button"
             onClick={() => setCollapsed(true)}
-            title="折叠侧边栏"
-            aria-label="折叠侧边栏"
+            title={t("agent.sidebar.collapse")}
+            aria-label={t("agent.sidebar.collapse")}
             className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
           >
             <PanelLeftClose size={15} />
@@ -230,7 +232,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
         {showArchived ? (
           <>
             <AgentSectionHeader
-              label="已归档"
+              label={t("agent.sidebar.archived")}
               expanded
               onToggle={() => setShowArchived(false)}
               testId="agent-archived-header"
@@ -238,8 +240,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                 <button
                   type="button"
                   onClick={() => setShowArchived(false)}
-                  title="返回对话列表"
-                  aria-label="返回对话列表"
+                  title={t("agent.sidebar.backToList")}
+                  aria-label={t("agent.sidebar.backToList")}
                   className="flex h-6 w-6 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
                 >
                   <MessagesSquare size={14} />
@@ -249,7 +251,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
             <AgentSessionList
               slot="archived"
               sessions={archivedSessions}
-              emptyLabel="没有归档的对话"
+              emptyLabel={t("agent.sidebar.empty.archived")}
               depth={1}
               {...sessionMenuProps}
             />
@@ -257,7 +259,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
         ) : (
           <>
             <AgentSectionHeader
-              label="Projects"
+              label={t("agent.sidebar.projects")}
               expanded={projectsExpanded}
               onToggle={() => setProjectsExpanded((open) => !open)}
               testId="agent-projects"
@@ -266,8 +268,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                   type="button"
                   data-testid="agent-project-add"
                   onClick={handleCreateProject}
-                  title="新建项目"
-                  aria-label="新建项目"
+                  title={t("agent.sidebar.newProject")}
+                  aria-label={t("agent.sidebar.newProject")}
                   className="flex h-6 w-6 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
                 >
                   <Plus size={14} />
@@ -279,9 +281,9 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                 const expanded = collapsedProjects[project.id] !== true;
                 const emptyLabel = project.system
                   ? project.system === "note"
-                    ? "暂无笔记对话"
-                    : "暂无划词对话"
-                  : "空项目";
+                    ? t("agent.sidebar.empty.notes")
+                    : t("agent.sidebar.empty.selection")
+                  : t("agent.sidebar.empty.project");
                 return (
                   <div key={project.id}>
                     <div
@@ -298,7 +300,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                           <input
                             autoFocus
                             defaultValue={project.name}
-                            aria-label="项目名称"
+                            aria-label={t("agent.sidebar.project.name")}
                             data-testid="project-rename-input"
                             className="mx-2 my-0.5 w-[calc(100%-1rem)] rounded-md border border-[var(--accent)] bg-[var(--bg-muted)] px-2 py-0.5 text-[12px] text-[var(--ink)] outline-none"
                             onPointerDown={(event) => event.stopPropagation()}
@@ -336,7 +338,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                         )}
                       </div>
                       {/**
-                       * 项目行右侧的「+」：直接在这个项目里开一条新对话。
+                       * 项目行右侧的「+」：直接在这个项目里开一条新对话（用户口径：跟 Projects 那行右侧的加号一个意思）。
+                       * **常显**而不是悬停才现：它是这个项目最主要的动作，藏起来用户根本不知道有。
                        * 系统项目（笔记记录 / 划词摘录）的成员由会话 kind 决定，手动新建挂不进去，所以不给。
                        * 重命名时也藏起来，免得和输入框抢焦点。
                        */}
@@ -348,9 +351,9 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                             event.stopPropagation();
                             handleNewChat(project.id);
                           }}
-                          title={`在「${project.name}」里新建对话`}
-                          aria-label={`在「${project.name}」里新建对话`}
-                          className="mr-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[var(--ink-soft)] opacity-0 transition-opacity hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--ink)] focus-visible:opacity-100 group-hover:opacity-100"
+                          title={t("agent.sidebar.project.newChat", { name: project.name })}
+                          aria-label={t("agent.sidebar.project.newChat", { name: project.name })}
+                          className="mr-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[var(--ink-faint)] transition-colors hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--ink)]"
                         >
                           <Plus size={13} />
                         </button>
@@ -371,13 +374,13 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
             </AnimatedCollapse>
 
             <AgentSectionHeader
-              label="Recents"
+              label={t("agent.sidebar.recents")}
               expanded={recentsExpanded}
               onToggle={() => setRecentsExpanded((open) => !open)}
               testId="agent-recents"
             />
             <AnimatedCollapse isOpen={recentsExpanded}>
-              <AgentSessionList slot="main" sessions={recentSessions} emptyLabel="暂无对话" depth={1} {...sessionMenuProps} />
+              <AgentSessionList slot="main" sessions={recentSessions} emptyLabel={t("agent.sidebar.empty.recents")} depth={1} {...sessionMenuProps} />
             </AnimatedCollapse>
           </>
         )}
@@ -395,8 +398,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
         <button
           type="button"
           onClick={() => setShowArchived((value) => !value)}
-          title={showArchived ? "返回对话列表" : "查看已归档对话"}
-          aria-label={showArchived ? "返回对话列表" : "查看已归档对话"}
+          title={showArchived ? t("agent.sidebar.backToList") : t("agent.sidebar.viewArchived")}
+          aria-label={showArchived ? t("agent.sidebar.backToList") : t("agent.sidebar.viewArchived")}
           aria-pressed={showArchived}
           data-testid="archived-toggle"
           className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"

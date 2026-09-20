@@ -55,7 +55,7 @@ export function WindowTypeIcon({
   if (type === "flashcard-cite-picker") return <Layers size={size} />;
   if (type === "agent-product-picker") return <FileDigit size={size} />;
   if (type === "memory-proposal") return <Sparkles size={size} />;
-  if (type === "quiz-explain") return <AgentQuizIcon size={size} />;
+  if (type === "quiz-explain" || type === "quiz-dock") return <AgentQuizIcon size={size} />;
   if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={size} />;
   if (type === "source-preview") return <Globe size={size} />;
   if (type === "project-files") return <FolderTree size={size} />;

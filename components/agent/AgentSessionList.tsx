@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import AgentSessionRow from "./AgentSessionRow";
+import { useT } from "@/lib/i18n";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 
 /** 每次渲染/续载的条数（用户口径：默认一次 10 个，继续下滑再 10 个）。 */
@@ -36,6 +37,7 @@ export default function AgentSessionList({
   onRenameSubmit: (id: string, title: string) => void;
   onRenameCancel: () => void;
 }) {
+  const t = useT();
   const [limit, setLimit] = useState(SESSION_PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const hasMore = sessions.length > limit;
@@ -89,7 +91,7 @@ export default function AgentSessionList({
           className="press mx-2 my-0.5 flex items-center gap-1.5 rounded-lg px-2 py-1 text-[12px] text-[var(--ink-faint)] hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--ink-soft)]"
         >
           <span className="tracking-[0.15em]">···</span>
-          <span>还有 {hidden} 个</span>
+          <span>{t("agent.sidebar.more", { count: hidden })}</span>
         </button>
       ) : null}
     </>

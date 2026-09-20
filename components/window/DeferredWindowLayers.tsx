@@ -7,6 +7,7 @@ import { useUserNotes } from "@/lib/stores/userNotes";
 
 const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
 const QuizExplainLayer = dynamic(() => import("@/components/quiz/QuizExplainLayer"), { ssr: false });
+const AgentQuizWindowLayer = dynamic(() => import("@/components/quiz/AgentQuizWindow"), { ssr: false });
 const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPreviewLayer"), { ssr: false });
 const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
 const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
@@ -50,6 +51,7 @@ export default function DeferredWindowLayers() {
     <>
       <FloatingChatLayer />
       <QuizExplainLayer />
+      <AgentQuizWindowLayer />
       <RecordPreviewLayer />
       <ArtifactViewer />
       <ImageGenViewerLayer />

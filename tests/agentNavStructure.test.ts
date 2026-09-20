@@ -41,9 +41,9 @@ test("左栏四行导航：顺序固定，图标各不相同，且与划词图�
   assert.ok(sidebar.indexOf("<AgentSectionHeader") > scrollStart, "分组标题在滚动区里");
   assert.ok(sidebar.indexOf("archived-toggle") > scrollStart, "归档开关是固定底部");
 
-  // 4) 搜索与折叠按钮保留在头部的固定条里
-  assert.match(sidebar, /title="全局搜索"/);
-  assert.match(sidebar, /title="折叠侧边栏"/);
+  // 4) 搜索与折叠按钮保留在头部的固定条里（文案已迁到 i18n 词典，见 lib/i18n/messages/zh.ts）
+  assert.match(sidebar, /title=\{t\("agent\.sidebar\.search"\)\}/);
+  assert.match(sidebar, /title=\{t\("agent\.sidebar\.collapse"\)\}/);
   assert.match(sidebar, /<PanelLeftClose size=\{15\} \/>/);
 });
 
@@ -75,7 +75,9 @@ test("项目体系：两个系统项目不可删、可重命名，重命名同�
   assert.match(store, /if \(moved\) scheduleCloudUpsert\('chat-session', sessionId\)/);
   // 菜单：系统项目没有删除项；删除对话就地二次确认
   assert.match(menu, /data-testid="session-delete-confirm"/);
-  assert.match(menu, /删除后云端记录一并删除，无法恢复。/);
+  // 文案迁到词典后菜单只引用 key：确认语必须仍在中文真相源里，否则等于丢了文案
+  assert.match(menu, /t\("agent\.menu\.deleteSessionConfirm"\)/);
+  assert.match(readFile("lib/i18n/messages/zh.ts"), /删除后云端记录一并删除，无法恢复。/);
   assert.match(menu, /target\.folder\.system \? null :/);
 });
 

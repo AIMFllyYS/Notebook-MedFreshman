@@ -15,11 +15,28 @@ test("withSseHeartbeat：首 chunk 到达前注入心跳注释，之后停止", 
     },
   });
   const res = withSseHeartbeat(new Response(body, { headers: { "content-type": "text/event-stream" } }), 10);
-  // 等两个心跳周期再放行首 chunk
-  await new Promise((r) => setTimeout(r, 35));
+
+  // 判据是**真实数据**而不是时钟：固定 sleep 35ms 等在满载的测试进程里会假失败
+  // （事件循环被占住时，一个 tick 只会跑一次 interval，等再久也只拿到 1 个心跳）。
+  // 改成「读到第 2 个心跳再放行首 chunk」，语义没变、结果确定。
+  const reader = res.body!.getReader();
+  const decoder = new TextDecoder();
+  let text = "";
+  const beatsIn = (value: string) => (value.match(/: heartbeat\n\n/g) ?? []).length;
+
+  while (beatsIn(text) < 2) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    text += decoder.decode(value, { stream: true });
+  }
   release();
-  const text = await res.text();
-  const beats = (text.match(/: heartbeat\n\n/g) ?? []).length;
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    text += decoder.decode(value, { stream: true });
+  }
+
+  const beats = beatsIn(text);
   assert.ok(beats >= 2, `expected >=2 heartbeats, got ${beats}`);
   assert.ok(text.endsWith("data: {\"type\":\"text-delta\"}\n\n"));
   // 首 chunk 之后不应再有心跳

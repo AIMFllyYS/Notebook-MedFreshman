@@ -1,10 +1,21 @@
 "use client";
 
-import { useState, type ReactNode, type Ref } from "react";
+import { Fragment, useState, type ReactNode, type Ref } from "react";
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
+
+/**
+ * 目录分组标题。**文案一律由调用方给**（i18n 在调用方做），
+ * 这里只负责"连续同组项前面出一条标题"的排版。
+ */
+export interface DocumentOutlineGroup {
+  id: string;
+  label: string;
+  /** 副文，如检索轮次的 query。 */
+  meta?: string;
+}
 
 export interface DocumentOutlineItem {
   id: string;
@@ -13,6 +24,11 @@ export interface DocumentOutlineItem {
   kindLabel?: string;
   /** 目录副文（如网页 URL）允许换行，避免长链接被截成省略号。 */
   metaWrap?: boolean;
+  /**
+   * 可选分组。**连续**且 group.id 相同的项共用一条分组标题；
+   * 不传 group 的调用方渲染结果与旧版一字不差。
+   */
+  group?: DocumentOutlineGroup;
 }
 
 function OutlineNav({
@@ -35,22 +51,38 @@ function OutlineNav({
       ) : (
         outline.map((item, index) => {
           const selected = item.id === activeId;
+          // 只在「这一组的开头」出一条标题：连续同组项共用一条，组变了（或又绕回来）才再出一条。
+          const group = item.group && outline[index - 1]?.group?.id !== item.group.id ? item.group : null;
           return (
-            <button
-              key={`${item.id}::${index}`}
-              type="button"
-              data-no-drag
-              className={clsx("note-citation-nav-item", selected && "is-active")}
-              onClick={() => onSelect(item.id)}
-            >
-              {item.kindLabel ? (
-                <span className="note-citation-nav-path">{item.kindLabel}</span>
+            <Fragment key={`${item.id}::${index}`}>
+              {group ? (
+                <div className="flex min-w-0 shrink-0 flex-col gap-0.5 px-2.5 pb-1 pt-3" data-outline-group={group.id}>
+                  {/* 不用 .note-citation-nav-title：那是目录项的 11.5px 样式，分组标题要更大更重。 */}
+                  <span className="min-w-0 truncate text-[12.5px] font-semibold text-[var(--ink)]">
+                    {group.label}
+                  </span>
+                  {group.meta ? (
+                    <span className="note-citation-nav-path" title={group.meta}>
+                      {group.meta}
+                    </span>
+                  ) : null}
+                </div>
               ) : null}
-              <span className="note-citation-nav-title">{item.title}</span>
-              {item.meta ? (
-                <span className={clsx("note-citation-nav-path", item.metaWrap && "is-wrap")}>{item.meta}</span>
-              ) : null}
-            </button>
+              <button
+                type="button"
+                data-no-drag
+                className={clsx("note-citation-nav-item", selected && "is-active")}
+                onClick={() => onSelect(item.id)}
+              >
+                {item.kindLabel ? (
+                  <span className="note-citation-nav-path">{item.kindLabel}</span>
+                ) : null}
+                <span className="note-citation-nav-title">{item.title}</span>
+                {item.meta ? (
+                  <span className={clsx("note-citation-nav-path", item.metaWrap && "is-wrap")}>{item.meta}</span>
+                ) : null}
+              </button>
+            </Fragment>
           );
         })
       )}

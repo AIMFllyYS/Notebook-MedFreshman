@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import type { QuizQuestion } from "@/lib/quiz/types";
 
-export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain" | "project-files";
+export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain" | "quiz-dock" | "project-files";
 
 export interface WindowPoint {
   x: number;
@@ -84,6 +85,21 @@ export interface QuizExplainData {
   questionId: string;
 }
 
+/**
+ * 右栏出题窗：一次 createQuiz 的题目快照。
+ * 一个 quizId 一个窗（id 形如 `quiz-dock:<quizId>`），打开入口见 `lib/quiz-dock/open.ts`。
+ */
+export interface AgentQuizData {
+  quizId: string;
+  /** 卷面标题（窗口标题会拼成「出题 · <title>」）。 */
+  title: string;
+  /** 出题意图：check / diagnose / practice / exam，仅用于展示。 */
+  intent?: string;
+  questions: QuizQuestion[];
+  /** 被丢弃的非法题数。 */
+  droppedCount?: number;
+}
+
 /** 项目文件窗：一个项目一个窗（同项目单开）。 */
 export interface ProjectFilesData {
   projectId: string;
@@ -96,7 +112,7 @@ export interface AttachmentPreviewData {
   content: string;
 }
 
-export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | MembershipSponsorData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | UserNoteEditorData | UserNoteLibraryData | FlashcardCitePickerData | AgentProductPickerData | MemoryProposalData | QuizExplainData | ProjectFilesData | Record<string, unknown>;
+export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | MembershipSponsorData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | UserNoteEditorData | UserNoteLibraryData | FlashcardCitePickerData | AgentProductPickerData | MemoryProposalData | QuizExplainData | AgentQuizData | ProjectFilesData | Record<string, unknown>;
 
 export interface ManagedWindow<TData = ManagedWindowData> {
   id: string;

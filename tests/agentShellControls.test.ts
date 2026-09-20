@@ -64,7 +64,9 @@ test("删除项目同样二次确认（与删除对话一致）", () => {
   const menu = readFile("components/agent/AgentPanelMenu.tsx");
   const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
   assert.match(menu, /data-testid="project-delete-confirm"/);
-  assert.match(menu, /删除项目后，里面的对话会退回 Recents（对话本身不删）。/);
+  // 文案迁到词典后菜单只引用 key：确认语必须仍在中文真相源里，否则等于丢了文案
+  assert.match(menu, /t\("agent\.menu\.deleteProjectConfirm"\)/);
+  assert.match(readFile("lib/i18n/messages/zh.ts"), /删除项目后，里面的对话会退回 Recents（对话本身不删）。/);
   assert.match(menu, /onClick=\{\(\) => onRequestDeleteProject\(target\.folder\.id\)\}/);
   assert.match(menu, /onClick=\{\(\) => onConfirmDeleteProject\(target\.folder\.id\)\}/);
   // 菜单不再直接删：动作里没有 deleteProject 了

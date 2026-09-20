@@ -1,6 +1,7 @@
 "use client";
 
-import { PanelRight, Pin, Type } from "lucide-react";
+import { Languages, PanelRight, Pin, Type } from "lucide-react";
+import { LOCALES, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useStore } from "@/lib/stores/ui";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -14,6 +15,9 @@ export function AppearanceSection() {
   const setShowRightPanelTabBar = useSettings((s) => s.setShowRightPanelTabBar);
   const pinChatHeader = useSettings((s) => s.pinChatHeader);
   const setPinChatHeader = useSettings((s) => s.setPinChatHeader);
+  const locale = useSettings((s) => s.locale);
+  const setLocale = useSettings((s) => s.setLocale);
+  const t = useT();
   const { theme, setTheme, appearance, setAppearanceMode, setCustomAppearance, resetAppearance } = useTheme();
 
   return (
@@ -60,6 +64,48 @@ export function AppearanceSection() {
       ))}
       <div className="settings-section-divider" />
       <h3 className={h3Cls}>整个项目</h3>
+      {/* 语言是全局设置，跟外观一起归在「整个项目」；分段控件复用明暗主题那组胶囊的既有写法。 */}
+      <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
+        <div className="flex items-center gap-2.5">
+          <span className="text-[var(--md-sys-color-primary)]"><Languages size={16} /></span>
+          <div>
+            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+              {t("settings.language.title")}
+            </div>
+            <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+              {t("settings.language.desc")}
+            </div>
+          </div>
+        </div>
+        <div
+          role="group"
+          aria-label={t("settings.language.title")}
+          className="flex shrink-0 items-center gap-0.5 rounded-full p-0.5"
+          style={{ background: "var(--md-sys-color-surface-container-highest)" }}
+        >
+          {LOCALES.map((value) => {
+            const active = locale === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                data-testid={`settings-locale-${value}`}
+                aria-pressed={active}
+                onClick={() => setLocale(value)}
+                className="rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
+                style={{
+                  background: active ? "var(--md-sys-color-primary)" : "transparent",
+                  color: active
+                    ? "var(--md-sys-color-on-primary)"
+                    : "var(--md-sys-color-on-surface-variant)",
+                }}
+              >
+                {value === "zh" ? t("settings.language.zh") : t("settings.language.en")}
+              </button>
+            );
+          })}
+        </div>
+      </div>
       <AppearanceSettingsControls theme={theme} setTheme={setTheme} appearance={appearance}
         setAppearanceMode={setAppearanceMode} setCustomAppearance={setCustomAppearance} resetAppearance={resetAppearance} />
       <div className="settings-section-divider" />

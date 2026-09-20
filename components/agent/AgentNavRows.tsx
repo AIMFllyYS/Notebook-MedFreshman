@@ -2,21 +2,23 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { AgentAssetsIcon, AgentComposeIcon, AgentPluginsIcon, AgentScheduleIcon } from "@/components/icons/AgentIcons";
+import { useT, type I18nKey } from "@/lib/i18n";
 
 export type AgentNavId = "new-chat" | "assets" | "scheduled" | "plugins";
 
 interface NavRow {
   id: Exclude<AgentNavId, "new-chat">;
-  label: string;
+  /** 文案 key 而不是字面量：语言在组件渲染时才可知，模块级常量不能提前取词。 */
+  labelKey: I18nKey;
   href: string;
   icon: React.ReactNode;
 }
 
 /** 三个落点页；「新对话」不是路由（它是动作），所以单独一行放在最前。 */
 const NAV_ROWS: readonly NavRow[] = [
-  { id: "assets", label: "我的资产", href: "/agent/assets", icon: <AgentAssetsIcon size={16} /> },
-  { id: "scheduled", label: "定时任务", href: "/agent/scheduled", icon: <AgentScheduleIcon size={16} /> },
-  { id: "plugins", label: "插件市场", href: "/agent/plugins", icon: <AgentPluginsIcon size={16} /> },
+  { id: "assets", labelKey: "agent.nav.assets", href: "/agent/assets", icon: <AgentAssetsIcon size={16} /> },
+  { id: "scheduled", labelKey: "agent.nav.scheduled", href: "/agent/scheduled", icon: <AgentScheduleIcon size={16} /> },
+  { id: "plugins", labelKey: "agent.nav.plugins", href: "/agent/plugins", icon: <AgentPluginsIcon size={16} /> },
 ];
 
 const ROW_CLASS =
@@ -29,8 +31,9 @@ const ROW_CLASS =
 export default function AgentNavRows({ onNewChat, newChatActive = false }: { onNewChat: () => void; newChatActive?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
+  const t = useT();
   return (
-    <nav data-testid="agent-nav" aria-label="Agent 板块导航" className="flex shrink-0 flex-col gap-0.5 px-1 pt-1.5">
+    <nav data-testid="agent-nav" aria-label={t("agent.nav.aria")} className="flex shrink-0 flex-col gap-0.5 px-1 pt-1.5">
       <button
         type="button"
         data-testid="agent-nav-new-chat"
@@ -41,7 +44,7 @@ export default function AgentNavRows({ onNewChat, newChatActive = false }: { onN
         <span className="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center text-[var(--md-sys-color-primary)]">
           <AgentComposeIcon size={16} />
         </span>
-        新对话
+        {t("agent.nav.newChat")}
       </button>
       {NAV_ROWS.map((row) => {
         const active = pathname === row.href || pathname.startsWith(`${row.href}/`);
@@ -58,7 +61,7 @@ export default function AgentNavRows({ onNewChat, newChatActive = false }: { onN
             <span className="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center text-[var(--md-sys-color-outline)]">
               {row.icon}
             </span>
-            {row.label}
+            {t(row.labelKey)}
           </button>
         );
       })}

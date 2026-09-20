@@ -98,4 +98,59 @@ describe("DocumentWorkspace", () => {
     expect(meta).toBeVisible();
     expect(meta.className).toContain("is-wrap");
   });
+
+  // 来源面板按检索轮次分组：分组标题的文案一律由调用方给（i18n 在调用方做）。
+  it("groups consecutive outline items and renders one header per group", () => {
+    const { container } = render(
+      <DocumentWorkspace
+        outline={[
+          { id: "1", title: "笔记甲", group: { id: "r1", label: "检索笔记", meta: "贝叶斯" } },
+          { id: "2", title: "笔记乙", group: { id: "r1", label: "检索笔记", meta: "贝叶斯" } },
+          { id: "3", title: "网页甲", group: { id: "r2", label: "搜索网页", meta: "全概率公式" } },
+        ]}
+        activeId="1"
+        onSelect={() => {}}
+        outlineLabel="来源目录"
+      >
+        正文
+      </DocumentWorkspace>,
+    );
+
+    expect(container.querySelectorAll("[data-outline-group]")).toHaveLength(2);
+    // 同组连续项只有一条标题
+    expect(screen.getAllByText("检索笔记")).toHaveLength(1);
+    expect(screen.getByText("搜索网页")).toBeVisible();
+    expect(screen.getByText("贝叶斯")).toBeVisible();
+    expect(screen.getByText("全概率公式")).toBeVisible();
+    expect(screen.getByLabelText("来源目录")).toBeVisible();
+  });
+
+  it("keeps grouped items selectable", () => {
+    const onSelect = vi.fn();
+    render(
+      <DocumentWorkspace
+        outline={[
+          { id: "1", title: "笔记甲", group: { id: "r1", label: "检索笔记" } },
+          { id: "2", title: "笔记乙", group: { id: "r1", label: "检索笔记" } },
+        ]}
+        activeId="1"
+        onSelect={onSelect}
+      >
+        正文
+      </DocumentWorkspace>,
+    );
+    fireEvent.click(screen.getByText("笔记乙"));
+    expect(onSelect).toHaveBeenCalledWith("2");
+  });
+
+  // 旧调用方（不传 group）渲染结果必须一字不变：一条分组标题都不出。
+  it("adds no group header for callers that do not pass groups", () => {
+    const { container } = render(
+      <DocumentWorkspace outline={[{ id: "1", title: "目录项" }]} activeId="1" onSelect={() => {}}>
+        正文
+      </DocumentWorkspace>,
+    );
+    expect(container.querySelectorAll("[data-outline-group]")).toHaveLength(0);
+    expect(screen.getByText("目录项")).toBeVisible();
+  });
 });

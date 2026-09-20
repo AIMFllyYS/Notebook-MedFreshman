@@ -15,6 +15,8 @@ import {
 } from "@/lib/ai/capabilityEndpoints";
 import { DEFAULT_SELECTION_ASSISTANT_ACTIONS, normalizeSelectionAssistantActions, type SelectionAssistantActions } from "@/lib/notes/selectionAssistant";
 import { clampMaxToolRounds, MAX_TOOL_STEPS } from "@/lib/ai/agent/toolRounds";
+// 只依赖 types（不依赖 lib/i18n 的入口），避免 store ↔ i18n 形成运行时循环导入。
+import { DEFAULT_LOCALE, normalizeLocale, type Locale } from "@/lib/i18n/types";
 import {
   API_SECRETS_LS_KEY,
   applyCapabilitySecrets,
@@ -124,6 +126,10 @@ export interface SettingsState {
   /** 人民币兑美元汇率，默认 7.00 */
   usdExchangeRate: number;
 
+  // ── 语言（i18n）──────────────────────
+  /** 界面语言。默认中文（词典真相源）；与其它设置一样本机持久化，切换后立即生效。 */
+  locale: Locale;
+
   /** 本机持久化设置是否已应用。首帧（含 SSR 与 hydration）恒为 false，值等于 DEFAULTS。 */
   hydrated: boolean;
 
@@ -151,6 +157,7 @@ export interface SettingsState {
   removeCustomModel: (id: string) => void;
 
   setFontScale: (v: number) => void;
+  setLocale: (locale: Locale) => void;
   toggleTool: (name: string, enabled: boolean) => void;
   setDefaultThinking: (v: boolean) => void;
   setDefaultThinkingEffort: (v: ThinkingEffort) => void;
@@ -199,6 +206,7 @@ type Persisted = Pick<
   | "pinChatHeader"
   | "globalContext"
   | "usdExchangeRate"
+  | "locale"
 >;
 
 const DEFAULTS: Persisted = {
@@ -231,6 +239,7 @@ const DEFAULTS: Persisted = {
   pinChatHeader: false,
   globalContext: "",
   usdExchangeRate: 7.00,
+  locale: DEFAULT_LOCALE,
 };
 
 let settingsCanPersist = true;
@@ -317,6 +326,8 @@ function load(): Persisted & { settingsLoadWarning?: string | null } {
       parsed.blockForeignSelectionAssistants = parsed.blockForeignSelectionAssistants === true;
       parsed.showRightPanelTabBar = parsed.showRightPanelTabBar !== false;
       parsed.pinChatHeader = parsed.pinChatHeader === true;
+      // 盘上可能是旧版本 / 手改过的语言值，不认识的一律回中文（词典真相源）。
+      parsed.locale = normalizeLocale(parsed.locale);
 
       let secretsRaw = recoveredSecrets;
       if (secretsRaw === undefined) {
@@ -421,6 +432,7 @@ function persist(get: () => SettingsState) {
     pinChatHeader: s.pinChatHeader === true,
     globalContext: s.globalContext,
     usdExchangeRate: s.usdExchangeRate,
+    locale: normalizeLocale(s.locale),
   };
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(data));
@@ -647,6 +659,10 @@ export const useSettings = create<SettingsState>((rawSet, get) => {
 
   setFontScale: (v) => {
     set({ fontScale: Math.min(1.35, Math.max(0.85, v)) });
+    persist(get);
+  },
+  setLocale: (locale) => {
+    set({ locale: normalizeLocale(locale) });
     persist(get);
   },
   toggleTool: (name, enabled) => {
