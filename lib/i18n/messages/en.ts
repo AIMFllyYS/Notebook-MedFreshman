@@ -11,6 +11,7 @@ import { appEn } from "./parts/en/app";
 import { menuEn } from "./parts/en/menu";
 import { panelEn } from "./parts/en/panel";
 import { settingsEn } from "./parts/en/settings";
+import { shareEn } from "./parts/en/share";
 import { traceEn } from "./parts/en/trace";
 import { windowEn } from "./parts/en/window";
 
@@ -159,4 +160,5 @@ export const en = {
   panel: panelEn,
   trace: traceEn,
   window: windowEn,
+  share: shareEn,
 } satisfies LocaleMessages;

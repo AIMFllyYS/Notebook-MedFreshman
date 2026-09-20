@@ -137,6 +137,7 @@ test("0001_init.sql inventory covers tables indexes triggers policies grants", (
     assert.ok(inventory.primaryKeys.includes(`${table}_pkey`), `pk ${table}`);
   }
   assert.deepEqual(inventory.functions, [
+    "get_shared_conversation",
     "handle_new_user",
     "quota_period_sum",
     "sync_documents_enforce_bytes",

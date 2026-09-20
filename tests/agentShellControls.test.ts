@@ -51,13 +51,16 @@ test("Agent 深色配色 B-A-A：左栏 B、中间与右栏 A，浅色不变", (
 test("非对话页点新对话 / 点会话要跳回 /agent", () => {
   const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
   assert.match(sidebar, /const onChatRoute = pathname === "\/agent";/);
-  assert.match(sidebar, /if \(!onChatRoute\) router\.push\("\/agent"\);\s*\n\s*\}, \[onChatRoute, router\]\);/);
+  // goToChat 现在多一个可选目标：深链上切会话要换成新对话的深链，其它非对话页仍回 /agent。
+  assert.match(sidebar, /if \(!onChatRoute\) router\.push\("\/agent"\);/);
+  assert.match(sidebar, /const deepLinked = pathname\.startsWith\("\/c\/"\);/);
   // 三个入口都要先回对话页：新对话、点会话、项目菜单里的「在此新建对话」（走 handleNewChat）
   const newChat = sidebar.indexOf("const handleNewChat = useCallback(");
   const select = sidebar.indexOf("const handleSelect = useCallback(");
   assert.ok(newChat > 0 && select > newChat);
   assert.match(sidebar.slice(newChat, newChat + 600), /goToChat\(\);/);
-  assert.match(sidebar.slice(select, select + 700), /goToChat\(\);/);
+  // 点会话时带上目标 id：这样深链上切会话会把地址栏一起换掉（见 goToChat）。
+  assert.match(sidebar.slice(select, select + 700), /goToChat\(session\.id\);/);
 });
 
 test("删除项目同样二次确认（与删除对话一致）", () => {

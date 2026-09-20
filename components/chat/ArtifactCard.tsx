@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { AgentLoopIcon, AgentTerminalIcon, AgentFileIcon, AgentChevronIcon, AgentAlertIcon, AgentArrowUpRightIcon, AgentQuoteIcon } from '@/components/icons/AgentIcons';
-import { useArtifacts } from '@/lib/hooks/useArtifacts';
+import { useArtifacts, type Artifact } from '@/lib/hooks/useArtifacts';
+import { useSharedArtifact } from '@/components/share/ShareViewContext';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
@@ -39,7 +40,15 @@ export default function ArtifactCard({
   unsupportedReason?: string;
   autoStart?: boolean;
 }) {
-  const art = useArtifacts((s) => s.byId[artifactId]);
+  /**
+   * 只读分享页：产物来自分享快照，**不注入**本地产物表（公开页不该产生写入，
+   * 更不该把别人的 HTML 带进访客自己的账号）。默认 context 返回 null，
+   * 非分享页的取值路径与改动前完全一致。
+   */
+  const sharedArtifact = useSharedArtifact(artifactId);
+  const storedArtifact = useArtifacts((s) => s.byId[artifactId]);
+  const art: Artifact | undefined =
+    storedArtifact ?? (sharedArtifact ? { ...sharedArtifact, status: 'done' } : undefined);
   const hydrated = useArtifacts((s) => s._hasHydrated);
   const saveDone = useArtifacts((s) => s.saveDone);
   const [status, setStatus] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
@@ -220,6 +229,12 @@ export default function ArtifactCard({
             type="button"
             data-testid="artifact-open-demo"
             onClick={() => {
+              // 分享页的产物不在本地产物表里：开浮窗要先写 store（saveDone + openViewer），
+              // 那是公开页不该做的事，改走既有的「Blob URL 新标签页」纯展示路径。
+              if (sharedArtifact && !storedArtifact) {
+                openHtmlInNewTab(html);
+                return;
+              }
               if (html) saveDone(artifactId, title, html, reasoningText);
               useArtifacts.getState().openViewer(artifactId);
             }}

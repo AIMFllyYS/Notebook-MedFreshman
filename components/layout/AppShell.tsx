@@ -57,6 +57,7 @@ import { formatShortcut } from "@/lib/keyboard/format";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 import ToastHost from "@/components/shared/ToastHost";
 import LoginOverlay from "@/components/auth/LoginOverlay";
+import ShareButton from "@/components/share/ShareButton";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
@@ -189,6 +190,10 @@ function TopBar({
             {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
           </button>
         )}
+        {/* 分享入口：放在全屏 / 右侧工作区这一组的左侧。
+            只在 Agent 对话页出现，判定直接复用 showCenterTabs（= isChatRoute），
+            资产页等 /agent 子路由不会多出一个没有对话可分享的按钮。 */}
+        {showCenterTabs && <ShareButton />}
         {/* 网页全屏（F11）。Studio 里它在顶栏右端；Agent 里它落在**中间对话顶部**、
             紧贴「右侧工作区开关」左侧——两个控制同一块面板的键挨在一起，才找得到。
             它与右栏那个「全屏」（面板接管工作区）是两回事，所以图标必须一眼分得开：
@@ -268,8 +273,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const route = routeLayout.route;
   /** 只有 /agent 这一条路由用 Agent 专用外壳（左对话栏 + 中央对话 + 通顶的右侧工作区）。 */
   const isAgentRoute = !isMobile && appModeFromPathname(pathname) === "agent";
-  /** 只有对话页有「回答 / 来源 / 图片」这三个切面；资产页等子路由不该出现它。 */
-  const isChatRoute = pathname === "/agent";
+  /**
+   * 「对话页」= 默认对话页 + 深链（/c/<对话ID>）两种。
+   * 资产页 / 定时任务 / 插件市场不是对话页，顶栏三切面与分享按钮都不该出现。
+   */
+  const isChatRoute = pathname === "/agent" || pathname.startsWith("/c/");
   const agentDockCollapsed = useStore((s) => s.agentDockCollapsed);
   const setAgentDockCollapsed = useStore((s) => s.setAgentDockCollapsed);
   const agentDockGlobal = useAgentDockRuntime((s) => s.dockGlobal);
@@ -361,7 +369,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!isMobile || appModeFromPathname(pathname) !== "agent") return;
+    // /c/<对话ID> 是深链：手机壳本来就能显示中央对话，弹回 Studio 首页等于把分享/深链弄丢。
+    if (!isMobile || appModeFromPathname(pathname) !== "agent" || pathname.startsWith("/c/")) return;
     const target = hrefForMobileAppMode("agent", lastStudioPath);
     if (target !== pathname) router.replace(target);
   }, [isMobile, pathname, lastStudioPath, router]);
@@ -419,6 +428,30 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // ── Mobile layout ──────────────────────────────────────────
   const mobileSidebarOpen = useStore((s) => s.mobileSidebarOpen);
   const closeMobileSidebar = useStore((s) => s.setMobileSidebarOpen);
+
+  /**
+   * 公开分享页（/s/<shareId>）：裸壳。
+   *
+   * 为什么在这里短路、而不是给 /s 单独开一个路由分组：app/layout.tsx 把**所有**路由
+   * 都包进了 <AppShell>，想换壳只能把 /s 挪进 (group) 之类的分组目录——那会同时改动
+   * 全站的目录结构与所有布局判定（routeLayout / appModeFromPathname 都吃 pathname），
+   * 为了一个只读页面牵动全站，不划算。
+   *
+   * 位置必须在**所有 hook 之后**：上面那些 useLayoutEffect / useEffect（hydrateLayout、
+   * hydrateSettings、setWindowSessionProvider…）要继续跑，主题、语言、字号才会在分享页生效；
+   * 提前 return 会连 hook 一起跳过，触发 "rendered fewer hooks" 且首帧闪一下默认主题。
+   *
+   * 裸壳只留 children 与 ToastHost：不要顶栏 / 左栏 / 右栏 / 移动底栏，
+   * 也不要 KeyboardShortcutProvider（访客不该继承站主的快捷键）。
+   */
+  if (pathname.startsWith("/s/")) {
+    return (
+      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-share-shell>
+        {children}
+        <ToastHost />
+      </div>
+    );
+  }
 
   if (isMobile) {
     return (

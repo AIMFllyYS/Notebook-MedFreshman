@@ -41,9 +41,19 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
   const t = useT();
   /** 只有在对话页（/agent）才谈得上「切换会话」；在资产页等子页面点会话要先把人送回来。 */
   const onChatRoute = pathname === "/agent";
-  const goToChat = useCallback(() => {
+  /** 当前是不是「某条对话的深链」（/c/<对话ID>）。 */
+  const deepLinked = pathname.startsWith("/c/");
+  /**
+   * 回到对话页。传了 sessionId 且人正在深链上时，换成那条对话的深链——
+   * 否则地址栏会继续指着上一条对话，刷新后跳回去，深链就名存实亡了。
+   */
+  const goToChat = useCallback((sessionId?: string) => {
+    if (sessionId && deepLinked) {
+      router.push(`/c/${sessionId}`);
+      return;
+    }
     if (!onChatRoute) router.push("/agent");
-  }, [onChatRoute, router]);
+  }, [deepLinked, onChatRoute, router]);
   const sessionsMeta = useChatHistory((s) => s.sessionsMeta);
   const folders = useChatHistory((s) => s.folders);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
@@ -116,7 +126,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
     (session: SessionMeta) => {
       setRenamingSessionId(null);
       // 点会话一律先回对话页：否则在资产页点左栏只是改了状态，看上去毫无反应。
-      goToChat();
+      // 深链上则换成新对话的深链（见 goToChat）。
+      goToChat(session.id);
       if (session.kind === "floating") {
         useFloatingChats.getState().restoreWindow(session.id);
         return;

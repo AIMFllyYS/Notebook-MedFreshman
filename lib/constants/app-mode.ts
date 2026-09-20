@@ -1,6 +1,16 @@
 /**
  * StudySolo 三模式（Studio / Agent / Class）的路由与 persist 约定。
  * 其它代理请读本文件 + `lib/stores/appMode.ts`，不要另写一份模式表。
+ *
+ * 路径归属（全仓唯一口径）：
+ * - Agent：`/agent`（工作区根）**和** `/c/<sessionId>`（一条对话的深链，打开后同样是 Agent 工作区，
+ *   只是额外把那条对话设为当前对话）；
+ * - Class：`/class`；
+ * - Studio：其余路由；
+ * - `/login` 不参与判定（isAuthPath），避免登录页改写 persist。
+ *
+ * `/s/<shareId>` 分享公开页**不属于任何模式**：它是独立公开页，裸壳由 AppShell 自己分支，
+ * 所以不要为了让它的外壳不同而把 `s` 并进 Agent。
  */
 
 export const APP_MODES = ["studio", "agent", "class"] as const;
@@ -49,34 +59,35 @@ export function isAuthPath(pathname: string): boolean {
   return firstSegment(pathname) === "login";
 }
 
+/** 不套 Studio 顶栏 + 左栏 + 右栏的路径：`/c/<id>` 与 `/agent` 共用同一个工作区外壳。 */
 export function isAppModePath(pathname: string): boolean {
   const first = firstSegment(pathname);
-  return first === "agent" || first === "class";
+  return first === "agent" || first === "class" || first === "c";
 }
 
 /**
  * 从 URL 解析模式。
- * - `/agent` → agent
+ * - `/agent`、`/c/<sessionId>` → agent（C 路由就是 Agent 工作区里的单条对话）
  * - `/class` → class
  * - `/login` → null（不改 persist）
- * - 其余 Studio 路由 → studio
+ * - 其余 Studio 路由（含分享页 `/s/<id>`）→ studio
  */
 export function appModeFromPathname(pathname: string): AppMode | null {
   const first = firstSegment(pathname);
-  if (first === "agent") return "agent";
+  if (first === "agent" || first === "c") return "agent";
   if (first === "class") return "class";
   if (isAuthPath(pathname)) return null;
   return "studio";
 }
 
-/** 桌面 Studio 三栏壳：登录页保持现布局，Agent / Class 走独立工作区。 */
+/** 桌面 Studio 三栏壳：登录页保持现布局，Agent（`/agent`、`/c/<id>`）与 Class 走独立工作区。 */
 export function usesStudioChrome(pathname: string): boolean {
   return !isAppModePath(pathname);
 }
 
 /**
  * 手机壳：Agent 仍用最初 Studio 五段底栏，不套桌面左对话+右侧窗。
- * Class 继续独立「开发中」页。
+ * `/c/<id>` 与 `/agent` 同口径（都算 Agent）；Class 继续独立「开发中」页。
  */
 export function usesMobileStudioChrome(pathname: string): boolean {
   return firstSegment(pathname) !== "class";
@@ -88,7 +99,7 @@ export function resolveAppMode(pathname: string, persisted: AppMode): AppMode {
 
 /**
  * 手机标题/persist：Studio 路由上若当前 persist 是 Agent，仍显示 Agent。
- * Class / 登录仍跟 URL。
+ * `/agent` 与 `/c/<id>` 都直接判成 agent；Class / 登录仍跟 URL。
  */
 export function resolveMobileAppMode(pathname: string, persisted: AppMode): AppMode {
   const fromPath = appModeFromPathname(pathname);

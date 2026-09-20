@@ -61,6 +61,26 @@ test("pathname 映射：Agent / Class 独立，登录不改 persist", () => {
   assert.equal(usesMobileStudioChrome("/class"), false);
 });
 
+test("C 路由 /c/<sessionId> 归 Agent；分享页 /s/<id> 保持 Studio 默认", () => {
+  // 打开 /c/<id> 就是进 Agent 工作区（左栏 + 中央对话 + 右侧工作区）。
+  assert.equal(appModeFromPathname("/c/6f1c2a4b8d90"), "agent");
+  assert.equal(appModeFromPathname("/c/6f1c2a4b8d90/"), "agent");
+  assert.equal(isAppModePath("/c/6f1c2a4b8d90"), true);
+  assert.equal(usesStudioChrome("/c/6f1c2a4b8d90"), false);
+  assert.equal(resolveAppMode("/c/6f1c2a4b8d90", "studio"), "agent");
+  // 深链不是「回 Studio 的落点」：切回 Studio 不该落到某一条对话上。
+  assert.equal(isRememberableStudioPath("/c/6f1c2a4b8d90"), false);
+  // 手机与 /agent 同口径：仍用 Studio 五段底栏，但标题/persist 判成 Agent。
+  assert.equal(usesMobileStudioChrome("/c/6f1c2a4b8d90"), true);
+  assert.equal(resolveMobileAppMode("/c/6f1c2a4b8d90", "studio"), "agent");
+
+  // 分享公开页是独立公开页，不是 Agent 工作区：既不加进 isAppModePath，也不改默认的 studio 判定
+  // （它的裸壳由 AppShell 自己分支，见 share 契约）。
+  assert.equal(appModeFromPathname("/s/6f1c2a4b8d90"), "studio");
+  assert.equal(isAppModePath("/s/6f1c2a4b8d90"), false);
+  assert.equal(usesStudioChrome("/s/6f1c2a4b8d90"), true);
+});
+
 test("resolveAppMode：URL 优先，登录页当 Studio 壳", () => {
   assert.equal(resolveAppMode("/agent", "studio"), "agent");
   assert.equal(resolveAppMode("/class", "studio"), "class");

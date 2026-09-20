@@ -21,7 +21,9 @@ import { readAgentDockState, rememberAgentDockState } from "@/lib/window/agentDo
  */
 export function useAgentDockPerSession(): void {
   const pathname = usePathname();
-  const onChatRoute = pathname === "/agent";
+  // 深链 /c/<对话ID> 与 /agent 是同一个对话页的两种地址，右栏的「一个对话一份记忆」对它同样适用。
+  // pathname 在测试/首帧可能是 null，用可选链兜住。
+  const onChatRoute = pathname === "/agent" || Boolean(pathname?.startsWith("/c/"));
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const collapsed = useStore((s) => s.agentDockCollapsed);
   const setCollapsed = useStore((s) => s.setAgentDockCollapsed);
