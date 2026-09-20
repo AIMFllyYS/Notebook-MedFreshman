@@ -4,7 +4,7 @@ import clsx from "clsx";
 import ChatPanel from "@/components/chat/ChatPanel";
 import AgentLinksPane from "@/components/agent/AgentLinksPane";
 import AgentImagesPane from "@/components/agent/AgentImagesPane";
-import AgentSourceDock from "@/components/agent/AgentSourceDock";
+import AgentSourceRail from "@/components/agent/AgentSourceRail";
 import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
 import { useAgentCenter } from "@/lib/stores/agentCenter";
 import { useSessionSourceRounds } from "@/lib/hooks/useSessionSources";
@@ -15,10 +15,11 @@ import { useStore } from "@/lib/stores/ui";
 /**
  * Agent 中央对话（`/agent` 的内容）。左栏与右侧工作区分别由 AgentShell / AppShell 承载。
  *
- * 两块 Perplexity 式收尾：
- * - 「回答 / 来源 / 图片」分段开关 —— 挂在**顶栏**里（见 `AgentCenterTabsLive` 与 AppShell 的 TopBar），
- *   这里只负责按当前页签切换正文；
- * - 右上角一个常驻的「来源」框，点它从右侧拉出来源面板。
+ * 版面（Perplexity 口径）：**对话列 + 右侧固定来源栏**并排。
+ * 来源栏是一条真实列而不是浮层 —— 浮层会压住正文（宽一点的卡片会钻到它底下），
+ * 真实列则让对话列自己收窄，两者永不重叠，这也正是"页面过宽"的解药。
+ *
+ * 右栏一展开来源栏就整条收起（那时用户已经在看完整的来源面板），移动端不出现。
  *
  * **回答页签只隐藏、不卸载** ChatPanel：ChatThread 的划词容器 ref 是它挂载时绑定的，
  * 卸载再挂载会让 SelectionPopover 错过新节点，Agent 里就再也选不中文字（见 ChatPanel 注释）。
@@ -31,18 +32,18 @@ export default function AgentChatCenter() {
   const dockCollapsed = useStore((state) => state.agentDockCollapsed);
   const isMobile = useIsMobile();
 
+  const showRail = !isMobile && dockCollapsed && centerTab === "answer" && sources.length > 0;
+
   return (
-    <div className="relative h-full min-h-0" data-testid="agent-chat-center">
-      <div className={clsx("h-full min-h-0", centerTab !== "answer" && "hidden")} data-testid="agent-center-answer">
-        <ChatPanel chatContext={chatContext} hideHeader emptyLayout="agent" />
+    <div className="flex h-full min-h-0" data-testid="agent-chat-center">
+      <div className="relative min-h-0 min-w-0 flex-1">
+        <div className={clsx("h-full min-h-0", centerTab !== "answer" && "hidden")} data-testid="agent-center-answer">
+          <ChatPanel chatContext={chatContext} hideHeader emptyLayout="agent" />
+        </div>
+        {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} /> : null}
+        {centerTab === "images" ? <AgentImagesPane images={images} /> : null}
       </div>
-      {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} /> : null}
-      {centerTab === "images" ? <AgentImagesPane images={images} /> : null}
-      <AgentSourceDock
-        rounds={rounds}
-        sources={sources}
-        hidden={isMobile || !dockCollapsed || centerTab !== "answer"}
-      />
+      {showRail ? <AgentSourceRail rounds={rounds} sources={sources} /> : null}
     </div>
   );
 }
