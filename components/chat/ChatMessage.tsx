@@ -16,6 +16,7 @@ import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseC
 import { collectMessageSources } from '@/lib/chat/traceSources';
 import { ToolResultCards } from '@/components/chat/toolCards/ToolResultCards';
 import { useT } from '@/lib/i18n';
+import { useReincludedAttachments } from '@/lib/stores/reincludedAttachments';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -26,6 +27,11 @@ interface ChatMessageProps {
   topic?: string;
   /** 窗内笔记对话置 false：追问属于教学场景的聊天套话，与笔记角色冲突。默认 true。 */
   showFollowUps?: boolean;
+  /**
+   * 这条历史消息可以「重新带入本轮」：它带图片附件，且不是本轮那条用户消息
+   * （本轮消息的图本来就随请求发送，不需要再挂一次）。
+   */
+  reincludable?: boolean;
 }
 
 function traceFromSteps(steps: TraceStep[]): AgentTraceModel {
@@ -40,7 +46,7 @@ function traceFromSteps(steps: TraceStep[]): AgentTraceModel {
   };
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming: requestStreaming, sessionId, repairModelId, topic, showFollowUps = true }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming: requestStreaming, sessionId, repairModelId, topic, showFollowUps = true, reincludable = false }) => {
   const isStreaming = requestStreaming && !message.parts.some((part) => part.type === 'data-answer-complete');
   const isUser = message.role === 'user';
   const parts = message.parts;
@@ -83,6 +89,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   }, [message.followUpQuestions, parts]);
 
   const traceSources = useMemo(() => isUser ? [] : collectMessageSources(parts), [isUser, parts]);
+  const reincluded = useReincludedAttachments((state) =>
+    sessionId ? state.bySession[sessionId]?.includes(message.id) ?? false : false);
 
   return (
     <div className={`chat-message ${isUser ? 'user' : 'assistant'}`} data-message-role={message.role} data-message-id={message.id}>
@@ -108,7 +116,24 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
         {isUser ? (
           <>
             {message.attachments && message.attachments.length > 0 && (
-              <AttachmentThumbnails readonlyAttachments={message.attachments} size={80} />
+              <div className="chat-message-attachments">
+                <AttachmentThumbnails readonlyAttachments={message.attachments} size={80} />
+                {reincludable && sessionId && (
+                  <button
+                    type="button"
+                    data-testid="reinclude-attachment"
+                    aria-pressed={reincluded}
+                    title={t('window.attachment.reincludeHint')}
+                    onClick={() =>
+                      (reincluded
+                        ? useReincludedAttachments.getState().unmark(sessionId, message.id)
+                        : useReincludedAttachments.getState().mark(sessionId, message.id))}
+                    className={`chat-reinclude-toggle${reincluded ? ' is-on' : ''}`}
+                  >
+                    {reincluded ? t('window.attachment.reincludeMarked') : t('window.attachment.reinclude')}
+                  </button>
+                )}
+              </div>
             )}
             <div
               className="chat-bubble-user chat-prose"

@@ -59,6 +59,9 @@ export const windowZh = {
     previewAttachment: "预览附件 {name}",
     preview: "预览 {name}",
     removeAttachment: "移除附件 {name}",
+    reinclude: "重新带入本轮",
+    reincludeMarked: "已带入本轮 · 发送时生效",
+    reincludeHint: "这条消息里的图片没有随本轮请求发送。点一下把它重新挂到下一次提问上。",
   },
   // 生图窗与生图卡片
   imageGen: {

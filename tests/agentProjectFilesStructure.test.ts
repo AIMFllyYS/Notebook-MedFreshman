@@ -73,8 +73,14 @@ test("目录与切片随请求上行：schema / body / 发送侧三处对齐", (
   assert.match(body, /projectSlices: settings\.projectSlices \?\? \[\],/);
 
   const useChat = readFile("lib/hooks/useChat.ts");
-  assert.match(useChat, /buildProjectCatalog\(projectFileList, activeProjectId\)\.files/);
-  assert.match(useChat, /planCarry\(projectFileList, activeProjectId\)/);
+  // 项目归属取**会话自己的 folderId**（回落当前选中项目）：从历史里打开旧对话继续聊时，
+  // 不能突然带上另一个项目的文件（"换户口"）。
+  assert.match(useChat, /sessionMeta\?\.folderId \?\? historySnapshot\.activeProjectId/);
+  assert.match(useChat, /buildProjectCatalog\(projectFileList, sessionProjectId\)\.files/);
+  assert.match(useChat, /planCarry\(projectFileList, sessionProjectId \?\? undefined\)/);
+  // 携带计划要并上"本会话读过的切片"，否则项目超预算后模型读过的东西下一轮就没了。
+  assert.match(useChat, /withRememberedSlices\(/);
+  assert.match(useChat, /rememberReadSlices\(/);
   assert.match(useChat, /projectFiles,\s*\n\s*projectSlices,/);
 });
 

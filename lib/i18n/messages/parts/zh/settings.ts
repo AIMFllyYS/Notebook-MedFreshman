@@ -277,6 +277,10 @@ export const settingsZh = {
     maxRounds: "最大工具调用轮数",
     maxRoundsDesc: "接到 Agent ToolLoop（默认 {rounds} 轮）。斜杠 / 加号菜单读不到此值时仍走本设置。",
     roundsUnit: "轮",
+    maxWait: "最长等待时间",
+    maxWaitDesc: "一次回答最多等多久，超过就本地停止。深度思考加多步工具本来就可能超过默认值——长回答被掐断时可以调高。",
+    waitUnit: "秒",
+    waitHint: "范围 {min}–{max} 秒，默认 {default} 秒。思考静默期服务端会持续发心跳保活，所以这里只掐真正跑太久的回答。",
     hint: "推荐 {recommended} 轮：与 studyAgent 默认一致，一般问答够用。 上限 {cap} 轮对齐 AI SDK ToolLoopAgent 的默认 stopWhen，再高没有架构适配收益。",
     demo: {
       title: "HTML 演示窗口",

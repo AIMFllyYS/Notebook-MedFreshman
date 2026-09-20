@@ -22,7 +22,10 @@ import { collectFlashcardCatalog, collectUserNoteCatalog } from '@/lib/ai/agent/
 import { useUserNotes } from '@/lib/stores/userNotes';
 import { useReviewCards } from '@/lib/stores/reviewCards';
 import { useProjectFiles, listProjectFiles } from '@/lib/stores/projectFiles';
-import { buildProjectCatalog, buildProjectSliceBodies, planCarry } from '@/lib/project/catalog';
+import type { StallReason } from '@/lib/chat/createStallWatchdog';
+import { buildProjectCatalog, buildProjectSliceBodies, planCarry, withRememberedSlices } from '@/lib/project/catalog';
+import { collectReadSliceIds } from '@/lib/project/sessionSlices';
+import { useReincludedAttachments } from '@/lib/stores/reincludedAttachments';
 
 const EMPTY_MESSAGES: ChatMessage[] = [];
 export function useChat(chatContext: ChatContext, options?: ChatOptions, overrides?: {
@@ -105,20 +108,31 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const flashcards = isNoteWindow
       ? []
       : collectFlashcardCatalog(cardsState.order.map((id) => cardsState.byId[id]).filter(Boolean));
-    // 项目文件：主对话且选了项目时才带。目录（索引）永远带；正文按携带计划带
-    // （项目不大默认全带，超预算才只带用户勾的片）。
-    const activeProjectId = useChatHistory.getState().activeProjectId;
-    const projectFileList = activeProjectId
-      ? listProjectFiles(useProjectFiles.getState(), activeProjectId)
+    // 项目文件：主对话才带。归属看**会话自己所在的项目**（folderId），不是侧栏当前选中的那个——
+    // 否则从历史里打开一条旧对话继续聊，会突然带上另一个项目的文件（会话"换户口"）。
+    // 会话还没归到任何项目时才回落到当前选中项目。
+    const historySnapshot = useChatHistory.getState();
+    const sessionMeta = historySnapshot.sessionsMeta.find((meta) => meta.id === sessionId);
+    const sessionProjectId = isNoteWindow
+      ? null
+      : sessionMeta?.folderId ?? historySnapshot.activeProjectId;
+    const projectFileList = sessionProjectId
+      ? listProjectFiles(useProjectFiles.getState(), sessionProjectId)
       : [];
-    const projectFiles = isNoteWindow || !activeProjectId
-      ? []
-      : buildProjectCatalog(projectFileList, activeProjectId).files;
-    const projectSlices = isNoteWindow || !activeProjectId
-      ? []
-      : buildProjectSliceBodies(projectFileList, planCarry(projectFileList, activeProjectId), activeProjectId).payloads;
+    // 目录（索引）永远带；正文按携带计划带：项目不大默认全带，超预算才带勾选 + 本会话读过的片。
+    const carryPlan = withRememberedSlices(
+      planCarry(projectFileList, sessionProjectId ?? undefined),
+      sessionMeta?.readSliceIds ?? [],
+    );
+    const projectFiles = sessionProjectId
+      ? buildProjectCatalog(projectFileList, sessionProjectId).files
+      : [];
+    const projectSlices = sessionProjectId
+      ? buildProjectSliceBodies(projectFileList, carryPlan, sessionProjectId).payloads
+      : [];
     void (async () => {
-      let stalled = false;
+      // null = 未触发；否则记录是哪种超时，用来给不同文案。
+      let stalled: StallReason | null = null;
       try {
         await executeChatRequest({
           latestMessages, abortSignal: abortController.signal, budget,
@@ -165,10 +179,23 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
               customGroups: settings.customApiGroups, usage,
             }));
           },
-          onStall: () => { stalled = true; abortController.abort(); },
+          onStall: (reason) => { stalled = reason; abortController.abort(); },
+          maxWaitMs: settings.maxWaitMs,
+          // 「重新带入本轮」是一次性意图：在这里消费掉，成败都不留痕。
+          reincludedMessageIds: useReincludedAttachments.getState().takeForRequest(sessionId),
         });
+        // 记住这一轮真读到的项目切片：项目超预算后携带计划只带勾选/已读的片，
+        // 不回填的话模型第 3 轮读得到的东西第 5 轮就"找不着了"。
+        const finished = useChatHistory.getState().messagesById[sessionId]
+          ?.find((message) => message.id === assistant.id);
+        const readSliceIds = collectReadSliceIds(finished?.parts);
+        if (readSliceIds.length > 0) useChatHistory.getState().rememberReadSlices(sessionId, readSliceIds);
       } catch (err: unknown) {
-        const message = classifySendError(err, { stalled, aborted: abortController.signal.aborted });
+        const message = classifySendError(err, {
+          stalled: stalled ?? false,
+          aborted: abortController.signal.aborted,
+          maxWaitMs: settings.maxWaitMs,
+        });
         if (message) {
           if (!stalled) console.warn('Chat request failed:', message);
           if (mountedRef.current) setError(message);

@@ -274,6 +274,10 @@ export const settingsEn = {
     maxRounds: "Max tool rounds",
     maxRoundsDesc: "Passed to the Agent ToolLoop ({rounds} by default). The slash / plus menus still fall back to this setting when they cannot read the value.",
     roundsUnit: "rounds",
+    maxWait: "Max wait time",
+    maxWaitDesc: "How long one answer may take before it is stopped locally. Deep reasoning plus several tool steps can legitimately exceed the default — raise it if long answers get cut off.",
+    waitUnit: "s",
+    waitHint: "Range {min}–{max} seconds; {default} seconds by default. The server keeps streaming heartbeats during silent reasoning, so this only cuts off answers that really run too long.",
     hint: "{recommended} rounds is recommended: it matches the studyAgent default and is plenty for everyday Q&A. The {cap}-round cap matches the AI SDK ToolLoopAgent default stopWhen, and going higher brings no architectural benefit.",
     demo: {
       title: "HTML demo window",

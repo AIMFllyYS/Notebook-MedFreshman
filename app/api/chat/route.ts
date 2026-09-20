@@ -33,6 +33,7 @@ import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/l
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 import { runWithCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
+import { carryNotice, summarizeCarry } from "@/lib/project/catalog";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -185,6 +186,14 @@ export async function POST(req: NextRequest) {
       }
       if (hasFileParts(body.messages) && modelInfo && !modelInfo.vision) {
         throw new Error(`当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo V2.5）。`);
+      }
+
+      // 项目文件降级提示：项目一大，客户端就从「全带」翻成「只带勾选/本会话读过的片」，
+      // 其余正文这轮模型读不到。这个翻转以前是静默的——用户只会看到 Agent 回一句
+      // 「这一轮没有携带切片正文」。改成在回答开始前就告诉用户该怎么补。
+      const carryMessage = carryNotice(summarizeCarry(body.projectFiles, body.projectSlices));
+      if (carryMessage) {
+        writer.write({ type: "data-info", data: { message: carryMessage }, transient: true });
       }
 
       // 参考材料 + 软上限。两端 80% 用同一套全量估算（system + 工具 schema + 参考材料 + 对话历史）。
@@ -383,5 +392,8 @@ export async function POST(req: NextRequest) {
         "X-Accel-Buffering": "no",
       },
     }),
+    // 首 chunk 之后的静默期（深度思考 / 长工具链）同样保活：客户端 stall watchdog 靠这些
+    // 注释续期，否则 60s 无字节活动会把一个还活着的请求直接 abort 掉。
+    { keepaliveWhileIdle: true },
   );
 }

@@ -20,6 +20,7 @@ import {
   scheduleOrphanChatGc,
 } from '@/lib/storage/chatStorage';
 import { getMessageText } from '@/lib/chat/messageParts';
+import { mergeRememberedSlices } from '@/lib/project/sessionSlices';
 import { scheduleCloudTombstone, scheduleCloudUpsert } from '@/lib/sync/schedule';
 
 const MAX_LOADED_SESSIONS = 3;
@@ -88,6 +89,8 @@ interface ChatHistoryState {
   /** 删除项目；系统项目不可删（返回 false），成员会话退回 Recents。 */
   deleteFolder: (folderId: string) => boolean;
   moveSessionToFolder: (sessionId: string, folderId: string | null) => void;
+  /** 记录本会话读过的项目切片（去重 + 上限截断）；没有新 id 时不落盘。 */
+  rememberReadSlices: (sessionId: string, sliceIds: string[]) => void;
 }
 
 let bootstrapPromise: Promise<void> | null = null;
@@ -586,6 +589,23 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     });
     // 归属变化要跟着会话一起上云，否则换设备看不到它进了哪个项目。
     if (moved) scheduleCloudUpsert('chat-session', sessionId);
+  },
+
+  rememberReadSlices: (sessionId, sliceIds) => {
+    if (sliceIds.length === 0) return;
+    const state = get();
+    const target = state.sessionsMeta.find((s) => s.id === sessionId);
+    if (!target) return;
+    const before = target.readSliceIds ?? [];
+    const next = mergeRememberedSlices(before, sliceIds);
+    // 没有新增就别落盘：读完同样的片会反复触发这个调用。
+    // 注意不能只比长度——到上限后长度不变、内容会滚动。
+    if (next.length === before.length && next.every((id, index) => id === before[index])) return;
+    const sessionsMeta = state.sessionsMeta.map((s) =>
+      s.id === sessionId ? { ...s, readSliceIds: next } : s,
+    );
+    set({ sessionsMeta });
+    persistManifest(get(), manifestOf(get(), { sessions: sessionsMeta }));
   },
 }));
 

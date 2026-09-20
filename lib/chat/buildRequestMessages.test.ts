@@ -110,9 +110,87 @@ test("buildRequestMessages：本轮图片进 file part，历史图只写占位",
   ];
   const { messages: out } = buildRequestMessages(messages);
   assert.equal(out.some((m) => m.id === "0" && hasFile(m)), false);
-  assert.match(textOf(out[0]), /用户曾附图片「old.png」/);
+  assert.match(textOf(out[0]), /用户曾在更早的消息里附过图片「old.png」/);
   const latest = out.find((m) => m.id === "2");
   assert.ok(latest && hasFile(latest));
+});
+
+test("buildRequestMessages：历史附件占位带上 blob id 与可执行的恢复动作", () => {
+  const messages: ChatMessage[] = [
+    msg("0", "user", "看这张作业图", {
+      attachments: [{ id: "blob-m0-0", type: "image", mimeType: "image/png", name: "作业.png", size: 100 }],
+    }),
+    msg("1", "assistant", "好的"),
+    msg("2", "user", "再讲讲"),
+  ];
+  const { messages: out } = buildRequestMessages(messages);
+  const placeholder = textOf(out[0]);
+  // 模型得知道：字节没丢、这轮没带、让用户点哪里。
+  assert.match(placeholder, /附件 blob-m0-0/);
+  assert.match(placeholder, /仍保存在本机/);
+  assert.match(placeholder, /本轮没有随请求带上/);
+  assert.match(placeholder, /「重新带入本轮」/);
+});
+
+test("buildRequestMessages：点过「重新带入本轮」的历史图片重新进 file part", () => {
+  const messages: ChatMessage[] = [
+    msg("0", "user", "看这张作业图", {
+      attachments: [{ id: "blob-m0-0", type: "image", mimeType: "image/png", name: "作业.png", size: 100 }],
+    }),
+    msg("1", "assistant", "好的"),
+    msg("2", "user", "再讲讲"),
+  ];
+  const plain = buildRequestMessages(messages);
+  assert.equal(plain.messages.some(hasFile), false, "默认不回放历史图");
+
+  // 模拟 hydrateForRequest 的结果：历史附件被换回带字节的形态。
+  const hydrated: ChatMessage[] = messages.map((m): ChatMessage => (m.id === "0"
+    ? { ...m, attachments: [{ type: "image", mimeType: "image/png", name: "作业.png", base64: "data:image/png;base64,abc" }] }
+    : m));
+  const { messages: out } = buildRequestMessages(hydrated, {
+    reincludedMessageIds: new Set(["0"]),
+  });
+  const reincluded = out.find((m) => m.id === "0");
+  assert.ok(reincluded && hasFile(reincluded), "被点过的历史消息要重新带上图片");
+  assert.doesNotMatch(textOf(reincluded), /本轮没有随请求带上/);
+  // 本轮那条提问的正文不受影响。
+  assert.equal(textOf(out.find((m) => m.id === "2")!), "再讲讲");
+});
+
+test("buildRequestMessages：整包最多一张图，本轮提问优先于带入的历史图", () => {
+  const messages: ChatMessage[] = [
+    msg("0", "user", "旧图", {
+      attachments: [{ type: "image", mimeType: "image/png", name: "old.png", base64: "data:image/png;base64,OLD" }],
+    }),
+    msg("1", "assistant", "ok"),
+    msg("2", "user", "新图", {
+      attachments: [{ type: "image", mimeType: "image/png", name: "new.png", base64: "data:image/png;base64,NEW" }],
+    }),
+  ];
+  const { messages: out } = buildRequestMessages(messages, { reincludedMessageIds: new Set(["0"]) });
+  const fileCount = out.reduce((sum, m) => sum + m.parts.filter((p) => p.type === "file").length, 0);
+  assert.equal(fileCount, 1, "两张图只发一张，避免顶穿单请求体积上限");
+  const latest = out.find((m) => m.id === "2");
+  assert.ok(latest && hasFile(latest), "本轮提问的图优先");
+  assert.equal(out.some((m) => m.id === "0" && hasFile(m)), false);
+});
+
+test("buildRequestMessages：截断时点过带入的历史消息不会被窗口丢掉", () => {
+  const messages: ChatMessage[] = [];
+  messages.push(msg("0", "user", "旧图", {
+    attachments: [{ type: "image", mimeType: "image/png", name: "old.png", base64: "data:image/png;base64,OLD" }],
+  }));
+  for (let i = 1; i < 40; i++) {
+    messages.push(msg(String(i), i % 2 === 0 ? "user" : "assistant", `m${i}`));
+  }
+  const { messages: out } = buildRequestMessages(messages, {
+    maxTurns: 8,
+    preserveAttachmentHistory: false,
+    reincludedMessageIds: new Set(["0"]),
+  });
+  const reincluded = out.find((m) => m.id === "0");
+  assert.ok(reincluded, "用户显式点过带入的消息必须留在请求里");
+  assert.ok(hasFile(reincluded));
 });
 
 test("buildRequestMessages：TXT / MD / DOCX 正文作为明确标记的文本附件发送", () => {

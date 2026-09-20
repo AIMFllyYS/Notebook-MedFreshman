@@ -57,6 +57,9 @@ export const windowEn = {
     previewAttachment: "Preview attachment {name}",
     preview: "Preview {name}",
     removeAttachment: "Remove attachment {name}",
+    reinclude: "Bring into this turn",
+    reincludeMarked: "Will be sent this turn",
+    reincludeHint: "The image in this message is not part of the current request. Click to attach it to your next question.",
   },
   // Image generation window and card.
   imageGen: {

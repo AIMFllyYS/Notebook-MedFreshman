@@ -408,4 +408,68 @@ describe("chatHistory.startNewChat", { concurrency: false }, () => {
     assert.equal(useChatHistory.getState().sessionsMeta.length, 2);
   });
 });
+
+describe("chatHistory.rememberReadSlices", { concurrency: false }, () => {
+  beforeEach(async () => {
+    cancelOrphanChatGc();
+    storage.clear();
+    __resetIdbStoragePendingForTests();
+    installBrowserMocks();
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.setState({
+      sessionsMeta: [meta("s1")],
+      messagesById: {},
+      activeSessionId: "s1",
+      sessionLoadState: { s1: "loaded" },
+      loadedSessionIds: ["s1"],
+      pinnedSessionIds: [],
+      _hasHydrated: true,
+      _activeMessagesReady: true,
+      blankChatPulse: 0,
+    });
+  });
+
+  afterEach(() => {
+    cancelOrphanChatGc();
+    __resetIdbStoragePendingForTests();
+    delete (globalThis as { window?: unknown }).window;
+    delete (globalThis as { document?: unknown }).document;
+    delete (globalThis as { indexedDB?: object }).indexedDB;
+    delete (globalThis as { localStorage?: Storage }).localStorage;
+  });
+
+  test("累计已读切片：去重、追加在后，并写进 manifest", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.getState().rememberReadSlices("s1", ["slice-1", "slice-2"]);
+    useChatHistory.getState().rememberReadSlices("s1", ["slice-2", "slice-3"]);
+    await waitForPendingWrites();
+
+    assert.deepEqual(useChatHistory.getState().sessionsMeta[0]?.readSliceIds, ["slice-1", "slice-2", "slice-3"]);
+    const manifest = JSON.parse(storage.get(PERSIST_KEYS.chatManifest) ?? "{}") as {
+      sessions?: { id: string; readSliceIds?: string[] }[];
+    };
+    assert.deepEqual(manifest.sessions?.find((s) => s.id === "s1")?.readSliceIds, ["slice-1", "slice-2", "slice-3"]);
+  });
+
+  test("没有新 id 时不重复落盘", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.getState().rememberReadSlices("s1", ["slice-1"]);
+    await waitForPendingWrites();
+    const firstWrite = storage.get(PERSIST_KEYS.chatManifest);
+    assert.ok(firstWrite);
+
+    useChatHistory.getState().rememberReadSlices("s1", ["slice-1"]);
+    useChatHistory.getState().rememberReadSlices("s1", []);
+    await waitForPendingWrites();
+    assert.equal(storage.get(PERSIST_KEYS.chatManifest), firstWrite, "同样的片不该再写一次 manifest");
+  });
+
+  test("会话不存在时静默跳过（不新建、不落盘）", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.getState().rememberReadSlices("missing", ["slice-1"]);
+    await waitForPendingWrites();
+    assert.equal(useChatHistory.getState().sessionsMeta.length, 1);
+    assert.equal(useChatHistory.getState().sessionsMeta[0]?.readSliceIds, undefined);
+  });
+});
 });

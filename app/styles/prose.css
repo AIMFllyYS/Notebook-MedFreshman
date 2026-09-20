@@ -1840,6 +1840,40 @@
   font-size: 11px;
   line-height: 1.4;
 }
+/* 历史消息的附件区：缩略图 + 「重新带入本轮」开关（历史图片默认不进请求，
+   用户点一下才把它重新挂到下一轮提问上）。 */
+.chat-message-attachments {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 7px;
+}
+.chat-reinclude-toggle {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  margin-bottom: 8px;
+  padding: 3px 9px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 32%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 70%, transparent);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+.chat-reinclude-toggle:hover,
+.chat-reinclude-toggle:focus-visible {
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 48%, transparent);
+  color: var(--md-sys-color-on-surface);
+}
+.chat-reinclude-toggle.is-on {
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 55%, transparent);
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 78%, transparent);
+  color: var(--md-sys-color-on-primary-container);
+}
 .chat-attachment-shelf {
   display: flex;
   min-width: 0;
