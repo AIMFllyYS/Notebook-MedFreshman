@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
@@ -61,14 +61,28 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   const [wysiwygRev, setWysiwygRev] = useState(0);
   const sourceRef = useRef<HTMLTextAreaElement | null>(null);
   const wysiwygHostRef = useRef<HTMLDivElement | null>(null);
+  // 编辑器最后一次吐出的正文。Crepe 只在挂载时读 defaultValue，所以外部改动
+  // （用户在确认卡点「同意修改」、云同步回灌）必须靠重挂才能显示出来；
+  // 用它区分「用户自己打字」与「外部写入」，前者不重挂（否则丢光标）。
+  const lastEmitted = useRef(note?.markdown ?? "");
   const { cited, cite } = useCiteToChat();
 
   const handleClose = useCallback(() => closeEditor(noteId), [closeEditor, noteId]);
   const handleMarkdown = useCallback(
-    (markdown: string) => updateNote(noteId, { markdown }),
+    (markdown: string) => {
+      lastEmitted.current = markdown;
+      updateNote(noteId, { markdown });
+    },
     [noteId, updateNote],
   );
   const refreshWysiwyg = useCallback(() => setWysiwygRev((n) => n + 1), []);
+
+  const noteMarkdown = note?.markdown ?? "";
+  useEffect(() => {
+    if (noteMarkdown === lastEmitted.current) return;
+    lastEmitted.current = noteMarkdown;
+    refreshWysiwyg();
+  }, [noteMarkdown, refreshWysiwyg]);
 
   if (!note) return null;
 

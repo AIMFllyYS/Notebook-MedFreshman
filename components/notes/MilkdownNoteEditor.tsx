@@ -10,7 +10,82 @@ import "@milkdown/crepe/theme/frame.css";
  * 个人笔记 / 课堂便签的「渲染编辑」层。
  * Markdown 字符串仍是唯一真相源（UserNote.markdown）；Crepe 只是可写的所见即所得视图。
  * compact：只缩小窗体与留白，不阉割公式 / 列表 / 斜杠菜单 / 快捷键。
+ *
+ * 外部正文更新（确认卡同意写入、云同步回灌）由调用方换 key 重挂来接管，见
+ * UserNoteEditorWindow / ClassroomNoteWindow 的 lastEmitted 比对。
  */
+
+/** 划词工具栏里的标题层级。与 lib/notes/noteToc.ts 的 h1–h3 目录保持一致。 */
+const HEADING_LEVELS = [1, 2, 3] as const;
+
+/**
+ * 工具栏上只有 icon（HTML 字符串，经 DOMPurify 后 innerHTML），没有下拉，
+ * 所以标题层级用自绘的 H1/H2/H3/正文按钮表达。
+ */
+function headingIcon(text: string): string {
+  return `<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><text x="12" y="17" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">${text}</text></svg>`;
+}
+
+/** Crepe 没导出 Ctx 的公开类型；这里只用到两个按名字取的 slice。 */
+type CtxLike = { get?: (key: string) => unknown };
+
+function currentNode(ctx: unknown): { name?: string; level?: number } | null {
+  const state = (ctx as CtxLike)?.get?.("editorState") as
+    | { selection?: { $from?: { parent?: { type?: { name?: string }; attrs?: { level?: number } } } } }
+    | undefined;
+  const parent = state?.selection?.$from?.parent;
+  if (!parent?.type?.name) return null;
+  return { name: parent.type.name, level: parent.attrs?.level };
+}
+
+/**
+ * 用命令名调用 CommonMark 的 WrapInHeading（level<1 回到正文）。
+ *
+ * 走字符串 slice 名而不是 `import { wrapInHeadingCommand } from "@milkdown/kit/...`：
+ * 项目只直接依赖 @milkdown/crepe，装 kit 会引入第二份 @milkdown/core，
+ * 两份 core 的 slice 身份不相等，ctx.get 会直接抛 contextNotFound。
+ */
+function applyHeading(ctx: unknown, level: number): void {
+  const commands = (ctx as CtxLike)?.get?.("commands") as
+    | { call?: (name: string, payload?: unknown) => void }
+    | undefined;
+  try {
+    commands?.call?.("WrapInHeading", level);
+  } catch {
+    /* 未来 Crepe 改名时静默降级：按钮不生效，但不会打断编辑 */
+  }
+}
+
+/** Crepe 没从公开入口导出 GroupBuilder / ToolbarItem 类型，这里按结构声明最小形状。 */
+interface ToolbarBuilderLike {
+  addGroup: (
+    key: string,
+    label: string,
+  ) => {
+    addItem: (
+      key: string,
+      item: { active: (ctx: never) => boolean; icon: string; label?: string; onRun?: (ctx: never) => void },
+    ) => void;
+  };
+}
+
+function buildNoteToolbar(builder: ToolbarBuilderLike): void {
+  const group = builder.addGroup("note-heading", "标题");
+  for (const level of HEADING_LEVELS) {
+    group.addItem(`h${level}`, {
+      icon: headingIcon(`H${level}`),
+      label: `标题 ${level}`,
+      active: ((ctx: unknown) => currentNode(ctx)?.level === level) as never,
+      onRun: ((ctx: unknown) => applyHeading(ctx, level)) as never,
+    });
+  }
+  group.addItem("paragraph", {
+    icon: headingIcon("正文"),
+    label: "正文",
+    active: ((ctx: unknown) => currentNode(ctx)?.name === "paragraph") as never,
+    onRun: ((ctx: unknown) => applyHeading(ctx, 0)) as never,
+  });
+}
 export default function MilkdownNoteEditor({
   value,
   onChange,
@@ -54,6 +129,8 @@ export default function MilkdownNoteEditor({
                 : "写短要点提纲。支持 $KaTeX$、表格、任务列表。输入 / 唤出块。",
               mode: "doc",
             },
+            // 划词工具栏出厂只有加粗/斜体/删除线/行内代码/链接，没有标题层级。
+            [Crepe.Feature.Toolbar]: { buildToolbar: buildNoteToolbar } as never,
           },
         });
         crepe.on((listener) => {

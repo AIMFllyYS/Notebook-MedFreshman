@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { StickyNote, Trash2 } from "lucide-react";
@@ -29,12 +29,25 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   // 只在最前的笔记窗挂重编辑器；Agent 右栏还要求它真的在展示（没最小化、右栏没收起）。
   const isFront = shouldMountHeavyEditor(activeWindowId, windowId) && (presentation !== "dock" || visible);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [editorRev, setEditorRev] = useState(0);
+  // 同 UserNoteEditorWindow：区分「便签自己打的字」与「外部写入」，只有后者才重挂。
+  const lastEmitted = useRef(note?.markdown ?? "");
 
   const handleClose = useCallback(() => closeEditor(noteId), [closeEditor, noteId]);
   const handleMarkdown = useCallback(
-    (markdown: string) => updateNote(noteId, { markdown }),
+    (markdown: string) => {
+      lastEmitted.current = markdown;
+      updateNote(noteId, { markdown });
+    },
     [noteId, updateNote],
   );
+
+  const noteMarkdown = note?.markdown ?? "";
+  useEffect(() => {
+    if (noteMarkdown === lastEmitted.current) return;
+    lastEmitted.current = noteMarkdown;
+    setEditorRev((n) => n + 1);
+  }, [noteMarkdown]);
 
   if (!note) return null;
 
@@ -83,7 +96,7 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
         </div>
         <p className="classroom-note-meta">{note.source?.label || "课堂批注"}</p>
         {isFront ? (
-          <MilkdownNoteEditor key={noteId} value={note.markdown} onChange={handleMarkdown} compact />
+          <MilkdownNoteEditor key={`${noteId}:${editorRev}`} value={note.markdown} onChange={handleMarkdown} compact />
         ) : (
           <textarea
             data-no-drag

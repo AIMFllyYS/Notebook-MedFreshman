@@ -1148,14 +1148,126 @@ mark.citation-flash {
   padding: 8px 16px 28px 28px;
 }
 
+/* ── 笔记标题阶梯 ───────────────────────────────────────────────
+   Crepe 出厂 reset.css 给的是 h1 2.625em / h2 2.25em / h3 2em / h4 1.75em / h5 1.5em，
+   项目原本只压了 h1(1.45em) h2(1.22em)，于是 14.5px 基准下 h3=29px、h4=25.4px、h5=21.8px
+   全都比 h1=21px 还大。这里一次性覆盖 H1–H6，并与分栏预览（.user-note-preview.prose-notes）
+   共用同一组令牌，保证「编辑与预览层级一致」。
+   用 rem 而不是 em：编辑器基准是 14.5px、预览基准是 16px，em 会让两边各算各的。 */
+.user-note-editor,
+.user-note-preview,
+.classroom-note {
+  --note-h1: 1.5rem;
+  --note-h2: 1.28rem;
+  --note-h3: 1.13rem;
+  --note-h4: 1.01rem;
+  --note-h5: 0.95rem;
+  --note-h6: 0.9rem;
+  --note-heading-lh: 1.34;
+  --note-heading-weight: 650;
+}
+
+/* 便签基准更小（13px），阶梯收紧一档 */
+.classroom-note,
+.user-note-crepe.is-compact {
+  --note-h1: 1.25rem;
+  --note-h2: 1.1rem;
+  --note-h3: 1rem;
+  --note-h4: 0.95rem;
+  --note-h5: 0.92rem;
+  --note-h6: 0.9rem;
+}
+
+/* 编辑侧：三段前缀 (0,3,1) 恒定压过 Crepe 的 .milkdown .ProseMirror hN (0,2,1) */
+.user-note-crepe .milkdown .ProseMirror h1,
+.user-note-preview.prose-notes h1 {
+  font-size: var(--note-h1, 1.5rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h2,
+.user-note-preview.prose-notes h2 {
+  font-size: var(--note-h2, 1.28rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h3,
+.user-note-preview.prose-notes h3 {
+  font-size: var(--note-h3, 1.13rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h4,
+.user-note-preview.prose-notes h4 {
+  font-size: var(--note-h4, 1.01rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h5,
+.user-note-preview.prose-notes h5 {
+  font-size: var(--note-h5, 0.95rem);
+}
+
+.user-note-crepe .milkdown .ProseMirror h6,
+.user-note-preview.prose-notes h6 {
+  font-size: var(--note-h6, 0.9rem);
+}
+
+/* 字重/行高/断行两侧拉平：Crepe 出厂 font-weight 是 400，预览侧是 680 */
+.user-note-crepe .milkdown .ProseMirror :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: var(--note-heading-weight, 650);
+  line-height: var(--note-heading-lh, 1.34);
+  overflow-wrap: anywhere;
+}
+
+.user-note-preview.prose-notes :is(h1, h2, h3, h4) {
+  font-weight: var(--note-heading-weight, 650);
+  line-height: var(--note-heading-lh, 1.34);
+}
+
+/* 上间距逐级收窄，替代 Crepe 的 32/28/24/20/16/16px */
 .user-note-crepe .milkdown .ProseMirror h1 {
-  font-size: 1.45em;
   margin-top: 18px;
 }
 
 .user-note-crepe .milkdown .ProseMirror h2 {
-  font-size: 1.22em;
   margin-top: 16px;
+}
+
+.user-note-crepe .milkdown .ProseMirror h3 {
+  margin-top: 16px;
+}
+
+.user-note-crepe .milkdown .ProseMirror h4 {
+  margin-top: 14px;
+}
+
+.user-note-crepe .milkdown .ProseMirror h5,
+.user-note-crepe .milkdown .ProseMirror h6 {
+  margin-top: 12px;
+}
+
+/* 划词工具栏：出厂 32×32 且不换行（约 285px 宽），在窄笔记窗 / 便签里会挤爆 */
+.user-note-crepe .milkdown .milkdown-toolbar {
+  max-width: calc(100% - 16px);
+}
+
+.user-note-crepe .milkdown .milkdown-toolbar .toolbar-item {
+  width: 28px;
+  height: 28px;
+  margin: 4px;
+}
+
+.user-note-crepe .milkdown .milkdown-toolbar .toolbar-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+.user-note-crepe .milkdown .milkdown-toolbar .divider {
+  height: 20px;
+  margin: 8px;
+}
+
+.user-note-crepe.is-compact .milkdown .milkdown-toolbar .toolbar-item {
+  width: 26px;
+  height: 26px;
+  margin: 3px;
 }
 
 .user-note-preview {
