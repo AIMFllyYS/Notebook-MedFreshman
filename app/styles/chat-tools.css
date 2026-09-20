@@ -1331,17 +1331,20 @@ mark.citation-flash {
 }
 
 .note-consent-toggle {
-  display: inline-flex;
-  align-self: flex-start;
+  /* 占满卡片内宽：展开条与卡片左右边严格对齐，而不是缩成一个小药丸。 */
+  display: flex;
+  width: 100%;
+  min-width: 0;
   align-items: center;
   gap: 5px;
-  padding: 3px 8px 3px 5px;
+  padding: 5px 8px 5px 6px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
   background: transparent;
   color: var(--ink-soft);
   font-size: 11.5px;
   font-weight: 600;
+  text-align: left;
   cursor: pointer;
 }
 
@@ -1359,6 +1362,10 @@ mark.citation-flash {
 }
 
 .note-consent-count {
+  /* 行数推到右端，与卡片右边对齐。 */
+  margin-left: auto;
+  padding-left: 8px;
+  flex: 0 0 auto;
   font-variant-numeric: tabular-nums;
   font-weight: 500;
   color: var(--md-sys-color-on-surface-variant);
@@ -1433,8 +1440,11 @@ mark.citation-flash {
 }
 
 .note-consent-actions {
+  /* 两个动作分列左右；窄到放不下时换行，仍各自贴边。 */
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
 }
 

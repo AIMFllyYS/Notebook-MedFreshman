@@ -54,3 +54,21 @@ test("note-consent card keeps the shared tool-card visual language", () => {
   // 卡片直接挂在 .chat-message-content 下，没有外层包裹，必须自己吃满宽度。
   assert.match(body, /width: 100%/);
 });
+
+test("note-consent keeps its two alignment contracts", () => {
+  const css = readWorkspaceFile("app/styles/chat-tools.css");
+
+  // ① 展开条占满卡片内宽，行数靠右 —— 与卡片左右边对齐。
+  const toggle = /\.note-consent-toggle \{[\s\S]*?\n\}/.exec(css);
+  assert.ok(toggle, "缺少 .note-consent-toggle 规则");
+  assert.match(toggle![0], /width: 100%/);
+  assert.doesNotMatch(toggle![0], /align-self: flex-start/);
+  const count = /\.note-consent-count \{[\s\S]*?\n\}/.exec(css);
+  assert.ok(count, "缺少 .note-consent-count 规则");
+  assert.match(count![0], /margin-left: auto/);
+
+  // ② 两个动作分列左右。
+  const actions = /\.note-consent-actions \{[\s\S]*?\n\}/.exec(css);
+  assert.ok(actions, "缺少 .note-consent-actions 规则");
+  assert.match(actions![0], /justify-content: space-between/);
+});
