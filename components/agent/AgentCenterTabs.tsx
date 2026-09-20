@@ -1,16 +1,22 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import { Image as ImageIcon, Link2, MessagesSquare } from "lucide-react";
 import { useAgentCenter, type AgentCenterTab } from "@/lib/stores/agentCenter";
+import { useSessionSourceRounds } from "@/lib/hooks/useSessionSources";
+import { useSessionImages } from "@/lib/hooks/useSessionImages";
+import { useActiveChatSessionId } from "@/lib/window/sessionScope";
 import { useT } from "@/lib/i18n";
 
 /**
- * Agent 中央区顶部的分段开关（回答 / 来源 / 图片）。
+ * Agent 的视图开关（回答 / 来源 / 图片）。
  *
- * 它是**视图开关**而不是第二个导航：三个页签说的是同一件事的不同切面，
- * 所以做成居中的细分段条（Perplexity 那种"微微切换"），而不是左侧栏那种导航行。
- * 计数徽标只在有内容时出现——空对话里挂一个 0 只会噪声。
+ * 它是**视图开关**而不是第二个导航行：三个页签说的是同一件事的不同切面。
+ * 所以它不占自己的那一行，而是**并进顶栏**——顶栏本来就在左侧对话栏的正上方，
+ * 再另起一行就成了"两个顶部导航栏"（用户口径）。
+ *
+ * 计数徽标只在有内容时出现：空对话里挂一个 0 只会是噪声。
  */
 export default function AgentCenterTabs({
   linksCount,
@@ -34,7 +40,7 @@ export default function AgentCenterTabs({
       role="tablist"
       aria-label={t("agent.center.tabs.aria")}
       data-testid="agent-center-tabs"
-      className="flex h-11 shrink-0 items-center justify-center gap-1 border-b border-[var(--line-soft)]"
+      className="flex items-center gap-1 rounded-xl bg-[var(--bg-muted)] p-0.5"
     >
       {tabs.map((tab) => {
         const active = tab.id === centerTab;
@@ -47,10 +53,10 @@ export default function AgentCenterTabs({
             data-testid={`agent-center-tab-${tab.id}`}
             onClick={() => setCenterTab(tab.id)}
             className={clsx(
-              "press flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
+              "press flex items-center gap-1.5 rounded-[10px] px-2.5 py-1 text-[12.5px] font-medium transition-colors",
               active
-                ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
-                : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
+                ? "bg-[var(--bg-panel)] text-[var(--ink)] shadow-[0_1px_2px_rgba(0,0,0,0.08)]"
+                : "text-[var(--ink-soft)] hover:text-[var(--ink)]",
             )}
           >
             {tab.icon}
@@ -59,7 +65,7 @@ export default function AgentCenterTabs({
               <span
                 className={clsx(
                   "rounded-full px-1.5 text-[11px] leading-4 tabular-nums",
-                  active ? "bg-[var(--accent)]/15" : "bg-[var(--bg-muted)] text-[var(--ink-faint)]",
+                  active ? "bg-[var(--accent)]/15 text-[var(--accent-ink)]" : "bg-[var(--bg-muted)] text-[var(--ink-faint)]",
                 )}
               >
                 {tab.count}
@@ -70,4 +76,27 @@ export default function AgentCenterTabs({
       })}
     </div>
   );
+}
+
+/**
+ * 顶栏用的接线版：自己取这条对话的来源 / 图片计数。
+ *
+ * 数据取在这里而不是由 AppShell 透传，是为了让顶栏只多一个自包含组件——
+ * 顶栏不该知道"来源轮次"这种业务概念。
+ */
+export function AgentCenterTabsLive() {
+  const { sources } = useSessionSourceRounds();
+  const images = useSessionImages();
+  const activeSessionId = useActiveChatSessionId();
+  const setCenterTab = useAgentCenter((state) => state.setCenterTab);
+
+  // 来源与图片是「这条对话」的附属视图：换对话就回回答页，否则会看到一条不属于它的清单。
+  const lastSessionRef = useRef(activeSessionId);
+  useEffect(() => {
+    if (lastSessionRef.current === activeSessionId) return;
+    lastSessionRef.current = activeSessionId;
+    setCenterTab("answer");
+  }, [activeSessionId, setCenterTab]);
+
+  return <AgentCenterTabs linksCount={sources.length} imagesCount={images.length} />;
 }

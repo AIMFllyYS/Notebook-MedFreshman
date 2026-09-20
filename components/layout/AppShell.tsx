@@ -40,6 +40,7 @@ import { useBrowserFullscreen } from "@/lib/hooks/useBrowserFullscreen";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
 import ModeSwitcher from "./ModeSwitcher";
+import { AgentCenterTabsLive } from "@/components/agent/AgentCenterTabs";
 import { useT } from "@/lib/i18n";
 import MobileTopBar from "./MobileTopBar";
 import MobileBottomNav from "./MobileBottomNav";
@@ -80,6 +81,7 @@ function TopBar({
   agentMode = false,
   dockOpen = false,
   onToggleDock,
+  showCenterTabs = false,
 }: {
   subjectId: SubjectId;
   categoryId: string;
@@ -90,6 +92,8 @@ function TopBar({
   /** 右侧工作区当前是否展开（Agent 模式）。 */
   dockOpen?: boolean;
   onToggleDock?: () => void;
+  /** Agent 对话页：把「回答 / 来源 / 图片」分段开关并进这一行（用户口径：不要再起第二个顶部导航栏）。 */
+  showCenterTabs?: boolean;
 }) {
   const toggleSidebar = useStore((s) => s.toggleSidebar);
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
@@ -116,7 +120,7 @@ function TopBar({
       data-topbar
       data-agent-bar={agentMode ? "true" : undefined}
       className={clsx(
-        "flex shrink-0 items-center gap-3 bg-[var(--bg-panel)] px-3 transition-all duration-300 ease-out overflow-hidden",
+        "relative flex shrink-0 items-center gap-3 bg-[var(--bg-panel)] px-3 transition-all duration-300 ease-out overflow-hidden",
         barCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line-soft)]",
       )}
     >
@@ -199,6 +203,20 @@ function TopBar({
         >
           {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
         </button>
+        {showCenterTabs && (
+          /**
+           * 让开左侧对话栏的宽度：顶栏比对话栏宽，直接居中会跑到左栏头顶上，
+           * 与下面的正文对不齐。`--agent-left-width` 由 AgentShell 写在 <html> 上。
+           */
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center"
+            style={{ left: "var(--agent-left-width, 0px)" }}
+          >
+            <div className="pointer-events-auto">
+              <AgentCenterTabsLive />
+            </div>
+          </div>
+        )}
         {agentMode && (
           <button
             onClick={onToggleDock}
@@ -250,6 +268,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const route = routeLayout.route;
   /** 只有 /agent 这一条路由用 Agent 专用外壳（左对话栏 + 中央对话 + 通顶的右侧工作区）。 */
   const isAgentRoute = !isMobile && appModeFromPathname(pathname) === "agent";
+  /** 只有对话页有「回答 / 来源 / 图片」这三个切面；资产页等子路由不该出现它。 */
+  const isChatRoute = pathname === "/agent";
   const agentDockCollapsed = useStore((s) => s.agentDockCollapsed);
   const setAgentDockCollapsed = useStore((s) => s.setAgentDockCollapsed);
   const agentDockGlobal = useAgentDockRuntime((s) => s.dockGlobal);
@@ -486,6 +506,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 itemId={route?.itemId ?? ""}
                 hideWindowTaskbar
                 agentMode
+                showCenterTabs={isChatRoute}
                 dockOpen={!agentDockCollapsed}
                 onToggleDock={() => {
                   markDockBusy(paneDurationMs() + 80);
