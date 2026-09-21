@@ -50,10 +50,12 @@ export interface StudyToolContext {
 export interface StudyToolRuntime {
   imageSearchFetchedCount: number;
   loadedContextKeys: Set<string>;
+  /** 本轮回答的下一个 [n] 编号；只在真正注入新来源时递增。 */
+  nextCiteIndex: number;
 }
 
 export function createToolRuntime(): StudyToolRuntime {
-  return { imageSearchFetchedCount: 0, loadedContextKeys: new Set() };
+  return { imageSearchFetchedCount: 0, loadedContextKeys: new Set(), nextCiteIndex: 1 };
 }
 
 export function normalizeContextKeyPart(value: unknown): string {

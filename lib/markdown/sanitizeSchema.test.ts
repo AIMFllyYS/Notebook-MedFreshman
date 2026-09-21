@@ -4,7 +4,7 @@ import rehypeSanitize from "rehype-sanitize";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
-import { markdownSanitizeSchema, MARKDOWN_DSL_TAGS } from "./sanitizeSchema.ts";
+import { markdownSanitizeSchema, MARKDOWN_DSL_TAGS, CITE_REF_TAG } from "./sanitizeSchema.ts";
 import { sharedRemarkPlugins, sharedRehypePlugins } from "./plugins.ts";
 
 type HastNode = {
@@ -81,6 +81,7 @@ test("schema 放行全部正文 DSL 标签", () => {
   for (const tag of MARKDOWN_DSL_TAGS) {
     assert.ok(tags.has(tag), `missing DSL tag ${tag}`);
   }
+  assert.ok(tags.has(CITE_REF_TAG), "missing cite-ref");
 });
 
 test("schema 不放行 script，并列入 strip", () => {

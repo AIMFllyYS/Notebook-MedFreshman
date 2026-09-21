@@ -16,6 +16,8 @@ const ROUND_LABEL_KEY: Record<SourceRound["tool"], string> = {
   searchNoteImages: "trace.tool.searchNoteImages.label",
   imageSearch: "trace.tool.imageSearch.label",
   webSearch: "trace.tool.webSearch.label",
+  getSection: "trace.tool.getSection.label",
+  getCurrentPage: "trace.tool.getCurrentPage.label",
 };
 
 export function sourceRoundLabelKey(tool: SourceRound["tool"]): string {

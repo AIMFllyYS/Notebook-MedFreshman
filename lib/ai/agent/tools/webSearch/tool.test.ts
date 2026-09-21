@@ -22,8 +22,11 @@ test("webSearch：把详细结果与来源回灌，并按 query 去重", async (
   const first = (await tool.execute!({ query: "核糖体", numResults: 3 }, execOpts)) as WebSearchOutput;
   const second = (await tool.execute!({ query: "核糖体" }, execOpts)) as WebSearchOutput;
   assert.match(first.text, /核糖体/);
+  assert.match(first.text, /【引用编号】/);
   assert.equal(first.sources[0]?.url, "https://example.test");
+  assert.equal(first.sources[0]?.citeIndex, 1);
   assert.equal(second.deduped, true);
+  assert.equal(second.sources[0]?.citeIndex, undefined);
 });
 
 test("webSearch：未配置时原样回传提示", async (t) => {

@@ -96,6 +96,13 @@ export const zh = {
       empty: "本轮没有可追踪的引用依据。",
       noLink: "暂无链接",
     },
+    citation: {
+      markerAria: "来源 {index}：{title}",
+      kindWeb: "网页",
+      kindNote: "教材",
+      open: "点击查看来源",
+      untitled: "未命名来源",
+    },
     links: {
       empty: "这次对话还没有可追溯的来源。",
     },

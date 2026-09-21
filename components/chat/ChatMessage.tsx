@@ -13,6 +13,7 @@ import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 import { buildTrace, type AgentTraceModel, type TraceStep } from '@/lib/chat/buildTrace';
 import { getMessageText } from '@/lib/chat/messageParts';
 import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseChatContent';
+import { collectCitationCatalog } from '@/lib/chat/citationCatalog';
 import { collectMessageSources } from '@/lib/chat/traceSources';
 import { ToolResultCards } from '@/components/chat/toolCards/ToolResultCards';
 import { useT } from '@/lib/i18n';
@@ -89,6 +90,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   }, [message.followUpQuestions, parts]);
 
   const traceSources = useMemo(() => isUser ? [] : collectMessageSources(parts), [isUser, parts]);
+  const citations = useMemo(() => isUser ? [] : collectCitationCatalog(parts), [isUser, parts]);
   const reincluded = useReincludedAttachments((state) =>
     sessionId ? state.bySession[sessionId]?.includes(message.id) ?? false : false);
 
@@ -171,6 +173,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                     messageId={message.id}
                     repairModelId={repairModelId}
                     topic={topic}
+                    citations={citations}
                   />
                 </div>
               );

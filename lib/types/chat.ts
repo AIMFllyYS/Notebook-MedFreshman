@@ -15,6 +15,8 @@ export interface WebSearchSource {
   /** imageSearch 专用：摄影师名与主页链接（Unsplash 署名要求）。 */
   author?: string;
   authorUrl?: string;
+  /** 本轮回答里的 [n] 编号；旧消息没有。 */
+  citeIndex?: number;
 }
 
 /** 单次请求的 token 用量（跨工具轮次已累加）。 */

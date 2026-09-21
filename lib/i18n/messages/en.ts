@@ -94,6 +94,13 @@ export const en = {
       empty: "No references to trace in this round.",
       noLink: "No link",
     },
+    citation: {
+      markerAria: "Source {index}: {title}",
+      kindWeb: "Web",
+      kindNote: "Textbook",
+      open: "Click to view source",
+      untitled: "Untitled source",
+    },
     links: {
       empty: "No traceable sources in this chat yet.",
     },

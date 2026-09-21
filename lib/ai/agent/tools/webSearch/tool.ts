@@ -8,6 +8,7 @@ import {
   toText,
   type StudyToolRuntime,
 } from "@/lib/ai/agent/tools/_shared";
+import { allocateCiteIndex, appendCiteLegend, formatCiteLine } from "@/lib/ai/agent/tools/citeIndex";
 
 /** 测试可替换联网搜索，避免打真实供应商。 */
 export const webSearchIo = { runWebSearchDetailed };
@@ -30,6 +31,7 @@ export function createWebSearchTool(runtime: StudyToolRuntime) {
       "- comprehensive：三家全上并做跨源综述。问题复杂、需要交叉验证或系统性分析时才用（最慢，实测约 40–80s，受 Kimi 两轮搜索拖累）。",
       "- auto：交给策略按问题性质自动判断（拿不准就用它）。",
       "也可以显式点名 providers（kimi / zhipu / perplexity 里的一家或几家）。多源结果会自动按 URL 去重，并在两家以上出结果时做一次跨源综述。",
+      "回灌结果带有 [n] 编号。凡依据某条来源写出的句子，句末必须标注对应编号。",
     ].join("\n"),
     inputSchema: z.object({
       query: z.string().describe("搜索关键词，建议用中文"),
@@ -42,11 +44,27 @@ export function createWebSearchTool(runtime: StudyToolRuntime) {
         mode: mode ?? "auto",
         providers,
       });
+      const contextKey = "web:" + normalizeContextKeyPart(query) + ":" + (mode ?? "auto") + ":" + (providers ?? []).join("_");
+      if (runtime.loadedContextKeys.has(contextKey)) {
+        return dedupeByContextKey(runtime, "webSearch", {
+          text: r.content,
+          contextKey,
+          sources: r.sources,
+          cacheHit: r.cacheHit,
+        });
+      }
+      const sources = (r.sources ?? []).map((source) => ({
+        ...source,
+        citeIndex: allocateCiteIndex(runtime),
+      }));
+      const lines = sources.map((source) =>
+        formatCiteLine(source.citeIndex, source.title || source.url || source.alt || "", source.url ?? ""),
+      );
       return dedupeByContextKey(runtime, "webSearch", {
-        text: r.content,
+        text: appendCiteLegend(r.content, lines),
         // 不同搜索策略不能互相去重：同一个问题用 daily 搜过，改成 comprehensive 必须真的再搜一次。
-        contextKey: "web:" + normalizeContextKeyPart(query) + ":" + (mode ?? "auto") + ":" + (providers ?? []).join("_"),
-        sources: r.sources,
+        contextKey,
+        sources,
         cacheHit: r.cacheHit,
       });
     },

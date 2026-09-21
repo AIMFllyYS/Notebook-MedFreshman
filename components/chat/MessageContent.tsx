@@ -20,6 +20,9 @@ import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
 import { VizErrorBoundary } from '@/components/chat/VizErrorBoundary';
 import { ensureSvgRoot } from '@/lib/canvas/normalize';
 import { useT, type Translate } from '@/lib/i18n';
+import type { CitationSource } from '@/lib/chat/citationCatalog';
+import { CitationCatalogContext, CiteRef } from '@/components/chat/InlineCiteMarker';
+import remarkInlineCitations from '@/lib/markdown/remarkInlineCitations';
 
 interface MessageContentProps {
   isStreaming?: boolean;
@@ -31,7 +34,11 @@ interface MessageContentProps {
   messageId?: string;
   repairModelId?: string;
   topic?: string;
+  /** 本条回答可点的 [n] 来源；没有来源时不启用引用插件，避免把普通 [1] 收成标记。 */
+  citations?: CitationSource[];
 }
+
+const EMPTY_CITATIONS: CitationSource[] = [];
 
 type MarkdownElementProps<T extends keyof React.JSX.IntrinsicElements> =
   React.ComponentPropsWithoutRef<T> & { node?: unknown };
@@ -77,6 +84,7 @@ const mdComponents = {
     void _node,
     <CodeBlock className={className}>{children}</CodeBlock>
   ),
+  'cite-ref': CiteRef,
 };
 
 /* ---- Markdown rendering that routes raw inline <svg> to the sanitized viewer ----
@@ -269,17 +277,21 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
   repairModelId,
   topic,
   isStreaming = false,
+  citations,
 }) => {
   const t = useT();
+  const catalog = citations ?? EMPTY_CITATIONS;
   const renderedContent = useStreamingText(content, isStreaming);
   const { blocks } = useMemo(() => {
     return parseChatContent(renderedContent);
   }, [renderedContent]);
 
-  const remarkPlugins = useMemo(
-    () => (preserveLineBreaks ? [...sharedRemarkPlugins, remarkSoftBreaks] : sharedRemarkPlugins),
-    [preserveLineBreaks],
-  );
+  const remarkPlugins = useMemo(() => {
+    const plugins = [...sharedRemarkPlugins];
+    if (preserveLineBreaks) plugins.push(remarkSoftBreaks);
+    if (catalog.length) plugins.push(remarkInlineCitations);
+    return plugins;
+  }, [preserveLineBreaks, catalog.length]);
 
   const rendered = useMemo(() => {
   const canvasBlockCounter = { current: 0 };
@@ -294,7 +306,7 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
 
   return renderBlocks(blocks, 'root', enableVisualizations, remarkPlugins, renderContext);
   }, [blocks, enableVisualizations, remarkPlugins, sessionId, messageId, repairModelId, topic, t]);
-  return <>{rendered}</>;
+  return <CitationCatalogContext.Provider value={catalog}>{rendered}</CitationCatalogContext.Provider>;
 };
 
 export const MessageContent = React.memo(MessageContentComponent);

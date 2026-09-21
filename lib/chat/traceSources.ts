@@ -37,16 +37,40 @@ export function noteImageItemKey(item: { src?: string | null }): string | null {
 }
 
 export function collectMessageSources(parts: ChatMessagePart[]): TraceSource[] {
-  const notes: Extract<TraceSource, { kind: 'note' }>[] = getToolPartsByName({ parts }, 'searchNotes').flatMap((part) =>
-    part.state === 'output-available' && !part.preliminary
-      ? (part.output.hits ?? []).map((hit: SearchHit) => ({
-          kind: 'note' as const,
-          title: hit.title,
-          path: hit.path,
-          snippet: hit.snippet ?? '',
-        }))
-      : [],
-  );
+  const notes: Extract<TraceSource, { kind: 'note' }>[] = [
+    ...getToolPartsByName({ parts }, 'searchNotes').flatMap((part) =>
+      part.state === 'output-available' && !part.preliminary
+        ? (part.output.hits ?? []).map((hit: SearchHit) => ({
+            kind: 'note' as const,
+            title: hit.title,
+            path: hit.path,
+            snippet: hit.snippet ?? '',
+          }))
+        : [],
+    ),
+    ...getToolPartsByName({ parts }, 'getSection').flatMap((part) => {
+      if (part.state !== 'output-available' || part.preliminary || !part.output.found) return [];
+      const path = part.output.path || (part.output.contextKey?.startsWith('section:') ? part.output.contextKey.slice('section:'.length) : '');
+      if (!path) return [];
+      return [{
+        kind: 'note' as const,
+        title: part.output.title || path,
+        path,
+        snippet: part.output.text ?? '',
+      }];
+    }),
+    ...getToolPartsByName({ parts }, 'getCurrentPage').flatMap((part) => {
+      if (part.state !== 'output-available' || part.preliminary || part.output.found === false) return [];
+      const path = part.output.path || (part.output.contextKey?.startsWith('page:') ? part.output.contextKey.slice('page:'.length) : '');
+      if (!path || path.split('/').filter(Boolean).length < 2) return [];
+      return [{
+        kind: 'note' as const,
+        title: part.output.title || path,
+        path,
+        snippet: part.output.text ?? '',
+      }];
+    }),
+  ];
 
   const web: Extract<TraceSource, { kind: 'web' }>[] = getToolPartsByName({ parts }, 'webSearch').flatMap((part) =>
     part.state === 'output-available' && !part.preliminary
@@ -72,7 +96,7 @@ export function collectMessageSources(parts: ChatMessagePart[]): TraceSource[] {
 // 于是「搜了什么词 → 查到什么」能整条摊开，而不是一堆失去上下文的条目。
 
 /** 会产生来源的检索类工具。 */
-export type SourceRoundTool = 'searchNotes' | 'webSearch' | 'imageSearch' | 'searchNoteImages';
+export type SourceRoundTool = 'searchNotes' | 'webSearch' | 'imageSearch' | 'searchNoteImages' | 'getSection' | 'getCurrentPage';
 
 /** 一轮检索：一次工具调用的 query + 它返回的来源。 */
 export interface SourceRound {
@@ -160,6 +184,32 @@ export function collectMessageSourceRounds(parts: ChatMessagePart[]): SourceRoun
       case 'tool-searchNotes': {
         if (part.state !== 'output-available' || part.preliminary) break;
         const round = makeRound('searchNotes', index, part.input?.query ?? '', noteSourcesOfHits(part.output.hits ?? []));
+        if (round) rounds.push(round);
+        break;
+      }
+      case 'tool-getSection': {
+        if (part.state !== 'output-available' || part.preliminary || !part.output.found) break;
+        const path = part.output.path || (part.output.contextKey?.startsWith('section:') ? part.output.contextKey.slice('section:'.length) : '');
+        if (!path) break;
+        const round = makeRound('getSection', index, part.input?.path || part.input?.sectionId || path, [{
+          kind: 'note',
+          title: part.output.title || path,
+          path,
+          snippet: part.output.text ?? '',
+        }]);
+        if (round) rounds.push(round);
+        break;
+      }
+      case 'tool-getCurrentPage': {
+        if (part.state !== 'output-available' || part.preliminary || part.output.found === false) break;
+        const path = part.output.path || (part.output.contextKey?.startsWith('page:') ? part.output.contextKey.slice('page:'.length) : '');
+        if (!path || path.split('/').filter(Boolean).length < 2) break;
+        const round = makeRound('getCurrentPage', index, part.output.title || path, [{
+          kind: 'note',
+          title: part.output.title || path,
+          path,
+          snippet: part.output.text ?? '',
+        }]);
         if (round) rounds.push(round);
         break;
       }

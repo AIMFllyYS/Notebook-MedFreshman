@@ -60,6 +60,17 @@ describe('MessageContent', () => {
     expect(warningText).not.toMatch(/unrecognized tag|incorrect casing/i);
   });
 
+  it('有来源目录时把 [1] 收成可点击标记，代码里的 [1] 保持原样', () => {
+    render(
+      <MessageContent
+        content={'核糖体是蛋白质合成的场所[1]。代码里写 `[1]`。'}
+        citations={[{ index: 1, kind: 'note', title: '被覆上皮', path: 'histology/textbook/ch02-1', snippet: '单层扁平' }]}
+      />,
+    );
+    expect(screen.getByTestId('inline-cite')).toHaveTextContent('1');
+    expect(document.querySelector('code')?.textContent).toBe('[1]');
+  });
+
   it('FollowUp 控制标签不显示在正文，也不单独渲染追问', () => {
     render(
       <MessageContent content={'正文\n\n<FollowUp>继续解释|换个例子</FollowUp>'} />,

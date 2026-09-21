@@ -17,6 +17,11 @@ import {
 } from "@/lib/ai/agent/tools/memoryCatalog";
 import { subjectLabel } from "@/lib/notes/userNote";
 import {
+  allocateCiteIndex,
+  CITE_HIT_HINT,
+  prefixCiteTag,
+} from "@/lib/ai/agent/tools/citeIndex";
+import {
   dedupeByContextKey,
   normalizeContextKeyPart,
   toText,
@@ -60,9 +65,13 @@ function getPersonalNote(
     };
   }
   const title = note.title.trim() || "无标题笔记";
+  const contextKey = `user-note:${note.id}`;
+  const already = runtime.loadedContextKeys.has(contextKey);
+  const citeIndex = already ? undefined : allocateCiteIndex(runtime);
+  const body = `【个人笔记 ${title} / ${note.id} / ${subjectLabel(note.subjectId)}】\n\n${note.markdown}`;
   return dedupeByContextKey(runtime, "searchNotes", {
-    text: `【个人笔记 ${title} / ${note.id} / ${subjectLabel(note.subjectId)}】\n\n${note.markdown}`,
-    contextKey: `user-note:${note.id}`,
+    text: citeIndex ? prefixCiteTag(body, citeIndex, "笔记") : body,
+    contextKey,
     hits: [{
       title,
       path: `note:${note.id}`,
@@ -70,6 +79,7 @@ function getPersonalNote(
       kind: "personal",
       noteId: note.id,
       subjectId: note.subjectId ?? undefined,
+      citeIndex,
     }],
   });
 }
@@ -92,7 +102,12 @@ function listPersonalNotes(ctx: StudyToolContext, subjectId?: string): SearchNot
   };
 }
 
-function searchPersonalNotes(ctx: StudyToolContext, query: string, subjectId?: string): SearchNotesOutput {
+function searchPersonalNotes(
+  ctx: StudyToolContext,
+  runtime: StudyToolRuntime,
+  query: string,
+  subjectId?: string,
+): SearchNotesOutput {
   if (!(ctx.userNotes?.length) && ctx.editingUserNote) {
     return {
       text: "窗内笔记对话请只整理当前这篇，用 updateUserNote 写回。查找个人笔记请到右侧主对话。",
@@ -103,15 +118,31 @@ function searchPersonalNotes(ctx: StudyToolContext, query: string, subjectId?: s
   if (!notes.length) {
     return { text: "未检索到相关个人笔记。可换关键词，或 searchNotes(scope=\"personal\") 先列出。", hits: [] };
   }
-  const lines = notes.map((note) => {
+  const contextKey = `personal-search:${normalizeContextKeyPart(query)}:${subjectId ?? ""}`;
+  const already = runtime.loadedContextKeys.has(contextKey);
+  const hits = notes.map((note) => {
     const title = note.title.trim() || "无标题笔记";
-    return `[${title}] (id: ${note.id} / ${subjectLabel(note.subjectId)})\n…${note.snippet}…`;
+    return {
+      title,
+      path: `note:${note.id}`,
+      snippet: note.snippet,
+      kind: "personal" as const,
+      noteId: note.id,
+      subjectId: note.subjectId ?? undefined,
+      citeIndex: already ? undefined : allocateCiteIndex(runtime),
+    };
+  });
+  const lines = hits.map((hit) => {
+    const label = hit.citeIndex ? `[${hit.citeIndex}] ${hit.title}` : hit.title;
+    return `${label} (id: ${hit.noteId} / ${subjectLabel(hit.subjectId)})\n…${hit.snippet}…`;
   });
   lines.push("\n如需全文，再调用 searchNotes(id: \"对应 id\", scope: \"personal\")。不要一次取多篇。");
-  return {
+  lines.push(CITE_HIT_HINT);
+  return dedupeByContextKey(runtime, "searchNotes", {
     text: lines.join("\n\n"),
-    hits: personalHitsOf(notes),
-  };
+    contextKey,
+    hits,
+  });
 }
 
 async function searchClassNotes(
@@ -158,13 +189,26 @@ async function searchClassNotes(
   if (!hits.length) {
     return { text: "未检索到相关课堂笔记。可尝试更换关键词，或调用 getOutline 浏览目录。", hits: [], diagnostics };
   }
-  const lines = hits.map((h) => `[${h.title}] (path: ${h.path})\n…${h.snippet}…`);
+  const contextKey = `search:${normalizeContextKeyPart(query)}`;
+  const already = runtime.loadedContextKeys.has(contextKey);
+  const numbered = hits.map((h) => ({
+    title: h.title,
+    path: h.path,
+    snippet: h.snippet,
+    kind: "class" as const,
+    citeIndex: already ? undefined : allocateCiteIndex(runtime),
+  }));
+  const lines = numbered.map((h) => {
+    const label = h.citeIndex ? `[${h.citeIndex}] ${h.title}` : h.title;
+    return `${label} (path: ${h.path})\n…${h.snippet}…`;
+  });
   if (widened) lines.unshift("（当前学年无命中，以下为跨学年结果）");
   lines.push('\n如需查看完整内容，可调用 getSection(path: "对应路径")。');
+  lines.push(CITE_HIT_HINT);
   return dedupeByContextKey(runtime, "searchNotes", {
     text: lines.join("\n\n"),
-    contextKey: `search:${normalizeContextKeyPart(query)}`,
-    hits: hits.map((h) => ({ title: h.title, path: h.path, snippet: h.snippet, kind: "class" as const })),
+    contextKey,
+    hits: numbered,
     diagnostics,
   });
 }
@@ -194,7 +238,7 @@ function mergeNoteResults(classOut: SearchNotesOutput | null, personalOut: Searc
 export function createSearchNotesTool(ctx: StudyToolContext, runtime: StudyToolRuntime) {
   return tool({
     description:
-      "查找课堂笔记或个人笔记。默认 scope=all：课堂走语义+关键词检索，个人笔记按标题/正文/科目匹配本机目录。先看列表（标题+片段+id/path），不要一次展开全文。课堂全文用 getSection(path)；个人全文再调 searchNotes(id)。查询用知识点短语（如「核糖体」），不要用「什么是…」整句。主对话在学生提到自己的笔记或需要对照旧稿时主动调用。窗内笔记对话请只整理当前篇，不要翻整库。",
+      "查找课堂笔记或个人笔记。默认 scope=all：课堂走语义+关键词检索，个人笔记按标题/正文/科目匹配本机目录。先看列表（标题+片段+id/path），不要一次展开全文。课堂全文用 getSection(path)；个人全文再调 searchNotes(id)。查询用知识点短语（如「核糖体」），不要用「什么是…」整句。主对话在学生提到自己的笔记或需要对照旧稿时主动调用。窗内笔记对话请只整理当前篇，不要翻整库。命中条目带有 [n] 编号；凡依据某条命中写出的句子，句末必须标注对应编号。",
     inputSchema: z.object({
       query: z.string().optional().describe("检索短语，如 '贝叶斯公式'、'线粒体'、'被覆上皮'。空查询 + scope=personal 则列出个人笔记。"),
       id: z.string().optional().describe("个人笔记 id，只取这一篇全文。先列表再传 id。"),
@@ -231,7 +275,7 @@ export function createSearchNotesTool(ctx: StudyToolContext, runtime: StudyToolR
       const classOut = wantClass ? await searchClassNotes(ctx, runtime, q, crossYear, subjectId) : null;
       if (classOut && classOut.text.startsWith("检索索引未加载") && !wantPersonal) return classOut;
 
-      const personalOut = wantPersonal ? searchPersonalNotes(ctx, q, subjectId) : null;
+      const personalOut = wantPersonal ? searchPersonalNotes(ctx, runtime, q, subjectId) : null;
       if (resolvedScope === "class") return classOut ?? { text: "未检索到相关课堂笔记。", hits: [] };
       if (resolvedScope === "personal") return personalOut ?? { text: "未检索到相关个人笔记。", hits: [] };
 

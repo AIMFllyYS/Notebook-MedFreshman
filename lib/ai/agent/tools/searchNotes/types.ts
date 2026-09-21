@@ -13,6 +13,8 @@ export interface SearchHit {
   kind?: SearchHitKind;
   noteId?: string;
   subjectId?: string;
+  /** 本轮回答里的 [n] 编号；列表阶段可以没有。 */
+  citeIndex?: number;
 }
 
 export interface SearchNotesInput {

@@ -10,4 +10,8 @@ export interface GetSectionOutput extends TextToolOutput {
   title?: string;
   found: boolean;
   deduped?: boolean;
+  /** 复合路径，如 histology/textbook/ch03-2。 */
+  path?: string;
+  /** 本轮回答里的 [n] 编号。 */
+  citeIndex?: number;
 }

@@ -306,6 +306,42 @@ test('collectSessionSourceRounds drops rounds whose sources were all seen before
   assert.equal(rounds[0].query, '甲');
 });
 
+test('collectMessageSources includes getSection and getCurrentPage as notes', () => {
+  const parts = [
+    {
+      type: 'tool-getSection',
+      toolCallId: 's',
+      state: 'output-available',
+      input: { path: 'histology/textbook/ch02-1' },
+      output: {
+        text: '上皮',
+        found: true,
+        title: '被覆上皮',
+        path: 'histology/textbook/ch02-1',
+        contextKey: 'section:histology/textbook/ch02-1',
+      },
+    },
+    {
+      type: 'tool-getCurrentPage',
+      toolCallId: 'p',
+      state: 'output-available',
+      input: {},
+      output: {
+        text: '当前页',
+        found: true,
+        title: '贝叶斯',
+        path: 'probability/detail/1.4',
+        contextKey: 'page:probability/detail/1.4',
+      },
+    },
+  ] as ChatMessagePart[];
+  const sources = collectMessageSources(parts);
+  assert.deepEqual(sources.map((item) => item.kind === 'note' ? item.path : ''), [
+    'histology/textbook/ch02-1',
+    'probability/detail/1.4',
+  ]);
+});
+
 test('collectSessionSourceRounds lets sources without a key through', () => {
   const rounds = collectSessionSourceRounds([{
     role: 'assistant',

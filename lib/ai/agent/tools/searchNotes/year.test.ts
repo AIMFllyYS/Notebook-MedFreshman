@@ -50,6 +50,8 @@ test("searchNotes：默认学年无命中时放宽到跨学年", async (t) => {
   assert.deepEqual(years, ["freshman-2", "all"]);
   assert.match(result.text, /当前学年无命中/);
   assert.equal(result.hits[0]?.path, "anatomy/textbook/ch01-1");
+  assert.equal(result.hits[0]?.citeIndex, 1);
+  assert.match(result.text, /\[1\] 骨学/);
 });
 
 test("searchNotes：crossYear 不二次放宽；相同 query 去重", async (t) => {

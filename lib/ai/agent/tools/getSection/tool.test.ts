@@ -54,8 +54,11 @@ describe("getSection execute", { concurrency: false }, () => {
     const spy = t.mock.method(contentIo, "readFileSync", () => "# fixture section");
     const viaPath = await exec({ path: "probability/detail/1.1" });
     assert.equal(viaPath.found, true);
+    assert.equal(viaPath.path, "probability/detail/1.1");
+    assert.equal(viaPath.citeIndex, 1);
     assert.match(viaPath.text, /# fixture section/);
     assert.match(viaPath.text, /随机试验与样本空间/);
+    assert.match(viaPath.text, /【引用编号 \[1\]/);
 
     const viaSection = await exec({ sectionId: "1.1" }, createToolRuntime());
     assert.equal(viaSection.found, true);

@@ -12,6 +12,9 @@ import { defaultSchema, type Options as SanitizeSchema } from "rehype-sanitize";
  * 不放行 script / 事件属性；默认 schema 也不会把 on* 写进 attributes。
  */
 
+/** 聊天句级引用标记；笔记共享管线不会生成它，但消毒表要放行以免被剥掉。 */
+export const CITE_REF_TAG = "cite-ref";
+
 export const MARKDOWN_DSL_TAGS = [
   "callout",
   "derivation",
@@ -214,11 +217,13 @@ export const markdownSanitizeSchema: SanitizeSchema = {
     ...(defaultSchema.tagNames ?? []),
     ...MARKDOWN_EXTRA_HTML_TAGS,
     ...MARKDOWN_DSL_TAGS,
+    CITE_REF_TAG,
     ...MARKDOWN_SVG_TAGS,
   ],
   attributes: {
     ...defaultAttributes,
     ...DSL_ATTRIBUTES,
+    [CITE_REF_TAG]: ["indexes"],
     ...svgAttributeMap,
     // KaTeX 入口是 span/div.math-inline|math-display；消毒在 katex 之前，必须保住 className。
     "*": [...defaultStar, "className"],

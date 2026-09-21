@@ -56,6 +56,9 @@ test("buildSystemPrompt：工具清单含 useSkill；出题 1–12；导出只�
   assert.match(prompt, /<InteractiveVenn a=\{0\.3\} b=\{0\.25\} ab=\{0\.1\} aLabel=/);
   assert.doesNotMatch(prompt, /<InteractiveVenn>集合A\|集合B\|交集标签/);
   assert.match(prompt, /单次请求（本次回答）合计最多抓取 20 张/);
+  assert.match(prompt, /句级来源标注/);
+  assert.match(prompt, /……\[1\]。/);
+  assert.match(prompt, /\[1\]\[3\]/);
 });
 
 test("buildLocationLine：学年在定位行，换学年 / 换页只改这一行", () => {

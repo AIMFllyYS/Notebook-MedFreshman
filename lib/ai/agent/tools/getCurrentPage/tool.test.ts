@@ -25,6 +25,10 @@ test("getCurrentPage：读到正文时带标题与 contextKey", async (t) => {
   const result = (await createGetCurrentPageTool(ctx, createToolRuntime()).execute!({}, execOpts)) as GetCurrentPageOutput;
   assert.match(result.text, /# fixture page/);
   assert.equal(result.contextKey, "page:probability/detail/1.4");
+  assert.equal(result.found, true);
+  assert.equal(result.path, "probability/detail/1.4");
+  assert.equal(result.citeIndex, 1);
+  assert.match(result.text, /【引用编号 \[1\]/);
 });
 
 test("getCurrentPage：占位页给出尚未生成提示", async (t) => {
