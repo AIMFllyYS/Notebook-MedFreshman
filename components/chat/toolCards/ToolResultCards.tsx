@@ -7,6 +7,7 @@ import { dedupeByKey } from "@/lib/chat/traceSources";
 import type { StudyToolName } from "@/lib/ai/agent/tools/names";
 import type { ToolPart } from "@/lib/ai/agent/tools/registry";
 import { TOOL_RESULT_CARDS, type ToolResultCardEntry } from "@/components/chat/toolCards/registry";
+import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
 
 function dedupBy<T>(keyFn: (item: T) => string | null) {
   const seen = new Set<string>();
@@ -70,6 +71,7 @@ export function ToolResultCards({
   /** 缺省按 RESULT_CARD_ORDER；传入时只渲染该子集。 */
   names?: readonly StudyToolName[];
 }) {
+  const isAgentSurface = useIsAgentSurface();
   const cards = names
     ? TOOL_RESULT_CARDS.filter((card) => names.includes(card.name))
     : TOOL_RESULT_CARDS;
@@ -78,7 +80,8 @@ export function ToolResultCards({
   return (
     <>
       {cards.map((card) => {
-        const { name, ResultCard, resultKey, shouldRender, aggregate } = card;
+        const { name, ResultCard, resultKey, shouldRender, aggregate, hideInAgentChat } = card;
+        if (isAgentSurface && hideInAgentChat) return <Fragment key={name} />;
         const ready = getToolPartsByName(message, name)
           .filter((part) => part.state === "output-available" && !part.preliminary && (shouldRender?.(part as never) ?? true));
 

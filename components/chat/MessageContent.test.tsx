@@ -71,6 +71,20 @@ describe('MessageContent', () => {
     expect(document.querySelector('code')?.textContent).toBe('[1]');
   });
 
+  it('相邻 [1][2] 收成一簇，悬浮卡只列这两个来源', () => {
+    render(
+      <MessageContent
+        content={'这句话同时参考了两处[1][2]。'}
+        citations={[
+          { index: 1, kind: 'web', title: '课程', url: 'https://example.edu/a', snippet: '摘要' },
+          { index: 2, kind: 'note', title: '被覆上皮', path: 'histology/textbook/ch02-1', snippet: '单层扁平' },
+        ]}
+      />,
+    );
+    expect(screen.getByTestId('inline-cite-cluster')).toBeInTheDocument();
+    expect(screen.getAllByTestId('inline-cite')).toHaveLength(2);
+  });
+
   it('FollowUp 控制标签不显示在正文，也不单独渲染追问', () => {
     render(
       <MessageContent content={'正文\n\n<FollowUp>继续解释|换个例子</FollowUp>'} />,

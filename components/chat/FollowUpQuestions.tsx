@@ -5,6 +5,7 @@ import { HelpCircle, Lightbulb } from 'lucide-react';
 import QuizMarkdown from '@/components/quiz/QuizMarkdown';
 import { openSourceTrace } from '@/lib/chat/openSourceTrace';
 import type { TraceSource } from '@/lib/chat/traceSources';
+import { useIsAgentSurface } from '@/lib/window/useManagedWindowSurface';
 import { useT } from '@/lib/i18n';
 
 interface FollowUpQuestionsProps {
@@ -21,14 +22,17 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({
   sources = [],
 }) => {
   const t = useT();
-  if ((!questions || questions.length === 0) && sources.length === 0) return null;
+  const isAgentSurface = useIsAgentSurface();
+  const questionList = questions ?? [];
+  const showSources = sources.length > 0 && !isAgentSurface;
+  if (questionList.length === 0 && !showSources) return null;
 
   return (
     <div className="followup-card" data-testid="followups">
       <div className="followup-header">
         <Lightbulb size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
-        <span className="followup-title">{questions.length ? (title ?? t('trace.followUp.title')) : t('trace.followUp.sourcesOnly')}</span>
-        {sources.length > 0 ? (
+        <span className="followup-title">{questionList.length ? (title ?? t('trace.followUp.title')) : t('trace.followUp.sourcesOnly')}</span>
+        {showSources ? (
           <button
             type="button"
             className="followup-sources"
@@ -38,9 +42,9 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({
           </button>
         ) : null}
       </div>
-      {questions.length > 0 ? (
+      {questionList.length > 0 ? (
         <div className="followup-list">
-          {questions.map((question, index) => (
+          {questionList.map((question, index) => (
             <button
               key={index}
               onClick={() => onSelect(question)}

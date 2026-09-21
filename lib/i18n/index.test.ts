@@ -31,6 +31,7 @@ const REQUIRED_KEYS = [
   "agent.sources.count", "agent.sources.openPanel",
   "agent.sources.query",
   "agent.sources.empty", "agent.sources.noLink",
+  "agent.rail.count", "agent.rail.quiz", "agent.rail.interactive", "agent.rail.document",
   "agent.links.empty", "agent.images.empty", "agent.images.search", "agent.images.generated",
   "agent.quiz.dock.title", "agent.quiz.dock.open", "agent.quiz.dock.created",
   "agent.quiz.intent.check", "agent.quiz.intent.diagnose", "agent.quiz.intent.practice", "agent.quiz.intent.exam",

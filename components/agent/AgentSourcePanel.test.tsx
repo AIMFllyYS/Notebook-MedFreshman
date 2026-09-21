@@ -7,6 +7,7 @@ import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { SOURCES_PANEL_DEFAULT_SIZE, useAgentCenter } from "@/lib/stores/agentCenter";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useStore } from "@/lib/stores/ui";
+import { resetAutoOpenedQuizzes } from "@/lib/quiz-dock/open";
 
 const zh = (key: string, vars?: Record<string, string | number>) => translate("zh", key, vars);
 
@@ -26,12 +27,35 @@ afterEach(() => {
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   useStore.setState({ agentDockCollapsed: true });
   useAgentCenter.setState({ sourcesPanelSize: { ...SOURCES_PANEL_DEFAULT_SIZE }, sourcesPanelOpen: true });
+  resetAutoOpenedQuizzes();
 });
 
 describe("AgentSourcePanel", () => {
-  it("renders nothing when this conversation produced no sources", () => {
-    render(<AgentSourcePanel rounds={[]} sources={[]} open />);
+  it("renders nothing when this conversation produced no sources or products", () => {
+    render(<AgentSourcePanel rounds={[]} sources={[]} products={[]} open />);
     expect(screen.queryByTestId("agent-source-panel")).not.toBeInTheDocument();
+  });
+
+  it("lists quizzes in the same card so Agent chat does not need a mid-thread notice", () => {
+    render(
+      <AgentSourcePanel
+        rounds={[]}
+        sources={[]}
+        products={[{
+          kind: "quiz",
+          id: "quiz_1",
+          title: "即时检验",
+          detail: "3",
+          payload: { quizId: "quiz_1", title: "即时检验", questions: [] },
+        }]}
+        open
+      />,
+    );
+    expect(screen.getByText(zh("agent.rail.quiz", { count: 1 }))).toBeVisible();
+    expect(screen.getByText("即时检验")).toBeVisible();
+    fireEvent.click(screen.getByTestId("agent-rail-quiz"));
+    expect(useStore.getState().agentDockCollapsed).toBe(false);
+    expect(useWindowManager.getState().windows.some((win) => win.type === "quiz-dock")).toBe(true);
   });
 
   it("looks like a floating card but reserves real width so it never covers the conversation", () => {

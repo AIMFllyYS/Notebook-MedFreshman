@@ -9,6 +9,7 @@ import AgentSourcePanel from "@/components/agent/AgentSourcePanel";
 import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
 import { SOURCES_PANEL_INSET, hydrateSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
 import { useSessionSourceRounds } from "@/lib/hooks/useSessionSources";
+import { useSessionProducts } from "@/lib/hooks/useSessionProducts";
 import { useSessionImages } from "@/lib/hooks/useSessionImages";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useStore } from "@/lib/stores/ui";
@@ -16,9 +17,9 @@ import { useStore } from "@/lib/stores/ui";
 /**
  * Agent 中央对话（`/agent` 的内容）。左栏与右侧工作区分别由 AgentShell / AppShell 承载。
  *
- * 版面与 Perplexity / Codex 一致：正文占满中央，**来源是一块「看起来像悬浮卡片、实际占真实宽度」的列**
+ * 版面与 Perplexity / Codex 一致：正文占满中央，**参考列是一块「看起来像悬浮卡片、实际占真实宽度」的列**
  * 钉在右上角（不是右侧那套统一面板 —— 那套要能装多种查看器，是另一回事）。它可拖动改大小，
- * 右栏一展开就整条让位，顶栏还有一个开关按钮控制它显示与否（默认显示）。
+ * 除了来源，也放出题 / 演示 / 文档入口；右栏一展开就整条让位。
  *
  * **回答页签只隐藏、不卸载** ChatPanel：ChatThread 的划词容器 ref 是它挂载时绑定的，
  * 卸载再挂载会让 SelectionPopover 错过新节点，Agent 里就再也选不中文字（见 ChatPanel 注释）。
@@ -28,6 +29,7 @@ export default function AgentChatCenter() {
   const centerTab = useAgentCenter((state) => state.centerTab);
   const sourcesPanelOpen = useAgentCenter((state) => state.sourcesPanelOpen);
   const { rounds, sources } = useSessionSourceRounds();
+  const products = useSessionProducts();
   const images = useSessionImages();
   const dockCollapsed = useStore((state) => state.agentDockCollapsed);
   const isMobile = useIsMobile();
@@ -44,7 +46,7 @@ export default function AgentChatCenter() {
   const sourcesWidth = useAgentCenter((state) => state.sourcesPanelSize.width);
 
   const showSourcesPanel =
-    !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && sources.length > 0;
+    !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && (sources.length > 0 || products.length > 0);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -67,7 +69,7 @@ export default function AgentChatCenter() {
         {centerTab === "images" ? <AgentImagesPane images={images} /> : null}
       </div>
       {/* 常驻（不是条件渲染）：宽度过渡才能跑起来，见 AgentSourcePanel 的 open。 */}
-      <AgentSourcePanel rounds={rounds} sources={sources} open={showSourcesPanel} />
+      <AgentSourcePanel rounds={rounds} sources={sources} products={products} open={showSourcesPanel} />
     </div>
   );
 }

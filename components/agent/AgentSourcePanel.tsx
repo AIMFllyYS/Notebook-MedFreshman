@@ -2,44 +2,118 @@
 
 import { useCallback, useState } from "react";
 import clsx from "clsx";
-import { BookOpen, Globe, Link2 } from "lucide-react";
+import { Link2 } from "lucide-react";
+import { AgentDocumentIcon, AgentQuizIcon, AgentTerminalIcon } from "@/components/icons/AgentIcons";
+import { SourcePreviewRows, sourcePreviewMeta } from "@/components/chat/SourcePreviewRows";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
+import type { AgentProductItem } from "@/lib/chat/sessionProducts";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
+import { openAgentQuiz } from "@/lib/quiz-dock/open";
+import { useArtifacts } from "@/lib/stores/artifacts";
+import { useDocuments } from "@/lib/stores/documents";
 import { useStore } from "@/lib/stores/ui";
 import { SOURCES_PANEL_INSET as INSET, clampSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
 import { useT } from "@/lib/i18n";
 
 type ResizeAxes = "x" | "y" | "xy";
 
-/** 卡片副标题：网页取 host，笔记取面包屑路径。 */
-function sourceMeta(source: TraceSource): string {
-  if (source.kind === "note") return source.path || "";
-  try {
-    return new URL(source.url).hostname.replace(/^www\./, "");
-  } catch {
-    return source.url || "";
+function railTitle(
+  t: ReturnType<typeof useT>,
+  sources: TraceSource[],
+  products: AgentProductItem[],
+): string {
+  const kinds = [
+    sources.length > 0 ? "sources" : null,
+    ...new Set(products.map((item) => item.kind)),
+  ].filter(Boolean);
+  if (kinds.length <= 1) {
+    if (sources.length) return t("agent.sources.count", { count: sources.length });
+    const kind = products[0]?.kind;
+    const count = products.length;
+    if (kind === "quiz") return t("agent.rail.quiz", { count });
+    if (kind === "interactive") return t("agent.rail.interactive", { count });
+    if (kind === "document") return t("agent.rail.document", { count });
   }
+  return t("agent.rail.count", { count: sources.length + products.length });
+}
+
+function ProductRows({
+  items,
+  onOpen,
+}: {
+  items: readonly AgentProductItem[];
+  onOpen: (item: AgentProductItem) => void;
+}) {
+  const t = useT();
+  return (
+    <>
+      {items.map((item) => {
+        const Icon = item.kind === "quiz"
+          ? AgentQuizIcon
+          : item.kind === "document"
+            ? AgentDocumentIcon
+            : AgentTerminalIcon;
+        const detail = item.kind === "quiz"
+          ? t("agent.rail.questions", { count: Number(item.detail) || 0 })
+          : item.detail;
+        const hint = item.kind === "quiz"
+          ? t("agent.rail.openQuiz")
+          : item.kind === "document"
+            ? t("agent.rail.openDocument")
+            : t("agent.rail.openInteractive");
+        return (
+          <button
+            key={`${item.kind}:${item.id}`}
+            type="button"
+            data-testid={`agent-rail-${item.kind}`}
+            onClick={() => onOpen(item)}
+            title={hint}
+            className="press flex w-full min-w-0 flex-col gap-1 rounded-lg border border-[var(--line-soft)] bg-[var(--bg-panel)] px-2.5 py-2 text-left hover:border-[var(--accent)] hover:bg-[var(--bg-muted)]"
+          >
+            <span className="flex min-w-0 items-start gap-1.5">
+              <Icon size={13} className="mt-[2px] shrink-0 text-[var(--ink-faint)]" />
+              <span className="line-clamp-2 min-w-0 flex-1 text-[12.5px] font-medium leading-[1.35] text-[var(--ink)]">
+                {item.title}
+              </span>
+            </span>
+            {detail ? (
+              <span className="line-clamp-2 pl-[18px] text-[11.5px] leading-[1.5] text-[var(--ink-soft)]">
+                {detail}
+              </span>
+            ) : null}
+            <span className="truncate pl-[18px] text-[10.5px] text-[var(--ink-faint)]">{hint}</span>
+          </button>
+        );
+      })}
+    </>
+  );
+}
+
+function SectionLabel({ children }: { children: string }) {
+  return (
+    <div className="px-1 pt-1 text-[10.5px] font-semibold tracking-wide text-[var(--ink-faint)]">
+      {children}
+    </div>
+  );
 }
 
 /**
- * 来源列（用户口径，也是 Perplexity / Codex 的做法）。
+ * 右上角参考列（用户口径，也是 Perplexity / Codex 的做法）。
  *
  * **反直觉点**：它看起来像一块悬浮卡片（圆角 + 阴影 + **可以拖动改大小**），但**占掉真实宽度** ——
- * 它是对话列旁边实打实的一列，正文会真的让开，不会被压住。演进路径是
- * 「浮层卡片 → 右侧固定栏 → 占宽的浮层卡片（最终）」，所以这里写死口径：像浮层 ≠ 是浮层。
+ * 它是对话列旁边实打实的一列，正文会真的让开，不会被压住。
  *
- * 它也不是右栏那套统一面板：右栏要占满一列、能装多种查看器；这块只是「看一眼来源」的轻量预览，
- * 想细看再点卡片，把内容交给右侧统一面板。
- *
- * 位置恒在右上角（跟另外两个顶栏按钮一样不跟鼠标乱跑），只让用户改宽高。
+ * 现在不只放来源：出题 / 演示 / 文档也从中间聊天迁到这里，点卡片再交给右侧统一面板细看。
  */
 export default function AgentSourcePanel({
   rounds,
   sources,
+  products = [],
   open,
 }: {
   rounds: SourceRound[];
   sources: TraceSource[];
+  products?: AgentProductItem[];
   /**
    * 是否展开。**不卸载**：列常驻、宽度在 0 ↔ 满宽之间过渡，
    * 这样「拉开 / 收起」才能复用全局面板那条横向缓动（见 globals.css 的 .agent-source-column）。
@@ -50,18 +124,32 @@ export default function AgentSourcePanel({
   const size = useAgentCenter((state) => state.sourcesPanelSize);
   const setSize = useAgentCenter((state) => state.setSourcesPanelSize);
   const setAgentDockCollapsed = useStore((state) => state.setAgentDockCollapsed);
+  const openArtifact = useArtifacts((state) => state.openViewer);
+  const openDocument = useDocuments((state) => state.openViewer);
   /** 拖拽改尺寸期间关掉过渡，否则跟手迟滞（与 [data-resizing] 对全局面板的处理同一个道理）。 */
   const [resizing, setResizing] = useState(false);
+
+  const expandDock = useCallback(() => {
+    setAgentDockCollapsed(false);
+  }, [setAgentDockCollapsed]);
 
   const openAt = useCallback(
     (source: TraceSource, index: number) => {
       if (!sources.length) return;
-      // 轮次标题交给 SourceTraceViewer 的兜底（trace.tool.<tool>.label），不在这里再贴一遍。
       openSourceTrace(sources, { rounds, activeKey: sourceItemKey(source, index) });
-      // 点开就是「我要细看」：把它交给右侧统一面板，来源列随右栏展开自动让位。
-      setAgentDockCollapsed(false);
+      expandDock();
     },
-    [rounds, setAgentDockCollapsed, sources],
+    [expandDock, rounds, sources],
+  );
+
+  const openProduct = useCallback(
+    (item: AgentProductItem) => {
+      if (item.kind === "quiz") openAgentQuiz(item.payload);
+      else if (item.kind === "interactive") openArtifact(item.id);
+      else openDocument(item.id);
+      expandDock();
+    },
+    [expandDock, openArtifact, openDocument],
   );
 
   /**
@@ -103,20 +191,17 @@ export default function AgentSourcePanel({
       handle.addEventListener("pointerup", onEnd);
       handle.addEventListener("pointercancel", onEnd);
     },
-    // size 进依赖：pointerdown 读的必须是当次渲染的尺寸，否则连续拖动会跳回旧值。
     [setSize, size],
   );
 
-  if (sources.length === 0) return null;
+  if (sources.length === 0 && products.length === 0) return null;
+
+  const showSections = sources.length > 0 && products.length > 0;
+  const quizzes = products.filter((item) => item.kind === "quiz");
+  const interactives = products.filter((item) => item.kind === "interactive");
+  const documents = products.filter((item) => item.kind === "document");
 
   return (
-    /**
-     * 这一列**占真实宽度**（卡片宽 + 两侧留白）：中间的对话列因此被压窄，正文永远不会钻到卡片底下。
-     * 卡片本身仍是浮起来的（圆角 + 阴影 + 左上留白），看起来是悬浮卡片而不是侧栏。
-     *
-     * **宽度是可动画的**：open=false 时宽度归 0（列常驻、不卸载），横向缓动与全局面板同一套
-     * （globals.css 的 .agent-source-column）；拖拽中由 data-resizing 关掉过渡。
-     */
     <aside
       data-testid="agent-source-column"
       data-open={open || undefined}
@@ -128,7 +213,6 @@ export default function AgentSourcePanel({
       )}
       style={{ width: open ? size.width + INSET * 2 : 0 }}
     >
-    {/* 卡片宽度写死：列变窄时它不被压扁，而是被 overflow-hidden 裁掉 —— 看起来就是「往右滑出去」。 */}
     <div
       data-testid="agent-source-panel"
       className="relative ml-3 mt-3 flex min-h-0 shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
@@ -137,45 +221,57 @@ export default function AgentSourcePanel({
       <header className="flex h-9 shrink-0 items-center gap-1.5 border-b border-[var(--line-soft)] px-3">
         <Link2 size={13} className="shrink-0 text-[var(--accent)]" />
         <span className="text-[12px] font-semibold text-[var(--ink)]">
-          {t("agent.sources.count", { count: sources.length })}
+          {railTitle(t, sources, products)}
         </span>
       </header>
 
       <div className="scroll-y flex min-h-0 flex-1 flex-col gap-1.5 p-2">
-        {sources.map((source, index) => (
-          <button
-            key={sourceItemKey(source, index)}
-            type="button"
-            onClick={() => openAt(source, index)}
-            title={t("agent.sources.openPanel")}
-            className="press flex w-full min-w-0 flex-col gap-1 rounded-lg border border-[var(--line-soft)] bg-[var(--bg-panel)] px-2.5 py-2 text-left hover:border-[var(--accent)] hover:bg-[var(--bg-muted)]"
-          >
-            <span className="flex min-w-0 items-start gap-1.5">
-              <span className="mt-[1px] shrink-0 text-[11px] font-semibold tabular-nums text-[var(--ink-faint)]">
-                {index + 1}
-              </span>
-              {source.kind === "web" ? (
-                <Globe size={13} className="mt-[2px] shrink-0 text-[var(--ink-faint)]" />
-              ) : (
-                <BookOpen size={13} className="mt-[2px] shrink-0 text-[var(--ink-faint)]" />
-              )}
-              <span className="line-clamp-2 min-w-0 flex-1 text-[12.5px] font-medium leading-[1.35] text-[var(--ink)]">
-                {source.title}
-              </span>
-            </span>
-            {source.snippet ? (
-              <span className="line-clamp-3 pl-[18px] text-[11.5px] leading-[1.5] text-[var(--ink-soft)]">
-                {source.snippet}
-              </span>
+        {sources.length > 0 ? (
+          <>
+            {showSections ? <SectionLabel>{t("agent.rail.sources")}</SectionLabel> : null}
+            <SourcePreviewRows
+              items={sources.map((source, index) => ({
+                key: sourceItemKey(source, index),
+                index: index + 1,
+                kind: source.kind,
+                title: source.title,
+                snippet: source.snippet,
+                meta: sourcePreviewMeta(source),
+              }))}
+              onOpen={(item) => {
+                const source = sources[item.index - 1];
+                if (source) openAt(source, item.index - 1);
+              }}
+            />
+          </>
+        ) : null}
+
+        {quizzes.length ? (
+          <>
+            {showSections || products.length !== quizzes.length ? (
+              <SectionLabel>{t("agent.rail.quiz", { count: quizzes.length })}</SectionLabel>
             ) : null}
-            <span className="truncate pl-[18px] text-[10.5px] text-[var(--ink-faint)]">
-              {sourceMeta(source) || t("agent.sources.noLink")}
-            </span>
-          </button>
-        ))}
+            <ProductRows items={quizzes} onOpen={openProduct} />
+          </>
+        ) : null}
+        {interactives.length ? (
+          <>
+            {showSections || products.length !== interactives.length ? (
+              <SectionLabel>{t("agent.rail.interactive", { count: interactives.length })}</SectionLabel>
+            ) : null}
+            <ProductRows items={interactives} onOpen={openProduct} />
+          </>
+        ) : null}
+        {documents.length ? (
+          <>
+            {showSections || products.length !== documents.length ? (
+              <SectionLabel>{t("agent.rail.document", { count: documents.length })}</SectionLabel>
+            ) : null}
+            <ProductRows items={documents} onOpen={openProduct} />
+          </>
+        ) : null}
       </div>
 
-      {/* 三个拖动把手：左边缘改宽、下边缘改高、左下角同时改。 */}
       <span
         data-testid="agent-source-panel-resize-x"
         onPointerDown={startResize("x")}

@@ -94,6 +94,17 @@ export const en = {
       empty: "No references to trace in this round.",
       noLink: "No link",
     },
+    rail: {
+      count: "Refs · {count}",
+      sources: "Sources",
+      quiz: "Quiz · {count}",
+      interactive: "Demos · {count}",
+      document: "Docs · {count}",
+      questions: "{count} questions",
+      openQuiz: "Answer in the side panel",
+      openInteractive: "View demo in the side panel",
+      openDocument: "View document in the side panel",
+    },
     citation: {
       markerAria: "Source {index}: {title}",
       kindWeb: "Web",

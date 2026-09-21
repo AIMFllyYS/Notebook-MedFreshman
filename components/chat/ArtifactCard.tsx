@@ -32,6 +32,7 @@ export default function ArtifactCard({
   modelId,
   unsupportedReason,
   autoStart = false,
+  silent = false,
 }: {
   artifactId: string;
   title?: string;
@@ -39,6 +40,8 @@ export default function ArtifactCard({
   modelId?: string;
   unsupportedReason?: string;
   autoStart?: boolean;
+  /** Agent 中间栏不画卡，但仍要跑生成，入口在右上参考列。 */
+  silent?: boolean;
 }) {
   /**
    * 只读分享页：产物来自分享快照，**不注入**本地产物表（公开页不该产生写入，
@@ -188,6 +191,8 @@ export default function ArtifactCard({
 
   const codeChars = html.length;
   const onContainer = expired ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary-container)';
+
+  if (silent) return null;
 
   return (
     <div

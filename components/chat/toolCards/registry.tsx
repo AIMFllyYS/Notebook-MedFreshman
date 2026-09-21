@@ -28,6 +28,7 @@ export const TOOL_REGISTRY = {
   getSection: moduleOf("getSection"),
   searchNotes: moduleOf("searchNotes", {
     ResultCard: SearchNotesResultCard,
+    hideInAgentChat: true,
     shouldRender: (part) => part.state === "output-available" && !!part.output.hits?.length,
     aggregate: true,
     itemKey: (item) => noteItemKey(item as SearchHit),
@@ -38,6 +39,7 @@ export const TOOL_REGISTRY = {
   searchFlashcards: moduleOf("searchFlashcards"),
   searchNoteImages: moduleOf("searchNoteImages", {
     ResultCard: SearchNoteImagesResultCard,
+    hideInAgentChat: true,
     shouldRender: (part) => part.state === "output-available" && !!part.output.images?.length,
     aggregate: true,
     itemKey: (item) => noteImageItemKey(item as NoteImageHit),
@@ -47,6 +49,7 @@ export const TOOL_REGISTRY = {
   }),
   webSearch: moduleOf("webSearch", {
     ResultCard: WebSearchResultCard,
+    hideInAgentChat: true,
     shouldRender: (part) => part.state === "output-available" && !!part.output.sources?.length,
     aggregate: true,
     itemKey: (item) => webItemKey(item as WebSearchSource),
@@ -56,6 +59,7 @@ export const TOOL_REGISTRY = {
   }),
   imageSearch: moduleOf("imageSearch", {
     ResultCard: ImageSearchResultCard,
+    hideInAgentChat: true,
     shouldRender: (part) => part.state === "output-available" && !!part.output.sources?.length,
     aggregate: true,
     itemKey: (item) => webItemKey(item as WebSearchSource),
@@ -118,6 +122,7 @@ export interface ToolResultCardEntry {
   ResultCard: ComponentType<ResultCardProps>;
   resultKey?: (part: ToolPart<StudyToolName>) => string | null;
   shouldRender?: (part: ToolPart<StudyToolName>) => boolean;
+  hideInAgentChat?: boolean;
   aggregate?: boolean;
   itemKey?: (item: unknown) => string | null;
   itemsOf?: (part: ToolPart<StudyToolName>) => readonly unknown[];
@@ -135,6 +140,7 @@ export const TOOL_RESULT_CARDS: readonly ToolResultCardEntry[] = RESULT_CARD_ORD
     ResultCard: mod.ResultCard as ComponentType<ResultCardProps>,
     resultKey: mod.resultKey as ToolResultCardEntry["resultKey"],
     shouldRender: mod.shouldRender as ToolResultCardEntry["shouldRender"],
+    hideInAgentChat: mod.hideInAgentChat,
     aggregate: mod.aggregate,
     itemKey: mod.itemKey,
     itemsOf: mod.itemsOf as ToolResultCardEntry["itemsOf"],

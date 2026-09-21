@@ -27,6 +27,10 @@ const SKIP_PARENTS = new Set([
   "code",
 ]);
 
+function citeRefIndexes(node: MdastNode): number[] {
+  return parseCiteIndexes(String((node.data?.hProperties as { indexes?: string } | undefined)?.indexes ?? ""));
+}
+
 function citeRefNode(indexes: number[]): MdastNode {
   return {
     type: "citeRef",
@@ -35,6 +39,30 @@ function citeRefNode(indexes: number[]): MdastNode {
       hProperties: { indexes: indexes.join(",") },
     },
   };
+}
+
+function mergeCiteIndexes(left: number[], right: number[]): number[] {
+  const out = [...left];
+  for (const index of right) {
+    if (!out.includes(index)) out.push(index);
+  }
+  return out;
+}
+
+/** 相邻的 [1][2] / [1,2][3] 收成一张悬浮卡，不要拆成两枚各弹各的。 */
+function mergeAdjacentCiteRefs(node: MdastNode): void {
+  if (!node.children?.length) return;
+  const children: MdastNode[] = [];
+  for (const child of node.children) {
+    mergeAdjacentCiteRefs(child);
+    const prev = children[children.length - 1];
+    if (prev?.type === "citeRef" && child.type === "citeRef") {
+      children[children.length - 1] = citeRefNode(mergeCiteIndexes(citeRefIndexes(prev), citeRefIndexes(child)));
+    } else {
+      children.push(child);
+    }
+  }
+  node.children = children;
 }
 
 function splitTextCitations(value: string): MdastNode[] | null {
@@ -49,6 +77,12 @@ function splitTextCitations(value: string): MdastNode[] | null {
   while ((match = INLINE_CITE_RE.exec(value)) !== null) {
     const indexes = parseCiteIndexes(match[1] ?? "");
     if (!indexes.length) continue;
+    const prev = nodes[nodes.length - 1];
+    if (matched && match.index === last && prev?.type === "citeRef") {
+      nodes[nodes.length - 1] = citeRefNode(mergeCiteIndexes(citeRefIndexes(prev), indexes));
+      last = match.index + match[0].length;
+      continue;
+    }
     matched = true;
     if (match.index > last) nodes.push({ type: "text", value: value.slice(last, match.index) });
     nodes.push(citeRefNode(indexes));
@@ -88,5 +122,6 @@ export default function remarkInlineCitations() {
         return index + replacement.length;
       },
     );
+    mergeAdjacentCiteRefs(tree as MdastNode);
   };
 }

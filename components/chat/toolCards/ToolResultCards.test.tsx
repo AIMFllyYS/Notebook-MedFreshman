@@ -2,6 +2,7 @@ import React from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { ToolResultCards } from "./ToolResultCards";
+import { useAppMode } from "@/lib/stores/appMode";
 import type { ChatMessage, ChatMessagePart } from "@/lib/types/chat";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
@@ -9,7 +10,10 @@ vi.mock("@/components/chat/ChatImage", () => ({
   ChatImage: ({ alt }: { alt: string }) => <img alt={alt} />,
 }));
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  useAppMode.setState({ mode: "studio" });
+});
 
 function message(parts: ChatMessagePart[]): ChatMessage {
   return { id: "m", role: "assistant", timestamp: 1, parts };
@@ -114,5 +118,28 @@ describe("ToolResultCards aggregation", () => {
     );
     fireEvent.click(screen.getByRole("button", { name: /引用笔记 · 8 条/ }));
     expect(screen.getByText("命中 8")).toBeVisible();
+  });
+
+  it("hides source folds on the Agent surface", () => {
+    useAppMode.setState({ mode: "agent" });
+    render(
+      <ToolResultCards
+        message={message([
+          {
+            type: "tool-webSearch",
+            toolCallId: "w1",
+            state: "output-available",
+            input: { query: "q1" },
+            output: {
+              text: "…",
+              sources: [{ title: "课程甲", url: "https://example.edu/a", snippet: "" }],
+              cacheHit: true,
+            },
+          },
+        ])}
+      />,
+    );
+    expect(screen.queryByTestId("web-source-fold")).not.toBeInTheDocument();
+    useAppMode.setState({ mode: "studio" });
   });
 });

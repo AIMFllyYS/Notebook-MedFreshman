@@ -1,6 +1,6 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import CreateQuizResultCard from "./createQuizCard";
 import { useAppMode } from "@/lib/stores/appMode";
 import { useWindowManager } from "@/lib/stores/windowManager";
@@ -67,28 +67,17 @@ describe("createQuiz ResultCard", () => {
     expect(windows()).toHaveLength(0);
   });
 
-  it("shows a slim row and auto-opens the right dock on the Agent surface", () => {
+  it("hides the chat notice and auto-opens the right dock on the Agent surface", () => {
     useAppMode.setState({ mode: "agent" });
     renderCard();
 
-    expect(screen.getByTestId("chat-quiz-agent-row")).toBeVisible();
-    expect(screen.getByText(/已出题 · 1 题/)).toBeVisible();
+    expect(screen.queryByTestId("chat-quiz-agent-row")).not.toBeInTheDocument();
     expect(screen.queryByTestId("chat-quiz-card")).not.toBeInTheDocument();
 
     const [win] = windows();
     expect(win.type).toBe("quiz-dock");
     expect(win.id).toBe("quiz-dock:quiz_1");
     expect(win.data).toMatchObject({ quizId: "quiz_1", title: "即时检验", intent: "check" });
-  });
-
-  it("reopens the dock window from 在右侧作答 after the user closed it", () => {
-    useAppMode.setState({ mode: "agent" });
-    renderCard();
-    useWindowManager.getState().closeWindow("quiz-dock:quiz_1");
-    expect(windows()).toHaveLength(0);
-
-    fireEvent.click(screen.getByRole("button", { name: "在右侧作答" }));
-    expect(windows().map((win) => win.id)).toEqual(["quiz-dock:quiz_1"]);
   });
 
   it("does not auto-open the same quiz again when the card remounts", () => {
@@ -98,7 +87,7 @@ describe("createQuiz ResultCard", () => {
     cleanup();
 
     renderCard();
-    expect(screen.getByTestId("chat-quiz-agent-row")).toBeVisible();
+    expect(screen.queryByTestId("chat-quiz-card")).not.toBeInTheDocument();
     expect(windows()).toHaveLength(0);
   });
 });

@@ -96,6 +96,17 @@ export const zh = {
       empty: "本轮没有可追踪的引用依据。",
       noLink: "暂无链接",
     },
+    rail: {
+      count: "参考 · {count}",
+      sources: "来源",
+      quiz: "出题 · {count}",
+      interactive: "演示 · {count}",
+      document: "文档 · {count}",
+      questions: "{count} 题",
+      openQuiz: "在右侧作答",
+      openInteractive: "在右侧查看演示",
+      openDocument: "在右侧查看文档",
+    },
     citation: {
       markerAria: "来源 {index}：{title}",
       kindWeb: "网页",

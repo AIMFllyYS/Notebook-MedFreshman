@@ -54,4 +54,9 @@ export interface ToolModule<N extends StudyToolName = StudyToolName> {
   itemsOf?: (part: ToolPart<N>) => readonly unknown[];
   /** 把去重后的条目写回第一张卡使用的 part。 */
   withItems?: (part: ToolPart<N>, items: readonly unknown[]) => ToolPart<N>;
+  /**
+   * Agent 中间栏不渲染这张结果卡（来源折叠、图片条等已迁到右上参考列 / 图片页签）。
+   * 需要副作用的产物卡（出题自动开窗、演示生成）不要用这个开关，在卡片内部自己藏 UI。
+   */
+  hideInAgentChat?: boolean;
 }

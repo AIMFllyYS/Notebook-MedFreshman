@@ -2,6 +2,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useAppMode } from "@/lib/stores/appMode";
 
 // Mock QuizMarkdown to avoid pulling in react-markdown/katex chain
 vi.mock("@/components/quiz/QuizMarkdown", () => ({
@@ -12,6 +13,7 @@ import { FollowUpQuestions } from "./FollowUpQuestions";
 
 afterEach(() => {
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+  useAppMode.setState({ mode: "studio" });
 });
 
 describe("FollowUpQuestions", () => {
@@ -72,6 +74,19 @@ describe("FollowUpQuestions", () => {
       <FollowUpQuestions questions={["q1"]} onSelect={() => {}} />,
     );
     expect(screen.getByRole("button", { name: "q1" })).toHaveAttribute("type", "button");
+  });
+
+  it("hides the source-trace chip on the Agent surface", () => {
+    useAppMode.setState({ mode: "agent" });
+    render(
+      <FollowUpQuestions
+        questions={["继续"]}
+        onSelect={() => {}}
+        sources={[{ kind: "web", title: "课程", url: "https://example.edu", snippet: "" }]}
+      />,
+    );
+    expect(screen.queryByRole("button", { name: /来源 · 1/ })).not.toBeInTheDocument();
+    expect(screen.getByText("继续")).toBeInTheDocument();
   });
 
   it("shows a source-trace action that opens the Mac viewer", () => {

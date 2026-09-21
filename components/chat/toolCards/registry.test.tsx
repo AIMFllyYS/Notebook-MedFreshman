@@ -49,6 +49,16 @@ describe("tool registry", () => {
     ]);
   });
 
+  it("hides retrieval galleries in Agent chat because they already live in the rail / images tab", () => {
+    expect(TOOL_REGISTRY.searchNotes.hideInAgentChat).toBe(true);
+    expect(TOOL_REGISTRY.webSearch.hideInAgentChat).toBe(true);
+    expect(TOOL_REGISTRY.searchNoteImages.hideInAgentChat).toBe(true);
+    expect(TOOL_REGISTRY.imageSearch.hideInAgentChat).toBe(true);
+    expect(TOOL_REGISTRY.createQuiz.hideInAgentChat).toBeFalsy();
+    expect(TOOL_REGISTRY.generateImage.hideInAgentChat).toBeFalsy();
+    expect(TOOL_REGISTRY.updateUserNote.hideInAgentChat).toBeFalsy();
+  });
+
   it("aggregates retrieval tools by path or url", () => {
     expect(TOOL_REGISTRY.searchNotes.aggregate).toBe(true);
     expect(TOOL_REGISTRY.webSearch.aggregate).toBe(true);

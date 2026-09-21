@@ -49,6 +49,14 @@ test("remarkInlineCitations 把 [1] 与 [1,2] 收成 cite-ref", () => {
   assert.equal(refs[1]?.properties?.indexes, "1,2");
 });
 
+test("remarkInlineCitations 把相邻 [1][2] 收成同一张卡", () => {
+  const tree = toHast("这句话同时参考了两处[1][2]。下一句只参考一处[3]。");
+  const refs = citeRefs(tree);
+  assert.equal(refs.length, 2);
+  assert.equal(refs[0]?.properties?.indexes, "1,2");
+  assert.equal(refs[1]?.properties?.indexes, "3");
+});
+
 test("remarkInlineCitations 不改代码块和 Markdown 链接", () => {
   const tree = toHast("看 `[1]` 和 [文档](https://example.edu/a)。");
   assert.equal(citeRefs(tree).length, 0);

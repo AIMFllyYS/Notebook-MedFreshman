@@ -35,9 +35,11 @@ interface DocumentCardProps {
   modelId?: string;
   unsupportedReason?: string;
   autoStart?: boolean;
+  /** Agent 中间栏不画卡，但仍要跑分节生成，入口在右上参考列。 */
+  silent?: boolean;
 }
 
-export default function DocumentCard({ documentId, spec, modelId, unsupportedReason, autoStart = false }: DocumentCardProps) {
+export default function DocumentCard({ documentId, spec, modelId, unsupportedReason, autoStart = false, silent = false }: DocumentCardProps) {
   const doc = useDocuments((s) => s.byId[documentId]);
   const { create, openViewer, setSections, setSectionStatus, setSectionMarkdown, setStatus } = useDocuments();
   const [reasoning, setReasoning] = useState('');
@@ -175,6 +177,8 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
   useEffect(() => {
     writingRowRef.current?.scrollIntoView?.({ block: 'nearest' });
   }, [writing?.title]);
+
+  if (silent) return null;
 
   if (unsupportedReason) {
     return (
