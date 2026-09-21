@@ -155,10 +155,6 @@ export function isClassroomNote(note: Pick<UserNote, "kind"> | null | undefined)
   return note?.kind === "classroom";
 }
 
-export function noteKind(note: Pick<UserNote, "kind"> | null | undefined): UserNoteKind {
-  return isClassroomNote(note) ? "classroom" : "personal";
-}
-
 export function formatClassroomNoteQuote(
   note: Pick<UserNote, "title" | "markdown" | "quote" | "source">,
 ): string {

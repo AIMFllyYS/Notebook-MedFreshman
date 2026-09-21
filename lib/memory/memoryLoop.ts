@@ -12,8 +12,6 @@ import type { RecordMode } from "@/lib/review/types";
 import { buildNoteCommitPrompt } from "@/lib/memory/noteCommitPrompt";
 import { buildFlashcardCommitPrompt } from "@/lib/memory/flashcardCommitPrompt";
 
-export const MEMORY_TOOL_NAMES = ["proposeMemory", "commitNotes", "commitFlashcards"] as const;
-
 /** 二次调用 Agent 时才把对应 commit 工具 schema 暴露给模型。 */
 export type MemoryCommitKind = "note" | "flashcards";
 

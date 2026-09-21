@@ -53,6 +53,25 @@ const MATH_CONSTS: Record<string, number> = {
 
 const LATEX_COMMAND_RE = /\\[A-Za-z]+/;
 
+/** 编译进 new Function 的表达式允许出现的标识符：自变量 + 白名单函数与常量。 */
+const ALLOWED_IDENTIFIERS = new Set(['x', ...Object.keys(MATH_FUNCS), ...Object.keys(MATH_CONSTS)]);
+const NUMBER_LITERAL_RE = /(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/g;
+const IDENTIFIER_RE = /[A-Za-z_][A-Za-z0-9_]*/g;
+const ALLOWED_SYNTAX_CHARS_RE = /^[\s+\-*/%^().,<>|&!?:=~]*$/;
+
+/**
+ * fn 可能来自 markdown `::plot` 指令、AI 画布块或分享会话——均为不可信输入，
+ * 下游会 new Function 编译执行。剥掉数字字面量后，所有标识符必须命中白名单，
+ * 其余字符只能是运算符 / 括号 / 空白；字符串、数组、属性访问、注释等一律拒绝。
+ */
+export function isSafeMathExpression(expr: string): boolean {
+  const withoutNumbers = expr.replace(NUMBER_LITERAL_RE, '');
+  for (const match of withoutNumbers.matchAll(IDENTIFIER_RE)) {
+    if (!ALLOWED_IDENTIFIERS.has(match[0])) return false;
+  }
+  return ALLOWED_SYNTAX_CHARS_RE.test(withoutNumbers.replace(IDENTIFIER_RE, ''));
+}
+
 function splitArgs(value: string): string[] {
   const args: string[] = [];
   let depth = 0;
@@ -96,6 +115,10 @@ export function normalizePlotExpression(expr: string, options: PlotNormalizeOpti
     return normalPdfExpr(x, '0', '1');
   });
 
+  // 白名单收口放在归一化出口：本文件与 components/canvas/canvasUtils.ts 的
+  // compileMathExpr 都会先过这里再 new Function，不安全表达式统一返回空串，
+  // 使所有编译路径拿到的是无害的空表达式（诊断层报 unsupported-syntax）。
+  if (!isSafeMathExpression(normalized)) return '';
   return normalized;
 }
 
@@ -126,20 +149,16 @@ function compileForDiagnosis(expr: string): (x: number) => number {
 export function diagnosePlotExpression(expr: string, options: PlotDiagnoseOptions = {}): PlotDiagnostic {
   const normalizedFn = normalizePlotExpression(expr, options);
   if (!normalizedFn) {
+    const isEmpty = !(expr ?? '').trim();
     return {
       ok: false,
-      reason: 'empty-fn',
+      reason: isEmpty ? 'empty-fn' : 'unsupported-syntax',
       normalizedFn,
-      message: 'Function expression is empty.',
-    };
-  }
-
-  if (LATEX_COMMAND_RE.test(normalizedFn)) {
-    return {
-      ok: false,
-      reason: 'unsupported-syntax',
-      normalizedFn,
-      message: 'Function plots do not accept LaTeX syntax. Use plain expressions such as normal_pdf(x,0,1).',
+      message: isEmpty
+        ? 'Function expression is empty.'
+        : LATEX_COMMAND_RE.test(expr)
+          ? 'Function plots do not accept LaTeX syntax. Use plain expressions such as normal_pdf(x,0,1).'
+          : 'Function expression contains unsupported syntax.',
     };
   }
 
@@ -157,7 +176,7 @@ export function diagnosePlotExpression(expr: string, options: PlotDiagnoseOption
 
   const xmin = options.xmin ?? -10;
   const xmax = options.xmax ?? 10;
-  const samples = Math.max(2, Math.floor(options.samples ?? 200));
+  const samples = Math.min(10_000, Math.max(2, Math.floor(options.samples ?? 200)));
   const dx = (xmax - xmin) / (samples - 1);
   let sampledPoints = 0;
 

@@ -2,7 +2,7 @@ import { openBillingDashboard } from "@/lib/window/openBillingDashboard";
 import { useStore } from "@/lib/store";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
+import { useBrowser } from "@/lib/hooks/useBrowser";
 import { useGlobalSearch } from "./useGlobalSearch";
 import { useShortcutHelp } from "./useShortcutHelp";
 import { useOverlayStack } from "./useOverlayStack";

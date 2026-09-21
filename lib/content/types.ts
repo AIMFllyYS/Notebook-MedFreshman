@@ -33,11 +33,6 @@ export interface ChapterRef {
   sections: SectionRef[];
 }
 
-interface Manifest {
-  course: string;
-  chapters: ChapterRef[];
-}
-
 /** 媒体清单：视频条目 */
 export interface VideoEntry {
   id: string;

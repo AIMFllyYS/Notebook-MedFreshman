@@ -705,23 +705,4 @@ export const organicChemistryDetailItems: ContentItem[] = [
   },
 ];
 
-/**
- * 各章详解的源讲次（recording id）映射。
- * 用于 Phase 4 详解撰写：每章子智能体输入对应讲次的精简录音 + 纪要。
- */
-const organicChemistryChapterSources: Record<string, string[]> = {
-  ch01: ['rec-01', 'rec-02'],
-  ch02: ['rec-03'],
-  ch03: ['rec-04'],
-  ch04: ['rec-05', 'rec-06', 'rec-08'],
-  ch05: ['rec-06', 'rec-07', 'rec-08'],
-  ch06: ['rec-09', 'rec-13'],
-  ch07: ['rec-10', 'rec-13'],
-  ch08: ['rec-10', 'rec-11', 'rec-19'],
-  ch09: ['rec-12'],
-  ch10: ['rec-14', 'rec-15'],
-  ch11: ['rec-16'],
-  ch12: ['rec-17'],
-  ch13: ['rec-18'],
-  ch14: ['rec-19', 'rec-20'],
-};
+

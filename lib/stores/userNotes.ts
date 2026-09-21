@@ -309,7 +309,8 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       set((s) => {
         const byId = { ...s.byId };
         delete byId[id];
-        const { [id]: _drop, ...noteAgentSessionById } = s.noteAgentSessionById;
+        const noteAgentSessionById = { ...s.noteAgentSessionById };
+        delete noteAgentSessionById[id];
         return {
           byId,
           order: s.order.filter((x) => x !== id),

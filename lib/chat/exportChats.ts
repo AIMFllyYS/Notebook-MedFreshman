@@ -1,4 +1,4 @@
-import { useChatHistory, ensureChatHistoryBootstrap } from '@/lib/hooks/useChatHistory';
+import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { loadAllSessionsForExport } from '@/lib/storage/chatStorage';
 
 /**

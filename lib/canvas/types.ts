@@ -82,15 +82,4 @@ export interface CanvasDiagnostic {
   details?: Record<string, unknown>;
 }
 
-interface CanvasRevisionRequest {
-  block: CanvasBlock;
-  instruction: string;
-  topic?: string;
-  modelId: string;
-  customApiGroups?: unknown[];
-}
 
-interface CanvasRevisionResponse {
-  block: CanvasBlock;
-  diagnostics: CanvasDiagnostic[];
-}
