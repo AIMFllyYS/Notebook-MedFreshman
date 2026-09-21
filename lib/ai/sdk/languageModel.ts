@@ -23,6 +23,7 @@ import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { wrapLanguageModel, extractReasoningMiddleware } from "ai";
 import {
+  resolveEntryProvider,
   resolveProvider,
   resolveNextProvider,
   thinkingBudget,
@@ -169,11 +170,25 @@ export function buildThinkingSettings(
         maxOutputTokens,
       };
     }
+    case "qiniu-toggle":
+      // 七牛云：thinking type 二态。能被调用到这里就说明"本轮请求了思考"，发 enabled。
+      // 关掉的那一半在 prepareCall 里下发（见 QINIU_THINKING_DISABLED）——因为七牛云的
+      // 这些模型**默认就思考**，不显式下发 disabled 等于没关。
+      return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" } } } };
     case "siliconflow":
     default:
       return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { enable_thinking: true, thinking_budget: budget } } };
   }
 }
+
+/**
+ * 七牛云「显式关思考」。原来只有"请求思考"时才改 callOptions，没请求就什么都不发；
+ * 而七牛云的 DeepSeek / Qwen 默认就会思考（实测不传参 reasoning_content 照样有内容，
+ * 而且会吃掉 max_tokens），所以必须把"不开启"也显式说出来，才真的低延迟。
+ */
+const QINIU_THINKING_DISABLED: ThinkingCallSettings = {
+  providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "disabled" } } },
+};
 
 const THINKING_UPSTREAM_KEYS = [
   "reasoningEffort",
@@ -233,7 +248,8 @@ export function resolveLanguageModel(
   custom?: CustomProvider | CustomApiGroup[] | null,
   options: ResolveLanguageModelOptions = {},
 ): ResolvedLanguageModel {
-  const primary = resolveProvider(modelId, custom);
+  // 链首未配置凭证时从链上第一个配好的端点起步（否则空 key 会拿到不可降级的 401）。
+  const primary = resolveEntryProvider(modelId, custom);
   const customGroups = Array.isArray(custom) ? custom : [];
   const info = getModelInfoWithCustom(primary.registryId, customGroups);
   const supportsThinking = primary.isCustom ? primary.thinkingRequestStyle !== "none" && (info?.thinking ?? true) : info?.thinking === true;
@@ -261,10 +277,14 @@ export function resolveLanguageModel(
     prepareCall: (index, callOptions) => {
       const hop = providers[index] ?? actualProvider;
       const landed = landedThinkingContext(hop, customGroups, info);
-      const prepared = thinkingSettingsRequested && supportsThinking ? applyThinkingCallSettings(
-        callOptions,
-        buildThinkingSettings(landed.provider, lastThinkingEffort, landed.info),
-      ) : callOptions;
+      // 三条分支：请求了思考 → 下发该跳方言；没请求但该跳属于"默认思考"的七牛云方言 → 显式关闭；
+      // 其余保持不传参（历史行为）。
+      const thinkingSettings = thinkingSettingsRequested && supportsThinking
+        ? buildThinkingSettings(landed.provider, lastThinkingEffort, landed.info)
+        : (hop.thinkingRequestStyle === "qiniu-toggle" ? QINIU_THINKING_DISABLED : undefined);
+      const prepared = thinkingSettings
+        ? applyThinkingCallSettings(callOptions, thinkingSettings)
+        : callOptions;
       if (!hop.gatewayDefaults) return prepared;
       const defaults = {
         ...prepared, temperature: hop.temperature,

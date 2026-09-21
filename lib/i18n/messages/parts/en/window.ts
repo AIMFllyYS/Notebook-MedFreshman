@@ -71,6 +71,14 @@ export const windowEn = {
     regenerate: "Regenerate",
     urlExpiry: "Image URLs expire in 1 hour — download them soon",
     generating: "Generating images…",
+    // Image progress (the upstream sends no progress; this is estimated from the model's typical latency)
+    progress: {
+      elapsed: "Waiting {seconds}s",
+      remaining: "about {seconds}s left",
+      almost: "Almost done",
+      slowHint: "Slow models can take minutes — still generating",
+      done: "Done",
+    },
     card: {
       defaultTitle: "AI image",
       cancelled: "Image request cancelled: {title}",

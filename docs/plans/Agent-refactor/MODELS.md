@@ -1,5 +1,10 @@
 # 项目支持的模型
 
+> ⚠️ **部分内容已过时（2026-09-21）**：文本侧新增七牛云为第一跳、免费池 LongCat 换成
+> `poolside/laguna-s-2.1-free`、Auto 改为四候选 + 豆包兜底、生图新增 ERNIE-Image-Turbo 与
+> xhuoai 三个模型。本文中"首跳供应商 / 免费池 / 生图"的描述以
+> `docs/analysis/Agent/02-provider-routing-and-image-2026-09.md` 为准。
+
 > **口径**：2026-09-12 调研。**一律采用非优惠、非峰谷、非折扣的牌价**——首发优惠期的价格不用、闲时价不用、阶梯价取最贵那一档。宁可高估成本，不要低估。
 > **币种**：注册表 `ModelInfo.pricing` 的单位是 **¥ / 百万 token**。美元牌价按 **1 USD = 7.00 CNY** 折算（与 `usdExchangeRate` 的默认值一致）。汇率变动时这一列要重算。
 > **原始调研**：`tmp/model-research.md`（含每个模型的官方来源 URL）

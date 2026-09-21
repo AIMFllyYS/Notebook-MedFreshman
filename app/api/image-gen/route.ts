@@ -3,6 +3,7 @@ import {
   resolveImageProvider,
   imagesGenerationsUrl,
   detectImageApiStyle,
+  getImageTimeoutMs,
   type ResolvedImageProvider,
 } from "@/lib/ai/provider";
 import { UnsafeCustomBaseUrlError } from "@/lib/ai/customBaseUrl";
@@ -17,6 +18,9 @@ import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+// 慢模型中转站（xhuoai 的 nano-banana / gpt-image-*）实测 26–49s、常见到 100–400s，
+// 单模型超时见 ModelInfo.imageTimeoutMs（最长 420s）。这里给函数级上限留足余量。
+export const maxDuration = 600;
 
 /**
  * 根据 apiModelId 判断生图 API 风格。
@@ -115,8 +119,9 @@ export async function POST(req: NextRequest) {
   }
 
   const abortCtrl = new AbortController();
-  // gpt-image-1 高质量图片可能需要 2-3 分钟，延长到 180s
-  const timeoutId = setTimeout(() => abortCtrl.abort(), 180_000);
+  // 按模型取上游超时：慢速中转站要放到 420s，廉价通道 90s；缺省仍是历史的 180s。
+  const upstreamTimeoutMs = getImageTimeoutMs(provider.registryId);
+  const timeoutId = setTimeout(() => abortCtrl.abort(), upstreamTimeoutMs);
 
   try {
     const res = await fetch(endpoint, {

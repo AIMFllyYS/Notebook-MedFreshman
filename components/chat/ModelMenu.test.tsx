@@ -88,7 +88,7 @@ describe('ModelMenu progressive selection', () => {
     fireEvent.mouseEnter(screen.getByTestId('model-menu-item-mimo-v2.5'));
     expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
     fireEvent.mouseEnter(screen.getByRole('button', { name: '免费模型' }));
-    expect(screen.getByTestId('model-menu-item-meituan/LongCat-2.0:free')).toBeTruthy();
+    expect(screen.getByTestId('model-menu-item-poolside/laguna-s-2.1-free')).toBeTruthy();
     expect(screen.queryByRole('region', { name: '模型详情' })).toBeNull();
   });
   it('left-opening branch arrows precede both series and model labels', () => {

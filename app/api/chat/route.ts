@@ -17,7 +17,7 @@ import { isSoftLimitReached } from "@/lib/context/estimateFullContext";
 import type { ChatContext, ChatMessage, ChatOptions } from "@/lib/types/chat";
 import { ENV_MODEL_PRO, ENV_MODEL_FLASH, resolveProvider } from "@/lib/ai/provider";
 import { AUTO_MODEL_ID, getModelInfoWithCustom } from "@/lib/ai/models";
-import { selectAutomaticModels } from "@/lib/ai/autoRoute";
+import { decideAutomaticModels } from "@/lib/ai/autoRoute";
 import { estimateTokens } from "@/lib/context/estimateTokens";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
@@ -122,13 +122,18 @@ export async function POST(req: NextRequest) {
   let previewProvider;
   try {
     if (effectiveModelId === AUTO_MODEL_ID) {
-      automaticModels = selectAutomaticModels({
+      // 规则优先、快速模型兜底：带图 / 开思考 / 长文 / 硬任务（做题出题讲解检索…）由规则直接定，
+      // 短而含糊的问题才多花一次 ~1.2s 的分类调用（七牛云 doubao，关思考 + temperature 0）。
+      const decision = await decideAutomaticModels({
         hasImages: hasFileParts(body.messages),
         estimatedTokens: estimateTokens(JSON.stringify(body.messages)) + estimateTokens(body.globalContext) + 16_000,
         text: lastUserText(body.messages), thinking: body.enableThinking,
       });
+      automaticModels = decision.models;
       if (!automaticModels.length) return Response.json({ error: '当前没有能处理此请求的自动模型，请稍后重试或手动选择模型。' }, { status: 503 });
       effectiveModelId = automaticModels[0];
+      // 内部诊断：只进服务端日志，用户界面回显的仍是 "auto"。
+      console.info("[auto-route]", decision.source, decision.note, "->", effectiveModelId);
     }
     previewProvider = resolveProvider(effectiveModelId, effectiveCustom);
   } catch (error) {

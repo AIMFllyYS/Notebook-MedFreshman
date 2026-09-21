@@ -15,6 +15,7 @@ import {
 } from "@/lib/ai/capabilityEndpoints";
 import { DEFAULT_SELECTION_ASSISTANT_ACTIONS, normalizeSelectionAssistantActions, type SelectionAssistantActions } from "@/lib/notes/selectionAssistant";
 import { clampMaxToolRounds, MAX_TOOL_STEPS } from "@/lib/ai/agent/toolRounds";
+import { DEFAULT_IMAGE_MODEL_ID } from "@/lib/ai/models";
 import { clampMaxWaitMs, DEFAULT_MAX_WAIT_MS } from "@/lib/chat/createStallWatchdog";
 // 只依赖 types（不依赖 lib/i18n 的入口），避免 store ↔ i18n 形成运行时循环导入。
 import { DEFAULT_LOCALE, normalizeLocale, type Locale } from "@/lib/i18n/types";
@@ -220,7 +221,8 @@ type Persisted = Pick<
 const DEFAULTS: Persisted = {
   selectedModelId: DEFAULT_MODEL_ID,
   customApiGroups: [],
-  defaultImageModelId: null,
+  // 默认走廉价快速通道（10–40s 出图）；慢速高价模型由用户显式选择。
+  defaultImageModelId: DEFAULT_IMAGE_MODEL_ID,
   imageModeTextModel: "mimo-v2.5",
   imageModeTextModelFallback: "mimo-v2.5",
   capabilityEndpoints: EMPTY_CAPABILITY_ENDPOINTS,

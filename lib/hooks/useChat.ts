@@ -70,9 +70,11 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const isFirstMessage = !(useChatHistory.getState().messagesById[sessionId]?.length);
     history.addMessage(sessionId, userMessage);
     if (isFirstMessage) {
+      // 命名交给专门的廉价快速模型（/api/chat-title → 七牛云 doubao），Auto 模式也一样：
+      // 以前 Auto 只敢用本地标题，是因为命名会占用主力模型；现在这一步不再依赖主力模型。
       history.updateSessionTitle(sessionId, kickoffSessionTitle(sessionId, userContent, chatContext, (id, title) => {
         useChatHistory.getState().updateSessionTitle(id, title);
-      }, resolved.effectiveModelId === AUTO_MODEL_ID));
+      }));
     }
     const assistant = createAssistantPlaceholder(crypto.randomUUID(), {
       thinkingEnabled: resolved.enableThinking, searchEnabled: resolved.enableSearch, modelId: resolved.effectiveModelId,

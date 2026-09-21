@@ -73,6 +73,14 @@ export const windowZh = {
     regenerate: "重新生成",
     urlExpiry: "图片 URL 1 小时后失效，请及时下载",
     generating: "正在生成图片…",
+    // 生图进度（上游不回传进度，这里是按模型典型耗时的估算）
+    progress: {
+      elapsed: "已等待 {seconds}s",
+      remaining: "预计还需约 {seconds}s",
+      almost: "即将完成",
+      slowHint: "慢速模型可能要几分钟，仍在生成",
+      done: "已完成",
+    },
     card: {
       defaultTitle: "AI 生图",
       cancelled: "已取消生图请求：{title}",

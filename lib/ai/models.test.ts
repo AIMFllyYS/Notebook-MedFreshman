@@ -82,7 +82,8 @@ test("getModelInfo：存在的 id 返回 ModelInfo", () => {
   const m = getModelInfo("z-ai/glm-5.3-flash");
   assert.ok(m);
   assert.equal(m!.id, "z-ai/glm-5.3-flash");
-  assert.equal(primaryProvider(m!), "relay");
+  // 七牛云排第一跳（延迟最低），Protocom 中转是容灾。
+  assert.equal(primaryProvider(m!), "qiniu");
 });
 
 test("getModelInfo：不存在的 id 返回 undefined", () => {
@@ -114,9 +115,9 @@ test("MODELS：model id 唯一", () => {
   }
 });
 
-test("MODELS：12+1 菜单模型价格与 cacheWrite", () => {
+test("MODELS：17 个菜单模型价格与 cacheWrite", () => {
   const picker = MODELS.filter((m) => m.id !== CUSTOM_OPENAI_MODEL_ID);
-  assert.equal(picker.length, 13);
+  assert.equal(picker.length, 17);
   const price = (id: string) => {
     const m = getModelInfo(id);
     assert.ok(m?.pricing, id);
@@ -130,12 +131,17 @@ test("MODELS：12+1 菜单模型价格与 cacheWrite", () => {
   assert.deepEqual(price("z-ai/glm-5.3-flash"), { input: 0.8, cachedInput: 0.23, output: 2.8 });
   assert.deepEqual(price("Qwen/Qwen3.8-Flash"), { input: 0.8, cachedInput: 0.1, output: 2.7 });
   assert.deepEqual(price("meta/muse-spark-1.3-contributor"), { input: 0.7, cachedInput: 0.014, output: 1.4 });
-  assert.deepEqual(price("meituan/LongCat-2.0:free"), { input: 0, cachedInput: 0, output: 0 });
+  assert.deepEqual(price("poolside/laguna-s-2.1-free"), { input: 0, cachedInput: 0, output: 0 });
   assert.deepEqual(price("inclusionai/ling-3.0-flash-sante:free"), { input: 0, cachedInput: 0, output: 0 });
   assert.deepEqual(price("gpt-5.6-sol"), { input: 28, cachedInput: 2.8, cacheWrite: 35, output: 140 });
   assert.deepEqual(price("kimi-k3"), { input: 20, cachedInput: 2, output: 100 });
   assert.deepEqual(price("Tongyi-MAI/Z-Image-Turbo"), { input: 0, cachedInput: 0, output: 0.1 });
-  assert.equal(getModelInfo("meituan/LongCat-2.0:free")?.label.includes(":free"), false);
+  // 新增生图：廉价快速通道 + 慢速高价中转站
+  assert.deepEqual(price("baidu/ERNIE-Image-Turbo"), { input: 0, cachedInput: 0, output: 0.5 });
+  assert.deepEqual(price("nano-banana"), { input: 0, cachedInput: 0, output: 1 });
+  assert.deepEqual(price("gpt-image-2.5"), { input: 0, cachedInput: 0, output: 1 });
+  assert.deepEqual(price("gpt-image-2"), { input: 0, cachedInput: 0, output: 1 });
+  assert.equal(getModelInfo("inclusionai/ling-3.0-flash-sante:free")?.label.includes(":free"), false);
 });
 
 /** MODELS.md §2 上下文 → registry contextK：1M→1000，1.05M→1050，256K→256。 */
@@ -148,7 +154,7 @@ const MODELS_MD_SECTION2_CONTEXT_K: Record<string, number> = {
   "z-ai/glm-5.3-flash": 1000,
   "Qwen/Qwen3.8-Flash": 1000,
   "meta/muse-spark-1.3-contributor": 1000,
-  "meituan/LongCat-2.0:free": 1050,
+  "poolside/laguna-s-2.1-free": 256,
   "inclusionai/ling-3.0-flash-sante:free": 256,
   "gpt-5.6-sol": 1000,
   "kimi-k3": 1000,
@@ -166,8 +172,11 @@ test("MODELS：对话模型 contextK 对齐 MODELS.md §2，getMaxTokens 按千 
     assert.equal(getMaxTokens(m.id), expectedK * 1000, m.id);
   }
   assert.equal(getMaxTokens("Qwen/Qwen3.7-Flash"), 1_000_000);
-  assert.equal(getMaxTokens("meituan/LongCat-2.0:free"), 1_050_000);
+  assert.equal(getMaxTokens("poolside/laguna-s-2.1-free"), 256_000);
   assert.equal(getMaxTokens("inclusionai/ling-3.0-flash-sante:free"), 256_000);
+  // 下架的 LongCat 通过别名平滑迁移到 Laguna（老设置里的 id 仍然可用）。
+  assert.equal(getModelInfo("meituan/LongCat-2.0:free")?.id, "poolside/laguna-s-2.1-free");
+  assert.equal(getMaxTokens("meituan/LongCat-2.0:free"), 256_000);
 });
 
 test("getAllModels：不同自定义 API 分组允许同名模型但 registry id 唯一", () => {
@@ -270,12 +279,15 @@ test("MODELS：对话走 relay/mimo，硅基流动仅保留生图", () => {
   const glm = getModelInfo("z-ai/glm-5.3-flash");
   assert.ok(glm);
   assert.equal(glm!.group, "多模态");
-  assert.equal(primaryProvider(glm!), "relay");
+  assert.equal(primaryProvider(glm!), "qiniu");
   assert.equal(glm!.thinkingRequired, true);
   assert.deepEqual(glm!.thinkingLevels, ["low", "high", "max"]);
-  assert.equal(glm!.defaultThinkingEffort, "max");
+  // 默认降到低档：它现在是 Auto 的主力候选之一，低档延迟明显更低。
+  assert.equal(glm!.defaultThinkingEffort, "low");
   assert.equal(glm!.endpoints[0].apiModelId, "z-ai/glm-5.3-flash");
+  assert.equal(glm!.endpoints[0].provider, "qiniu");
   assert.equal(glm!.endpoints[1]?.provider, "relay");
+  assert.equal(glm!.endpoints[2]?.apiModelId, "mimo-v2.5", "最后一跳换模型兜底");
   assert.equal(glm!.timeoutMs, 120_000);
 
   const qwen = getModelInfo("Qwen/Qwen3.8-Flash");
@@ -295,16 +307,21 @@ test("MODELS：对话走 relay/mimo，硅基流动仅保留生图", () => {
 
   const ds = getModelInfo("deepseek/deepseek-v4.1-flash");
   assert.ok(ds);
-  assert.equal(primaryProvider(ds!), "relay");
-  assert.equal(ds!.thinkingRequestStyle, "openai-reasoning-effort");
-  assert.equal(ds!.thinkingRequired, true);
+  assert.equal(primaryProvider(ds!), "qiniu");
+  // 七牛云方言：thinking 可真正关闭（实测 disabled 后不再产出 reasoning_content）。
+  assert.equal(ds!.thinkingRequestStyle, "qiniu-toggle");
+  assert.equal(ds!.thinkingRequired, false);
   assert.equal(ds!.vision, true);
+  assert.deepEqual(ds!.endpoints.map((e) => e.provider), ["qiniu", "relay"]);
 
   const qwen37 = getModelInfo("Qwen/Qwen3.7-Flash");
   assert.ok(qwen37);
-  assert.equal(qwen37!.thinkingRequired, true);
-  assert.equal(modelAllowsDisableThinking(qwen37), false);
-  assert.equal(modelAllowsDisableThinking(ds), false);
+  assert.equal(qwen37!.thinkingRequestStyle, "qiniu-toggle");
+  assert.equal(qwen37!.thinkingRequired, false);
+  assert.equal(modelAllowsDisableThinking(qwen37), true);
+  assert.equal(modelAllowsDisableThinking(ds), true);
+  // GLM 在七牛云「始终思考、不可关闭」，必须保持锁死，否则会发 disabled 拿到 400。
+  assert.equal(modelAllowsDisableThinking(glm), false);
 
   const image = getModelInfo("Tongyi-MAI/Z-Image-Turbo");
   assert.ok(image);
@@ -361,7 +378,8 @@ test("思考强度：生图模型不支持档位，GLM 把 medium 钳到 high �
   assert.equal(modelSupportsThinkingEffort(glm), true);
   assert.equal(clampThinkingEffort(glm, "medium"), "high");
   assert.equal(wireThinkingEffort(glm, "max"), "max");
-  assert.equal(wireThinkingEffort(glm, "medium"), "high");
+  // medium 映射到 low：七牛云只认 low/high/max，且我们在意延迟。
+  assert.equal(wireThinkingEffort(glm, "medium"), "low");
 
   const muse = getModelInfo("meta/muse-spark-1.3-contributor");
   assert.equal(wireThinkingEffort(muse, "high"), "xhigh");
@@ -426,7 +444,8 @@ test("hasNextEndpoint：自定义分组恒 false，内置 GLM 有第二跳", () 
   assert.equal(hasNextEndpoint("custom", 0), false);
   assert.equal(isCustomRegistryId("custom-openai"), false);
   assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 0), true);
-  assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 1), false);
+  assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 1), true, "第二跳是 Protocom 同模型");
+  assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 2), false, "第三跳 MiMo 是最后一跳");
   assert.equal(hasNextEndpoint("mimo-v2.5", 0), false);
 });
 

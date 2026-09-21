@@ -23,6 +23,10 @@ export interface ImageGenSession {
   images: ImageGenImage[];
   error?: string;
   createdAt: number;
+  /** 本轮生成开始时刻（进度条估算用）；完成 / 失败后保留最近一次。 */
+  startedAt?: number;
+  /** 该模型声明的典型耗时（毫秒），由开跑时按模型写入。 */
+  expectedMs?: number;
 }
 
 export interface ImageGenSessionInit {
@@ -44,7 +48,8 @@ interface ImageGenState {
   closeViewer: (id: string) => void;
   bringToFront: (id: string) => void;
   updateSession: (id: string, patch: Partial<ImageGenSession>) => void;
-  startLoading: (id: string) => void;
+  /** expectedMs = 该模型声明的典型耗时，只用于前端进度估算。 */
+  startLoading: (id: string, expectedMs?: number) => void;
   removeSession: (id: string) => void;
 }
 
@@ -144,14 +149,21 @@ export const useImageGen = createPersistedStore<ImageGenState>(
         }));
       },
 
-      startLoading: (id) =>
+      startLoading: (id, expectedMs) =>
         set((state) => {
           const cur = state.sessions[id];
           if (!cur) return state;
           return {
             sessions: {
               ...state.sessions,
-              [id]: { ...cur, status: "loading", error: undefined },
+              [id]: {
+                ...cur,
+                status: "loading",
+                error: undefined,
+                // 每次开跑都重置起点：重试时进度要从头走，而不是接着上一轮。
+                startedAt: Date.now(),
+                ...(expectedMs && expectedMs > 0 ? { expectedMs } : {}),
+              },
             },
           };
         }),

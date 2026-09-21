@@ -1840,6 +1840,82 @@
   font-size: 11px;
   line-height: 1.4;
 }
+/* 生图进度条：上游不回传进度，这里显示按模型典型耗时估算的进度。
+   慢速中转站会长时间停在 99%（is-stalled），用流动的高光表明"还在跑"。 */
+.imagegen-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+.imagegen-progress.is-compact {
+  gap: 3px;
+}
+.imagegen-progress-track {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--md-sys-color-tertiary) 14%, var(--md-sys-color-surface-container-high));
+}
+.imagegen-progress.is-compact .imagegen-progress-track {
+  height: 5px;
+}
+.imagegen-progress-fill {
+  position: relative;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--md-sys-color-tertiary) 78%, transparent),
+    var(--md-sys-color-tertiary)
+  );
+  transition: width 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.imagegen-progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in srgb, #fff 55%, transparent) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  animation: imagegen-progress-sheen 1.8s ease-in-out infinite;
+}
+.imagegen-progress-fill.is-stalled::after {
+  animation-duration: 2.6s;
+}
+@keyframes imagegen-progress-sheen {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .imagegen-progress-fill::after { animation: none; }
+}
+.imagegen-progress-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.imagegen-progress.is-compact .imagegen-progress-meta {
+  font-size: 10.5px;
+}
+.imagegen-progress-percent {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--md-sys-color-tertiary);
+}
+.imagegen-progress-hint {
+  margin-left: auto;
+  text-align: right;
+}
+
 /* 历史消息的附件区：缩略图 + 「重新带入本轮」开关（历史图片默认不进请求，
    用户点一下才把它重新挂到下一轮提问上）。 */
 .chat-message-attachments {

@@ -108,7 +108,7 @@ describe('ChatInput thinking menu', () => {
   it.each([
     ['DeepSeek V4.1 Flash', 'deepseek/deepseek-v4.1-flash'],
     ['Qwen3.7 Flash', 'Qwen/Qwen3.7-Flash'],
-  ])('%s defaults to thinking and does not expose an off option', (_label, modelId) => {
+  ])('%s 可以真正关掉思考（七牛云支持 thinking.disabled）', (_label, modelId) => {
     useSettings.setState({ defaultThinking: false, defaultThinkingEffort: 'medium' });
     const onSend = vi.fn();
     const { getByTestId, getByRole } = render(
@@ -121,13 +121,33 @@ describe('ChatInput thinking menu', () => {
       />,
     );
     const button = getByTestId('thinking-menu-button');
+    // 旧行为是"必须开启、不给关"；现在默认关、且菜单里能开回来。
+    expect(button).toHaveAttribute('data-enabled', '0');
+    fireEvent.click(button);
+    expect(screen.getByTestId('thinking-menu-option-off')).toBeInTheDocument();
+    // 用「中」档打开思考（选项 id 就是档位名）。
+    fireEvent.click(screen.getByTestId('thinking-menu-option-medium'));
+    fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
+    fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
+    expect(onSend).toHaveBeenCalledWith('解释这一页', expect.objectContaining({ enableThinking: true }));
+  });
+
+  it('强制思考的模型（GLM）仍然不给关闭选项', () => {
+    useSettings.setState({ defaultThinking: false, defaultThinkingEffort: 'low' });
+    const { getByTestId } = render(
+      <ChatInput
+        onSend={vi.fn()}
+        onStop={vi.fn()}
+        isLoading={false}
+        chatContext={chatContext}
+        modelId="z-ai/glm-5.3-flash"
+      />,
+    );
+    const button = getByTestId('thinking-menu-button');
     expect(button).toHaveAttribute('data-enabled', '1');
     fireEvent.click(button);
     expect(screen.queryByTestId('thinking-menu-option-off')).not.toBeInTheDocument();
     expect(screen.getByText(/当前模型必须开启/)).toBeVisible();
-    fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
-    fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
-    expect(onSend).toHaveBeenCalledWith('解释这一页', expect.objectContaining({ enableThinking: true }));
   });
 
   it('sends effective thinkingEffort through onSend when thinking is enabled', async () => {

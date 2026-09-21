@@ -8,6 +8,8 @@ import {
   getFetchTimeoutMs,
   hasNextEndpoint,
   normalizeRegistryId,
+  isCustomRegistryId,
+  DEFAULT_IMAGE_MODEL_ID,
   CUSTOM_PREFIX,
   CUSTOM_OPENAI_MODEL_ID,
   buildCustomModelRegistryId,
@@ -69,6 +71,16 @@ const MIMO_KEY = process.env.MIMO_API_KEY || "";
 const ZHIPU_BASE = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
 const ZHIPU_KEY = process.env.ZHIPU_API_KEY || "";
 
+// 七牛云（api.qnaigc.com）：主力文本供应商，端点链里排第一位（延迟最低）。
+// 注意方言：GLM 5.3 Flash 在该站「始终思考、不可关闭」；DeepSeek / Qwen 用
+// thinking:{type:enabled|disabled} 真正开关（见 models.ts 的 qiniu-toggle）。
+const QINIU_BASE = process.env.QINIU_BASE_URL || "https://api.qnaigc.com/v1";
+const QINIU_KEY = process.env.QINIU_API_KEY || "";
+
+// xhuoai 中转站：慢速高价生图（nano-banana / gpt-image-*），单张 ¥1、100–400s。
+const XHUOAI_BASE = process.env.XHUOAI_BASE_URL || "https://api.xhuoai.com/v1";
+const XHUOAI_KEY = process.env.XHUOAI_API_KEY || "";
+
 // 桌面端会显式注入 RELAY_BASE_URL（可能为空字符串）。空字符串必须视为「未配置」，
 // 不能回落到项目中转站，否则用户无法使用自己的网关。
 const RELAY_BASE = normalizeOpenAIBaseUrl(
@@ -116,6 +128,7 @@ const THINKING_REQUEST_STYLES: ThinkingRequestStyle[] = [
   "gemini-thinking-level",
   "deepseek-thinking",
   "mimo-thinking",
+  "qiniu-toggle",
 ];
 
 function normalizeThinkingRequestStyle(value: unknown, fallback: ThinkingRequestStyle): ThinkingRequestStyle {
@@ -235,6 +248,14 @@ function credentialsFor(provider: ProviderKind): ProviderCredentials {
     case "relay": {
       const baseUrl = normalizeOpenAIBaseUrl(RELAY_BASE);
       return { baseUrl, apiKey: RELAY_KEY, configured: !!(baseUrl && RELAY_KEY) };
+    }
+    case "qiniu": {
+      const baseUrl = normalizeOpenAIBaseUrl(QINIU_BASE);
+      return { baseUrl, apiKey: QINIU_KEY, configured: !!(baseUrl && QINIU_KEY) };
+    }
+    case "xhuoai": {
+      const baseUrl = normalizeOpenAIBaseUrl(XHUOAI_BASE);
+      return { baseUrl, apiKey: XHUOAI_KEY, configured: !!(baseUrl && XHUOAI_KEY) };
     }
     case "siliconflow": {
       // base 不回落 AI_BASE_URL：那个变量常被指向中转站，而中转站不提供
@@ -378,6 +399,44 @@ export function resolveProvider(
   return resolveBuiltinEndpoint(registryId, endpointIndex);
 }
 
+/**
+ * 取「这次请求真正该从哪一跳开始」的 provider：链首没配凭证时自动往后找第一个配好的端点。
+ *
+ * 为什么必须有这一步：七牛云现在是 DeepSeek / Qwen / GLM 的**第一跳**。如果部署时没填
+ * QINIU_API_KEY，链首就是"未配置"（apiKey 为空），请求会以空 Bearer 打出去拿到 401，
+ * 而 401/403/429 属于**不降级**错误（见 failoverModel 的 recoverable 规则）——结果是所有
+ * 对话请求硬失败，而不是安静退到 Protocom。这里把"没配"和"上游挂了"区分开。
+ *
+ * 全链都没配置时返回链首，保留原有的"未配置"报错语义（路由会给出可读提示）。
+ */
+export function resolveEntryProvider(
+  registryId: string | undefined,
+  custom?: CustomProvider | CustomApiGroup[] | null,
+): ResolvedProvider {
+  const first = resolveProvider(registryId, custom, 0);
+  if (first.configured || isCustomRegistryId(first.registryId)) return first;
+  const endpointCount = getModelInfo(first.registryId)?.endpoints.length ?? 0;
+  for (let index = 1; index < endpointCount; index += 1) {
+    const candidate = resolveProvider(registryId, custom, index);
+    if (candidate.configured) return candidate;
+  }
+  return first;
+}
+
+/**
+ * 该模型是否至少有一个可用端点。
+ *
+ * 与 resolveProvider(id).configured 的区别：链首没配凭证但后面的跳配好时，这里返回 true
+ * —— 因为 resolveEntryProvider 会让请求直接从那一跳起步，模型实际是可用的。
+ * 自动路由的候选过滤必须用这个口径，否则"没填七牛云 key"会把 DeepSeek / GLM 整体误判为不可用。
+ */
+export function isProviderAvailable(
+  registryId: string,
+  custom?: CustomProvider | CustomApiGroup[] | null,
+): boolean {
+  return resolveEntryProvider(registryId, custom).configured;
+}
+
 /** 切换到 endpoints 链中的下一端点；无备用或凭证未配置时返回 null。 */
 export function resolveNextProvider(
   registryId: string,
@@ -448,32 +507,47 @@ export function resolveImageProvider(
     }
   }
 
-  // 3. 内置生图模型 → 使用硅基流动凭证（设置里自配的生图端点可覆盖）
+  // 3. 内置生图模型 → 按该模型的 provider 取凭证（设置里自配的生图端点可覆盖）
   const info = getModelInfo(effectiveModelId);
   if (info && info.type === "image") {
-    const cred = credentialsFor(info.endpoints[0]?.provider ?? "siliconflow");
+    const endpoint = info.endpoints[0];
+    const cred = credentialsFor(endpoint?.provider ?? "siliconflow");
     return applyUserImageEndpoint({
       baseUrl: cred.baseUrl,
       apiKey: cred.apiKey,
-      apiModelId: info.endpoints[0]?.apiModelId ?? effectiveModelId,
+      apiModelId: endpoint?.apiModelId ?? effectiveModelId,
       registryId: effectiveModelId,
       configured: cred.configured,
       isCustom: false,
-      imageApiStyle: "siliconflow",
+      // 显式声明优先：xhuoai 的 nano-banana 名字不像 gpt-image，按名字猜会发错协议。
+      imageApiStyle: normalizeImageApiStyle(info.imageApiStyle),
     }, capability);
   }
 
-  // 4. 回退：使用硅基流动默认凭证 + Z-Image-Turbo
-  const cred = credentialsFor("siliconflow");
+  // 4. 回退：默认生图模型（廉价快速通道 baidu/ERNIE-Image-Turbo + 它自己的供应商凭证）
+  const fallbackInfo = getModelInfo(DEFAULT_IMAGE_MODEL_ID);
+  const fallbackEndpoint = fallbackInfo?.endpoints[0];
+  const cred = credentialsFor(fallbackEndpoint?.provider ?? "siliconflow");
+  const fallbackId = overlayOptional(capability?.imageModelId, DEFAULT_IMAGE_MODEL_ID);
   return applyUserImageEndpoint({
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
-    apiModelId: overlayOptional(capability?.imageModelId, "Tongyi-MAI/Z-Image-Turbo"),
-    registryId: overlayOptional(capability?.imageModelId, "Tongyi-MAI/Z-Image-Turbo"),
+    apiModelId: overlayOptional(capability?.imageModelId, fallbackEndpoint?.apiModelId ?? DEFAULT_IMAGE_MODEL_ID),
+    registryId: fallbackId,
     configured: cred.configured,
     isCustom: false,
-    imageApiStyle: "siliconflow",
+    imageApiStyle: normalizeImageApiStyle(fallbackInfo?.imageApiStyle),
   }, capability);
+}
+
+/**
+ * 生图请求的上游超时（毫秒）。
+ * 为什么必须按模型分开：xhuoai 的 nano-banana / gpt-image-* 实测 49s 起、常见 100–400s，
+ * 一刀 180s 会把慢模型稳定判成超时。缺省 180s 保持历史行为。
+ */
+export function getImageTimeoutMs(registryId: string): number {
+  const info = getModelInfo(registryId);
+  return info?.imageTimeoutMs ?? 180_000;
 }
 
 /** 深度思考预算（token），按用户选择的力度映射。 */
