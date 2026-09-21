@@ -51,7 +51,7 @@ export function createGetCurrentPageTool(ctx: StudyToolContext, runtime: StudyTo
       const citeIndex = page.citable && !already ? allocateCiteIndex(runtime) : undefined;
       return dedupeByContextKey(runtime, "getCurrentPage", {
         text: citeIndex ? prefixCiteTag(page.text, citeIndex, "当前页", page.path) : page.text,
-        contextKey,
+        contextKey: `page:${ctx.subjectId}/${ctx.categoryId}/${ctx.itemId}`,
         path: page.path,
         title: page.title,
         found: page.citable,

@@ -39,8 +39,10 @@ function pathFromContextKey(key: string | undefined, prefix: "page" | "section")
   return path.includes("/") ? path : null;
 }
 
-function isCompleteOutput(part: { state?: string; preliminary?: boolean; output?: { deduped?: boolean } | null }): boolean {
-  return part.state === "output-available" && !part.preliminary && Boolean(part.output) && !part.output?.deduped;
+function isCompleteOutput<T extends { state?: string; preliminary?: boolean; output?: { deduped?: boolean } | null }>(
+  part: T,
+): part is T & { state: "output-available"; output: NonNullable<T["output"]> } {
+  return part.state === "output-available" && !part.preliminary && part.output != null && !part.output.deduped;
 }
 
 /**

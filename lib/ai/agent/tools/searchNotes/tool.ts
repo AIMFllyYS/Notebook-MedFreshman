@@ -134,7 +134,7 @@ function searchPersonalNotes(
   });
   const lines = hits.map((hit) => {
     const label = hit.citeIndex ? `[${hit.citeIndex}] ${hit.title}` : hit.title;
-    return `${label} (id: ${hit.noteId} / ${subjectLabel(hit.subjectId)})\n…${hit.snippet}…`;
+    return `${label} (id: ${hit.noteId} / ${subjectLabel(hit.subjectId ?? null)})\n…${hit.snippet}…`;
   });
   lines.push("\n如需全文，再调用 searchNotes(id: \"对应 id\", scope: \"personal\")。不要一次取多篇。");
   lines.push(CITE_HIT_HINT);

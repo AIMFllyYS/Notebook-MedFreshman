@@ -22,14 +22,14 @@ export function createGetSectionTool(ctx: StudyToolContext, runtime: StudyToolRu
         };
       }
       const resolved = resolveContentPath(input, ctx.subjectId);
-      const path = `${resolved.subjectId}/${resolved.categoryId}/${resolved.itemId}`;
-      const contextKey = `section:${path}`;
+      const resolvedPath = `${resolved.subjectId}/${resolved.categoryId}/${resolved.itemId}`;
+      const contextKey = `section:${resolvedPath}`;
       if (!resolved.found) {
         return dedupeByContextKey(runtime, "getSection", {
           text: `【${resolved.title}】未找到该页面内容（路径无效）。可调用 getOutline 查看有效路径。`,
           contextKey,
           title: resolved.title,
-          path,
+          path: resolvedPath,
           found: false,
         });
       }
@@ -39,7 +39,7 @@ export function createGetSectionTool(ctx: StudyToolContext, runtime: StudyToolRu
           text: `【${resolved.title}】未找到该页面内容（正文尚未生成）。可调用 getOutline 查看有效路径。`,
           contextKey,
           title: resolved.title,
-          path,
+          path: resolvedPath,
           found: false,
         });
       }
@@ -47,10 +47,10 @@ export function createGetSectionTool(ctx: StudyToolContext, runtime: StudyToolRu
       const citeIndex = already ? undefined : allocateCiteIndex(runtime);
       const body = `【${resolved.title}】\n\n${md}`;
       return dedupeByContextKey(runtime, "getSection", {
-        text: citeIndex ? prefixCiteTag(body, citeIndex, "教材", path) : body,
+        text: citeIndex ? prefixCiteTag(body, citeIndex, "教材", resolvedPath) : body,
         contextKey,
         title: resolved.title,
-        path,
+        path: resolvedPath,
         found: true,
         citeIndex,
       });
