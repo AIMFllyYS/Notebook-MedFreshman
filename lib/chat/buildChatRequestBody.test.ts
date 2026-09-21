@@ -168,6 +168,8 @@ const allCapabilityKeys = {
   rerankApiKey: "sk-rerank",
   rerankModelId: "rr-1",
   webSearchApiKey: " user-zhipu ",
+  kimiSearchApiKey: "user-kimi",
+  perplexitySearchApiKey: "user-perplexity",
   unsplashAccessKey: "user-unsplash",
 };
 

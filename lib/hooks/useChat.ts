@@ -26,6 +26,7 @@ import type { StallReason } from '@/lib/chat/createStallWatchdog';
 import { buildProjectCatalog, buildProjectSliceBodies, planCarry, withRememberedSlices } from '@/lib/project/catalog';
 import { collectReadSliceIds } from '@/lib/project/sessionSlices';
 import { useReincludedAttachments } from '@/lib/stores/reincludedAttachments';
+import { shouldAutoEnableSearch } from '@/lib/ai/search/autoEnable';
 
 const EMPTY_MESSAGES: ChatMessage[] = [];
 export function useChat(chatContext: ChatContext, options?: ChatOptions, overrides?: {
@@ -60,7 +61,11 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const history = useChatHistory.getState();
     if (!canSendNow(history, ovSessionId)) return false;
     const settings = useSettings.getState();
-    const resolved = resolveRequestSettings(settings, options, sendOptions, ovModelId);
+    // 「需要搜索就联网」：问题明显依赖外部/实时信息时，本轮自动打开联网搜索。
+    // 客户端先开一次，是为了把用户自备的搜索 key 也带上去（服务端只剥离、不补齐）。
+    const resolvedSettings = resolveRequestSettings(settings, options, sendOptions, ovModelId);
+    const autoSearch = !resolvedSettings.enableSearch && shouldAutoEnableSearch(content);
+    const resolved = autoSearch ? { ...resolvedSettings, enableSearch: true } : resolvedSettings;
     const academicYear = chatContext.academicYear ?? useAcademicYear.getState().year;
     const skills = useSkills.getState().skills;
     const sessionId = (ovSessionId ?? history.activeSessionId) ?? history.createSession(chatContext);

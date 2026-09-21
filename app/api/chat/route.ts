@@ -34,6 +34,7 @@ import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/
 import { runWithCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
 import { carryNotice, summarizeCarry } from "@/lib/project/catalog";
+import { shouldAutoEnableSearch } from "@/lib/ai/search/autoEnable";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -144,9 +145,11 @@ export async function POST(req: NextRequest) {
   const gate = await assertQuotaAvailable({ userId, pool: mainPool });
   if (!gate.ok) return quotaRejectedJson(gate);
 
+  // 服务端兜底：老客户端没做"需要搜索就联网"的判定时，这里补上（并告知用户）。
+  const autoSearch = !body.enableSearch && shouldAutoEnableSearch(lastUserText(body.messages));
   const options: ChatOptions = {
     enableThinking: body.enableThinking,
-    enableSearch: body.enableSearch,
+    enableSearch: body.enableSearch || autoSearch,
     thinkingEffort: body.thinkingEffort,
     contextMode: body.contextMode,
   };
@@ -191,6 +194,15 @@ export async function POST(req: NextRequest) {
       }
       if (hasFileParts(body.messages) && modelInfo && !modelInfo.vision) {
         throw new Error(`当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo V2.5）。`);
+      }
+
+      // 自动联网的透明提示：本轮为什么能用搜索，用户有权知道（搜索是要花钱的）。
+      if (autoSearch) {
+        writer.write({
+          type: "data-info",
+          data: { message: "这个问题依赖外部实时信息，已自动为本轮打开联网搜索。" },
+          transient: true,
+        });
       }
 
       // 项目文件降级提示：项目一大，客户端就从「全带」翻成「只带勾选/本会话读过的片」，

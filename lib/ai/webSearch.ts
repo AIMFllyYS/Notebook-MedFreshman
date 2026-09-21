@@ -1,10 +1,19 @@
-// 联网搜索（智谱 Web Search API）+ 内存缓存（命中复用，降本提速）。
-// 默认用站点 ZHIPU_API_KEY；用户在设置里自配后用用户的，不计入平台额度。
+// 联网搜索门面（对外保持历史入口不变）。
+//
+// 两种用法：
+//  - \`runWebSearchDetailed\`：主 Agent 的工具走这里 → 交给搜索子智能体（多供应商并行 + 综述）。
+//  - \`searchCached\`：只走智谱的结构化搜索，保留历史上的 apiKey 覆盖与计费口径
+//    （计费测试与旧调用点依赖它：用户自带 key 时不计入平台池）。
 
-import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/usageLedger";
+import { settleUsage, mainUsedPlatformCredentials } from "@/lib/billing/usageLedger";
 import { resolveSidecarBilling } from "@/lib/billing/usagePool";
 import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
+import { runSearchSubagent } from "@/lib/ai/search/subagent";
+import type { SearchMode, SearchProviderId } from "@/lib/ai/search/types";
+import type { WebSearchSource } from "@/lib/types/chat";
+
+export type { WebSearchSource } from "@/lib/types/chat";
 
 const ZHIPU_SEARCH_URL = "https://open.bigmodel.cn/api/paas/v4/web_search";
 
@@ -14,12 +23,43 @@ function resolveSearchKey(override?: string): { key: string; usedPlatformCredent
   return { key: resolved.value, usedPlatformCredentials: resolved.usedPlatformCredentials };
 }
 
-export interface WebSearchSource {
-  title: string;
-  url: string;
-  snippet: string;
-  icon?: string;
-  media?: string;
+interface ZhipuSearchOptions {
+  searchEngine?: string;
+  domainFilter?: string;
+  contentSize?: string;
+  /** 显式覆盖用户/平台 key；缺省读能力端点 ALS 与 ZHIPU_API_KEY。 */
+  apiKey?: string;
+}
+
+async function fetchZhipuRaw(
+  query: string,
+  count: number,
+  opts: ZhipuSearchOptions,
+  apiKey: string,
+): Promise<WebSearchSource[]> {
+  const body: Record<string, unknown> = {
+    search_engine: opts.searchEngine ?? "search_pro",
+    search_query: query,
+    count: Math.min(Math.max(count, 1), 50),
+    search_recency_filter: "noLimit",
+    content_size: opts.contentSize ?? "high",
+  };
+  if (opts.domainFilter) body.search_domain_filter = opts.domainFilter;
+  const res = await fetch(ZHIPU_SEARCH_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error("Zhipu Search " + res.status);
+  const data = await res.json();
+  const items = data?.search_result ?? [];
+  return items.map((p: Record<string, string>) => ({
+    title: p.title ?? "",
+    url: p.link ?? "",
+    snippet: p.content ?? "",
+    icon: p.icon ?? "",
+    media: p.media ?? "",
+  }));
 }
 
 // ── 内存缓存（同一服务进程内 LRU + TTL）────────────────────────
@@ -32,15 +72,15 @@ const TTL_MS = 10 * 60 * 1000;
 const MAX_ENTRIES = 100;
 
 function cacheGet(key: string): WebSearchSource[] | null {
-  const e = CACHE.get(key);
-  if (!e) return null;
-  if (Date.now() - e.ts > TTL_MS) {
+  const entry = CACHE.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > TTL_MS) {
     CACHE.delete(key);
     return null;
   }
   CACHE.delete(key);
-  CACHE.set(key, e);
-  return e.results;
+  CACHE.set(key, entry);
+  return entry.results;
 }
 
 function cacheSet(key: string, results: WebSearchSource[]) {
@@ -51,49 +91,6 @@ function cacheSet(key: string, results: WebSearchSource[]) {
   }
 }
 
-interface ZhipuSearchOptions {
-  searchEngine?: string;
-  domainFilter?: string;
-  contentSize?: string;
-  /** 显式覆盖用户/平台 key；缺省读能力端点 ALS 与 ZHIPU_API_KEY。 */
-  apiKey?: string;
-}
-
-async function fetchRaw(
-  query: string,
-  count: number,
-  opts: ZhipuSearchOptions = {},
-  apiKey: string,
-): Promise<WebSearchSource[]> {
-  const body: Record<string, unknown> = {
-    search_engine: opts.searchEngine ?? "search_pro",
-    search_query: query,
-    count: Math.min(Math.max(count, 1), 50),
-    search_recency_filter: "noLimit",
-    content_size: opts.contentSize ?? "high",
-  };
-  if (opts.domainFilter) body.search_domain_filter = opts.domainFilter;
-
-  const res = await fetch(ZHIPU_SEARCH_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`Zhipu Search ${res.status}`);
-  const data = await res.json();
-  const items = data?.search_result ?? [];
-  return items.map((p: Record<string, string>) => ({
-    title: p.title ?? "",
-    url: p.link ?? "",
-    snippet: p.content ?? "",
-    icon: p.icon ?? "",
-    media: p.media ?? "",
-  }));
-}
-
 export async function searchCached(
   query: string,
   count = 5,
@@ -102,10 +99,10 @@ export async function searchCached(
   const q = query.trim();
   const { key, usedPlatformCredentials } = resolveSearchKey(opts.apiKey);
   if (!q || !key) return { results: [], cacheHit: false, usedPlatformCredentials };
-  const cacheKey = `${q.toLowerCase()}|${count}|${opts.domainFilter ?? ""}|${usedPlatformCredentials ? "p" : "u"}`;
+  const cacheKey = q.toLowerCase() + "|" + count + "|" + (opts.domainFilter ?? "") + "|" + (usedPlatformCredentials ? "p" : "u");
   const cached = cacheGet(cacheKey);
   if (cached) return { results: cached, cacheHit: true, usedPlatformCredentials };
-  const results = await fetchRaw(q, count, opts, key);
+  const results = await fetchZhipuRaw(q, count, opts, key);
   cacheSet(cacheKey, results);
   await settleUsage({
     kind: "web-search",
@@ -125,28 +122,37 @@ export interface WebSearchDetailed {
   content: string;
   sources: WebSearchSource[];
   cacheHit: boolean;
+  /** 本次实际用到的搜索源（供 UI/日志展示）。 */
+  providers?: SearchProviderId[];
+  /** 是否做了跨源综述（多供应商综合分析）。 */
+  synthesized?: boolean;
 }
 
-export async function runWebSearchDetailed(query: string, numResults = 5): Promise<WebSearchDetailed> {
-  const q = query.trim();
-  if (!q) return { content: "搜索关键词为空。", sources: [], cacheHit: false };
-  const { key } = resolveSearchKey();
-  if (!key) {
-    return {
-      content: "联网搜索未配置（请在设置中填写智谱搜索凭证，或由站点配置 ZHIPU_API_KEY）。本次请基于已有知识回答，并明确说明未能联网。",
-      sources: [],
-      cacheHit: false,
-    };
-  }
-  try {
-    const { results, cacheHit } = await searchCached(q, numResults);
-    if (!results.length) return { content: `未搜索到「${q}」的相关结果。`, sources: [], cacheHit };
-    const content = results
-      .slice(0, numResults)
-      .map((r, i) => `[${i + 1}] ${r.title}\n${r.snippet}\n来源：${r.url}`)
-      .join("\n\n");
-    return { content, sources: results.slice(0, numResults), cacheHit };
-  } catch (e) {
-    return { content: `联网搜索出错：${String((e as Error)?.message ?? e)}`, sources: [], cacheHit: false };
-  }
+export interface WebSearchRunOptions {
+  mode?: SearchMode;
+  providers?: readonly SearchProviderId[];
+}
+
+/**
+ * 主入口：交给搜索子智能体（选源 → 并行检索 → 综述）。
+ * 子智能体内部永远不会抛错，失败会以可读文本返回。
+ */
+export async function runWebSearchDetailed(
+  query: string,
+  numResults = 5,
+  options: WebSearchRunOptions = {},
+): Promise<WebSearchDetailed> {
+  const bundle = await runSearchSubagent({
+    query,
+    mode: options.mode,
+    providers: options.providers,
+    count: numResults,
+  });
+  return {
+    content: bundle.text,
+    sources: bundle.sources,
+    cacheHit: bundle.cacheHit,
+    providers: bundle.used,
+    synthesized: bundle.synthesized,
+  };
 }

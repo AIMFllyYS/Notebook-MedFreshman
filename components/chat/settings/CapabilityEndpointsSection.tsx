@@ -203,6 +203,9 @@ export function CapabilityEndpointsSection() {
             <legend className="px-1 text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">
               {t("settings.capability.webSearch")}
             </legend>
+            <p className="text-[11px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+              {t("settings.capability.webSearchHint")}
+            </p>
             <div>
               <label className={labelCls}>{t("settings.capability.zhipuKey")}</label>
               <input
@@ -211,6 +214,28 @@ export function CapabilityEndpointsSection() {
                 value={capabilityEndpoints.webSearchApiKey}
                 onChange={(e) => setCapabilityEndpoints({ webSearchApiKey: e.target.value })}
                 placeholder={t("settings.capability.zhipuPlaceholder")}
+                autoComplete="off"
+              />
+            </div>
+            <div>
+              <label className={labelCls}>{t("settings.capability.kimiSearchKey")}</label>
+              <input
+                className={inputCls}
+                type="password"
+                value={capabilityEndpoints.kimiSearchApiKey}
+                onChange={(e) => setCapabilityEndpoints({ kimiSearchApiKey: e.target.value })}
+                placeholder={t("settings.capability.kimiSearchPlaceholder")}
+                autoComplete="off"
+              />
+            </div>
+            <div>
+              <label className={labelCls}>{t("settings.capability.perplexitySearchKey")}</label>
+              <input
+                className={inputCls}
+                type="password"
+                value={capabilityEndpoints.perplexitySearchApiKey}
+                onChange={(e) => setCapabilityEndpoints({ perplexitySearchApiKey: e.target.value })}
+                placeholder={t("settings.capability.perplexitySearchPlaceholder")}
                 autoComplete="off"
               />
             </div>

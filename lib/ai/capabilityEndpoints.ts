@@ -14,7 +14,12 @@ export interface CapabilityEndpoints {
   rerankBaseUrl: string;
   rerankApiKey: string;
   rerankModelId: string;
+  /** 智谱联网搜索（历史上 webSearch 就填这里）。 */
   webSearchApiKey: string;
+  /** Kimi 内置 $web_search 的 key（Moonshot）。 */
+  kimiSearchApiKey: string;
+  /** Perplexity Search / sonar 的 key。 */
+  perplexitySearchApiKey: string;
   unsplashAccessKey: string;
 }
 
@@ -42,6 +47,8 @@ export function normalizeCapabilityEndpoints(raw: unknown): CapabilityEndpoints 
     rerankApiKey: trimEndpointField(src.rerankApiKey),
     rerankModelId: trimEndpointField(src.rerankModelId),
     webSearchApiKey: trimEndpointField(src.webSearchApiKey),
+    kimiSearchApiKey: trimEndpointField(src.kimiSearchApiKey),
+    perplexitySearchApiKey: trimEndpointField(src.perplexitySearchApiKey),
     unsplashAccessKey: trimEndpointField(src.unsplashAccessKey),
   };
 }
@@ -60,6 +67,8 @@ export function capabilitySecretValues(ep: CapabilityEndpoints | undefined | nul
     ep.embeddingApiKey,
     ep.rerankApiKey,
     ep.webSearchApiKey,
+    ep.kimiSearchApiKey,
+    ep.perplexitySearchApiKey,
     ep.unsplashAccessKey,
   ].filter((value) => !!value);
 }
@@ -109,12 +118,15 @@ export function resolveCapabilitySecret(userValue: string | undefined, platformV
 /** 本次请求可能真正打到的 sidecar。只剥密钥，baseUrl / modelId / style 原样保留。 */
 export type CapabilityNeed = "image" | "embedding" | "rerank" | "webSearch" | "imageSearch";
 
-const NEED_TO_SECRET: Record<CapabilityNeed, keyof CapabilityEndpoints> = {
-  image: "imageApiKey",
-  embedding: "embeddingApiKey",
-  rerank: "rerankApiKey",
-  webSearch: "webSearchApiKey",
-  imageSearch: "unsplashAccessKey",
+/**
+ * 一个能力可能对应多个密钥（联网搜索现在有三家）。返回数组，调用方逐个剥离。
+ */
+const NEED_TO_SECRETS: Record<CapabilityNeed, (keyof CapabilityEndpoints)[]> = {
+  image: ["imageApiKey"],
+  embedding: ["embeddingApiKey"],
+  rerank: ["rerankApiKey"],
+  webSearch: ["webSearchApiKey", "kimiSearchApiKey", "perplexitySearchApiKey"],
+  imageSearch: ["unsplashAccessKey"],
 };
 
 /**
@@ -147,13 +159,16 @@ export function selectCapabilityEndpointsForRequest(
   needs: readonly CapabilityNeed[],
 ): CapabilityEndpoints {
   const full = normalizeCapabilityEndpoints(raw);
-  const allow = new Set(needs.map((need) => NEED_TO_SECRET[need]));
+  // 一个能力现在可能带多个 key（联网搜索三家），所以按 need 摊平成允许集合。
+  const allow = new Set(needs.flatMap((need) => NEED_TO_SECRETS[need]));
   return {
     ...full,
     imageApiKey: allow.has("imageApiKey") ? full.imageApiKey : "",
     embeddingApiKey: allow.has("embeddingApiKey") ? full.embeddingApiKey : "",
     rerankApiKey: allow.has("rerankApiKey") ? full.rerankApiKey : "",
     webSearchApiKey: allow.has("webSearchApiKey") ? full.webSearchApiKey : "",
+    kimiSearchApiKey: allow.has("kimiSearchApiKey") ? full.kimiSearchApiKey : "",
+    perplexitySearchApiKey: allow.has("perplexitySearchApiKey") ? full.perplexitySearchApiKey : "",
     unsplashAccessKey: allow.has("unsplashAccessKey") ? full.unsplashAccessKey : "",
   };
 }
