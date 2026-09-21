@@ -1,12 +1,16 @@
-// 一次性脚本：从 Downloads/纲要 的3个docx提取纯文本到 tmp/gangyao/
-// 用法：node scripts/content/extract-gangyao-docx.mjs
+// 一次性脚本：从 DOCX_SRC_DIR 指定的目录读取 3 个 docx，提取纯文本到 tmp/gangyao/
+// 用法：DOCX_SRC_DIR=<docx 所在目录> node scripts/content/extract-gangyao-docx.mjs
 
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
 
-const SRC_DIR = "C:\\Users\\AIMFl\\Downloads\\纲要";
+const SRC_DIR = process.env.DOCX_SRC_DIR;
+if (!SRC_DIR) {
+  console.error("ERROR: set DOCX_SRC_DIR to the folder containing the docx files.");
+  process.exit(1);
+}
 const OUT_DIR = path.join(process.cwd(), "tmp", "gangyao");
 
 const FILES = [

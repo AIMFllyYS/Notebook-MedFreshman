@@ -22,12 +22,15 @@ build/*
 *.pfx
 *.pwd
 
-# env (keep .env.example tracked)
-.env
-.env.production
-.env.local
-.env*.local
+# env (keep .env.example tracked; all other variants/renames stay out of git)
+.env*
+!.env.example
 .mcp
+
+# key/cert material — must never be committed
+*.key
+*.pem
+*.p12
 
 # manim intermediate render cache (final mp4s live in public/media)
 manim/media*/

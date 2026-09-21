@@ -8,7 +8,7 @@
  *   MinerU_API_Token
  *
  * 输入：
- *   C:\Users\AIMFl\OneDrive\文档\课程文件\中国近现代史纲要课程及录音\课文\*.pdf
+ *   MODERN_HISTORY_PDF_DIR 指向存放 *.pdf 章节的目录（机器相关路径，不入库）
  *
  * 产出：
  *   scripts/temp/modern-history-textbook/raw/{slug}/full.md
@@ -51,7 +51,11 @@ const HEADERS = {
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
-const PDF_DIR = path.normalize("C:/Users/AIMFl/OneDrive/文档/课程文件/中国近现代史纲要课程及录音/课文");
+const PDF_DIR = process.env.MODERN_HISTORY_PDF_DIR || "";
+if (!PDF_DIR) {
+  console.error("ERROR: set MODERN_HISTORY_PDF_DIR to the folder containing the textbook PDFs.");
+  process.exit(1);
+}
 const OUTPUT_ROOT = path.join(process.cwd(), "scripts", "temp", "modern-history-textbook", "raw");
 const META_FILE = path.join(OUTPUT_ROOT, "_meta.json");
 

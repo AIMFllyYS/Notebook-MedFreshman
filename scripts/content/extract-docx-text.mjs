@@ -4,14 +4,19 @@
 // docx 正文在 word/document.xml。本脚本零依赖：复制为 ASCII 临时 .zip，
 // PowerShell 解压，读 document.xml，按 <w:p> 分段、提取 <w:t> 文本。
 //
-// 用法：node scripts/extract-docx-text.mjs [sum-01]
+// 用法：DOCX_SRC_DIR=<docx 所在目录> node scripts/content/extract-docx-text.mjs [sum-01]
 
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
 
-const SRC_DIR = "D:\\飞书文档保存\\有机化学课程及录音";
+// 源 docx 目录不入库（机器相关路径），由 DOCX_SRC_DIR 指定。
+const SRC_DIR = process.env.DOCX_SRC_DIR;
+if (!SRC_DIR) {
+  console.error("ERROR: set DOCX_SRC_DIR to the folder containing the docx summaries.");
+  process.exit(1);
+}
 const OUT_ROOT = path.join(process.cwd(), "content", "chemistry", "summary", "_raw");
 
 const SUMMARIES = {
