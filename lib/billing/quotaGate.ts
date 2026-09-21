@@ -295,12 +295,31 @@ function nowDate(): Date {
   return testDeps?.now ? testDeps.now() : new Date();
 }
 
+/**
+ * 仅限 proxy 付费路由（PAID_AI_API_PATHS）使用：那里 proxy 已验证 bearer，
+ * 注入的 x-studyreview-user-id 是可信的，直接复用可省一次 Supabase 校验。
+ * 非 proxy 名单上的路由请用 resolveSessionUserId。
+ */
 export async function resolveQuotaUserId(
   headers: { get(name: string): string | null },
 ): Promise<string | null> {
   if (testDeps?.resolveUserId) return testDeps.resolveUserId(headers);
   const { resolveLedgerUserId } = await import("@/lib/billing/usageLedger");
   return resolveLedgerUserId(headers, { allowTrustedProxyHeader: true });
+}
+
+/**
+ * 账户类路由（quota / redeem / share / usage …，不在 proxy 付费名单上）的身份解析：
+ * 永远验证 bearer/cookie token，不信任客户端自报的 x-studyreview-user-id。
+ * proxy.ts 对每条 /api 请求都会剥掉该 header，这里再加一层纵深防御：
+ * 万一哪天 proxy 配置被绕过，身份也不会被伪造 header 劫持。
+ */
+export async function resolveSessionUserId(
+  headers: { get(name: string): string | null },
+): Promise<string | null> {
+  if (testDeps?.resolveUserId) return testDeps.resolveUserId(headers);
+  const { resolveLedgerUserId } = await import("@/lib/billing/usageLedger");
+  return resolveLedgerUserId(headers);
 }
 
 async function loadQuotaSnapshotFresh(userId: string): Promise<QuotaSnapshot | null> {

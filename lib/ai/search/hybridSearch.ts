@@ -123,6 +123,9 @@ async function settleRerankUsage(
   });
 }
 
+/** 重排超时：BYOK 可指到任意端点，没超时会让整个请求吊在对方主机上。 */
+const RERANK_TIMEOUT_MS = 30_000;
+
 async function rerank(
   query: string,
   documents: string[],
@@ -155,6 +158,7 @@ async function rerank(
         top_n: topN,
         return_documents: false,
       }),
+      signal: AbortSignal.timeout(RERANK_TIMEOUT_MS),
     });
 
     if (!resp.ok) {
@@ -183,6 +187,7 @@ async function rerank(
           top_n: topN,
           return_documents: false,
         }),
+        signal: AbortSignal.timeout(RERANK_TIMEOUT_MS),
       });
 
       if (!resp.ok) {

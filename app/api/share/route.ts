@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveSessionUserId } from "@/lib/billing/quotaGate";
 import { listSharedConversations, saveSharedConversation, setSharedConversationEnabled } from "@/lib/share/server";
 import { createShareId } from "@/lib/share/slug";
 import { checkSharePayload, formatSharePayloadError } from "@/lib/share/snapshot";
@@ -40,7 +40,7 @@ function parseShareBody(raw: unknown): ShareRequestBody | null {
 
 /** POST /api/share：把一条会话发布成公开只读链接。必须登录，链接永久有效（撤回接口另开）。 */
 export async function POST(req: NextRequest) {
-  const userId = await resolveQuotaUserId(req.headers);
+  const userId = await resolveSessionUserId(req.headers);
   if (!userId) {
     return NextResponse.json({ error: "请先登录后再分享对话。" }, { status: 401, headers });
   }
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
 
 /** GET /api/share：列出自己的分享链接（「我的资产 → 分享的链接」用）。必须登录。 */
 export async function GET(req: NextRequest) {
-  const userId = await resolveQuotaUserId(req.headers);
+  const userId = await resolveSessionUserId(req.headers);
   if (!userId) {
     return NextResponse.json({ error: "请先登录后再查看分享链接。" }, { status: 401, headers });
   }
@@ -95,7 +95,7 @@ export async function GET(req: NextRequest) {
 
 /** PATCH /api/share：开 / 关某条分享。关闭 = 置 revoked_at，链接立刻打不开。 */
 export async function PATCH(req: NextRequest) {
-  const userId = await resolveQuotaUserId(req.headers);
+  const userId = await resolveSessionUserId(req.headers);
   if (!userId) {
     return NextResponse.json({ error: "请先登录后再管理分享链接。" }, { status: 401, headers });
   }

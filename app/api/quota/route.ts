@@ -1,4 +1,4 @@
-import { loadQuotaSnapshot, resolveQuotaUserId } from '@/lib/billing/quotaGate';
+import { loadQuotaSnapshot, resolveSessionUserId } from '@/lib/billing/quotaGate';
 import type { QuotaView } from '@/lib/billing/quotaView';
 
 export const runtime = 'nodejs';
@@ -8,7 +8,7 @@ const headers = { 'Cache-Control': 'private, no-store', Vary: 'Cookie, Authoriza
 /** User identity is derived exclusively from the verified session, never request parameters. */
 export async function GET(req: Request) {
   try {
-    const userId = await resolveQuotaUserId(req.headers);
+    const userId = await resolveSessionUserId(req.headers);
     if (!userId) return Response.json({ error: '请先登录以查看额度。' }, { status: 401, headers });
     const snapshot = await loadQuotaSnapshot(userId);
     if (!snapshot) return Response.json({ error: '账户额度暂不可用。' }, { status: 503, headers });

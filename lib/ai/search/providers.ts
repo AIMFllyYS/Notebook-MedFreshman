@@ -7,6 +7,7 @@ import { settleUsage, mainUsedPlatformCredentials } from "@/lib/billing/usageLed
 import { resolveSidecarBilling } from "@/lib/billing/usagePool";
 import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
+import { createTtlCache } from "@/lib/ai/ttlCache";
 import type { ProviderOutcome, SearchItem, SearchProviderId } from "./types";
 
 const ZHIPU_SEARCH_URL = "https://open.bigmodel.cn/api/paas/v4/web_search";
@@ -73,26 +74,9 @@ async function billProvider(provider: SearchProviderId, units: number, usedPlatf
 }
 
 // ── 结构化结果的内存缓存（同一进程内 LRU + TTL）────────────────────
-interface CacheEntry { items: SearchItem[]; ts: number }
-const CACHE = new Map<string, CacheEntry>();
-const TTL_MS = 10 * 60 * 1000;
-const MAX_ENTRIES = 100;
-
-function cacheGet(key: string): SearchItem[] | null {
-  const entry = CACHE.get(key);
-  if (!entry) return null;
-  if (Date.now() - entry.ts > TTL_MS) { CACHE.delete(key); return null; }
-  CACHE.delete(key); CACHE.set(key, entry);
-  return entry.items;
-}
-
-function cacheSet(key: string, items: SearchItem[]) {
-  CACHE.set(key, { items, ts: Date.now() });
-  if (CACHE.size > MAX_ENTRIES) {
-    const oldest = CACHE.keys().next().value;
-    if (oldest !== undefined) CACHE.delete(oldest);
-  }
-}
+const CACHE = createTtlCache<SearchItem[]>({ ttlMs: 10 * 60 * 1000, maxEntries: 100 });
+const cacheGet = (key: string) => CACHE.get(key);
+const cacheSet = CACHE.set.bind(CACHE);
 
 async function fetchJson(url: string, apiKey: string, body: unknown, timeoutMs: number): Promise<{ ok: boolean; status: number; data: Record<string, unknown> | null; raw: string }> {
   const res = await fetch(url, {
