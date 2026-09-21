@@ -5,8 +5,8 @@
 // 用 PowerShell Expand-Archive 解压，再把 word/media/* 复制到输出目录。
 //
 // 用法：
-//   node scripts/extract-docx-images.mjs            # 处理全部
-//   node scripts/extract-docx-images.mjs sum-01     # 只处理某一讲（测试用）
+//   DOCX_SRC_DIR=<docx 所在目录> node scripts/content/extract-docx-images.mjs            # 处理全部
+//   DOCX_SRC_DIR=<docx 所在目录> node scripts/content/extract-docx-images.mjs sum-01     # 只处理某一讲（测试用）
 //
 // 输出：public/images/chemistry/{sumId}/{sumId}-img{N}{ext}
 //       并在结尾打印「sumId → 图片清单」供纪要子智能体定位。
@@ -16,7 +16,12 @@ import path from "node:path";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
 
-const SRC_DIR = "D:\\飞书文档保存\\有机化学课程及录音";
+// 源 docx 目录不入库（机器相关路径），由 DOCX_SRC_DIR 指定。
+const SRC_DIR = process.env.DOCX_SRC_DIR;
+if (!SRC_DIR) {
+  console.error("ERROR: set DOCX_SRC_DIR to the folder containing the docx summaries.");
+  process.exit(1);
+}
 const OUT_ROOT = path.join(process.cwd(), "public", "images", "chemistry");
 
 // sumId → 源 docx 文件名（与 lib/content-data/chemistry-lectures.ts 的 source.minutes 保持一致；第15讲无 docx）

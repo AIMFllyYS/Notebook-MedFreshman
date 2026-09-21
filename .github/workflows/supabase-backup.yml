@@ -21,7 +21,6 @@ on:
 
 permissions:
   contents: read
-  actions: write
 
 concurrency:
   group: supabase-backup
@@ -33,10 +32,12 @@ jobs:
     timeout-minutes: 10
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
       SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
     steps:
       - name: Export and encrypt
+        env:
+          # 加密口令只注入真正用到它的这一步（不扩散到后续步骤环境）。
+          BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
         run: |
           set -euo pipefail
           TOKEN="${SUPABASE_ACCESS_TOKEN:-}"
