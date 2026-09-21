@@ -7,6 +7,7 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
 import { useLightbox } from "@/lib/stores/lightbox";
 import ManagedWindow from "@/components/window/ManagedWindow";
+import { safeImageSrc } from "@/components/browser/safeUrl";
 import { formatImageGenError, imageGenErrorHeading } from "@/lib/ai/imageGenError";
 import { capabilityNeedsForImageGen, selectCapabilityEndpointsForRequest } from "@/lib/ai/capabilityEndpoints";
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from "@/lib/ai/models";
@@ -98,7 +99,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
         });
       }
     },
-    [startLoading, updateSession],
+    [startLoading, updateSession, t],
   );
 
   useEffect(() => {
@@ -143,7 +144,8 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(objUrl), 60000);
     } catch {
-      window.open(src, "_blank", "noopener");
+      const safeSrc = safeImageSrc(src);
+      if (safeSrc) window.open(safeSrc, "_blank", "noopener");
     }
   };
 

@@ -212,8 +212,6 @@ function ErrorTypeDemoBase() {
   const sigDraw = showDouble ? sigma0_2n : sigma0;
   const maxY = normPDF(mu0, mu0, sigDraw) * 1.08;
   const critDraw = showDouble ? critValue_2n : critValue;
-  const betaDraw = showDouble ? beta_2n : betaValue;
-  const powerDraw = showDouble ? power_2n : power;
 
   // ─── 路径 ──────────────────────────────────────────────────────────────────
   const pathH0 = makeCurvePath(mu0, sigDraw, maxY);

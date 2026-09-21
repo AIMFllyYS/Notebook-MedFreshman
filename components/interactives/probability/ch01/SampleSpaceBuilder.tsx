@@ -66,7 +66,6 @@ function DieFace({
   membership: Membership;
   onClick: () => void;
 }) {
-  const dotColor = membership === "none" ? "var(--ink-soft)" : "white";
   const borderColor = MEMBERSHIP_COLORS[membership];
   const bgColor =
     membership === "none"

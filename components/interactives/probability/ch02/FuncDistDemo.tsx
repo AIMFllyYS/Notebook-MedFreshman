@@ -113,7 +113,7 @@ const TRANSFORM_CONFIGS: Record<TransformKey, TransformConfig> = {
       }
       return 0;
     },
-    yMin: (_dist: DistKey) => 0,
+    yMin: () => 0,
     yMax: (dist: DistKey) => (dist === "normal" ? 9 : dist === "uniform" ? 1.05 : 16),
     note: "折叠效应：±x 都映射到同一个 y=x²，PDF 是 X 两侧贡献之和除以变换斜率。",
   },
@@ -137,7 +137,7 @@ const TRANSFORM_CONFIGS: Record<TransformKey, TransformConfig> = {
       }
       return 0;
     },
-    yMin: (_dist: DistKey) => 0,
+    yMin: () => 0,
     yMax: (dist: DistKey) => (dist === "normal" ? 3.5 : dist === "uniform" ? 1.2 : 4.5),
     note: "绝对值把负半轴「折叠」到正半轴，密度加倍（仅对称分布明显）。",
   },

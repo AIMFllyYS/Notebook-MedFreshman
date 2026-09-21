@@ -64,7 +64,19 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
 
   if (!managed || !url) return null;
 
-  const showFallback = blocked || loadFailed;
+  // 预览 iframe 带 allow-same-origin + allow-scripts：若 url 指向本应用同源地址，
+  // iframe 内脚本就能摸到 parent.document（沙箱逃逸）。预览只面向外部站点，
+  // 同源地址一律降级为跳转卡片。
+  let sameOrigin = false;
+  if (typeof window !== "undefined") {
+    try {
+      sameOrigin = new URL(url, window.location.href).origin === window.location.origin;
+    } catch {
+      // 解析不出的地址不允许嵌入。
+      sameOrigin = true;
+    }
+  }
+  const showFallback = blocked || loadFailed || sameOrigin;
 
   return (
     <ManagedWindow
@@ -102,7 +114,7 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
           title={managed.title}
           className="min-h-0 w-full flex-1 border-0 bg-white"
           sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads allow-modals"
-          allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-write"
           referrerPolicy="no-referrer-when-downgrade"
           onError={() => setLoadFailed(true)}
           onLoad={(event) => {

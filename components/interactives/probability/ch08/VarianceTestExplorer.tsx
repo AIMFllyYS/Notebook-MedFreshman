@@ -4,7 +4,6 @@ import { memo, useState } from "react";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "var(--accent-weak)";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
 const GREEN = "#0f766e";

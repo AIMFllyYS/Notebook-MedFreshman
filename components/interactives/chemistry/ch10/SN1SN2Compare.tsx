@@ -99,7 +99,7 @@ function decideMechanism(
   return { mechanism, sn2Score, sn1Score, reasons };
 }
 
-function OptionButton<T extends string>({
+function OptionButton({
   active,
   label,
   note,

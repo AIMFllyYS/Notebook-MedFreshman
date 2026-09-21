@@ -6,7 +6,6 @@ import { memo, useState } from "react";
 const ACCENT = "#5b46e5";
 const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
-const GREEN_LIGHT = "#ccfbf1";
 const ORANGE = "#c2410c";
 const GRAY_LINE = "var(--line)";
 
@@ -50,14 +49,6 @@ function sampleMean2(data: number[]): number {
   // 二阶样本矩 (1/n)·Σxᵢ²
   if (data.length === 0) return NaN;
   return data.reduce((s, x) => s + x * x, 0) / data.length;
-}
-
-function sampleVariance(data: number[]): number {
-  // 用样本矩计算：B₂ - x̄² = E[X²] - (E[X])²
-  if (data.length === 0) return NaN;
-  const m1 = sampleMean(data);
-  const m2 = sampleMean2(data);
-  return m2 - m1 * m1;
 }
 
 // ─── 矩估计量 ─────────────────────────────────────────────────────

@@ -44,10 +44,6 @@ function lnGamma(z: number): number {
   return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
 }
 
-function gamma(z: number): number {
-  return Math.exp(lnGamma(z));
-}
-
 // ─── χ² 分布 PDF：pdf(x; k) = x^(k/2-1) * e^(-x/2) / (2^(k/2) * Γ(k/2)) ──
 function chi2PDF(x: number, k: number): number {
   if (x <= 0) return 0;

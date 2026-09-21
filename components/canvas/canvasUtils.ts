@@ -2,7 +2,7 @@ import { normalizePlotExpression } from "@/lib/canvas/plot";
 
 /**
  * SVG Canvas utility functions:
- * - Math expression parser (safe, no eval)
+ * - Math expression parser (strict whitelist before compiling)
  * - Axis tick calculator
  * - SVG path generator from sampled points
  */
@@ -42,10 +42,34 @@ const MATH_CONSTS: Record<string, number> = {
   E: Math.E,
 };
 
+/*
+ * compileMathExpr 最终用 new Function 执行表达式，而表达式可能来自 AI 输出
+ * （SvgDiagram mode="math"）或笔记 :::plot 指令（含公开分享页）——属于半可信输入。
+ * 这里先做白名单校验：字符只允许数字/运算符/括号/逗号/空白，标识符只允许
+ * x、MATH_FUNCS、MATH_CONSTS 中出现的名字；其余一律编译失败返回 NaN。
+ * 没有引号/反引号/方括号/赋值，就无法构造字符串或访问属性，Function 体内的
+ * 残余攻击面只剩纯数值运算。
+ */
+const SAFE_EXPR_CHARS = /^[0-9A-Za-z_+\-*/%().,\s]+$/;
+const NUMBER_LITERAL_RE = /(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/g;
+const IDENTIFIER_RE = /[A-Za-z_][A-Za-z0-9_]*/g;
+
+/** 校验归一化后的数学表达式是否只含白名单内的字符与标识符。 */
+export function isSafeMathExpression(expr: string): boolean {
+  if (!expr || !SAFE_EXPR_CHARS.test(expr)) return false;
+  const names = (expr.replace(NUMBER_LITERAL_RE, "").match(IDENTIFIER_RE) ?? []);
+  return names.every(
+    (name) =>
+      name === "x" ||
+      Object.prototype.hasOwnProperty.call(MATH_FUNCS, name) ||
+      Object.prototype.hasOwnProperty.call(MATH_CONSTS, name),
+  );
+}
+
 /**
  * Compile a math expression string into a function of x.
- * Uses the Function constructor with a controlled scope — only math
- * functions and constants are available, no access to global scope.
+ * Uses the Function constructor — the expression is whitelist-validated by
+ * isSafeMathExpression first, so only whitelisted math names/operators remain.
  */
 export function compileMathExpr(expr: string): (x: number) => number {
   const sanitized = normalizePlotExpression(expr)
@@ -53,6 +77,8 @@ export function compileMathExpr(expr: string): (x: number) => number {
     .replace(/(\d)([a-zA-Z(])/g, "$1*$2")  // 2x -> 2*x, 2( -> 2*(
     .replace(/\)(\d)/g, ")*$1")              // )2 -> )*2
     .replace(/\)([a-zA-Z(])/g, ")*$1");      // )x -> )*x, )( -> )*(
+
+  if (!isSafeMathExpression(sanitized)) return () => NaN;
 
   const funcNames = Object.keys(MATH_FUNCS);
   const funcValues = Object.values(MATH_FUNCS);

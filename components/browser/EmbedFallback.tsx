@@ -2,6 +2,7 @@
 
 import { ExternalLink, ShieldAlert } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { safeHttpUrl } from "@/components/browser/safeUrl";
 
 export default function EmbedFallback({
   url,
@@ -42,7 +43,7 @@ export default function EmbedFallback({
       ) : null}
 
       <a
-        href={url}
+        href={safeHttpUrl(url) || undefined}
         target="_blank"
         rel="noopener noreferrer"
         className="press mt-5 inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-4 py-2 text-[13px] font-medium text-[var(--md-sys-color-on-primary)]"

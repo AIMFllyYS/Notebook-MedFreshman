@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor } from "lucide-react";
 import EmbedFallback from "@/components/browser/EmbedFallback";
 import WebviewSite, { type WebviewEl } from "@/components/browser/WebviewSite";
+import { safeHttpUrl } from "@/components/browser/safeUrl";
 import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
@@ -36,7 +37,10 @@ export default function BrowserTab() {
     () => false,
   );
   const webviewRef = useRef<WebviewEl | null>(null);
-  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : currentUrl || null);
+  // currentUrl 也可能来自 localStorage 持久化（未过 normalizeUrl），渲染前再过一遍白名单，
+  // 防止脏数据变成 <a href> 或 iframe/webview 的可加载地址。
+  const safeUrl = safeHttpUrl(currentUrl);
+  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : safeUrl || null);
 
   const go = () => {
     if (addr.trim()) navigate(addr);
@@ -112,14 +116,14 @@ export default function BrowserTab() {
         </button>
         )}
         <a
-          href={currentUrl || undefined}
+          href={safeUrl || undefined}
           target="_blank"
           rel="noreferrer"
           title={t("window.browser.openInNewTabHint")}
           className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] aria-disabled:opacity-40"
-          aria-disabled={!currentUrl}
+          aria-disabled={!safeUrl}
           onClick={(e) => {
-            if (!currentUrl) e.preventDefault();
+            if (!safeUrl) e.preventDefault();
           }}
         >
           <ExternalLink size={15} />
@@ -128,24 +132,24 @@ export default function BrowserTab() {
 
       {/* 内容区 */}
       <div className="min-h-0 flex-1">
-        {currentUrl ? (
+        {safeUrl ? (
           isDesktop ? (
             <WebviewSite
-              url={currentUrl}
+              url={safeUrl}
               nonce={reloadNonce}
               webviewRef={webviewRef}
               onUrlChange={setAddr}
             />
           ) : blocked ? (
             <EmbedFallback
-              url={currentUrl}
+              url={safeUrl}
               reason={reason}
               onForce={forceEmbed}
               title={t("window.browser.embedBlockedBySite")}
               actionLabel={t("window.browser.openInNewTab")}
             />
           ) : (
-            <FramedSite url={currentUrl} nonce={reloadNonce} viewMode={frameMode} />
+            <FramedSite url={safeUrl} nonce={reloadNonce} viewMode={frameMode} />
           )
         ) : (
           <BingStartPage onSearch={navigate} />

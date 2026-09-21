@@ -47,7 +47,7 @@ describe("AnchoredMenu placement", () => {
     mockAnchorLayout({ left: 0, top: 0, width: 0, height: 0 });
     render(
       <AnchoredMenu label="全局字体" role="listbox" testId="font-select" trigger={<span>系统默认</span>}>
-        {() => <button type="button" role="option">思源宋体</button>}
+        {() => <button type="button" role="option" aria-selected={false}>思源宋体</button>}
       </AnchoredMenu>,
     );
     await act(async () => {
@@ -66,7 +66,7 @@ describe("AnchoredMenu placement", () => {
     mockAnchorLayout(anchor, 180);
     render(
       <AnchoredMenu label="摘录模型" role="listbox" testId="record-model" width={280} trigger={<span>DeepSeek</span>}>
-        {() => <button type="button" role="option">DeepSeek V4 Flash</button>}
+        {() => <button type="button" role="option" aria-selected={false}>DeepSeek V4 Flash</button>}
       </AnchoredMenu>,
     );
     await act(async () => {

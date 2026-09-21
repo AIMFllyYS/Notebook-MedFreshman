@@ -4,6 +4,7 @@ import { AgentImageIcon } from "@/components/icons/AgentIcons";
 import { ChatImage } from "@/components/chat/ChatImage";
 import { ImageStrip } from "@/components/chat/ImageStrip";
 import { dedupeByKey, webItemKey } from "@/lib/chat/traceSources";
+import { safeHttpUrl } from "@/components/browser/safeUrl";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 import { useT } from "@/lib/i18n";
 
@@ -35,15 +36,24 @@ export default function ImageSearchResultCard({ part }: ResultCardProps<"imageSe
           >
             <ChatImage src={source.url} alt={source.alt || source.title || fallbackTitle} />
             <div className="image-search-gallery-credit">
-              <a href={source.url} target="_blank" rel="noopener noreferrer">
-                {source.title || source.alt || fallbackTitle}
-              </a>
+              {/* 搜索结果来自联网工具返回，href 只放行 http(s)，其余 scheme 不渲染链接。 */}
+              {safeHttpUrl(source.url) ? (
+                <a href={safeHttpUrl(source.url)} target="_blank" rel="noopener noreferrer">
+                  {source.title || source.alt || fallbackTitle}
+                </a>
+              ) : (
+                <span>{source.title || source.alt || fallbackTitle}</span>
+              )}
               {source.author ? (
                 <>
                   {" · "}
-                  <a href={source.authorUrl || source.url} target="_blank" rel="noopener noreferrer">
-                    {source.author}
-                  </a>
+                  {safeHttpUrl(source.authorUrl || source.url) ? (
+                    <a href={safeHttpUrl(source.authorUrl || source.url)} target="_blank" rel="noopener noreferrer">
+                      {source.author}
+                    </a>
+                  ) : (
+                    <span>{source.author}</span>
+                  )}
                 </>
               ) : null}
               {" · "}

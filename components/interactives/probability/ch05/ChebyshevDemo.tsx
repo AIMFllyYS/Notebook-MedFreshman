@@ -144,11 +144,6 @@ function buildTailAreaPath(sigma: number, eps: number, yMax: number, steps = 200
 }
 
 // ─── 格式化辅助 ──────────────────────────────────────────────
-function fmt4(v: number): string {
-  if (v >= 1) return "1.0000";
-  if (v < 0.00005) return "< 0.0001";
-  return v.toFixed(4);
-}
 
 function fmtPct(v: number): string {
   if (v >= 1) return "100.00%";

@@ -6,9 +6,7 @@ import { memo, useState } from "react";
 const ACCENT = "#5b46e5";
 const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
-const GREEN_LIGHT = "#ccfbf1";
 const RED = "#dc2626";
-const RED_LIGHT = "#fee2e2";
 const GRAY = "var(--bg-muted)";
 
 // ─── 辅助：将概率格式化成百分比（最多 2 位小数）────────────────
@@ -150,7 +148,6 @@ function BayesExplorerBase() {
   const pD = prevalence;          // P(D)
   const pDc = 1 - pD;             // P(D̄)
   const pPosDgD = sensitivity;    // P(+|D)
-  const pNegDgDc = specificity;   // P(-|D̄)
   const pPosDgDc = 1 - specificity; // P(+|D̄) = 假阳性率 FPR
 
   // 全概率公式: P(+) = P(+|D)P(D) + P(+|D̄)P(D̄)

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useId, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link2 } from "lucide-react";
 import type { CitationSource } from "@/lib/chat/citationCatalog";
@@ -42,11 +42,11 @@ export function InlineCiteMarker({
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0, width: 280 });
 
-  const syncPos = () => {
+  const syncPos = useCallback(() => {
     const rect = clusterRef.current?.getBoundingClientRect();
     if (!rect) return;
     setPos(popoverPosition(rect, estimatedPopoverHeight(sources.length)));
-  };
+  }, [sources.length]);
 
   useEffect(() => {
     if (!open) return;
@@ -58,7 +58,7 @@ export function InlineCiteMarker({
       window.removeEventListener("scroll", onScroll, true);
       window.removeEventListener("resize", onScroll);
     };
-  }, [open, sources.length]);
+  }, [open, syncPos]);
 
   if (!sources.length) return null;
 

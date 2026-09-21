@@ -68,8 +68,10 @@ function insertAfterHeadOpen(source: string, markup: string): string {
 export function prepareHtmlPreview(html: string, options: { network: boolean }): string {
   const policy = `<meta http-equiv="Content-Security-Policy" content="${htmlPreviewCsp(options.network)}">`;
   // 先装 shim 再插 CSP：这样 CSP meta 一定排在 shim 之前，策略先于任何脚本被解析到。
+  // 文档自带 CSP meta 也不能跳过我们的注入——多条 CSP 是取交集收紧的，
+  // 附件自带的宽松策略不能用来绕过「仅本地」的联网限制。
   const shimmed = injectOpaqueOriginStorageShim(html ?? "");
-  return shimmed.includes("Content-Security-Policy") ? shimmed : insertAfterHeadOpen(shimmed, policy);
+  return insertAfterHeadOpen(shimmed, policy);
 }
 
 export default function AttachmentPreviewViewer() {

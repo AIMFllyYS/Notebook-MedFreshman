@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import { ExternalLink, Loader2, RotateCw, ShieldAlert } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { safeHttpUrl } from "@/components/browser/safeUrl";
 
 export interface WebviewEl extends HTMLElement {
   loadURL(url: string): Promise<void>;
@@ -32,7 +33,10 @@ export default function WebviewSite({
 }) {
   const localRef = useRef<WebviewEl | null>(null);
   const t = useT();
-  const [initialUrl] = useState(() => url);
+  // webview 会真实加载 src/loadURL；只允许 http(s)，避免 localStorage/上游脏数据
+  // 把 file: / javascript: 之类的 scheme 送进 Electron webview。
+  const safeUrl = safeHttpUrl(url);
+  const [initialUrl] = useState(() => safeUrl);
   const lastLoaded = useRef(url);
   const firstNonce = useRef(nonce);
   const [loading, setLoading] = useState(true);
@@ -87,16 +91,16 @@ export default function WebviewSite({
       wv.removeEventListener("did-fail-load", onFail);
       wv.removeEventListener("render-process-gone", onGone);
     };
-  }, [initialUrl, onUrlChange]);
+  }, [initialUrl, onUrlChange, t]);
 
   useEffect(() => {
     const wv = localRef.current;
-    if (wv && url && url !== lastLoaded.current) {
-      lastLoaded.current = url;
+    if (wv && safeUrl && safeUrl !== lastLoaded.current) {
+      lastLoaded.current = safeUrl;
       setError(null);
-      wv.loadURL(url).catch(() => {});
+      wv.loadURL(safeUrl).catch(() => {});
     }
-  }, [url]);
+  }, [safeUrl]);
 
   useEffect(() => {
     if (nonce === firstNonce.current) return;
@@ -112,7 +116,7 @@ export default function WebviewSite({
           localRef.current = node;
           if (webviewRef) webviewRef.current = node;
         }}
-        src={initialUrl}
+        src={initialUrl || "about:blank"}
         partition="persist:browser"
         allowpopups="true"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", display: "flex", border: 0 }}
@@ -140,7 +144,7 @@ export default function WebviewSite({
               <RotateCw size={13} /> {t("common.retry")}
             </button>
             <a
-              href={url || undefined}
+              href={safeUrl || undefined}
               target="_blank"
               rel="noreferrer"
               className="press inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3.5 py-1.5 text-[12.5px] text-[var(--ink-soft)]"

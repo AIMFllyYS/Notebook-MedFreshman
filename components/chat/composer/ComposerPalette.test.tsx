@@ -45,7 +45,7 @@ function PaletteHost({ open = true }: { open?: boolean }) {
         label="对话命令"
         onClose={() => setVisible(false)}
       >
-        <button type="button" role="option">生成长文</button>
+        <button type="button" role="option" aria-selected={false}>生成长文</button>
       </ComposerPalette>
     </>
   );

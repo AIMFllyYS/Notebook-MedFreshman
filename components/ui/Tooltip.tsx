@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface TooltipProps {
@@ -23,7 +23,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
-  const updatePosition = () => {
+  const updatePosition = useCallback(() => {
     if (!triggerRef.current || !tooltipRef.current) return;
     const tr = triggerRef.current.getBoundingClientRect();
     const tt = tooltipRef.current.getBoundingClientRect();
@@ -54,7 +54,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     top = Math.max(PADDING, Math.min(top, window.innerHeight - tt.height - PADDING));
 
     setStyle({ top, left });
-  };
+  }, [placement, gap]);
 
   useLayoutEffect(() => {
     if (!isVisible) return;
@@ -66,7 +66,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       window.removeEventListener('resize', handle);
       window.removeEventListener('scroll', handle, true);
     };
-  }, [isVisible, placement, gap]);
+  }, [isVisible, updatePosition]);
 
   return (
     <div
