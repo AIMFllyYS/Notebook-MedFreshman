@@ -110,7 +110,7 @@ export const traceZh = {
     webSearch: {
       label: "搜索网页",
       settingsLabel: "联网搜索",
-      description: "需配置智谱搜索凭证；联网获取实时信息",
+      description: "三家源可选（Kimi / 智谱 / Perplexity）；联网获取实时信息",
     },
     imageSearch: {
       label: "搜索图片",

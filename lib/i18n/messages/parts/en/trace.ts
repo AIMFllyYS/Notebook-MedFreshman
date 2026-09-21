@@ -108,7 +108,7 @@ export const traceEn = {
     webSearch: {
       label: "Searched the web",
       settingsLabel: "Web search",
-      description: "Needs a Zhipu search credential; fetches real-time information online",
+      description: "Three providers (Kimi / Zhipu / Perplexity); fetches real-time information online",
     },
     imageSearch: {
       label: "Searched images",
