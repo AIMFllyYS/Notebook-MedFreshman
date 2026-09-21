@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X, ZoomIn, ZoomOut, RotateCcw, Download } from "lucide-react";
 import { useLightbox } from "@/lib/stores/lightbox";
+import { safeImageSrc } from "@/components/browser/safeUrl";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
 
@@ -163,7 +164,8 @@ export function ImageLightbox() {
       window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
     } catch {
       // 跨域拿不到 blob 时不要静默失败：退化成新标签页打开，用户还能自己右键保存。
-      window.open(src, "_blank", "noopener,noreferrer");
+      const safeSrc = safeImageSrc(src);
+      if (safeSrc) window.open(safeSrc, "_blank", "noopener,noreferrer");
     }
   }, [alt, src]);
 
@@ -188,6 +190,7 @@ export function ImageLightbox() {
       </button>
 
       <div className="image-lightbox-stage" onClick={(e) => e.stopPropagation()}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt={alt}

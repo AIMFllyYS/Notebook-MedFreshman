@@ -14,12 +14,6 @@ export interface UsageProgressBarProps {
   valueMax?: number;
 }
 
-export function usageProgressColor(ratio: number, invertRisk = false): string {
-  const boundedRatio = Math.min(1, Math.max(0, Number.isFinite(ratio) ? ratio : 0));
-  const riskRatio = invertRisk ? 1 - boundedRatio : boundedRatio;
-  return contextRingColor(contextRingLevel(riskRatio));
-}
-
 export function UsageProgressBar({
   ratio,
   ariaLabel,

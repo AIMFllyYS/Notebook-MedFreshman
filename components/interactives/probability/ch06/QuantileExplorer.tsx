@@ -34,18 +34,6 @@ function randUniform(): number {
   return Math.random();
 }
 
-/** 标准正态分布 CDF（Abramowitz & Stegun 近似，精度 ~1e-7） */
-function normCDF(x: number): number {
-  const t = 1 / (1 + 0.2316419 * Math.abs(x));
-  const poly =
-    t * (0.319381530 +
-      t * (-0.356563782 +
-        t * (1.781477937 +
-          t * (-1.821255978 +
-            t * 1.330274429))));
-  const cdf = 1 - (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x) * poly;
-  return x >= 0 ? cdf : 1 - cdf;
-}
 
 /** 标准正态分布分位数 — Beasley-Springer-Moro 近似 */
 function normQuantile(p: number): number {

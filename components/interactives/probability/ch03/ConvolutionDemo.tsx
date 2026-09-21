@@ -4,11 +4,8 @@ import { memo, useState } from "react";
 
 // ─── 设计常量 ──────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
 const TEAL = "#0d9488";
-const TEAL_LIGHT = "#ccfbf1";
 const ORANGE = "#ea580c";
-const ORANGE_LIGHT = "#ffedd5";
 const GRAY_LINE = "var(--line)";
 const GRAY_BG = "var(--bg-muted)";
 
@@ -113,8 +110,6 @@ const DIST_CONFIGS: Record<DistType, DistConfig> = {
   },
 };
 
-const DEFAULT_DIST: DistParams = { type: "normal", p1: 0, p2: 1 };
-
 // ─── 辅助：生成 N 个样本 ────────────────────────────────────────
 function sampleDist(d: DistParams, n: number): number[] {
   const cfg = DIST_CONFIGS[d.type];
@@ -198,7 +193,6 @@ function analyticConvPDF(
     if (z <= lo || z >= hi) return 0;
     // 分段计算三角/梯形卷积
     const t = z - lo;
-    const L = hi - lo;
     const m1 = b1 - a1;
     const m2 = b2 - a2;
     // max(0,t-m2) .. min(t, m1) 积分
@@ -552,7 +546,7 @@ function ConvolutionDemoBase() {
 
     // 运行在事件处理内部，符合合同（Math.random 仅在事件处理中使用）
     const xs = sampleDist(safeXDist, N_SAMPLES);
-    const zs = xs.map((x, i) => x + sampleDist(safeYDist, 1)[0]);
+    const zs = xs.map((x) => x + sampleDist(safeYDist, 1)[0]);
     // 重新计算，避免闭包问题
     const zSamples: number[] = [];
     for (let i = 0; i < N_SAMPLES; i++) {

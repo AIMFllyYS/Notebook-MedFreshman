@@ -10,13 +10,6 @@ import { translateNow, useT, type I18nKey, type Translate } from "@/lib/i18n";
  * 这里刻意不做「我是你的 X 助教 + 当前学习：Y」那一套：Agent 是通用型助手，
  * 开新对话时不预设主题，示例只是几条**能直接点走**的起手式，点下去就等于把这句话发出去。
  */
-export interface AgentWelcomeExample {
-  id: string;
-  /** 起手式文案的词典 key（点下去等于把这句话发出去）。 */
-  textKey: I18nKey;
-  icon: React.ReactNode;
-}
-
 /**
  * 纯函数也要能取词：默认按 store 的当前语言即时解析。
  * 组件内部一律显式传 `useT()` 的 t，换语言才能跟着重渲染。

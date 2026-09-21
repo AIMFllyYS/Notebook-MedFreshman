@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { compileMathExpr, sampleFunctionToPath, getCurveColor } from "./canvasUtils";
-import { diagnosePlotExpression } from "@/lib/canvas/plot";
+import { compileMathExpr, isSafeMathExpression, sampleFunctionToPath, getCurveColor } from "./canvasUtils";
+import { diagnosePlotExpression, normalizePlotExpression, type PlotDiagnostic } from "@/lib/canvas/plot";
 
 export interface FunctionPlotProps {
   /** Math expression in x, e.g. "sin(x)/x" */
@@ -40,10 +40,20 @@ export function FunctionPlot({
   strokeWidth = 2,
   samples = 500,
 }: FunctionPlotProps) {
-  const diagnostic = useMemo(
-    () => diagnosePlotExpression(fn, { xmin: xMin, xmax: xMax, samples }),
-    [fn, samples, xMax, xMin],
-  );
+  // diagnosePlotExpression 内部同样会编译表达式执行采样；白名单之外的内容
+  // （AI 输出 / 分享页笔记都可能注入 fn）必须在这里先拦住，不能让诊断路径绕过校验。
+  const diagnostic = useMemo<PlotDiagnostic>(() => {
+    const normalized = normalizePlotExpression(fn);
+    if (!isSafeMathExpression(normalized)) {
+      return {
+        ok: false,
+        reason: 'unsupported-syntax',
+        normalizedFn: normalized,
+        message: 'Function expression contains unsupported characters or names.',
+      };
+    }
+    return diagnosePlotExpression(fn, { xmin: xMin, xmax: xMax, samples });
+  }, [fn, samples, xMax, xMin]);
   const normalizedFn = diagnostic.normalizedFn;
   const compiledFn = useMemo(() => compileMathExpr(normalizedFn), [normalizedFn]);
 

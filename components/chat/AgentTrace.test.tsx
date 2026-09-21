@@ -15,7 +15,9 @@ const openMessageMenu = vi.hoisted(() => vi.fn());
 vi.mock('framer-motion', async () => {
   const React = await import('react');
   const motionElement = (tag: string) => React.forwardRef<HTMLElement, Record<string, unknown>>(function MotionMock(props, ref) {
-    const { initial: _initial, animate: _animate, transition, ...rest } = props;
+    const { initial, animate, transition, ...rest } = props;
+    void initial;
+    void animate;
     const repeats = (transition as { repeat?: number } | undefined)?.repeat === Infinity;
     return React.createElement(tag, { ...rest, ref, 'data-motion-repeats': repeats ? 'true' : undefined });
   });
@@ -49,7 +51,10 @@ vi.mock('@/components/chat/FollowUpQuestions', () => ({
   FollowUpQuestions: ({ questions, onSelect }: { questions: string[]; onSelect: (q: string) => void }) => <div data-testid="followups">{questions.map((q) => <button key={q} onClick={() => onSelect(q)}>{q}</button>)}</div>,
 }));
 vi.mock('@/components/chat/ImageStrip', () => ({ ImageStrip: ({ children }: { children: React.ReactNode }) => <div>{children}</div> }));
-vi.mock('@/components/chat/ChatImage', () => ({ ChatImage: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} /> }));
+vi.mock('@/components/chat/ChatImage', () => ({ ChatImage: ({ src, alt }: { src: string; alt: string }) => (
+  // eslint-disable-next-line @next/next/no-img-element
+  <img src={src} alt={alt} />
+) }));
 
 const tool: ChatMessagePart = { type: 'tool-searchNotes', toolCallId: 'notes', state: 'output-available', input: { query: '贝叶斯' }, output: { text: '检索完整返回', hits: [{ title: '贝叶斯公式', path: 'probability/1.4', snippet: '公式讲解' }] } };
 const pendingTool: ChatMessagePart = { type: 'tool-getSection', toolCallId: 'section', state: 'input-available', input: { path: 'probability/1.4' } };

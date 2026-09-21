@@ -11,5 +11,5 @@ import { ContentImage } from "@/components/shared/ContentImage";
 export const noteComponents = {
   ...directiveComponents,
   img: ContentImage,
-  pre: ({ node: _node, ...props }: HTMLAttributes<HTMLPreElement> & ExtraProps) => <CodeBlock {...props} />,
+  pre: ({ node: _node, ...props }: HTMLAttributes<HTMLPreElement> & ExtraProps) => (void _node, <CodeBlock {...props} />),
 } as unknown as Components;

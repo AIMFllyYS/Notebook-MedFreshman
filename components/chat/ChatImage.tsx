@@ -6,7 +6,7 @@ import { useLightbox } from "@/lib/stores/lightbox";
 import { useShareImagePlaceholder } from "@/components/share/ShareViewContext";
 import { useT } from "@/lib/i18n";
 
-export function ChatImage({ src, alt, title, ...rest }: ImgHTMLAttributes<HTMLImageElement>) {
+export function ChatImage({ src, alt, title }: ImgHTMLAttributes<HTMLImageElement>) {
   const t = useT();
   const [errored, setErrored] = useState(false);
   const openLightbox = useLightbox((s) => s.open);
@@ -42,6 +42,7 @@ export function ChatImage({ src, alt, title, ...rest }: ImgHTMLAttributes<HTMLIm
   };
 
   const imgEl = (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={resolvedSrc}
       alt={alt ?? ""}

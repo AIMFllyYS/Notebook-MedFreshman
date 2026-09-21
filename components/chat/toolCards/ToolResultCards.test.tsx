@@ -7,7 +7,10 @@ import type { ChatMessage, ChatMessagePart } from "@/lib/types/chat";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock("@/components/chat/ChatImage", () => ({
-  ChatImage: ({ alt }: { alt: string }) => <img alt={alt} />,
+  ChatImage: ({ alt }: { alt: string }) => (
+    // eslint-disable-next-line @next/next/no-img-element
+  <img alt={alt} />
+  ),
 }));
 
 afterEach(() => {

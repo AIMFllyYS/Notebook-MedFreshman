@@ -30,7 +30,7 @@ export default function LazyVisible({ children, rootMargin = "200px", placeholde
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [rootMargin]);
 
   return (
     <div ref={ref}>
