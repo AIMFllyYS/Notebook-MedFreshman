@@ -17,7 +17,7 @@ import { isSoftLimitReached } from "@/lib/context/estimateFullContext";
 import type { ChatContext, ChatMessage, ChatOptions } from "@/lib/types/chat";
 import { ENV_MODEL_PRO, ENV_MODEL_FLASH, resolveProvider } from "@/lib/ai/provider";
 import { AUTO_MODEL_ID, getModelInfoWithCustom } from "@/lib/ai/models";
-import { selectAutomaticModels } from "@/lib/ai/autoRoute";
+import { decideAutomaticModels } from "@/lib/ai/autoRoute";
 import { estimateTokens } from "@/lib/context/estimateTokens";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
@@ -33,6 +33,8 @@ import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/l
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 import { runWithCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
+import { carryNotice, summarizeCarry } from "@/lib/project/catalog";
+import { shouldAutoEnableSearch } from "@/lib/ai/search/autoEnable";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -121,13 +123,18 @@ export async function POST(req: NextRequest) {
   let previewProvider;
   try {
     if (effectiveModelId === AUTO_MODEL_ID) {
-      automaticModels = selectAutomaticModels({
+      // 规则优先、快速模型兜底：带图 / 开思考 / 长文 / 硬任务（做题出题讲解检索…）由规则直接定，
+      // 短而含糊的问题才多花一次 ~1.2s 的分类调用（七牛云 doubao，关思考 + temperature 0）。
+      const decision = await decideAutomaticModels({
         hasImages: hasFileParts(body.messages),
         estimatedTokens: estimateTokens(JSON.stringify(body.messages)) + estimateTokens(body.globalContext) + 16_000,
         text: lastUserText(body.messages), thinking: body.enableThinking,
       });
+      automaticModels = decision.models;
       if (!automaticModels.length) return Response.json({ error: '当前没有能处理此请求的自动模型，请稍后重试或手动选择模型。' }, { status: 503 });
       effectiveModelId = automaticModels[0];
+      // 内部诊断：只进服务端日志，用户界面回显的仍是 "auto"。
+      console.info("[auto-route]", decision.source, decision.note, "->", effectiveModelId);
     }
     previewProvider = resolveProvider(effectiveModelId, effectiveCustom);
   } catch (error) {
@@ -138,9 +145,11 @@ export async function POST(req: NextRequest) {
   const gate = await assertQuotaAvailable({ userId, pool: mainPool });
   if (!gate.ok) return quotaRejectedJson(gate);
 
+  // 服务端兜底：老客户端没做"需要搜索就联网"的判定时，这里补上（并告知用户）。
+  const autoSearch = !body.enableSearch && shouldAutoEnableSearch(lastUserText(body.messages));
   const options: ChatOptions = {
     enableThinking: body.enableThinking,
-    enableSearch: body.enableSearch,
+    enableSearch: body.enableSearch || autoSearch,
     thinkingEffort: body.thinkingEffort,
     contextMode: body.contextMode,
   };
@@ -185,6 +194,23 @@ export async function POST(req: NextRequest) {
       }
       if (hasFileParts(body.messages) && modelInfo && !modelInfo.vision) {
         throw new Error(`当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo V2.5）。`);
+      }
+
+      // 自动联网的透明提示：本轮为什么能用搜索，用户有权知道（搜索是要花钱的）。
+      if (autoSearch) {
+        writer.write({
+          type: "data-info",
+          data: { message: "这个问题依赖外部实时信息，已自动为本轮打开联网搜索。" },
+          transient: true,
+        });
+      }
+
+      // 项目文件降级提示：项目一大，客户端就从「全带」翻成「只带勾选/本会话读过的片」，
+      // 其余正文这轮模型读不到。这个翻转以前是静默的——用户只会看到 Agent 回一句
+      // 「这一轮没有携带切片正文」。改成在回答开始前就告诉用户该怎么补。
+      const carryMessage = carryNotice(summarizeCarry(body.projectFiles, body.projectSlices));
+      if (carryMessage) {
+        writer.write({ type: "data-info", data: { message: carryMessage }, transient: true });
       }
 
       // 参考材料 + 软上限。两端 80% 用同一套全量估算（system + 工具 schema + 参考材料 + 对话历史）。
@@ -383,5 +409,8 @@ export async function POST(req: NextRequest) {
         "X-Accel-Buffering": "no",
       },
     }),
+    // 首 chunk 之后的静默期（深度思考 / 长工具链）同样保活：客户端 stall watchdog 靠这些
+    // 注释续期，否则 60s 无字节活动会把一个还活着的请求直接 abort 掉。
+    { keepaliveWhileIdle: true },
   );
 }

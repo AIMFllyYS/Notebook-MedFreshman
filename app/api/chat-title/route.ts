@@ -2,9 +2,11 @@ import type { NextRequest } from "next/server";
 import { generateText } from "ai";
 import {
   DEFAULT_SESSION_TITLE_MODEL,
+  SESSION_TITLE_SYSTEM_PROMPT,
   buildFallbackSessionTitle,
-  sanitizeSessionTitle,
+  sanitizeGeneratedTitle,
 } from "@/lib/chat/sessionTitle";
+import { callFastModel, fastModelConfig } from "@/lib/ai/fastModel";
 import { resolveLanguageModel, UPSTREAM_PROVIDER_NAME } from "@/lib/ai/sdk/languageModel";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
 import { settleUsage } from "@/lib/billing/usageLedger";
@@ -48,13 +50,53 @@ export async function POST(req: NextRequest) {
     return Response.json({ title: fallback, generated: false, model: provider.model });
   }
 
+  // 首选：极轻量快速模型（七牛云 doubao，关思考 + temperature 0，实测 ~1.2s）。
+  // 命名是很简单的任务，没必要让主力模型来干，也不该让它带上思考。
+  const fast = fastModelConfig();
+  if (fast.enabled) {
+    const result = await callFastModel({
+      system: SESSION_TITLE_SYSTEM_PROMPT,
+      user: `请为这次 AI 对话生成标题：\n${content.slice(0, 1800)}`,
+      maxTokens: 48,
+      temperature: 0.3,
+    });
+    if (result?.text) {
+      // 计费是尽力而为：单价表里没有这个内部模型时也不能让标题失败。
+      try {
+        await settleUsage({
+          headers: req.headers,
+          rawUsage: result.usage
+            ? {
+                inputTokens: result.usage.inputTokens,
+                outputTokens: result.usage.outputTokens,
+                totalTokens: result.usage.totalTokens,
+              }
+            : undefined,
+          route: "/api/chat-title",
+          kind: "llm",
+          selectedModelId: result.model,
+          actualModelId: result.model,
+          pool: "platform",
+          meta: { source: "chat-title" },
+        });
+      } catch {
+        // 忽略：标题已生成，记账问题不该影响用户。
+      }
+      return Response.json({
+        title: sanitizeGeneratedTitle(result.text, fallback),
+        generated: true,
+        model: result.model,
+      });
+    }
+  }
+
   try {
     // Title credentials/model deliberately have their own precedence. Resolve
     // this explicit endpoint as custom so unknown title models never become Flash.
     const resolved = resolveLanguageModel("custom", provider);
     const result = await generateText({
       model: resolved.model,
-      instructions: "你是学习软件的会话标题生成器。只输出一个中文纯文本标题，约20字，不要引号、编号、解释、换行或 Markdown。",
+      instructions: SESSION_TITLE_SYSTEM_PROMPT,
       prompt: `请为这次 AI 对话生成标题：\n${content.slice(0, 1800)}`,
       temperature: 0.2,
       maxOutputTokens: 48,
@@ -74,7 +116,7 @@ export async function POST(req: NextRequest) {
       meta: { source: "chat-title" },
     });
     return Response.json({
-      title: sanitizeSessionTitle(result.text, fallback),
+      title: sanitizeGeneratedTitle(result.text, fallback),
       generated: true,
       model: provider.model,
     });

@@ -139,6 +139,7 @@ export async function runMemoryCommit(input: RunMemoryCommitInput): Promise<Chat
     onStall: () => {
       abortController.abort();
     },
+    maxWaitMs: settings.maxWaitMs,
   });
 
   return latest;

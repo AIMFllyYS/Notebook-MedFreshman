@@ -1,12 +1,25 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { classifySendError } from "./classifySendError.ts";
+import { classifySendError, STALL_IDLE_MESSAGE, stallMaxWaitMessage } from "./classifySendError.ts";
 
 test("classifySendError：超时优先于其它错误", () => {
   assert.equal(
-    classifySendError(new Error("ignored"), { stalled: true, aborted: true }),
-    "连接超过 60 秒没有响应，请重试。",
+    classifySendError(new Error("ignored"), { stalled: "idle", aborted: true }),
+    STALL_IDLE_MESSAGE,
   );
+});
+
+test("classifySendError：「最长等待时间」到顶给的是可操作文案，不是连接错误", () => {
+  const message = classifySendError(new Error("ignored"), {
+    stalled: "max-wait",
+    aborted: true,
+    maxWaitMs: 300_000,
+  });
+  assert.equal(message, stallMaxWaitMessage(300_000));
+  assert.match(message ?? "", /300 秒/);
+  assert.match(message ?? "", /最长等待时间/);
+  // 不能被误认成"连接断了"或静默超时。
+  assert.doesNotMatch(message ?? "", /没有响应/);
 });
 
 test("classifySendError：用户取消或 AbortError 不展示", () => {

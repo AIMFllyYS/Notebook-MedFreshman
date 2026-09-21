@@ -4,6 +4,8 @@ import { useState } from "react";
 import { AgentImageIcon, AgentFileIcon, AgentCheckIcon, AgentCloseIcon } from "@/components/icons/AgentIcons";
 import { useImageGen } from "@/lib/hooks/useImageGen";
 import { MessageContent } from "@/components/chat/MessageContent";
+import ImageGenProgressBar from "@/components/chat/ImageGenProgressBar";
+import { useImageGenProgress } from "@/lib/hooks/useImageGenProgress";
 import { useT } from "@/lib/i18n";
 
 /**
@@ -41,6 +43,7 @@ export default function ImageGenCard({
   const status = session?.status ?? "idle";
   const isApproved = status !== "idle";
   const hasImages = session?.images && session.images.length > 0;
+  const progress = useImageGenProgress(session);
 
   const onApprove = () => {
     setCancelled(false);
@@ -126,6 +129,16 @@ export default function ImageGenCard({
             <AgentFileIcon size={11} className="inline align-text-bottom" /> {t("window.imageGen.card.promptPrefix")}
           </span>
           <MessageContent content={effectivePrompt} enableVisualizations={false} preserveLineBreaks />
+        </div>
+      )}
+
+      {/* 生成中：卡片上也能看到进度，不必打开弹窗 */}
+      {status === "loading" && (
+        <div
+          className="px-3 pb-1 pt-2"
+          style={{ borderTop: "1px solid color-mix(in srgb, var(--md-sys-color-tertiary) 18%, transparent)" }}
+        >
+          <ImageGenProgressBar progress={progress} compact />
         </div>
       )}
 

@@ -1,9 +1,10 @@
 // 多提供商精选模型注册表 —— 供 AI 对话的模型选择菜单。
-// 主力对话：自有中转（relay.protocom.org）；MiMo 同样走自有中转；
-// 硅基流动仅保留生图；智谱仅保留向量/重排/联网搜索。
+// 主力对话：七牛云（api.qnaigc.com，延迟最低）→ 自有中转（relay.protocom.org）容灾；
+// MiMo 同样走自有中转；硅基流动负责廉价生图与向量/重排；xhuoai 提供高价慢速生图；
+// 智谱仅保留向量/重排/联网搜索。
 // model id（注册 id）与上游 apiModelId 分离；endpoints 链支持容灾降级。
 
-export type ProviderKind = "siliconflow" | "mimo" | "zhipu" | "relay";
+export type ProviderKind = "siliconflow" | "mimo" | "zhipu" | "relay" | "qiniu" | "xhuoai";
 
 /** 对话输入可选的思考强度档位（UI 值）。各模型的实际上游取值见 thinkingEffortMap。 */
 export type ThinkingEffort = "low" | "medium" | "high" | "max";
@@ -41,7 +42,14 @@ export type ThinkingRequestStyle =
   | "anthropic-thinking"
   | "gemini-thinking-level"
   | "deepseek-thinking"
-  | "mimo-thinking";
+  | "mimo-thinking"
+  /**
+   * 七牛云方言：thinking type = enabled / disabled 二选一。
+   * 为什么需要单独一档：这些模型**默认就思考**，不传参等于开着；要让"关思考"真正生效，
+   * 必须在**没请求思考时也显式下发 disabled**（见 languageModel.ts 的 prepareCall）。
+   * 对比：siliconflow 档发的是 enable_thinking，七牛云不认（实测 DS 会返回空正文）。
+   */
+  | "qiniu-toggle";
 
 export interface ModelEndpoint {
   provider: ProviderKind;
@@ -94,13 +102,22 @@ export interface ModelInfo {
   timeoutMs?: number;
   /** 模型类型：文本对话 or 生图。默认 'text'。 */
   type?: "text" | "image";
+  /** 生图 API 格式；内置生图模型的显式声明（缺省按 provider 兜底为 siliconflow）。 */
+  imageApiStyle?: "openai" | "siliconflow";
   /** 生图模型参数（仅 type='image' 时有效）。 */
   imageParams?: {
     /** 支持的图片尺寸预设。 */
     sizes?: string[];
     /** 最大生成数量。 */
     maxCount?: number;
+    /**
+     * 上游典型耗时（毫秒）中位估计：只用于前端进度条估算。
+     * 慢速中转站 100–400s，廉价通道 10–40s，本地亚秒级给个兜底下限。
+     */
+    expectedMs?: number;
   };
+  /** 生图请求上游超时（毫秒）；缺省 180s。慢速中转站要单独放宽。 */
+  imageTimeoutMs?: number;
   /**
    * 厂商训练声明。有值时必须在模型菜单/设置里明示，不能只藏在 hint。
    * Muse Spark contributor SKU：对话可能用于厂商训练。
@@ -151,6 +168,9 @@ export const LEGACY_REGISTRY_ALIASES: Record<string, string> = {
   "zai-org/GLM-Z1-AirX": "z-ai/glm-5.3-flash",
   "zai-org/GLM-4.7-FlashX": "z-ai/glm-5.3-flash",
   "inclusionai/ling-3.0-flash-sante:free": "inclusionai/ling-3.0-flash-sante:free",
+  // 免费档换血：LongCat 从菜单/自动路由移除，旧设置平滑迁移到 Laguna S 2.1。
+  "meituan/LongCat-2.0:free": "poolside/laguna-s-2.1-free",
+  "meituan/LongCat-2.0": "poolside/laguna-s-2.1-free",
 };
 
 export function normalizeRegistryId(id: string): string {
@@ -159,6 +179,10 @@ export function normalizeRegistryId(id: string): string {
 
 const SF = "siliconflow" as const;
 const RELAY = "relay" as const;
+/** 七牛云（OpenAI 兼容；主力文本供应商，延迟最低）。 */
+const QINIU = "qiniu" as const;
+/** xhuoai 中转站（OpenAI 兼容；慢速高价生图）。 */
+const XHUOAI = "xhuoai" as const;
 
 function ep(provider: ProviderKind, apiModelId: string): ModelEndpoint {
   return { provider, apiModelId };
@@ -190,15 +214,18 @@ export const MODELS: ModelInfo[] = [
     label: "DeepSeek V4.1 Flash",
     group: "快速模型",
     thinking: true,
-    thinkingRequired: true,
+    // 七牛云支持 thinking 真正关闭（实测 disabled 后 9 token 出结果），所以不再锁死思考。
+    thinkingRequired: false,
     thinkingLevels: ["low", "medium", "high"],
     defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "openai-reasoning-effort",
+    // 七牛云方言（thinking 二态开关，可真正关闭）；中转站那一跳仍由 relay 覆盖为 reasoning_effort。
+    thinkingRequestStyle: "qiniu-toggle",
     tools: true,
     vision: true,
     contextK: 1000,
-    hint: "全局默认 · 视觉 · 1M",
-    endpoints: [ep(RELAY, "deepseek/deepseek-v4.1-flash")],
+    hint: "全局默认 · 视觉 · 1M · 可关思考",
+    // 七牛云第一跳（延迟最低），Protocom 中转容灾。七牛云支持 thinking 真正关闭。
+    endpoints: [ep(QINIU, "deepseek/deepseek-v4.1-flash"), ep(RELAY, "deepseek/deepseek-v4.1-flash")],
     icon: "deepseek",
     pricing: { input: 2.1, cachedInput: 0.042, output: 8.4 },
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
@@ -208,15 +235,17 @@ export const MODELS: ModelInfo[] = [
     label: "Qwen3.7 Flash",
     group: "快速模型",
     thinking: true,
-    thinkingRequired: true,
+    // 同 DeepSeek：七牛云支持真正关掉思考。
+    thinkingRequired: false,
     thinkingLevels: ["low", "medium", "high", "max"],
     defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "openai-reasoning-effort",
+    // 七牛云方言：thinking 二态开关（可真正关掉）；中转站仍走 reasoning_effort。
+    thinkingRequestStyle: "qiniu-toggle",
     tools: true,
     vision: true,
     contextK: 1000,
-    hint: "视觉 · 1M · 快速",
-    endpoints: [ep(RELAY, "Qwen/Qwen3.7-Flash")],
+    hint: "视觉 · 1M · 快速 · 可关思考",
+    endpoints: [ep(QINIU, "qwen/qwen3.7-flash"), ep(RELAY, "Qwen/Qwen3.7-Flash")],
     icon: "qwen",
     pricing: { input: 1.2, cachedInput: 0.24, output: 4.8 },
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
@@ -282,14 +311,21 @@ export const MODELS: ModelInfo[] = [
     thinking: true,
     thinkingRequired: true,
     thinkingLevels: ["low", "high", "max"],
-    thinkingEffortMap: { low: "low", medium: "high", high: "high", max: "max" },
-    defaultThinkingEffort: "max",
+    thinkingEffortMap: { low: "low", medium: "low", high: "high", max: "max" },
+    // 默认低档：七牛云把它作为主力模型之一，低档延迟显著更低（实测 low 几乎不出思考正文）。
+    // 注意七牛云该模型「始终思考、不可关闭」，所以 thinkingRequired 保持 true。
+    defaultThinkingEffort: "low",
     thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     vision: true,
     contextK: 1000,
     hint: "1M · 思考不可关",
-    endpoints: [ep(RELAY, "z-ai/glm-5.3-flash"), ep(RELAY, "mimo-v2.5")],
+    // 第一跳七牛云，第二跳 Protocom 同模型，第三跳 MiMo（换模型兜底）。
+    endpoints: [
+      ep(QINIU, "z-ai/glm-5.3-flash"),
+      ep(RELAY, "z-ai/glm-5.3-flash"),
+      ep(RELAY, "mimo-v2.5"),
+    ],
     icon: "zhipu",
     pricing: { input: 0.8, cachedInput: 0.23, output: 2.8 },
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
@@ -334,17 +370,17 @@ export const MODELS: ModelInfo[] = [
   },
   // ── 免费模型 ──────────────────────────
   {
-    id: "meituan/LongCat-2.0:free",
-    label: "LongCat 2.0",
+    id: "poolside/laguna-s-2.1-free",
+    label: "Laguna S 2.1",
     group: "免费模型",
     thinking: true,
     thinkingLevels: ["low", "medium", "high"],
     defaultThinkingEffort: "medium",
     thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
-    contextK: 1050,
-    hint: "免费 · 1.05M",
-    endpoints: [ep(RELAY, "meituan/LongCat-2.0:free")],
+    contextK: 256,
+    hint: "免费 · 256K",
+    endpoints: [ep(RELAY, "poolside/laguna-s-2.1-free")],
     pricing: { input: 0, cachedInput: 0, output: 0 },
   },
   {
@@ -398,6 +434,27 @@ export const MODELS: ModelInfo[] = [
     timeoutMs: 120_000,
   },
   // ── 生图模型 ──────────────────────────
+  // 默认生图模型（settings.defaultImageModelId 的初始值）：廉价快速通道，10–40s 出图。
+  {
+    id: "baidu/ERNIE-Image-Turbo",
+    label: "ERNIE Image Turbo",
+    group: "生图模型",
+    type: "image",
+    thinking: false,
+    thinkingRequestStyle: "none",
+    tools: false,
+    contextK: 0,
+    hint: "默认生图 · ¥0.50/张 · 10–40s · 中文友好",
+    endpoints: sf("baidu/ERNIE-Image-Turbo"),
+    pricing: { input: 0, cachedInput: 0, output: 0.5 },
+    imageApiStyle: "siliconflow",
+    imageParams: {
+      sizes: ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"],
+      maxCount: 4,
+      expectedMs: 25_000,
+    },
+    imageTimeoutMs: 90_000,
+  },
   {
     id: "Tongyi-MAI/Z-Image-Turbo",
     label: "Z-Image Turbo",
@@ -411,9 +468,67 @@ export const MODELS: ModelInfo[] = [
     endpoints: sf("Tongyi-MAI/Z-Image-Turbo"),
     icon: "tongyi",
     pricing: { input: 0, cachedInput: 0, output: 0.1 },
-    imageParams: { sizes: ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"], maxCount: 4 },
+    imageApiStyle: "siliconflow",
+    imageParams: {
+      sizes: ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"],
+      maxCount: 4,
+      expectedMs: 6_000,
+    },
+    imageTimeoutMs: 90_000,
+  },
+  // xhuoai 中转站：效果好但慢（实测 100–400s）、单张 ¥1。前端进度条按 expectedMs 估算。
+  {
+    id: "nano-banana",
+    label: "Nano Banana",
+    group: "生图模型",
+    type: "image",
+    thinking: false,
+    thinkingRequestStyle: "none",
+    tools: false,
+    contextK: 0,
+    hint: "Gemini 生图 · ¥1.00/张 · 约 100–400s",
+    endpoints: [ep(XHUOAI, "nano-banana")],
+    pricing: { input: 0, cachedInput: 0, output: 1 },
+    imageApiStyle: "openai",
+    imageParams: { sizes: ["1024x1024", "960x1280", "1280x960"], maxCount: 4, expectedMs: 120_000 },
+    imageTimeoutMs: 420_000,
+  },
+  {
+    id: "gpt-image-2.5",
+    label: "GPT Image 2.5",
+    group: "生图模型",
+    type: "image",
+    thinking: false,
+    thinkingRequestStyle: "none",
+    tools: false,
+    contextK: 0,
+    hint: "OpenAI 生图 · ¥1.00/张 · 约 100–400s",
+    endpoints: [ep(XHUOAI, "gpt-image-2.5")],
+    pricing: { input: 0, cachedInput: 0, output: 1 },
+    imageApiStyle: "openai",
+    imageParams: { sizes: ["1024x1024", "1536x1024", "1024x1536"], maxCount: 4, expectedMs: 150_000 },
+    imageTimeoutMs: 420_000,
+  },
+  {
+    id: "gpt-image-2",
+    label: "GPT Image 2",
+    group: "生图模型",
+    type: "image",
+    thinking: false,
+    thinkingRequestStyle: "none",
+    tools: false,
+    contextK: 0,
+    hint: "OpenAI 生图 · ¥1.00/张 · 约 100–400s",
+    endpoints: [ep(XHUOAI, "gpt-image-2")],
+    pricing: { input: 0, cachedInput: 0, output: 1 },
+    imageApiStyle: "openai",
+    imageParams: { sizes: ["1024x1024", "1536x1024", "1024x1536"], maxCount: 4, expectedMs: 150_000 },
+    imageTimeoutMs: 420_000,
   },
 ];
+
+/** 默认生图模型：廉价快速通道（未显式选择时使用）。 */
+export const DEFAULT_IMAGE_MODEL_ID = "baidu/ERNIE-Image-Turbo";
 
 export const DEFAULT_MODEL_ID = "deepseek/deepseek-v4.1-flash";
 

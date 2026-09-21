@@ -15,6 +15,8 @@ import {
 } from "@/lib/ai/capabilityEndpoints";
 import { DEFAULT_SELECTION_ASSISTANT_ACTIONS, normalizeSelectionAssistantActions, type SelectionAssistantActions } from "@/lib/notes/selectionAssistant";
 import { clampMaxToolRounds, MAX_TOOL_STEPS } from "@/lib/ai/agent/toolRounds";
+import { DEFAULT_IMAGE_MODEL_ID } from "@/lib/ai/models";
+import { clampMaxWaitMs, DEFAULT_MAX_WAIT_MS } from "@/lib/chat/createStallWatchdog";
 // 只依赖 types（不依赖 lib/i18n 的入口），避免 store ↔ i18n 形成运行时循环导入。
 import { DEFAULT_LOCALE, normalizeLocale, type Locale } from "@/lib/i18n/types";
 import {
@@ -93,6 +95,12 @@ export interface SettingsState {
   /** Agent 单轮最大工具调用轮数（接到 ToolLoop stopWhen）。 */
   maxToolRounds: number;
   setMaxToolRounds: (v: number) => void;
+  /**
+   * 一次回答的最长等待时间（毫秒，客户端看门狗总闸）。
+   * 深度思考 + 多步工具超过它会被本地停止；用户可在设置里提到 600s。
+   */
+  maxWaitMs: number;
+  setMaxWaitMs: (v: number) => void;
 
   /** 是否开启本站划词助手。 */
   selectionAssistantEnabled: boolean;
@@ -189,6 +197,7 @@ type Persisted = Pick<
   | "floatingChatModelId"
   | "quizModelId"
   | "maxToolRounds"
+  | "maxWaitMs"
   | "selectionAssistantEnabled"
   | "selectionAssistantActions"
   | "blockForeignSelectionAssistants"
@@ -212,7 +221,8 @@ type Persisted = Pick<
 const DEFAULTS: Persisted = {
   selectedModelId: DEFAULT_MODEL_ID,
   customApiGroups: [],
-  defaultImageModelId: null,
+  // 默认走廉价快速通道（10–40s 出图）；慢速高价模型由用户显式选择。
+  defaultImageModelId: DEFAULT_IMAGE_MODEL_ID,
   imageModeTextModel: "mimo-v2.5",
   imageModeTextModelFallback: "mimo-v2.5",
   capabilityEndpoints: EMPTY_CAPABILITY_ENDPOINTS,
@@ -222,6 +232,7 @@ const DEFAULTS: Persisted = {
   floatingChatModelId: "Qwen/Qwen3.8-27B",
   quizModelId: DEFAULT_MODEL_ID,
   maxToolRounds: MAX_TOOL_STEPS,
+  maxWaitMs: DEFAULT_MAX_WAIT_MS,
   selectionAssistantEnabled: true,
   selectionAssistantActions: DEFAULT_SELECTION_ASSISTANT_ACTIONS,
   blockForeignSelectionAssistants: false,
@@ -321,6 +332,7 @@ function load(): Persisted & { settingsLoadWarning?: string | null } {
         parsed.customApiGroups,
       );
       parsed.maxToolRounds = clampMaxToolRounds(parsed.maxToolRounds);
+      parsed.maxWaitMs = clampMaxWaitMs(parsed.maxWaitMs);
       parsed.selectionAssistantEnabled = parsed.selectionAssistantEnabled !== false;
       parsed.selectionAssistantActions = normalizeSelectionAssistantActions(parsed.selectionAssistantActions);
       parsed.blockForeignSelectionAssistants = parsed.blockForeignSelectionAssistants === true;
@@ -415,6 +427,7 @@ function persist(get: () => SettingsState) {
     floatingChatModelId: s.floatingChatModelId,
     quizModelId: s.quizModelId,
     maxToolRounds: clampMaxToolRounds(s.maxToolRounds),
+    maxWaitMs: clampMaxWaitMs(s.maxWaitMs),
     selectionAssistantEnabled: s.selectionAssistantEnabled !== false,
     selectionAssistantActions: normalizeSelectionAssistantActions(s.selectionAssistantActions),
     blockForeignSelectionAssistants: s.blockForeignSelectionAssistants === true,
@@ -722,6 +735,10 @@ export const useSettings = create<SettingsState>((rawSet, get) => {
   },
   setMaxToolRounds: (v) => {
     set({ maxToolRounds: clampMaxToolRounds(v) });
+    persist(get);
+  },
+  setMaxWaitMs: (v) => {
+    set({ maxWaitMs: clampMaxWaitMs(v) });
     persist(get);
   },
   setSelectionAssistantEnabled: (v) => {

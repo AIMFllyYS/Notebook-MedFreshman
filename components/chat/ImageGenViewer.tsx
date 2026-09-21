@@ -9,7 +9,9 @@ import { useLightbox } from "@/lib/stores/lightbox";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { formatImageGenError, imageGenErrorHeading } from "@/lib/ai/imageGenError";
 import { capabilityNeedsForImageGen, selectCapabilityEndpointsForRequest } from "@/lib/ai/capabilityEndpoints";
-import { selectCustomApiGroupsForRequest } from "@/lib/ai/models";
+import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from "@/lib/ai/models";
+import ImageGenProgressBar from "@/components/chat/ImageGenProgressBar";
+import { useImageGenProgress } from "@/lib/hooks/useImageGenProgress";
 import { useT } from "@/lib/i18n";
 
 /** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */
@@ -35,10 +37,13 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
       const cur = useImageGen.getState().sessions[sid];
       if (!cur) return;
       requestStartedRef.current = true;
-      startLoading(sid);
+      // 先读设置：进度条要用"这次到底会落到哪个模型"的典型耗时来估算。
+      const settings = useSettings.getState();
+      const progressModelId = cur.modelId || settings.defaultImageModelId || settings.selectedModelId;
+      const expectedMs = getModelInfoWithCustom(progressModelId, settings.customApiGroups)?.imageParams?.expectedMs;
+      startLoading(sid, expectedMs);
 
       try {
-        const settings = useSettings.getState();
         const imageModelId = cur.modelId || settings.selectedModelId;
         const res = await fetch("/api/image-gen", {
           method: "POST",
@@ -104,6 +109,9 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   }, [session, sessionId, triggerGenerate]);
 
   const handleCloseViewer = useCallback(() => closeViewer(sessionId), [closeViewer, sessionId]);
+
+  // Hook 必须在任何早返回之前调用（session 为 null 时它自己返回零进度）。
+  const progress = useImageGenProgress(session);
 
   if (!session) return null;
 
@@ -177,7 +185,15 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
         </div>
 
         <div className="flex-1 min-h-0 overflow-auto">
-          {isLoading && <WatercolorLoading count={placeholderCount} />}
+          {isLoading && (
+            <div className="flex flex-col">
+              {/* 进度条放在占位图之上：估算百分比 + 已等待秒数，卡到 99% 也不冲到底。 */}
+              <div className="px-4 pt-4">
+                <ImageGenProgressBar progress={progress} />
+              </div>
+              <WatercolorLoading count={placeholderCount} />
+            </div>
+          )}
 
           {isError && (
             <div className="flex h-full flex-col items-center justify-center gap-3 px-6 py-8 text-center">

@@ -28,6 +28,12 @@ export interface SessionMeta {
   archived?: boolean;
   /** 用户自建文件夹；缺省表示未分组。 */
   folderId?: string | null;
+  /**
+   * 本会话已经读进过上下文的项目切片 id（去重 + FIFO，上限见 project/sessionSlices.ts）。
+   * 项目一大，携带计划就从「全带」翻成「只带勾选的」；记住这些 id 能让模型读过的东西
+   * 在后续轮次继续可读，而不是下一轮就报「这一轮没有携带切片正文」。
+   */
+  readSliceIds?: string[];
 }
 
 /** 系统项目的来源标记：笔记窗内 Agent 会话 / 划词助手会话。 */

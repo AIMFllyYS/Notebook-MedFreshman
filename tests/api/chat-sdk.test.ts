@@ -32,7 +32,8 @@ test('chat SDK: automatic fallback stays within fast/free, with no auxiliary pre
     return openAiStep(undefined, '一个完整回答。');
   });
   const { message, chunks } = await chat({ modelId: 'auto', customApiGroups: [], enableThinking: false });
-  assert.deepEqual(ids, ['meituan/LongCat-2.0:free', 'inclusionai/ling-3.0-flash-sante:free']);
+  // 免费池换血：LongCat → Laguna（顺序仍是免费池内按声明次序降级）。
+  assert.deepEqual(ids, ['poolside/laguna-s-2.1-free', 'inclusionai/ling-3.0-flash-sante:free']);
   assert.equal(message?.metadata?.modelId, 'auto');
   assert.equal(message?.metadata?.usage?.actualModelId, ids[1]);
   assert.ok(chunks.findIndex((c) => c.type === 'data-answer-complete') < chunks.findIndex((c) => c.type === 'finish'));
@@ -47,6 +48,8 @@ test('chat SDK: automatic vision failure never escalates to a multimodal/flagshi
   await chat({ modelId: 'auto', customApiGroups: [] }, [{ ...createUserMessage('image', '解释图片'), parts: [
     { type: 'text', text: '解释图片' }, { type: 'file', mediaType: 'image/png', url: 'data:image/png;base64,aGVsbG8=' },
   ] }]);
+  // 带图 → 候选只剩有视觉的模型，且绝不退到无视觉的免费池。
+  // 这里只发一次请求：404(model_not_found) 属于不可恢复错误，不做端点降级。
   assert.deepEqual(ids, ['deepseek/deepseek-v4.1-flash']);
 });
 const groups: CustomApiGroup[] = [{

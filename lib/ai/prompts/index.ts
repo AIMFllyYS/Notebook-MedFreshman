@@ -35,6 +35,14 @@ function readMd(rel: string): string {
   return text;
 }
 
+/**
+ * 模型调度器提示词（服务端内部用，**不进用户可见的 system**）。
+ * 自动路由会把候选模型的价格/上下文/实测耗时/擅长领域交给快速模型，让它只回一个别名。
+ */
+export function buildModelRouterPrompt(): string {
+  return readMd("model-router.md");
+}
+
 /** 当前科目段：科目名 + 该科提示词（无则只有科目名）。 */
 function subjectBlockOf(ctx: ChatContext): string {
   const subject = subjectName(ctx.subjectId);

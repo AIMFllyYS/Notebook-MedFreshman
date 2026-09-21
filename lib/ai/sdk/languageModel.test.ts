@@ -125,12 +125,19 @@ test("resolveLanguageModel：不支持思考的模型 thinkingSettings 返回空
   assert.deepEqual(r.thinkingSettings("high"), {});
 });
 
-test("buildThinkingSettings：GLM-5.3 Flash 的 max 原样下发", () => {
+test("buildThinkingSettings：GLM-5.3 Flash 的 max 原样下发，medium 降到 low（七牛云只认 low/high/max）", () => {
   const r = resolveLanguageModel("z-ai/glm-5.3-flash");
   const s = r.thinkingSettings("max");
   assert.deepEqual(s.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "max" } });
   const med = r.thinkingSettings("medium");
-  assert.deepEqual(med.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "high" } });
+  assert.deepEqual(med.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "low" } });
+  const low = r.thinkingSettings("low");
+  assert.deepEqual(low.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "low" } });
+});
+
+test("buildThinkingSettings：qiniu-toggle 开思考发 thinking.enabled", () => {
+  const s = buildThinkingSettings(fakeProvider({ thinkingRequestStyle: "qiniu-toggle" }), "medium");
+  assert.deepEqual(s.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" } } });
 });
 
 test("buildThinkingSettings：Muse Spark 的 high 映射为 xhigh", () => {

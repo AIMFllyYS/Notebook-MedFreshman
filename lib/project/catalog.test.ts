@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildProjectCatalog, buildProjectSliceBodies, planCarry } from "./catalog.ts";
+import {
+  buildProjectCatalog,
+  buildProjectSliceBodies,
+  carryNotice,
+  planCarry,
+  summarizeCarry,
+  withRememberedSlices,
+} from "./catalog.ts";
 import { PROJECT_LIMITS } from "./limits.ts";
 import type { ProjectFileEntry, ProjectSlice } from "./types.ts";
 
@@ -53,6 +60,26 @@ test("目录超过上限时从尾部裁切片并标记 truncated", () => {
   assert.ok(catalog.bytes <= PROJECT_LIMITS.MAX_CATALOG_BYTES);
 });
 
+test("目录超限时轮转裁：每个文件至少留一片，不会整个文件消失", () => {
+  const bigSummary = "S".repeat(3000);
+  const files = ["a", "b", "c", "d"].map((id) =>
+    file(id, {
+      name: `${id}.md`,
+      slices: Array.from({ length: 12 }, (_, index) => ({ ...slice(`${id}-slice-${index + 1}`, 100), summary: bigSummary })),
+    }));
+  const catalog = buildProjectCatalog(files, "p1");
+
+  assert.equal(catalog.truncated, true);
+  assert.ok(catalog.bytes <= PROJECT_LIMITS.MAX_CATALOG_BYTES);
+  assert.equal(catalog.files.length, 4, "文件本身不能消失");
+  for (const item of catalog.files) {
+    assert.ok(item.slices.length >= 1, `${item.name} 至少保留一片`);
+  }
+  // 轮转裁是均摊的，不是把最后一个文件砍光。
+  const counts = catalog.files.map((item) => item.slices.length).sort((a, b) => a - b);
+  assert.ok(counts[counts.length - 1]! - counts[0]! <= 1, `裁得应该比较均匀，实际 ${counts.join("/")}`);
+});
+
 test("携带计划：项目不大默认全带；超预算才只带勾选的；没有切片就 none", () => {
   const small = [file("f1", { slices: [slice("slice-1", 100), slice("slice-2", 100)] })];
   const smallPlan = planCarry(small, "p1");
@@ -100,4 +127,72 @@ test("studio-ref 不进切片携带（正文走 getSection）", () => {
   const catalog = buildProjectCatalog([ref], "p1");
   assert.equal(catalog.files[0]!.studioRef?.path, "histology/detail/1.1");
   assert.deepEqual(catalog.files[0]!.slices, []);
+});
+
+test("携带摘要：全带时不上报降级，超预算时才报", () => {
+  const index = (count: number) => ({
+    fileId: "f1",
+    name: "f1.md",
+    kind: "imported" as const,
+    status: "indexed" as const,
+    slices: Array.from({ length: count }, (_, i) => ({
+      sliceId: `slice-${i + 1}`,
+      title: `slice-${i + 1}`,
+      chars: 100,
+      summary: "s",
+    })),
+  });
+
+  const full = summarizeCarry([index(3)], [{ sliceId: "slice-1" }, { sliceId: "slice-2" }, { sliceId: "slice-3" }]);
+  assert.deepEqual(full, { carried: 3, total: 3, degraded: false });
+  assert.equal(carryNotice(full), null, "全带不该提示");
+
+  const partial = summarizeCarry([index(3)], [{ sliceId: "slice-1" }]);
+  assert.deepEqual(partial, { carried: 1, total: 3, degraded: true });
+  const notice = carryNotice(partial);
+  assert.match(notice ?? "", /只带入了 1\/3 片/);
+  assert.match(notice ?? "", /带入对话/);
+
+  // 目录本身被裁过时不能报出 carried > total 这种自相矛盾的比例。
+  const clipped = summarizeCarry([index(1)], [{ sliceId: "slice-1" }, { sliceId: "slice-2" }]);
+  assert.deepEqual(clipped, { carried: 2, total: 2, degraded: false });
+
+  assert.equal(carryNotice(summarizeCarry([], [])), null, "没有项目文件不提示");
+  const empty = summarizeCarry([index(2)], []);
+  assert.match(carryNotice(empty) ?? "", /一片正文都没进上下文/);
+});
+
+test("已读切片只在降级态回补，all 不动", () => {
+  const all: ReturnType<typeof planCarry> = {
+    mode: "all",
+    sliceIds: [],
+    chars: 300,
+    totalChars: 300,
+    totalSlices: 3,
+    truncated: false,
+  };
+  assert.equal(withRememberedSlices(all, ["slice-9"]), all, "全带时补了也没用，返回原计划");
+
+  const pinned = withRememberedSlices(
+    { mode: "pinned", sliceIds: ["slice-1"], chars: 0, totalChars: 60_000, totalSlices: 2, truncated: true },
+    ["slice-2", "slice-1", ""],
+  );
+  assert.deepEqual(pinned.sliceIds, ["slice-1", "slice-2"], "已读的补齐、去重、忽略空值");
+
+  const none = withRememberedSlices(
+    { mode: "none", sliceIds: [], chars: 0, totalChars: 60_000, totalSlices: 2, truncated: true },
+    ["slice-2"],
+  );
+  assert.deepEqual(none.sliceIds, ["slice-2"]);
+  assert.equal(none.mode, "none");
+});
+
+test("回补的已读切片仍受总预算封顶", () => {
+  const files = [
+    file("f1", { slices: [slice("slice-1", 30_000), slice("slice-2", 30_000), slice("slice-3", 100)] }),
+  ];
+  const plan = withRememberedSlices(planCarry(files, "p1"), ["slice-3"]);
+  const carried = buildProjectSliceBodies(files, plan, "p1");
+  assert.deepEqual(carried.payloads.map((item) => item.sliceId), ["slice-3"]);
+  assert.ok(carried.chars <= PROJECT_LIMITS.MAX_CARRY_CHARS);
 });

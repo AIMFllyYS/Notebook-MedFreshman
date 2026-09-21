@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  resolveEntryProvider,
   resolveProvider,
   resolveNextProvider,
   resolveImageProvider,
@@ -310,38 +311,94 @@ test("resolveImageProvider：用户显式选中的 custom 生图模型优先于�
   assert.equal(provider.imageApiStyle, "openai");
 });
 
-test("resolveProvider：mimo 模型走企业中转且 apiModelId 一致", () => {
+test("resolveEntryProvider：链首没配凭证就跳到第一个配好的端点", () => {
+  // 测试进程通常没有 QINIU_API_KEY：此时绝不能把"未配置"的第一跳当成可用端点发出去
+  // （空 Bearer 拿到 401，而 401 不降级 → 请求硬失败）。要么挑到 Protocom，要么原样返回。
+  // 关键不变式：只要链上存在任一已配置端点，resolveEntryProvider 就必须返回一个已配置的端点
+  // （否则空 key 打出去拿 401，而 401 不降级 → 请求硬失败）。
+  for (const id of ["deepseek/deepseek-v4.1-flash", "z-ai/glm-5.3-flash", "Qwen/Qwen3.7-Flash"]) {
+    const anyConfigured = [0, 1, 2]
+      .map((index) => resolveProvider(id, undefined, index).configured)
+      .some(Boolean);
+    const entry = resolveEntryProvider(id);
+    if (anyConfigured) {
+      assert.equal(entry.configured, true, `${id} 存在已配置端点时不该返回未配置的起点`);
+    }
+    // 起点必须是链上真实存在的一跳，且索引合法。
+    assert.ok(entry.endpointIndex >= 0, id);
+    assert.ok(entry.apiModelId, id);
+  }
+  // 进程里通常没有七牛云 key：这时起点就不该停在 hop 0（要么跳到 Protocom，要么全都没配）。
+  const ds = resolveEntryProvider("deepseek/deepseek-v4.1-flash");
+  if (!ds.configured) {
+    assert.equal(ds.endpointIndex, 0, "全都没配时保持链首，交给路由报「未配置」");
+  } else {
+    assert.ok(ds.baseUrl.length > 0);
+  }
+
+  // 自定义模型永远原样返回（不参与内置端点链）。
+  const custom = resolveEntryProvider("custom", { baseUrl: "https://my.api.com/v1", apiKey: "sk", model: "m" });
+  assert.equal(custom.isCustom, true);
+});
+
+test("resolveProvider：mimo 走中转，DeepSeek 走七牛云（主力供应商已换第一跳）", () => {
   const r = resolveProvider("mimo-v2.5");
   assert.equal(r.isCustom, false);
   assert.equal(r.registryId, "mimo-v2.5");
   assert.equal(r.apiModelId, "mimo-v2.5");
-  assert.equal(r.baseUrl, resolveProvider("deepseek/deepseek-v4.1-flash").baseUrl);
-  assert.equal(r.apiKey, resolveProvider("deepseek/deepseek-v4.1-flash").apiKey);
+  assert.ok(r.baseUrl.includes("relay.protocom.org"), r.baseUrl);
+
+  // DeepSeek / Qwen / GLM 的第一跳现在是七牛云；中转站退到第二跳做容灾。
+  const ds = resolveProvider("deepseek/deepseek-v4.1-flash");
+  assert.ok(ds.baseUrl.includes("api.qnaigc.com"), ds.baseUrl);
+  assert.equal(resolveProvider("deepseek/deepseek-v4.1-flash", undefined, 1).baseUrl.includes("relay.protocom.org"), true);
 });
 
-test("resolveProvider：主力 GLM 走 relay，备用端点为 mimo", () => {
+test("resolveProvider：GLM 三跳 = 七牛云 → Protocom → MiMo", () => {
   const r = resolveProvider("z-ai/glm-5.3-flash", undefined, 0);
   assert.equal(r.registryId, "z-ai/glm-5.3-flash");
   assert.equal(r.apiModelId, "z-ai/glm-5.3-flash");
   assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
-  assert.ok(r.baseUrl.includes("relay.protocom.org") || r.baseUrl === "" || r.baseUrl.includes("invalid"));
+  assert.ok(r.baseUrl.includes("api.qnaigc.com"), r.baseUrl);
+  assert.equal(r.gatewayDefaults, false, "七牛云不是网关，不吃网关的采样默认值");
 
-  const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 1);
+  const relayHop = resolveProvider("z-ai/glm-5.3-flash", undefined, 1);
+  assert.equal(relayHop.apiModelId, "z-ai/glm-5.3-flash");
+  assert.equal(relayHop.endpointIndex, 1);
+  assert.equal(relayHop.gatewayDefaults, true, "Protocom 这一跳仍是网关契约");
+
+  const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 2);
   assert.equal(backup.apiModelId, "mimo-v2.5");
-  assert.equal(backup.endpointIndex, 1);
+  assert.equal(backup.endpointIndex, 2);
 });
 
-test("resolveProvider：GLM 备用 hop 的 thinkingRequestStyle 跟落地 MiMo，不沿用 GLM 方言", () => {
+test("resolveProvider：GLM 最后一跳的 thinkingRequestStyle 跟落地 MiMo，不沿用 GLM 方言", () => {
   const primary = resolveProvider("z-ai/glm-5.3-flash", undefined, 0);
   assert.equal(primary.thinkingRequestStyle, "openai-reasoning-effort");
   assert.equal(primary.apiModelId, "z-ai/glm-5.3-flash");
 
-  const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 1);
+  const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 2);
   assert.equal(backup.registryId, "z-ai/glm-5.3-flash");
   assert.equal(backup.apiModelId, "mimo-v2.5");
-  assert.equal(backup.endpointIndex, 1);
+  assert.equal(backup.endpointIndex, 2);
   assert.equal(backup.thinkingRequestStyle, "openai-reasoning-effort");
   assert.equal(backup.reasoningField, primary.reasoningField);
+});
+
+test("resolveProvider：七牛云方言只在七牛云那一跳生效（DeepSeek / Qwen）", () => {
+  const ds = resolveProvider("deepseek/deepseek-v4.1-flash", undefined, 0);
+  assert.equal(ds.thinkingRequestStyle, "qiniu-toggle");
+  assert.ok(ds.baseUrl.includes("api.qnaigc.com"));
+
+  // 降级到 Protocom 后必须回到网关方言，否则会往中转站发七牛云专有字段。
+  const dsRelay = resolveProvider("deepseek/deepseek-v4.1-flash", undefined, 1);
+  assert.equal(dsRelay.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(dsRelay.gatewayDefaults, true);
+
+  const qwen = resolveProvider("Qwen/Qwen3.7-Flash", undefined, 0);
+  assert.equal(qwen.apiModelId, "qwen/qwen3.7-flash", "上游大小写按七牛云目录");
+  assert.equal(qwen.thinkingRequestStyle, "qiniu-toggle");
+  assert.equal(resolveProvider("Qwen/Qwen3.7-Flash", undefined, 1).apiModelId, "Qwen/Qwen3.7-Flash");
 });
 
 test("resolveProvider：旧 GLM-5.2 id 归一到 glm-5.3-flash", () => {

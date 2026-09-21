@@ -3,7 +3,7 @@ import { buildRequestMessages, MAX_REQUEST_MESSAGES } from "@/lib/chat/buildRequ
 import { createStreamUiThrottle } from "@/lib/chat/streamUiThrottle";
 import { flushPendingWrites } from "@/lib/storage/idbStorage";
 import { notifyAccountUsageChanged } from "@/lib/billing/quotaView";
-import { createStallWatchdog } from "@/lib/chat/createStallWatchdog";
+import { createStallWatchdog, type StallReason } from "@/lib/chat/createStallWatchdog";
 import { hydrateForRequest, lastUserMessageId } from "@/lib/chat/hydrateForRequest";
 import { resolveFollowUps } from "@/lib/chat/resolveFollowUps";
 import { fitChatRequest } from "@/lib/chat/requestBudget";
@@ -27,7 +27,12 @@ export async function executeChatRequest(input: {
   onInfo: (message: string) => void;
   onContextBreakdown: (breakdown: ContextBreakdown) => void;
   onUsage: (usage: UsageSummary) => void;
-  onStall: () => void;
+  /** 看门狗判定超时（idle = 真没数据；max-wait = 总时长到顶）。 */
+  onStall: (reason: StallReason) => void;
+  /** 「最长等待时间」：客户端总时长闸。缺省走 DEFAULT_MAX_WAIT_MS。 */
+  maxWaitMs?: number;
+  /** 用户点过「重新带入本轮」的历史消息 id：这些消息的附件重新水合、重新随请求上行。 */
+  reincludedMessageIds?: readonly string[];
 }): Promise<void> {
   let latest = input.assistant;
   const throttle = createStreamUiThrottle();
@@ -36,15 +41,20 @@ export async function executeChatRequest(input: {
   markSessionStreaming(input.sessionId, true);
   try {
     const hydrateIds = lastUserMessageId(input.latestMessages);
+    // 历史附件的字节只在本机 IDB 里：要发就必须先水合回来。默认只水合本轮那条，
+    // 用户点过「重新带入本轮」的历史消息一并水合。
+    const hydrateMessageIds = new Set<string>(input.reincludedMessageIds ?? []);
+    if (hydrateIds) hydrateMessageIds.add(hydrateIds);
     const hydrated = await hydrateForRequest(
       input.latestMessages,
       input.abortSignal,
-      hydrateIds ? { messageIds: new Set([hydrateIds]) } : undefined,
+      hydrateMessageIds.size > 0 ? { messageIds: hydrateMessageIds } : undefined,
     );
     input.abortSignal.throwIfAborted();
     const { messages: built } = buildRequestMessages(hydrated, {
       maxTurns: MAX_REQUEST_MESSAGES,
       preserveAttachmentHistory: false,
+      reincludedMessageIds: new Set(input.reincludedMessageIds ?? []),
     });
     const body = {
       ...input.body,
@@ -52,7 +62,7 @@ export async function executeChatRequest(input: {
     };
     const fitted = fitChatRequest(built, body as unknown as Record<string, unknown>);
     if (fitted.info) input.onInfo(fitted.info);
-    watchdog = createStallWatchdog(input.onStall);
+    watchdog = createStallWatchdog(input.onStall, { maxWaitMs: input.maxWaitMs });
     const stream = await createStudyChatTransport(() => { watchdog?.touch(); }).sendMessages({
       chatId: input.sessionId, trigger: "submit-message", messageId: input.userMessageId,
       messages: fitted.messages, abortSignal: input.abortSignal, body: fitted.body,

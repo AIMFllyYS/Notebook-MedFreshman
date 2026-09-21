@@ -79,6 +79,11 @@ export default function ChatThread({
   );
   const lastDisplay = displayMessages[displayMessages.length - 1];
   const lastDisplayId = lastDisplay?.id;
+  // 本轮那条用户消息的附件本来就随请求发送；只有更早的带图消息才需要「重新带入本轮」。
+  const lastUserId = useMemo(
+    () => [...displayMessages].reverse().find((m) => m.role === 'user')?.id,
+    [displayMessages],
+  );
   const safeBottomInset = Number.isFinite(bottomInset) ? Math.max(0, bottomInset) : 0;
   // Keep the unmeasured streaming-tail estimate close to a compact header +
   // thinking line. A 120px floor used to park 「AI 正在思考中」 far below
@@ -293,6 +298,9 @@ export default function ChatThread({
                       repairModelId={repairModelId}
                       topic={topic}
                       showFollowUps={showFollowUps}
+                      reincludable={msg.role === 'user'
+                        && msg.id !== lastUserId
+                        && (msg.attachments ?? []).some((attachment) => attachment.type === 'image')}
                     />
                   </div>
                 );

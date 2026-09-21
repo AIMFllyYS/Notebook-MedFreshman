@@ -59,6 +59,9 @@ export const windowZh = {
     previewAttachment: "预览附件 {name}",
     preview: "预览 {name}",
     removeAttachment: "移除附件 {name}",
+    reinclude: "重新带入本轮",
+    reincludeMarked: "已带入本轮 · 发送时生效",
+    reincludeHint: "这条消息里的图片没有随本轮请求发送。点一下把它重新挂到下一次提问上。",
   },
   // 生图窗与生图卡片
   imageGen: {
@@ -70,6 +73,14 @@ export const windowZh = {
     regenerate: "重新生成",
     urlExpiry: "图片 URL 1 小时后失效，请及时下载",
     generating: "正在生成图片…",
+    // 生图进度（上游不回传进度，这里是按模型典型耗时的估算）
+    progress: {
+      elapsed: "已等待 {seconds}s",
+      remaining: "预计还需约 {seconds}s",
+      almost: "即将完成",
+      slowHint: "慢速模型可能要几分钟，仍在生成",
+      done: "已完成",
+    },
     card: {
       defaultTitle: "AI 生图",
       cancelled: "已取消生图请求：{title}",
