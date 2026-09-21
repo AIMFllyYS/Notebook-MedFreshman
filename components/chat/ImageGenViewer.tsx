@@ -110,6 +110,9 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
 
   const handleCloseViewer = useCallback(() => closeViewer(sessionId), [closeViewer, sessionId]);
 
+  // Hook 必须在任何早返回之前调用（session 为 null 时它自己返回零进度）。
+  const progress = useImageGenProgress(session);
+
   if (!session) return null;
 
   const handleRetry = () => {
@@ -149,7 +152,6 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   const isError = session.status === "error";
   const placeholderCount = Math.max(1, session.count || 1);
   const gridCols = placeholderCount === 1 ? 1 : 2;
-  const progress = useImageGenProgress(session);
 
   return (
     <ManagedWindow

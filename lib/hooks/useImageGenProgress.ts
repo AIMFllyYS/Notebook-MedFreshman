@@ -17,7 +17,8 @@ export function useImageGenProgress(
 
   useEffect(() => {
     if (status !== "loading") return;
-    setNow(Date.now());
+    // 不在 effect 里同步 setState（会触发级联渲染）：初始 now 已在 useState 里取过，
+    // 之后交给轮询。250ms 的首次误差对进度条不可见。
     const timer = setInterval(() => setNow(Date.now()), intervalMs);
     return () => clearInterval(timer);
   }, [status, intervalMs]);
