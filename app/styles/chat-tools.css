@@ -587,6 +587,372 @@
   color: var(--md-sys-color-outline);
 }
 
+/* ── 联网来源走马灯（Perplexity 式横排来源卡）──────────────────── */
+
+.web-source-fold-chips {
+  padding: 2px 8px 0;
+}
+
+.web-source-fold-error {
+  margin: 4px 8px 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--md-sys-color-error);
+  overflow-wrap: anywhere;
+}
+
+.web-search-step-detail {
+  margin: 2px 0 4px;
+}
+
+.web-search-step-detail .web-search-chips {
+  margin-bottom: 4px;
+}
+
+/* 分源状态点：Kimi / 智谱 / Perplexity */
+.web-search-chips {
+  display: inline-flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.web-search-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 2px 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: var(--bg-panel);
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.web-search-chip-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.web-search-chip[data-state="done"] .web-search-chip-dot {
+  background: var(--md-sys-color-tertiary, var(--accent));
+}
+
+.web-search-chip[data-state="skipped"] {
+  color: var(--ink-faint);
+  background: transparent;
+}
+
+.web-search-chip[data-state="skipped"] .web-search-chip-dot {
+  background: var(--ink-faint);
+}
+
+/* 条容器：可滚动时两端渐隐提示 */
+.web-source-carousel {
+  position: relative;
+  min-width: 0;
+  padding: 4px 0 2px;
+}
+
+.web-source-viewport {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.web-source-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.web-source-carousel[data-scrollable] .web-source-viewport {
+  mask-image: linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+}
+
+.web-source-strip {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  align-items: stretch;
+  gap: 6px;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+}
+
+.web-source-card {
+  display: flex;
+  width: 172px;
+  height: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  padding: 7px 9px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--bg-panel);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--duration-fast, 150ms) var(--ease-decelerate, ease),
+    background var(--duration-fast, 150ms) var(--ease-decelerate, ease);
+  /* 滚出视口的卡跳过渲染——几十条来源不卡 */
+  content-visibility: auto;
+  contain-intrinsic-size: 172px 52px;
+}
+
+.web-source-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-muted);
+}
+
+.web-source-card.is-open {
+  border-color: var(--accent);
+  background: var(--bg-muted);
+}
+
+.web-source-carousel.is-compact .web-source-card {
+  width: 148px;
+  padding: 6px 8px;
+}
+
+.web-source-card-top {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 5px;
+}
+
+.web-source-favicon,
+.web-source-favicon-fallback {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.web-source-favicon-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-weak, var(--bg-muted));
+  color: var(--accent-ink, var(--accent));
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.web-source-card-host {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10.5px;
+  line-height: 1.3;
+  color: var(--ink-faint);
+}
+
+.web-source-card-index {
+  flex-shrink: 0;
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink-faint);
+}
+
+.web-source-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-width: 0;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* 运行中骨架卡 */
+.web-source-card.is-skeleton {
+  pointer-events: none;
+}
+
+.web-source-skel-ico,
+.web-source-skel-line {
+  display: block;
+  border-radius: 4px;
+  background: var(--bg-muted);
+}
+
+.web-source-skel-ico {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+.web-source-skel-line {
+  height: 9px;
+  width: 100%;
+}
+
+.web-source-skel-line.is-host {
+  width: 56px;
+  height: 8px;
+}
+
+.web-source-skel-line.is-short {
+  width: 62%;
+}
+
+@keyframes web-source-shimmer {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.web-source-card.is-skeleton .web-source-skel-ico,
+.web-source-card.is-skeleton .web-source-skel-line {
+  animation: web-source-shimmer 1.6s ease-in-out infinite;
+}
+
+/* 两端滚动提示箭头 */
+.web-source-nudge {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: var(--bg-panel);
+  color: var(--ink-soft);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.web-source-nudge:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.web-source-nudge.is-left { left: 2px; }
+.web-source-nudge.is-right { right: 2px; }
+
+/* 点击卡片展开的详情面板 */
+.web-source-detail {
+  overflow: hidden;
+}
+
+.web-source-detail-inner {
+  margin: 4px 2px 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--bg-muted);
+}
+
+.web-source-detail-head {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 4px;
+}
+
+.web-source-detail-host {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-decoration: none;
+}
+
+a.web-source-detail-host:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.web-source-detail-index {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+
+.web-source-detail-title {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.web-source-detail-snippet {
+  margin: 4px 0 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.web-source-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 6px 0 0;
+}
+
+.web-source-detail-action {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.web-source-detail-action:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .web-source-card {
+    transition: none;
+  }
+  .web-source-card.is-skeleton .web-source-skel-ico,
+  .web-source-card.is-skeleton .web-source-skel-line {
+    animation: none;
+  }
+}
+
 .web-source-address-bar {
   display: flex;
   min-width: 0;

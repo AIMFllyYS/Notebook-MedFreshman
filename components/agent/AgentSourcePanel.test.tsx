@@ -85,9 +85,11 @@ describe("AgentSourcePanel", () => {
   it("shows the count plus every source's title, snippet and host", () => {
     render(<AgentSourcePanel rounds={rounds} sources={sources} open />);
     expect(screen.getByText(zh("agent.sources.count", { count: 2 }))).toBeVisible();
-    expect(screen.getByText("细胞膜的结构")).toBeVisible();
+    // 网页来源同时进顶部走马灯卡与清单行（标题 / host 各出现两次）。
+    expect(screen.getAllByText("细胞膜的结构")).toHaveLength(2);
+    expect(screen.getByTestId("web-source-carousel")).toBeInTheDocument();
     expect(screen.getByText("磷脂双分子层构成基本骨架。")).toBeVisible();
-    expect(screen.getByText("example.edu")).toBeVisible();
+    expect(screen.getAllByText("example.edu")).toHaveLength(2);
     expect(screen.getByText("心肌")).toBeVisible();
     expect(screen.getByText("anatomy/textbook/ch09")).toBeVisible();
   });

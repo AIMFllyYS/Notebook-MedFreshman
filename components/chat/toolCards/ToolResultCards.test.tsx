@@ -123,6 +123,103 @@ describe("ToolResultCards aggregation", () => {
     expect(screen.getByText("命中 8")).toBeVisible();
   });
 
+  it("流式期间 input-available 的 webSearch 挂出 live 卡（供应商脉冲点 + 骨架）", () => {
+    render(
+      <ToolResultCards
+        isStreaming
+        message={message([
+          {
+            type: "tool-webSearch",
+            toolCallId: "w1",
+            state: "input-available",
+            input: { query: "如何复习", mode: "daily" },
+          },
+        ] as ChatMessagePart[])}
+      />,
+    );
+    expect(screen.getByTestId("web-source-fold")).toBeInTheDocument();
+    expect(screen.getByText(/正在搜索 Kimi · 智谱/)).toBeInTheDocument();
+    expect(document.querySelectorAll(".web-source-card.is-skeleton")).toHaveLength(3);
+  });
+
+  it("流式期间 ready 调用与 pending 调用合成一张 live 卡", () => {
+    render(
+      <ToolResultCards
+        isStreaming
+        message={message([
+          {
+            type: "tool-webSearch",
+            toolCallId: "w1",
+            state: "output-available",
+            input: { query: "q1" },
+            output: {
+              text: "…",
+              sources: [{ title: "已到来源", url: "https://a.example/1", snippet: "" }],
+            },
+          },
+          {
+            type: "tool-webSearch",
+            toolCallId: "w2",
+            state: "input-available",
+            input: { query: "q2" },
+          },
+        ] as ChatMessagePart[])}
+      />,
+    );
+    // 一张卡：已到的来源可见 + 尾部骨架占位（仍在搜索）。
+    expect(screen.getAllByTestId("web-source-fold")).toHaveLength(1);
+    expect(screen.getByText("a.example")).toBeInTheDocument();
+    expect(document.querySelectorAll(".web-source-card.is-skeleton")).toHaveLength(3);
+  });
+
+  it("流结束后 output-error 的调用补一张失败卡", () => {
+    render(
+      <ToolResultCards
+        isStreaming={false}
+        message={message([
+          {
+            type: "tool-webSearch",
+            toolCallId: "w1",
+            state: "output-available",
+            input: { query: "q1" },
+            output: {
+              text: "…",
+              sources: [{ title: "正常来源", url: "https://a.example/1", snippet: "" }],
+            },
+          },
+          {
+            type: "tool-webSearch",
+            toolCallId: "w2",
+            state: "output-error",
+            input: { query: "q2" },
+            errorText: "network down",
+          },
+        ] as ChatMessagePart[])}
+      />,
+    );
+    const folds = screen.getAllByTestId("web-source-fold");
+    expect(folds).toHaveLength(2);
+    expect(screen.getByText("搜索失败")).toBeInTheDocument();
+    expect(screen.getByText("network down")).toBeInTheDocument();
+  });
+
+  it("流结束后 input-available 的残件不再渲染（不会推进了）", () => {
+    render(
+      <ToolResultCards
+        isStreaming={false}
+        message={message([
+          {
+            type: "tool-webSearch",
+            toolCallId: "w1",
+            state: "input-available",
+            input: { query: "q" },
+          },
+        ] as ChatMessagePart[])}
+      />,
+    );
+    expect(screen.queryByTestId("web-source-fold")).not.toBeInTheDocument();
+  });
+
   it("hides source folds on the Agent surface", () => {
     useAppMode.setState({ mode: "agent" });
     render(

@@ -260,6 +260,10 @@ export const traceEn = {
     title: "Web sources",
     foldTitle: "{label} · {count}{footnote}",
     cached: " · cached",
+    searching: "Searching {providers}…",
+    failed: "Search failed",
+    scrollPrev: "Scroll sources back",
+    scrollNext: "Scroll sources forward",
   },
   // Follow-up questions.
   followUp: {

@@ -5,7 +5,9 @@ import clsx from "clsx";
 import { Link2 } from "lucide-react";
 import { AgentDocumentIcon, AgentQuizIcon, AgentTerminalIcon } from "@/components/icons/AgentIcons";
 import { SourcePreviewRows, sourcePreviewMeta } from "@/components/chat/SourcePreviewRows";
+import WebSourceCarousel from "@/components/chat/WebSourceCarousel";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
+import { webSourceHost } from "@/lib/chat/webSearchDisplay";
 import type { AgentProductItem } from "@/lib/chat/sessionProducts";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { openAgentQuiz } from "@/lib/quiz-dock/open";
@@ -197,6 +199,20 @@ export default function AgentSourcePanel({
   if (sources.length === 0 && products.length === 0) return null;
 
   const showSections = sources.length > 0 && products.length > 0;
+  // Perplexity 式来源条：网页来源横排在清单顶，编号与正文 [n] 对齐（扁平数组序号）。
+  const webItems = sources.flatMap((source, index) =>
+    source.kind === "web"
+      ? [{
+          key: sourceItemKey(source, index),
+          index: index + 1,
+          title: source.title,
+          url: source.url,
+          host: webSourceHost(source.url),
+          icon: source.icon,
+          snippet: source.snippet,
+        }]
+      : [],
+  );
   const quizzes = products.filter((item) => item.kind === "quiz");
   const interactives = products.filter((item) => item.kind === "interactive");
   const documents = products.filter((item) => item.kind === "document");
@@ -229,6 +245,17 @@ export default function AgentSourcePanel({
         {sources.length > 0 ? (
           <>
             {showSections ? <SectionLabel>{t("agent.rail.sources")}</SectionLabel> : null}
+            {webItems.length > 0 ? (
+              <WebSourceCarousel
+                compact
+                items={webItems}
+                onOpen={(item) => {
+                  const source = sources[item.index - 1];
+                  if (source) openAt(source, item.index - 1);
+                }}
+                ariaLabel={t("agent.rail.sources")}
+              />
+            ) : null}
             <SourcePreviewRows
               items={sources.map((source, index) => ({
                 key: sourceItemKey(source, index),
