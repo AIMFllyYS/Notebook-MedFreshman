@@ -6,7 +6,7 @@
 export const BYPASS_CONFIRMATION = "I_UNDERSTAND";
 export const BYPASS_ENV = "SECRET_SCAN_ALLOW";
 
-export type SecretKind = "sbp_" | "sk-" | "eyJ" | "service_role";
+export type SecretKind = "sbp_" | "sk-" | "eyJ" | "service_role" | "private_key" | "token";
 
 export type SecretFinding = {
   path: string;
@@ -61,6 +61,29 @@ const SBP_RE = /(?<![A-Za-z0-9_])sbp_([A-Za-z0-9]{20,})/g;
 const JWT_RE = /(?<![A-Za-z0-9_])(eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,})/g;
 const SERVICE_ROLE_ASSIGN_RE = /SERVICE_ROLE(?:_KEY)?\s*[:=]\s*['"]?(\S+)/i;
 
+// 常见厂商 token 形状（sk-/sbp_/JWT 之外的漏网项）：GitHub PAT、GitLab PAT、
+// HuggingFace、npm、DigitalOcean、Shopify、Slack、Stripe、Google API key、AWS AKIA/ASIA。
+// 纯 base64 的密钥（如 base64(sk-…)）没有可识别形状，误报代价太高，不在此拦截。
+const VENDOR_TOKEN_RE =
+  /(?<![A-Za-z0-9_])(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{22,}|glpat-[A-Za-z0-9_-]{20,}|hf_[A-Za-z0-9]{30,}|npm_[A-Za-z0-9]{36}|dop_v1_[a-f0-9]{64}|shpat_[a-f0-9]{32}|xox[baprs]-[A-Za-z0-9-]{10,}|[rs]k_(?:live|test)_[A-Za-z0-9]{16,}|whsec_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{35}|(?:AKIA|ASIA)[0-9A-Z]{16})(?![A-Za-z0-9_-])/g;
+const SLACK_WEBHOOK_RE =
+  /https:\/\/hooks\.slack\.com\/services\/T[A-Z0-9]{6,}\/B[A-Z0-9]{6,}\/[A-Za-z0-9]{16,}/g;
+const PEM_PRIVATE_KEY_RE = /-----BEGIN [A-Z0-9 ]*PRIVATE KEY(?: BLOCK)?-----/g;
+
+const TOKEN_PATTERNS: ReadonlyArray<{ kind: SecretKind; re: RegExp }> = [
+  { kind: "sk-", re: SK_RE },
+  { kind: "sbp_", re: SBP_RE },
+  { kind: "eyJ", re: JWT_RE },
+  { kind: "private_key", re: PEM_PRIVATE_KEY_RE },
+  { kind: "token", re: VENDOR_TOKEN_RE },
+  { kind: "token", re: SLACK_WEBHOOK_RE },
+];
+
+/** 文档/示例里以 EXAMPLE/SAMPLE 等结尾的占位 token（如 AWS 官方示例 AKIAIOSFODNN7EXAMPLE）。 */
+function isDocExampleToken(token: string): boolean {
+  return /(?:example|sample|dummy|notreal)[a-z0-9_-]*$/i.test(token);
+}
+
 export function normalizeRepoPath(filePath: string): string {
   return filePath.replace(/\\/g, "/").replace(/^\.\//, "");
 }
@@ -84,7 +107,10 @@ export function isLegacyAllowlisted(filePath: string): boolean {
 export function isPlaceholderSecret(raw: string): boolean {
   const value = raw.replace(/^['"`]+|['"`]+$/g, "").trim();
   if (!value) return true;
-  const body = value.replace(/^(sk-|sbp_)/, "");
+  const body = value.replace(
+    /^(sk-|sbp_|gh[pousr]_|github_pat_|glpat-|hf_|npm_|dop_v1_|shpat_|xox[baprs]-|[rs]k_(?:live|test)_|whsec_|AIza|AKIA|ASIA)/i,
+    "",
+  );
   const compact = body.replace(/[-_]/g, "");
   if (!compact) return true;
   if (/^(.)\1+$/.test(compact)) return true;
@@ -135,25 +161,13 @@ export function scanText(text: string, filePath: string): SecretFinding[] {
     const line = lines[i];
     const lineNo = i + 1;
 
-    SK_RE.lastIndex = 0;
-    for (const match of line.matchAll(SK_RE)) {
-      const token = match[0];
-      if (isPlaceholderSecret(token)) continue;
-      findings.push({ path, line: lineNo, kind: "sk-", excerpt: redact("sk-", token) });
-    }
-
-    SBP_RE.lastIndex = 0;
-    for (const match of line.matchAll(SBP_RE)) {
-      const token = match[0];
-      if (isPlaceholderSecret(token)) continue;
-      findings.push({ path, line: lineNo, kind: "sbp_", excerpt: redact("sbp_", token) });
-    }
-
-    JWT_RE.lastIndex = 0;
-    for (const match of line.matchAll(JWT_RE)) {
-      const token = match[1];
-      if (token.includes("...")) continue;
-      findings.push({ path, line: lineNo, kind: "eyJ", excerpt: redact("eyJ", token) });
+    for (const { kind, re } of TOKEN_PATTERNS) {
+      re.lastIndex = 0;
+      for (const match of line.matchAll(re)) {
+        const token = match[0];
+        if (isPlaceholderSecret(token) || isDocExampleToken(token)) continue;
+        findings.push({ path, line: lineNo, kind, excerpt: redact(kind, token) });
+      }
     }
 
     if (/service_role/i.test(line) && looksLikeServiceRoleSecret(line)) {

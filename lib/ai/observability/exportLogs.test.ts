@@ -19,6 +19,8 @@ const RAW_JSONL = Buffer.from(
 
 const dirs: string[] = [];
 const prevAgentLogPath = process.env.AGENT_LOG_PATH;
+const prevAgentLogExport = process.env.AGENT_LOG_EXPORT;
+const prevElectronUserData = process.env.ELECTRON_USER_DATA;
 
 function tempLogFile(contents: Buffer): string {
   const dir = mkdtempSync(path.join(tmpdir(), "agent-log-export-"));
@@ -31,6 +33,10 @@ function tempLogFile(contents: Buffer): string {
 afterEach(() => {
   if (prevAgentLogPath === undefined) delete process.env.AGENT_LOG_PATH;
   else process.env.AGENT_LOG_PATH = prevAgentLogPath;
+  if (prevAgentLogExport === undefined) delete process.env.AGENT_LOG_EXPORT;
+  else process.env.AGENT_LOG_EXPORT = prevAgentLogExport;
+  if (prevElectronUserData === undefined) delete process.env.ELECTRON_USER_DATA;
+  else process.env.ELECTRON_USER_DATA = prevElectronUserData;
   for (const dir of dirs.splice(0)) {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -64,9 +70,19 @@ test("readRawAgentLog：默认路径跟随 resolveAgentLogPath（#52）", () => 
   assert.deepEqual(readRawAgentLog().bytes, RAW_JSONL);
 });
 
+test("GET /api/logs/export：未开启导出开关时一律 404（托管部署防匿名拖库）", async () => {
+  const file = tempLogFile(RAW_JSONL);
+  process.env.AGENT_LOG_PATH = file;
+  delete process.env.AGENT_LOG_EXPORT;
+  delete process.env.ELECTRON_USER_DATA;
+  const res = await GET();
+  assert.equal(res.status, 404);
+});
+
 test("GET /api/logs/export：响应体与落盘文件字节级一致", async () => {
   const file = tempLogFile(RAW_JSONL);
   process.env.AGENT_LOG_PATH = file;
+  process.env.AGENT_LOG_EXPORT = "1";
   const res = await GET();
   assert.equal(res.status, 200);
   assert.equal(res.headers.get("content-disposition"), agentLogContentDisposition(AGENT_LOG_FILENAME));

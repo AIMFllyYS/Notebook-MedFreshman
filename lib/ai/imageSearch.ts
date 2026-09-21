@@ -72,6 +72,7 @@ export async function searchImages(
           Authorization: `Client-ID ${key}`,
           "Accept-Version": "v1",
         },
+        signal: AbortSignal.timeout(15_000),
       },
     );
 
@@ -150,8 +151,13 @@ export async function trackPhotoDownload(
   if (!downloadLocation || !key) return;
 
   try {
+    // download_location 由 Unsplash 响应提供；只认官方域名，
+    // 避免上游响应被污染时带着我们的 key 打到别的主机。
+    const host = new URL(downloadLocation).hostname.toLowerCase();
+    if (host !== "api.unsplash.com") return;
     await fetch(downloadLocation, {
       headers: { Authorization: `Client-ID ${key}` },
+      signal: AbortSignal.timeout(10_000),
     });
   } catch {
     // Silent failure

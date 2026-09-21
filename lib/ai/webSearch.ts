@@ -10,6 +10,7 @@ import { resolveSidecarBilling } from "@/lib/billing/usagePool";
 import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
 import { runSearchSubagent } from "@/lib/ai/search/subagent";
+import { createTtlCache } from "@/lib/ai/ttlCache";
 import type { SearchMode, SearchProviderId } from "@/lib/ai/search/types";
 import type { WebSearchSource } from "@/lib/types/chat";
 
@@ -49,6 +50,7 @@ async function fetchZhipuRaw(
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(20_000),
   });
   if (!res.ok) throw new Error("Zhipu Search " + res.status);
   const data = await res.json();
@@ -63,33 +65,9 @@ async function fetchZhipuRaw(
 }
 
 // ── 内存缓存（同一服务进程内 LRU + TTL）────────────────────────
-interface CacheEntry {
-  results: WebSearchSource[];
-  ts: number;
-}
-const CACHE = new Map<string, CacheEntry>();
-const TTL_MS = 10 * 60 * 1000;
-const MAX_ENTRIES = 100;
-
-function cacheGet(key: string): WebSearchSource[] | null {
-  const entry = CACHE.get(key);
-  if (!entry) return null;
-  if (Date.now() - entry.ts > TTL_MS) {
-    CACHE.delete(key);
-    return null;
-  }
-  CACHE.delete(key);
-  CACHE.set(key, entry);
-  return entry.results;
-}
-
-function cacheSet(key: string, results: WebSearchSource[]) {
-  CACHE.set(key, { results, ts: Date.now() });
-  if (CACHE.size > MAX_ENTRIES) {
-    const oldest = CACHE.keys().next().value;
-    if (oldest !== undefined) CACHE.delete(oldest);
-  }
-}
+const CACHE = createTtlCache<WebSearchSource[]>({ ttlMs: 10 * 60 * 1000, maxEntries: 100 });
+const cacheGet = (key: string) => CACHE.get(key);
+const cacheSet = CACHE.set.bind(CACHE);
 
 export async function searchCached(
   query: string,
