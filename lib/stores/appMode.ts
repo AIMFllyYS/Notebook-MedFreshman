@@ -12,7 +12,7 @@ import {
   type AppModePersist,
 } from "@/lib/constants/app-mode";
 
-export type { AppMode, AppModePersist };
+export type { AppModePersist };
 
 function emptyPersist(): AppModePersist {
   return { mode: DEFAULT_APP_MODE, lastStudioPath: DEFAULT_STUDIO_PATH };

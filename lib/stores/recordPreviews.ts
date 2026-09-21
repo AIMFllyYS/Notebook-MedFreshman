@@ -10,8 +10,6 @@ export interface RecordPreview {
 
 const WIDTH = 420;
 const HEIGHT = 520;
-const MIN_W = 320;
-const MIN_H = 360;
 const genId = () => Math.random().toString(36).slice(2, 11);
 
 interface RecordPreviewsState {
@@ -55,4 +53,4 @@ export const useRecordPreviews = create<RecordPreviewsState>((set, get) => ({
   },
 }));
 
-const RECORD_PREVIEW_SIZE = { width: WIDTH, height: HEIGHT, minWidth: MIN_W, minHeight: MIN_H };
+

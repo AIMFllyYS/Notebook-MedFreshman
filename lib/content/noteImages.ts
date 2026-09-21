@@ -146,10 +146,6 @@ export function getNoteImageIndex(): NoteImageIndex {
   return cached;
 }
 
-function invalidateNoteImageIndex(): void {
-  cached = null;
-}
-
 // ─── 打分 ────────────────────────────────────────────────────────────────
 
 /** 中文按单字 + 相邻双字，英文/数字按小写单词。与 BM25 索引的切词口径一致，但此处自包含。 */

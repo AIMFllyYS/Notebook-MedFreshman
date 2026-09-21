@@ -12,13 +12,6 @@ export interface SessionStorageUsage {
   attachmentCount: number;
 }
 
-export const EMPTY_SESSION_STORAGE: SessionStorageUsage = {
-  conversationBytes: 0,
-  conversationLimitBytes: MAX_CHAT_SESSION_BYTES,
-  attachmentBytes: 0,
-  attachmentCount: 0,
-};
-
 function fallbackMeta(id: string): SessionMeta {
   return {
     id,

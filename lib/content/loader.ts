@@ -231,6 +231,10 @@ function isSafeExampleId(exampleId: string): boolean {
 
 function examplesDir(subjectId: string, chapterId: string, sectionId: string): string | null {
   if (!chapterId || !sectionId) return null;
+  // 与正文同一套段白名单：任一参数含 ".."、"/"、"\" 等都会被拒，
+  // 否则 /api/examples 的查询参数可让路径逃逸出 EXAMPLES_ROOT。
+  if (subjectId && !isSafeContentSegment(subjectId)) return null;
+  if (!isSafeContentSegment(chapterId) || !isSafeContentSegment(sectionId)) return null;
   return subjectId && subjectId !== "probability"
     ? path.join(EXAMPLES_ROOT, subjectId, chapterId, sectionId)
     : path.join(EXAMPLES_ROOT, chapterId, sectionId);

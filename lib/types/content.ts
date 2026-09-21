@@ -94,8 +94,4 @@ export interface ContentTree {
   subjects: Subject[];
 }
 
-interface ContentRoute {
-  subjectId: SubjectId;
-  categoryId: string;
-  itemId: string;
-}
+

@@ -9,10 +9,6 @@ export function getCachedEmbed(url: string): EmbedVerdict | undefined {
   return embedCache.get(url);
 }
 
-function setCachedEmbed(url: string, verdict: EmbedVerdict) {
-  embedCache.set(url, verdict);
-}
-
 export function clearEmbedCache() {
   embedCache.clear();
 }

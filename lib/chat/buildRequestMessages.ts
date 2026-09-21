@@ -5,8 +5,6 @@ import { MAX_REQUEST_IMAGE_CHARS, MAX_REQUEST_IMAGES } from '@/lib/chat/requestB
 import { hasVisibleContent } from '@/lib/chat/messageParts';
 
 export const DEFAULT_MAX_TURNS = Number.MAX_SAFE_INTEGER;
-/** @deprecated 软上限改为服务端滚动摘要，不再用 16 条硬切。仍导出以免旧测试/import 断裂。 */
-export const SOFT_LIMIT_MAX_TURNS = 16;
 /** 与 chatRequestSchema messages 上限对齐，防止 400。 */
 export const MAX_REQUEST_MESSAGES = 200;
 

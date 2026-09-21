@@ -355,7 +355,8 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
             : null
           : state.activeSessionId;
       nextActiveToLoad = deletedActive ? newActiveId : null;
-      const { [id]: _drop, ...messagesById } = state.messagesById;
+      const messagesById = { ...state.messagesById };
+      delete messagesById[id];
       pruneArtifactsFromMetas(sessionsMeta);
       persistManifest(state, manifestOf(state, { activeSessionId: newActiveId, sessions: sessionsMeta }));
       void (async () => {

@@ -1,4 +1,5 @@
-import { strFromU8, unzipSync } from "fflate";
+import { strFromU8 } from "fflate";
+import { unzipWithinLimits } from "@/lib/utils/unzip";
 
 export interface PptxSlideText {
   number: number;
@@ -28,7 +29,12 @@ function dataUrlBytes(dataUrl: string): Uint8Array {
  * 不执行宏、不加载外部资源。复杂版式仍保留为“文本化幻灯片”展示。
  */
 export function parsePptxSlideBytes(bytes: Uint8Array): PptxSlideText[] {
-  const files = unzipSync(bytes);
+  // 只解压幻灯片 XML：顺带跳过内嵌媒体等大文件，也挡住 zip bomb。
+  const files = unzipWithinLimits(bytes, {
+    maxFileBytes: 32 * 1024 * 1024,
+    maxTotalBytes: 128 * 1024 * 1024,
+    include: (name) => /^ppt\/slides\/slide\d+\.xml$/i.test(name),
+  });
   const names = Object.keys(files)
     .filter((name) => /^ppt\/slides\/slide\d+\.xml$/i.test(name))
     .sort((a, b) => Number(a.match(/slide(\d+)/i)?.[1] ?? 0) - Number(b.match(/slide(\d+)/i)?.[1] ?? 0));

@@ -75,7 +75,8 @@ function compactSearchImages(images: unknown): unknown {
   return images.map((item) => {
     const rec = recordOf(item);
     if (!rec || !("context" in rec)) return item;
-    const { context: _drop, ...rest } = rec;
+    const rest = { ...rec };
+    delete rest.context;
     return rest;
   });
 }
@@ -129,7 +130,8 @@ function compactToolInput(name: string, input: unknown): unknown {
   if (name !== "renderInteractive") return input;
   const rec = recordOf(input);
   if (!rec || !("prompt" in rec)) return input;
-  const { prompt: _drop, ...rest } = rec;
+  const rest = { ...rec };
+  delete rest.prompt;
   return rest;
 }
 
