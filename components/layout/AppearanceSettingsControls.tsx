@@ -1,8 +1,10 @@
 "use client";
 
-import { Moon, RotateCcw, Sun, Type } from "lucide-react";
+import { Languages, Moon, RotateCcw, Sun, Type, Zap } from "lucide-react";
 import AppSelect from "@/components/ui/AppSelect";
-import { useT } from "@/lib/i18n";
+import { Toggle } from "@/components/chat/settings/_shared";
+import { LOCALES, useT } from "@/lib/i18n";
+import { useSettings } from "@/lib/stores/settings";
 import {
   FONT_CHOICES,
   contrastText,
@@ -156,6 +158,10 @@ export default function AppearanceSettingsControls({
   resetAppearance: () => void;
 }) {
   const t = useT();
+  const locale = useSettings((s) => s.locale);
+  const setLocale = useSettings((s) => s.setLocale);
+  const reduceMotion = useSettings((s) => s.reduceMotion);
+  const setReduceMotion = useSettings((s) => s.setReduceMotion);
   const updateCustomAppearance = (patch: Partial<CustomAppearanceSettings>) => {
     if (appearance.mode !== "custom") setAppearanceMode("custom");
     setCustomAppearance(patch);
@@ -163,6 +169,41 @@ export default function AppearanceSettingsControls({
 
   return (
     <div className="flex flex-col gap-3">
+      {/* 语言是全局设置：全局设置页与 AI 设置页共用这份控件，分段控件复用明暗主题那组胶囊的写法。 */}
+      <div className="flex items-center justify-between gap-3 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] px-3 py-2">
+        <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+          <Languages size={14} /> {t("settings.language.title")}
+        </span>
+        <div
+          role="group"
+          aria-label={t("settings.language.title")}
+          className="flex shrink-0 items-center gap-0.5 rounded-full p-0.5"
+          style={{ background: "var(--md-sys-color-surface-container-highest)" }}
+        >
+          {LOCALES.map((value) => {
+            const active = locale === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                data-testid={`settings-locale-${value}`}
+                aria-pressed={active}
+                onClick={() => setLocale(value)}
+                className="rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
+                style={{
+                  background: active ? "var(--md-sys-color-primary)" : "transparent",
+                  color: active
+                    ? "var(--md-sys-color-on-primary)"
+                    : "var(--md-sys-color-on-surface-variant)",
+                }}
+              >
+                {value === "zh" ? t("settings.language.zh") : t("settings.language.en")}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="flex items-center justify-between gap-3 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] px-3 py-2">
         <span className="text-[13px] text-[var(--md-sys-color-on-surface)]">{t("settings.appearance.theme")}</span>
         <div
@@ -265,6 +306,27 @@ export default function AppearanceSettingsControls({
             value: fontId, label: t(FONT_CHOICES[fontId].labelKey),
           }))} />
       </label>
+
+      {/* 「减少动画」：用户可控的全局收口（系统 prefers-reduced-motion 之外的开关），
+          与上面的主题/字体同属「看着舒服」一档。 */}
+      <div className="flex items-center justify-between gap-3 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] px-3 py-2">
+        <span className="flex items-center gap-1.5">
+          <Zap size={14} className="text-[var(--md-sys-color-on-surface-variant)]" />
+          <span>
+            <span className="block text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+              {t("settings.appearance.reduceMotion")}
+            </span>
+            <span className="block text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+              {t("settings.appearance.reduceMotionDesc")}
+            </span>
+          </span>
+        </span>
+        <Toggle
+          on={reduceMotion}
+          onClick={() => setReduceMotion(!reduceMotion)}
+          aria-label={t("settings.appearance.reduceMotionAria")}
+        />
+      </div>
 
       <button
         type="button"

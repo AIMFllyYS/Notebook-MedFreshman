@@ -316,7 +316,7 @@ export const windowZh = {
     pinTitle: "这一片是否随对话一起带给 Agent",
     pinned: "已带入对话",
     pin: "带入对话",
-    indexTitle: ".index.md · 隐藏索引",
+
     indexEmpty: "（还没有索引：正在解析或解析失败）",
     windowTitle: "项目文件 · {name}",
     untitledProject: "未命名项目",

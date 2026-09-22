@@ -314,7 +314,7 @@ export const windowEn = {
     pinTitle: "Whether this slice travels with the chat for the Agent",
     pinned: "Carried in chat",
     pin: "Carry in chat",
-    indexTitle: ".index.md · hidden index",
+
     indexEmpty: "(no index yet: still parsing, or parsing failed)",
     windowTitle: "Project files · {name}",
     untitledProject: "Untitled project",

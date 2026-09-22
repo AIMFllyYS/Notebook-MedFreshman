@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { fadeInUpVariants } from "@/lib/motion";
 import {
   Settings,
   Trophy,
@@ -293,9 +294,9 @@ export default function GlobalSettings({
       role={page ? "region" : "dialog"}
       aria-label={t("settings.global.title")}
       data-testid={page ? "global-settings-page" : "global-settings-popover"}
-      initial={page ? false : { opacity: 0, y: 5 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.18, ease: [0.05, 0.7, 0.1, 1] }}
+      initial={page ? false : "initial"}
+      animate="animate"
+      variants={fadeInUpVariants}
       className={
         page
           ? "global-settings-page flex h-full min-h-0 w-full flex-col overflow-hidden"

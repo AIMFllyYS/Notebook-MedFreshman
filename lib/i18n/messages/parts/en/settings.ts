@@ -98,6 +98,9 @@ export const settingsEn = {
     previewText: "Sample text",
     previewButton: "Button",
     font: "Global font",
+    reduceMotion: "Reduce motion",
+    reduceMotionDesc: "Animations and transitions finish instantly",
+    reduceMotionAria: "Reduce motion",
     reset: "Reset appearance",
     summary: "{theme} · {mode} · {font}",
     // Options of the global font dropdown (FONT_CHOICES[].labelKey).

@@ -1,14 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
 import { LayoutGrid, List, RefreshCw, Search } from "lucide-react";
 import AgentAssetCard from "./AgentAssetCard";
 import SharedLinksPanel from "@/components/share/SharedLinksPanel";
 import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
-import { LAYOUT_REFLOW, cardSwapVariants } from "@/lib/motion";
+import { LAYOUT_REFLOW, reflowItemProps } from "@/lib/motion";
 import {
   ASSET_KINDS,
   ASSET_KIND_LABELS,
@@ -79,7 +80,7 @@ export default function AgentAssetsPage() {
   const view: ViewMode = viewChoice ?? (mounted ? readStoredView() : "grid");
   const [refreshing, setRefreshing] = useState(false);
   /** 系统开了「减少动态效果」就退回静态：不加 layout 动画、不做进出场。 */
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useUiReducedMotion();
 
   const chooseView = (next: ViewMode) => {
     setViewChoice(next);
@@ -114,12 +115,7 @@ export default function AgentAssetsPage() {
         <motion.div
           key={`${item.kind}-${item.id}`}
           data-testid={`asset-cell-${item.kind}-${item.id}`}
-          layout={!reducedMotion}
-          variants={reducedMotion ? undefined : cardSwapVariants}
-          initial={reducedMotion ? false : "initial"}
-          animate={reducedMotion ? undefined : "animate"}
-          exit={reducedMotion ? undefined : "exit"}
-          transition={LAYOUT_REFLOW}
+          {...reflowItemProps(reducedMotion)}
           className="min-w-0"
         >
           <AgentAssetCard item={item} view={mode} />

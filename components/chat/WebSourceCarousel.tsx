@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
 import { safeHttpUrl } from "@/components/browser/safeUrl";
@@ -76,7 +77,7 @@ export default function WebSourceCarousel({
   ariaLabel?: string;
 }) {
   const t = useT();
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useUiReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ startX: number; scrollLeft: number; pointerId: number; captured: boolean } | null>(null);
   const [expandedKey, setExpandedKey] = useState<string | null>(null);
