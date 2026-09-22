@@ -110,6 +110,9 @@ importers:
       remark-parse:
         specifier: 11.0.0
         version: 11.0.0
+      undici:
+        specifier: ^6.27.0
+        version: 6.27.0
       unified:
         specifier: 11.0.5
         version: 11.0.5

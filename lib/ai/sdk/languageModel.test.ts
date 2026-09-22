@@ -418,6 +418,61 @@ test("resolveLanguageModel：真实 SDK 仍拒绝未知思考结构及畸形工�
   }
 });
 
+function anthropicSseResponse() {
+  const events = [
+    { type: "message_start", message: { id: "msg_1", type: "message", role: "assistant", content: [], model: "claude-sonnet-4-6", stop_reason: null, stop_sequence: null, usage: { input_tokens: 10, output_tokens: 1 } } },
+    { type: "content_block_start", index: 0, content_block: { type: "text", text: "" } },
+    { type: "content_block_delta", index: 0, delta: { type: "text_delta", text: "ok" } },
+    { type: "content_block_stop", index: 0 },
+    { type: "message_delta", delta: { stop_reason: "end_turn", stop_sequence: null }, usage: { output_tokens: 2 } },
+    { type: "message_stop" },
+  ];
+  return new Response(
+    events.map((event) => `event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`).join(""),
+    { headers: { "content-type": "text/event-stream" } },
+  );
+}
+
+function anthropicGroups(): CustomApiGroup[] {
+  return [{
+    id: "proxy",
+    name: "Proxy",
+    baseUrl: "https://proxy.io/anthropic",
+    apiKey: "sk",
+    models: [{ id: "claude-sonnet-4-6", apiProtocol: "anthropic", thinking: true }],
+  }];
+}
+
+test("resolveLanguageModel：anthropic 协议注入顶层 cache_control（C 项 prompt cache）", async (t) => {
+  const resolved = resolveLanguageModel(buildCustomModelRegistryId("proxy", "claude-sonnet-4-6"), anthropicGroups());
+  const bodies: Record<string, unknown>[] = [];
+  t.mock.method(globalThis, "fetch", async (input: string | URL | Request, init?: RequestInit) => {
+    assert.equal(String(input), "https://proxy.io/anthropic/v1/messages");
+    bodies.push(init?.body ? JSON.parse(String(init.body)) as Record<string, unknown> : {});
+    return anthropicSseResponse();
+  });
+  const result = await resolved.model.doStream({ prompt: fixturePrompt });
+  await readParts(result.stream);
+  assert.equal(bodies.length, 1);
+  assert.deepEqual(bodies[0].cache_control, { type: "ephemeral" });
+});
+
+test("resolveLanguageModel：调用侧显式 cacheControl 时尊重其 ttl", async (t) => {
+  const resolved = resolveLanguageModel(buildCustomModelRegistryId("proxy", "claude-sonnet-4-6"), anthropicGroups());
+  const bodies: Record<string, unknown>[] = [];
+  t.mock.method(globalThis, "fetch", async (_input: string | URL | Request, init?: RequestInit) => {
+    bodies.push(init?.body ? JSON.parse(String(init.body)) as Record<string, unknown> : {});
+    return anthropicSseResponse();
+  });
+  const result = await resolved.model.doStream({
+    prompt: fixturePrompt,
+    providerOptions: { anthropic: { cacheControl: { type: "ephemeral", ttl: "1h" } } },
+  });
+  await readParts(result.stream);
+  assert.equal(bodies.length, 1);
+  assert.deepEqual(bodies[0].cache_control, { type: "ephemeral", ttl: "1h" });
+});
+
 test("resolveLanguageModel：真实 SDK 保留上游显式错误与缺失完成信号的失败", async (t) => {
   for (const events of [
     [{ error: { message: "fixture upstream error", type: "server_error", code: "fixture_error" } }],

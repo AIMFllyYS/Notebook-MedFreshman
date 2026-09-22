@@ -73,6 +73,7 @@ export const windowZh = {
     regenerate: "重新生成",
     urlExpiry: "图片 URL 1 小时后失效，请及时下载",
     generating: "正在生成图片…",
+    interrupted: "生成中断，请重试",
     // 生图进度（上游不回传进度，这里是按模型典型耗时的估算）
     progress: {
       elapsed: "已等待 {seconds}s",

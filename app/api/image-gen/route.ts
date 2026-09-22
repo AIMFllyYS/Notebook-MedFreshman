@@ -1,4 +1,5 @@
-import type { NextRequest } from "next/server";
+import { after, type NextRequest } from "next/server";
+import { Agent } from "undici";
 import {
   resolveImageProvider,
   imagesGenerationsUrl,
@@ -21,6 +22,11 @@ export const dynamic = "force-dynamic";
 // 慢模型中转站（xhuoai 的 nano-banana / gpt-image-*）实测 26–49s、常见到 100–400s，
 // 单模型超时见 ModelInfo.imageTimeoutMs（最长 420s）。这里给函数级上限留足余量。
 export const maxDuration = 600;
+
+// Node の fetch（undici）は headersTimeout/bodyTimeout がデフォルト 300s のため、
+// 300–420s に収まる正常な生图も socket 層で切断され UND_ERR_HEADERS_TIMEOUT になっていた。
+// 上游制限は下の AbortController（imageTimeoutMs）に一本化し、undici 側の二重タイムアウトは無効化する。
+const imageGenDispatcher = new Agent({ headersTimeout: 0, bodyTimeout: 0 });
 
 /**
  * 根据 apiModelId 判断生图 API 风格。
@@ -88,10 +94,11 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const userId = await resolveQuotaUserId(req.headers);
   const pool = resolveMainModelPool(
     usedPlatformCredentialsForProvider({ isCustom: provider.isCustom, registryId: provider.registryId }),
   );
+  // BYOK（pool=null）は额度確認も settle の insert も使わないため、userId 解決の外部呼び出し自体を省く。
+  const userId = pool == null ? null : await resolveQuotaUserId(req.headers);
   const gate = await assertQuotaAvailable({ userId, pool });
   if (!gate.ok) return quotaRejectedJson(gate);
 
@@ -132,9 +139,8 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify(requestBody),
       signal: abortCtrl.signal,
-    });
-
-    clearTimeout(timeoutId);
+      dispatcher: imageGenDispatcher,
+    } as RequestInit);
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
@@ -172,11 +178,11 @@ export async function POST(req: NextRequest) {
       };
     }
 
-    await settleUsage({
+    const settleInput = {
       headers: req.headers,
       userId,
       route: "/api/image-gen",
-      kind: "image",
+      kind: "image" as const,
       imageCount: images.length,
       selectedModelId: modelId || provider.registryId,
       actualModelId: provider.registryId,
@@ -191,7 +197,16 @@ export async function POST(req: NextRequest) {
           }
         : undefined,
       meta: { source: "image-gen" },
-    });
+    };
+    // 写库は応答のクリティカルパスから外す。リクエストスコープ外（単体テストの直接呼び出し）
+    // では after が登録できないため、その場で非同期に流す。
+    try {
+      after(async () => {
+        await settleUsage(settleInput);
+      });
+    } catch {
+      void settleUsage(settleInput);
+    }
 
     return Response.json({
       images,
@@ -203,7 +218,6 @@ export async function POST(req: NextRequest) {
       apiStyle,
     });
   } catch (err) {
-    clearTimeout(timeoutId);
     logSatelliteError("/api/image-gen", err);
     const isAbort = err instanceof Error && err.name === "AbortError";
     if (isAbort) {
@@ -217,5 +231,8 @@ export async function POST(req: NextRequest) {
       return jsonError(502, "生图端点不对或无法连接，请检查设置中的 Base URL", "bad_endpoint");
     }
     return jsonError(500, toChatErrorMessage(err, secrets), "upstream");
+  } finally {
+    // headers 到着後も body 読み取り中は同じ AbortController で締めるため、必ず最後に解除する。
+    clearTimeout(timeoutId);
   }
 }

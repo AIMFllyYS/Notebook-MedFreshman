@@ -193,7 +193,17 @@ export const useImageGen = createPersistedStore<ImageGenState>(
       storage: "idb",
       partialize: (s) => ({ sessions: s.sessions }),
       onRehydrateStorage: () => (state) => {
-        if (state) stripOpenIds(state);
+        if (state) {
+          stripOpenIds(state);
+          // リロードやプロセス再起動で死んだ fetch の残骸として "loading" が残ると、
+          // 再オープン時に永久スピナーになる。中断エラーへ矯正してリトライ可能にする。
+          for (const session of Object.values(state.sessions)) {
+            if (session.status === "loading") {
+              session.status = "error";
+              session.error = translateNow("window.imageGen.interrupted");
+            }
+          }
+        }
         state?._setHasHydrated(true);
       },
     },
