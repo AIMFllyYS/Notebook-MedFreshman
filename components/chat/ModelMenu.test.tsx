@@ -42,7 +42,7 @@ describe('ModelMenu progressive selection', () => {
     expect(screen.getByRole('region', { name: '模型系列' })).toBeTruthy();
     expect(screen.getByRole('region', { name: '具体模型' })).toBeTruthy();
     expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
-    expect(screen.getByRole('region', { name: '模型系列' }).style.width).toBe('196px');
+    expect(screen.getByRole('region', { name: '模型系列' }).style.width).toBe('232px');
   });
   it('preserves vendor training disclosure in both row and details', () => {
     render(<ModelMenu />);

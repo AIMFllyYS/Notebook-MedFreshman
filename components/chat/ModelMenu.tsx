@@ -37,7 +37,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   "旗舰模型": "var(--md-sys-color-primary)",
   "生图模型": "var(--md-sys-color-secondary)",
 };
-const COLUMN_WIDTHS = [196, 244, 228];
+const COLUMN_WIDTHS = [232, 250, 230];
 const GAP = 12;
 
 /** 模型行右侧特征圆点的语义类型：前五个对应菜单分类，后两个是能力标签。 */
