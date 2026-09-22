@@ -296,6 +296,7 @@ export const panelEn = {
       failed: "Payment not completed",
       failedDesc: "This order wasn't paid. Go back to the membership window to try again.",
       missing: "Missing order id — cannot look up the payment result.",
+      notFound: "Order not found — check the link is complete or place a new order.",
       signInRequired: "Sign in first to see the payment result.",
       backHome: "Back to app",
     },

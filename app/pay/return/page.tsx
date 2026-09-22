@@ -12,6 +12,7 @@ type OrderState =
   | "pending"
   | "failed"
   | "missing"
+  | "notFound"
   | "unauthorized";
 
 const POLL_INTERVAL_MS = 2000;
@@ -41,6 +42,10 @@ function PayReturnBody() {
           });
           if (res.status === 401) {
             if (!cancelled) setState("unauthorized");
+            return;
+          }
+          if (res.status === 404) {
+            if (!cancelled) setState("notFound");
             return;
           }
           const data = (await res.json().catch(() => ({}))) as {
@@ -83,7 +88,7 @@ function PayReturnBody() {
             <LoaderCircle size={34} className="animate-spin text-[var(--md-sys-color-primary)]" />
           )}
           {state === "success" && <CircleCheck size={34} className="text-[var(--md-sys-color-primary)]" />}
-          {(state === "failed" || state === "missing" || state === "unauthorized") && (
+          {(state === "failed" || state === "missing" || state === "notFound" || state === "unauthorized") && (
             <CircleX size={34} className="text-[var(--md-sys-color-error)]" />
           )}
           <p className="text-[13px] font-medium text-[var(--ink)]">
@@ -93,6 +98,7 @@ function PayReturnBody() {
             {state === "success" && t("panel.membership.payReturn.success")}
             {state === "failed" && t("panel.membership.payReturn.failed")}
             {state === "missing" && t("panel.membership.payReturn.missing")}
+            {state === "notFound" && t("panel.membership.payReturn.notFound")}
             {state === "unauthorized" && t("panel.membership.payReturn.signInRequired")}
           </p>
           {state === "success" && (

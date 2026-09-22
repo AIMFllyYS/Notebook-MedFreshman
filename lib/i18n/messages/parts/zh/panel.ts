@@ -295,6 +295,7 @@ export const panelZh = {
       failed: "支付未完成",
       failedDesc: "这笔订单没有支付成功，可以回到会员窗口重新发起。",
       missing: "缺少订单号，无法查询支付结果。",
+      notFound: "没有找到这笔订单，请确认链接完整或重新下单。",
       signInRequired: "请先登录后再查看支付结果。",
       backHome: "返回应用",
     },
