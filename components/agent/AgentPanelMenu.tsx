@@ -63,7 +63,7 @@ export default function AgentPanelMenu({
   const t = useT();
   if (typeof document === "undefined") return null;
   const session = target.kind === "session" ? target.session : null;
-  const systemSession = session?.kind === "note" || session?.kind === "floating";
+  const systemSession = session?.kind === "note" || session?.kind === "floating" || session?.kind === "scheduled";
 
   return createPortal(
     <div
@@ -174,7 +174,11 @@ export default function AgentPanelMenu({
           )}
           {systemSession ? (
             <p className="px-2.5 pb-1 pt-0.5 text-[10.5px] leading-relaxed text-[var(--ink-faint)]">
-              {session.kind === "note" ? t("agent.menu.systemNote") : t("agent.menu.systemFloating")}
+              {session.kind === "note"
+                ? t("agent.menu.systemNote")
+                : session.kind === "scheduled"
+                  ? t("agent.menu.systemScheduled")
+                  : t("agent.menu.systemFloating")}
             </p>
           ) : null}
           <button

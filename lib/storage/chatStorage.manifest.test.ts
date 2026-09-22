@@ -43,27 +43,31 @@ test("manifestFrom 只覆盖显式字段：改会话不会丢掉项目", () => {
 });
 
 test("ensureDefaultProjects 只补缺的：用户改过的名字与新建项目都保留", () => {
-  assert.equal(ensureDefaultProjects([])?.length, 2);
+  assert.equal(ensureDefaultProjects([])?.length, 3);
   assert.equal(ensureDefaultProjects([])?.[0].id, "project-note");
   assert.equal(ensureDefaultProjects([])?.[1].id, "project-floating");
+  assert.equal(ensureDefaultProjects([])?.[2].id, "project-scheduled");
   assert.equal(ensureDefaultProjects([
     { id: "project-note", name: "我的笔记对话", createdAt: 1, system: "note" },
     { id: "project-floating", name: "划词摘录", createdAt: 0, system: "floating" },
-  ]), null, "两个都在就不写盘");
+    { id: "project-scheduled", name: "定时任务", createdAt: 0, system: "scheduled" },
+  ]), null, "三个都在就不写盘");
   const seeded = ensureDefaultProjects([
     { id: "project-note", name: "我的笔记对话", createdAt: 1, system: "note" },
     { id: "folder-a", name: "组胚", createdAt: 2 },
   ]);
   assert.ok(seeded);
-  assert.equal(seeded.length, 3);
+  assert.equal(seeded.length, 4);
   assert.equal(seeded.find((f) => f.id === "project-note")?.name, "我的笔记对话");
   assert.ok(seeded.some((f) => f.id === "project-floating"));
+  assert.ok(seeded.some((f) => f.id === "project-scheduled"));
 });
 
 test("isSystemProject：按 system 标记或按系统 id 都算系统项目", () => {
   assert.equal(isSystemProject({ id: "project-note" }), true);
   assert.equal(isSystemProject({ id: "project-floating" }), true);
+  assert.equal(isSystemProject({ id: "project-scheduled" }), true);
   assert.equal(isSystemProject({ id: "x", system: "note" }), true);
   assert.equal(isSystemProject({ id: "folder-a" }), false);
-  assert.deepEqual([...SYSTEM_PROJECT_IDS], ["project-note", "project-floating"]);
+  assert.deepEqual([...SYSTEM_PROJECT_IDS], ["project-note", "project-floating", "project-scheduled"]);
 });

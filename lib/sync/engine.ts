@@ -399,7 +399,7 @@ function asChatProject(value: unknown): ChatProjectSyncPayload | null {
     name: row.name,
     createdAt,
     updatedAt,
-    ...(row.system === "note" || row.system === "floating" ? { system: row.system } : {}),
+    ...(row.system === "note" || row.system === "floating" || row.system === "scheduled" ? { system: row.system } : {}),
   };
 }
 

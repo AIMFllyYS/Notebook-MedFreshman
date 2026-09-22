@@ -133,7 +133,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
         return;
       }
       // 点进某个项目的会话，就把「下次新建」的落点也切到那个项目（与最近项目一致）。
-      setActiveProject(session.kind === "note" ? null : (session.folderId ?? null));
+      // 系统项目会话（note / scheduled）不动落点：它们的归属由来源决定，不是用户选的。
+      setActiveProject(session.kind === "note" || session.kind === "scheduled" ? null : (session.folderId ?? null));
       switchSession(session.id);
     },
     [goToChat, setActiveProject, switchSession],
@@ -290,11 +291,13 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
             <AnimatedCollapse isOpen={projectsExpanded}>
               {projects.map((project) => {
                 const expanded = collapsedProjects[project.id] !== true;
-                const emptyLabel = project.system
-                  ? project.system === "note"
+                const emptyLabel = !project.system
+                  ? t("agent.sidebar.empty.project")
+                  : project.system === "note"
                     ? t("agent.sidebar.empty.notes")
-                    : t("agent.sidebar.empty.selection")
-                  : t("agent.sidebar.empty.project");
+                    : project.system === "floating"
+                      ? t("agent.sidebar.empty.selection")
+                      : t("agent.sidebar.empty.scheduled");
                 return (
                   <div key={project.id}>
                     <div
