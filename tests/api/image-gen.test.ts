@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { after, before, test, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
+import { Agent } from "undici";
 
 const envNames = [
   "AI_BASE_URL",
@@ -96,6 +97,8 @@ test("image-gen: mock 200 SiliconFlow 解析出非空图片，且不走 relay", 
   assert.equal(new Headers(calls[0].init.headers).get("Authorization"), "Bearer sf-image-key");
   assert.equal(calls[0].body.image_size, "1024x1024");
   assert.equal(calls[0].body.model, "Tongyi-MAI/Z-Image-Turbo");
+  // Bug B: undici 既定の 300s socket タイムアウトを外す dispatcher が必須（420s 級の生图を殺さない）。
+  assert.ok((calls[0].init as { dispatcher?: unknown }).dispatcher instanceof Agent);
 });
 
 test("image-gen: mock 200 OpenAI b64_json 解析出图片", async (t) => {

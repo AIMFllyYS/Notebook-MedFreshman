@@ -11,7 +11,7 @@ export function toChatErrorMessage(error: unknown, secrets: string[] = []): stri
   }
   const messages = chain.map((item) => typeof item.message === 'string' ? item.message : '').join(' ');
   const code = chain.map((item) => item.code).find((value) => typeof value === 'string')
-    ?? messages.match(/\b(EACCES|EPERM|ENOTFOUND|EAI_AGAIN|ECONNREFUSED|ECONNRESET|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT)\b/)?.[1];
+    ?? messages.match(/\b(EACCES|EPERM|ENOTFOUND|EAI_AGAIN|ECONNREFUSED|ECONNRESET|ETIMEDOUT|UND_ERR_\w*TIMEOUT)\b/)?.[1];
 
   if (code === 'EACCES' || code === 'EPERM') {
     return `无法连接模型服务（${code}）：网络访问被系统或启动环境拒绝。请检查开发服务的网络权限与代理，或在普通终端重新启动 pnpm dev。`;
@@ -22,7 +22,7 @@ export function toChatErrorMessage(error: unknown, secrets: string[] = []): stri
   if (code === 'ECONNREFUSED' || code === 'ECONNRESET') {
     return '模型服务连接被拒绝或中断，请检查 API 地址、服务状态和代理后重试。';
   }
-  if (code === 'ETIMEDOUT' || code === 'UND_ERR_CONNECT_TIMEOUT' || chain.some((item) => item.name === 'TimeoutError')) {
+  if (code === 'ETIMEDOUT' || (typeof code === 'string' && /^UND_ERR_\w*TIMEOUT$/.test(code)) || chain.some((item) => item.name === 'TimeoutError')) {
     return '连接模型服务超时，请检查网络或稍后重试。';
   }
   if (chain.some((item) => item.name === 'AbortError')) return '生成已取消。';
