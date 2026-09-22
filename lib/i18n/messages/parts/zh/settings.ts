@@ -91,6 +91,9 @@ export const settingsZh = {
     darkAccent: "夜间主色",
     selectionColor: "划词颜色",
     font: "全局字体",
+    reduceMotion: "减少动画",
+    reduceMotionDesc: "界面动画与过渡效果即时完成",
+    reduceMotionAria: "减少动画",
     reset: "恢复默认外观",
     summary: "{theme} · {mode} · {font}",
     // 全局字体下拉项（lib/theme/appearance.ts 的 FONT_CHOICES[].labelKey）

@@ -163,12 +163,15 @@ test("切标签的卡片重排动画：layout + popLayout + 尊重减少动态�
   // 共享弹簧：刚度/阻尼写在 lib/motion.ts，组件不写魔法数字
   assert.match(motion, /export const LAYOUT_REFLOW: Transition = \{/);
   assert.match(motion, /export const cardSwapVariants: Variants = \{/);
-  assert.match(page, /import \{ LAYOUT_REFLOW, cardSwapVariants \} from "@\/lib\/motion";/);
+  // 卡片进出场/重排收口在共享预设 reflowItemProps（内部用 cardSwapVariants + reduced 降级）
+  assert.match(motion, /export function reflowItemProps\(/);
+  assert.match(page, /import \{ LAYOUT_REFLOW, reflowItemProps \} from "@\/lib\/motion";/);
   // 卡片外层 motion.div 带 layout，进出场由 AnimatePresence 接管；popLayout 让退场的先脱离文档流
   assert.match(page, /<AnimatePresence initial=\{false\} mode="popLayout">/);
   assert.match(page, /data-testid=\{`asset-cell-\$\{item\.kind\}-\$\{item\.id\}`\}/);
   assert.match(page, /layout=\{!reducedMotion\}/);
-  assert.match(page, /const reducedMotion = useReducedMotion\(\);/);
+  // 用户「减少动画」设置与系统 prefers-reduced-motion 统一收口在 useUiReducedMotion
+  assert.match(page, /const reducedMotion = useUiReducedMotion\(\);/);
   // 网格与列表两个容器也参与 layout，容器尺寸变化同样动画
   const gridBlock = page.slice(page.indexOf("data-testid=\"assets-grid\"") - 400, page.indexOf("data-testid=\"assets-grid\""));
   assert.match(gridBlock, /<motion\.div[\s\S]*layout=\{!reducedMotion\}/);

@@ -4,7 +4,7 @@
  * 所有需要 framer-motion 数值的组件从这里取值，不写魔法数字。
  */
 
-import type { Variants, Transition } from "framer-motion";
+import type { MotionProps, Variants, Transition } from "framer-motion";
 
 // ── 时长（秒），对应 globals.css --duration-* ──────────────────────
 export const DURATION = {
@@ -71,6 +71,25 @@ export const cardSwapVariants: Variants = {
   animate: { opacity: 1, scale: 1, transition: tr(DURATION.fast) },
   exit: { opacity: 0, scale: 0.98, transition: tr(DURATION.instant, EASE.standard) },
 };
+
+/**
+ * 「重排 + popLayout」成员项的统一 props（最初在 AgentAssetsPage 的卡片网格上定的手感）：
+ * - 外层配合 `<AnimatePresence initial={false} mode="popLayout">`；
+ * - 每项 `layout` + `LAYOUT_REFLOW` 弹簧：集合变化时成员互相滑位，进出场只做淡+微缩；
+ * - `reducedMotion` 时整套退化为静态（无 layout、无进出场），与 useUiReducedMotion 配套。
+ */
+export function reflowItemProps(reducedMotion: boolean): MotionProps {
+  return reducedMotion
+    ? { layout: false, initial: false, transition: LAYOUT_REFLOW }
+    : {
+        layout: true,
+        variants: cardSwapVariants,
+        initial: "initial",
+        animate: "animate",
+        exit: "exit",
+        transition: LAYOUT_REFLOW,
+      };
+}
 
 /**
  * 方向感 Tab 面板切换：根据新旧 Tab index 的差值决定滑入/滑出方向。

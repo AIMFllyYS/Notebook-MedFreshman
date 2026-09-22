@@ -17,7 +17,8 @@ export type AgentCenterTab = "answer" | "links" | "images";
  */
 /** 卡片四周留白：卡片是浮起来的（圆角 + 阴影），但**占的是真实宽度**，所以留白也算进那一列的宽度。 */
 export const SOURCES_PANEL_INSET = 12;
-export const SOURCES_PANEL_DEFAULT_SIZE = { width: 300, height: 420 } as const;
+/** SSR / 单测回退值；浏览器里的默认宽由 defaultSourcesPanelSize() 按对话行宽折算（见下）。 */
+export const SOURCES_PANEL_DEFAULT_SIZE = { width: 400, height: 460 } as const;
 export const SOURCES_PANEL_MIN_SIZE = { width: 220, height: 200 } as const;
 export const SOURCES_PANEL_MAX_SIZE = { width: 720, height: 1200 } as const;
 const SOURCES_PANEL_SIZE_KEY = "studysolo-agent-sources-panel-size";
@@ -29,20 +30,34 @@ export function clampSourcesPanelSize(size: { width: number; height: number }): 
   };
 }
 
+/**
+ * 来源列的默认尺寸：AI 输出后它自动弹在对话行右侧，用户口径「太窄」——
+ * 默认宽取**对话行的 ~1/3**（行 ≈ 视口去掉左对话栏 14%，0.34×0.86 ≈ 0.30 视口宽），
+ * 与右侧主面板（37%）协调：小栏始终略小于主面板；高度同理取约半屏，均卡在可调范围内。
+ * 用户拖过的尺寸照旧读盘恢复，这个默认只兜「从没拖过」的情形。
+ */
+export function defaultSourcesPanelSize(): { width: number; height: number } {
+  const width =
+    typeof window === "undefined" ? SOURCES_PANEL_DEFAULT_SIZE.width : window.innerWidth * 0.3;
+  const height =
+    typeof window === "undefined" ? SOURCES_PANEL_DEFAULT_SIZE.height : window.innerHeight * 0.5;
+  return clampSourcesPanelSize({ width, height });
+}
+
 function readSavedSize(): { width: number; height: number } {
   if (typeof window === "undefined") return { ...SOURCES_PANEL_DEFAULT_SIZE };
   try {
     const raw = window.localStorage.getItem(SOURCES_PANEL_SIZE_KEY);
-    if (!raw) return { ...SOURCES_PANEL_DEFAULT_SIZE };
+    if (!raw) return defaultSourcesPanelSize();
     const parsed = JSON.parse(raw) as { width?: unknown; height?: unknown };
     const width = typeof parsed.width === "number" ? parsed.width : 0;
     const height = typeof parsed.height === "number" ? parsed.height : 0;
     if (width < SOURCES_PANEL_MIN_SIZE.width || height < SOURCES_PANEL_MIN_SIZE.height) {
-      return { ...SOURCES_PANEL_DEFAULT_SIZE };
+      return defaultSourcesPanelSize();
     }
     return { width, height };
   } catch {
-    return { ...SOURCES_PANEL_DEFAULT_SIZE };
+    return defaultSourcesPanelSize();
   }
 }
 
@@ -64,7 +79,7 @@ export const useAgentCenter = create<AgentCenterState>((set) => ({
   sourcesPanelOpen: true,
   toggleSourcesPanel: () => set((state) => ({ sourcesPanelOpen: !state.sourcesPanelOpen })),
 
-  sourcesPanelSize: { ...SOURCES_PANEL_DEFAULT_SIZE },
+  sourcesPanelSize: defaultSourcesPanelSize(),
   setSourcesPanelSize: (size) => {
     const next = clampSourcesPanelSize(size);
     try {

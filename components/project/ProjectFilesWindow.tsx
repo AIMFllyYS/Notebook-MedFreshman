@@ -64,8 +64,8 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
           title: ".index.md",
           kindLabel: t("window.project.kindIndex"),
           // 这里以前放的是文件名，10px 等宽字截断成一条看不清的「面包屑」。
-          // 文件名已经由下方文件树承担，这里改成这份索引的规模，短且有用。
-          meta: t("window.project.sliceStats", { slices: activeFile.slices.length, chars: activeFile.charCount }),
+          // 文件名已经由下方文件树承担；普通文件给索引规模，教材引用给出处地址（它没有切片/字数可言）。
+          meta: activeFile.studioRef?.address ?? t("window.project.sliceStats", { slices: activeFile.slices.length, chars: activeFile.charCount }),
         },
         ...activeFile.slices.map((slice) => ({
           id: `${activeFile.id}:${slice.id}`,
@@ -163,9 +163,12 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
       </AnchoredMenu>
       {activeFile ? (
         <>
-          <button type="button" data-no-drag className={TOOLBAR_BUTTON} onClick={() => fileInputRef.current?.click()} title={t("window.project.reimportTitle")}>
-            <RefreshCw size={13} /> {t("window.project.reimport")}
-          </button>
+          {/* 教材引用是软链接不是本地文件，没有「重新导入」可讲。 */}
+          {activeFile.kind !== "studio-ref" ? (
+            <button type="button" data-no-drag className={TOOLBAR_BUTTON} onClick={() => fileInputRef.current?.click()} title={t("window.project.reimportTitle")}>
+              <RefreshCw size={13} /> {t("window.project.reimport")}
+            </button>
+          ) : null}
           <button type="button" data-no-drag className={TOOLBAR_DANGER_BUTTON} onClick={() => removeFile(activeFile.id)}>
             <Trash2 size={13} /> {t("window.project.remove")}
           </button>
@@ -214,7 +217,7 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
       const slice = activeFile.slices.find((item) => item.id === activeSliceId);
       if (!slice) return null;
       return (
-        <div className="flex h-full flex-col gap-2">
+        <div className="flex h-full flex-col gap-2 p-3">
           {/* 标题可截断、字数与按钮不参与压缩：窗口窄的时候挤坏的应该是标题，不是按钮。 */}
           <div className="flex min-w-0 items-center gap-2">
             <span className="min-w-0 truncate text-[12.5px] font-medium text-[var(--ink)]" title={slice.title}>
@@ -238,8 +241,9 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
       );
     })()
   ) : (
-    <div className="flex h-full flex-col gap-2">
-      <span className="text-[12.5px] font-medium text-[var(--ink)]">{t("window.project.indexTitle")}</span>
+    // 目录里「.index.md / 索引」一项已经说明了这是什么，正文不再重复贴一行标题——
+    // 那行字贴在 body 最左上、压着边线，正是用户嫌「怪异」的来源。
+    <div className="flex h-full flex-col gap-2 p-3">
       <pre className="min-h-0 flex-1 overflow-auto whitespace-pre-wrap rounded-lg border border-[var(--line-soft)] bg-[var(--bg-panel)] p-3 text-[12px] leading-relaxed text-[var(--ink-soft)]">
         {activeFile.indexMarkdown || t("window.project.indexEmpty")}
       </pre>

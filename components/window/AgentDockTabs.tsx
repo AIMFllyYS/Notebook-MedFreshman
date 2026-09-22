@@ -3,10 +3,13 @@
 import type { ReactNode } from "react";
 import { X } from "lucide-react";
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
+import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
+import { reflowItemProps } from "@/lib/motion";
 import { useT } from "@/lib/i18n";
 
 /** Agent 右栏的标签条：一条窗口 = 一个标签，活动标签由 `activeWindowId` 决定。 */
@@ -20,6 +23,8 @@ export default function AgentDockTabs({
   const t = useT();
   const activeWindowId = useWindowManager((state) => state.activeWindowId);
   const { bringToFront, restoreWindow } = useWindowManager();
+  /** 标签开合/换位与资产页同一套「重排 + popLayout」手感；减少动态时退回静态。 */
+  const reducedMotion = useUiReducedMotion();
 
   const activateWindow = (window: ManagedWindow) => {
     if (window.minimized) restoreWindow(window.id);
@@ -34,12 +39,14 @@ export default function AgentDockTabs({
         aria-label={t("panel.window.tabsAria")}
         className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto"
       >
+        <AnimatePresence initial={false} mode="popLayout">
         {windows.map((window) => {
           const selected = activeWindowId === window.id && !window.minimized;
           return (
-            <div
+            <motion.div
               key={window.id}
               role="presentation"
+              {...reflowItemProps(reducedMotion)}
               className={clsx(
                 "group flex min-w-0 max-w-[min(18rem,48%)] shrink-0 items-center rounded-lg border transition-colors",
                 selected
@@ -70,9 +77,10 @@ export default function AgentDockTabs({
               >
                 <X size={12} />
               </button>
-            </div>
+            </motion.div>
           );
         })}
+        </AnimatePresence>
       </div>
 
       {addContent}

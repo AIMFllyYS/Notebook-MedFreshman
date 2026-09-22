@@ -138,6 +138,12 @@ export interface SettingsState {
   /** 界面语言。默认中文（词典真相源）；与其它设置一样本机持久化，切换后立即生效。 */
   locale: Locale;
 
+  /**
+   * 「减少动画」用户开关：与系统 prefers-reduced-motion 是「或」的关系，
+   * 任一为真即按减少动态处理（CSS 经 html[data-reduce-motion]，framer-motion 经 MotionConfig）。
+   */
+  reduceMotion: boolean;
+
   /** 本机持久化设置是否已应用。首帧（含 SSR 与 hydration）恒为 false，值等于 DEFAULTS。 */
   hydrated: boolean;
 
@@ -166,6 +172,7 @@ export interface SettingsState {
 
   setFontScale: (v: number) => void;
   setLocale: (locale: Locale) => void;
+  setReduceMotion: (v: boolean) => void;
   toggleTool: (name: string, enabled: boolean) => void;
   setDefaultThinking: (v: boolean) => void;
   setDefaultThinkingEffort: (v: ThinkingEffort) => void;
@@ -216,6 +223,7 @@ type Persisted = Pick<
   | "globalContext"
   | "usdExchangeRate"
   | "locale"
+  | "reduceMotion"
 >;
 
 const DEFAULTS: Persisted = {
@@ -251,6 +259,7 @@ const DEFAULTS: Persisted = {
   globalContext: "",
   usdExchangeRate: 7.00,
   locale: DEFAULT_LOCALE,
+  reduceMotion: false,
 };
 
 let settingsCanPersist = true;
@@ -340,6 +349,7 @@ function load(): Persisted & { settingsLoadWarning?: string | null } {
       parsed.pinChatHeader = parsed.pinChatHeader === true;
       // 盘上可能是旧版本 / 手改过的语言值，不认识的一律回中文（词典真相源）。
       parsed.locale = normalizeLocale(parsed.locale);
+      parsed.reduceMotion = parsed.reduceMotion === true;
 
       let secretsRaw = recoveredSecrets;
       if (secretsRaw === undefined) {
@@ -446,6 +456,7 @@ function persist(get: () => SettingsState) {
     globalContext: s.globalContext,
     usdExchangeRate: s.usdExchangeRate,
     locale: normalizeLocale(s.locale),
+    reduceMotion: s.reduceMotion === true,
   };
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(data));
@@ -676,6 +687,10 @@ export const useSettings = create<SettingsState>((rawSet, get) => {
   },
   setLocale: (locale) => {
     set({ locale: normalizeLocale(locale) });
+    persist(get);
+  },
+  setReduceMotion: (v) => {
+    set({ reduceMotion: v === true });
     persist(get);
   },
   toggleTool: (name, enabled) => {

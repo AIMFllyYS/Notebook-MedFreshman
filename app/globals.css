@@ -529,6 +529,15 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+/* 设置页「减少动画」开关：与上面的系统媒体查询同一套收口，触发源换成 <html> 属性，
+   由 MotionPreferenceProvider 写入（bootstrap 脚本已在首帧前预读）。 */
+html[data-reduce-motion="true"] *,
+html[data-reduce-motion="true"] *::before,
+html[data-reduce-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
 
 /* ── Vidstack 播放器主题适配 ─────────────────── */
 .vs-player {

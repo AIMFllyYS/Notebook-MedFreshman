@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
 import { WEB_SEARCH_PROVIDER_LABELS, type ProviderChip } from "@/lib/chat/webSearchDisplay";
 
 /**
@@ -8,7 +9,7 @@ import { WEB_SEARCH_PROVIDER_LABELS, type ProviderChip } from "@/lib/chat/webSea
  * running = 脉冲点（正在搜）；done = 实心点（已出结果）；skipped = 灰态 + title 给原因。
  */
 export function WebSearchProviderChips({ chips }: { chips: readonly ProviderChip[] }) {
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useUiReducedMotion();
   if (!chips.length) return null;
   return (
     <span className="web-search-chips" role="list">

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useId } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useUiReducedMotion } from '@/lib/hooks/useUiReducedMotion';
 import { AgentAlertIcon, AgentChevronIcon, AgentPauseIcon } from '@/components/icons/AgentIcons';
 import type { TraceStatus } from '@/lib/chat/buildTrace';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
@@ -32,7 +33,7 @@ const STATUS_KEYS: Record<TraceStatus, I18nKey> = {
 export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, title, summary, status, durationMs, icon, children, expandWhileRunning = false }: AgentTraceStepProps) {
   const t = useT();
   const contentId = useId();
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useUiReducedMotion();
   const active = status === 'running';
   const [expanded, setExpanded] = useProcessingDisclosure(active && expandWhileRunning, status === 'error');
   const isError = status === 'error';

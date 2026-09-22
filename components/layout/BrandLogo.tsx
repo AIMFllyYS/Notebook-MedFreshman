@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion, type Transition, type TargetAndTransition } from "framer-motion";
+import { AnimatePresence, motion, type Transition, type TargetAndTransition } from "framer-motion";
+import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 
 /**
@@ -94,7 +95,7 @@ export default function BrandLogo({
 }) {
   const [index, setIndex] = useState(0);
   const mounted = useIsClient();
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useUiReducedMotion();
 
   useEffect(() => {
     const id = setInterval(

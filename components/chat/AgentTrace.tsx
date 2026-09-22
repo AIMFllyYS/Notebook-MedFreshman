@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useId, useLayoutEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useUiReducedMotion } from '@/lib/hooks/useUiReducedMotion';
 import { AgentCheckIcon, AgentChevronIcon } from '@/components/icons/AgentIcons';
 import type { AgentTraceModel } from '@/lib/chat/buildTrace';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
@@ -50,7 +51,7 @@ export function agentProcessingLabel(
 export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = false, durationMs, summaryMode = 'status' }: AgentTraceProps) {
   const t = useT();
   const contentId = useId();
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useUiReducedMotion();
   const [expanded, setExpanded] = useProcessingDisclosure(isStreaming);
   const bodyRef = useRef<HTMLDivElement>(null);
   const [bodyMounted, setBodyMounted] = useState(expanded);
