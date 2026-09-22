@@ -250,7 +250,7 @@ function HypTestDemoBase() {
             className={
               "rounded-lg px-3 py-1.5 text-[12px] font-semibold transition-colors " +
               (t === testType
-                ? "bg-[var(--accent)] text-white shadow-sm"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)] shadow-sm"
                 : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--accent-weak)]")
             }
           >
@@ -609,7 +609,7 @@ function HypTestDemoBase() {
       <div className="flex gap-2 flex-wrap">
         <button
           onClick={randomize}
-          className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[13px] font-medium text-white hover:opacity-90 transition-opacity"
+          className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[13px] font-medium text-[var(--md-sys-color-on-primary)] hover:opacity-90 transition-opacity"
         >
           随机生成 z 值
         </button>

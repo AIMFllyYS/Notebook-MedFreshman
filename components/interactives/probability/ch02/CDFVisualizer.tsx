@@ -493,7 +493,7 @@ function CDFVisualizerBase() {
             className={
               "rounded-lg px-3 py-1 text-[12px] font-medium transition-colors " +
               (distType === key
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                 : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--accent-weak)]")
             }
           >

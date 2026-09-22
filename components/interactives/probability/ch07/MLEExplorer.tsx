@@ -362,7 +362,7 @@ function MLEExplorerBase() {
                 className={
                   "rounded-lg px-3 py-1 text-[12px] font-medium transition-colors " +
                   (d === dist
-                    ? "bg-[var(--accent)] text-white"
+                    ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                     : "bg-[var(--bg-elevated)] border border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)]")
                 }
               >

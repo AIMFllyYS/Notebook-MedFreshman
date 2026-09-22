@@ -171,7 +171,7 @@ function DirectingEffectBase() {
                   onClick={() => setSelectedIndex(i)}
                   className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
                     active
-                      ? "border-transparent text-white"
+                      ? "border-transparent text-[var(--md-sys-color-on-primary)]"
                       : "border-[var(--line)] bg-[var(--bg-muted)] text-[var(--ink)] hover:border-[var(--ink-soft)]"
                   }`}
                   style={active ? { backgroundColor: PRIMARY } : undefined}
@@ -188,7 +188,7 @@ function DirectingEffectBase() {
                 {selected.formula}（{selected.name}）
               </span>
               <span
-                className="rounded-md px-2 py-0.5 text-xs font-medium text-white"
+                className="rounded-md px-2 py-0.5 text-xs font-medium text-[var(--md-sys-color-on-primary)]"
                 style={{ backgroundColor: PRIMARY }}
               >
                 {selected.directing === "ortho-para"

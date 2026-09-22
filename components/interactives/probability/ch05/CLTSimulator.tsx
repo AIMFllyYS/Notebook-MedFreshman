@@ -319,7 +319,7 @@ function CLTSimulatorBase() {
                   className={
                     "rounded-lg px-2.5 py-1 text-[12px] font-medium transition-colors " +
                     (d === dist
-                      ? "bg-[var(--accent)] text-white"
+                      ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                       : "bg-[var(--bg-elevated)] border border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)]")
                   }
                 >
@@ -370,7 +370,7 @@ function CLTSimulatorBase() {
         {/* 模拟按钮 */}
         <button
           onClick={handleSimulate}
-          className="w-full rounded-lg bg-[var(--accent)] py-1.5 text-[13px] font-bold text-white hover:opacity-90 transition-opacity"
+          className="w-full rounded-lg bg-[var(--accent)] py-1.5 text-[13px] font-bold text-[var(--md-sys-color-on-primary)] hover:opacity-90 transition-opacity"
         >
           模拟 10000 组，计算标准化 X̄ₙ
         </button>

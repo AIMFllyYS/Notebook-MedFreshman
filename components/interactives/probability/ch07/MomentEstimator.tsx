@@ -615,7 +615,7 @@ function MomentEstimatorBase() {
             className={
               "rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors " +
               (d === dist
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                 : "border border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)]")
             }
           >
@@ -673,7 +673,7 @@ function MomentEstimatorBase() {
         </div>
         <button
           onClick={handleGenerateSample}
-          className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[12px] font-medium text-white hover:opacity-90 transition-opacity"
+          className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] hover:opacity-90 transition-opacity"
         >
           随机生成样本
         </button>
@@ -836,7 +836,7 @@ function MomentEstimatorBase() {
           </div>
           <button
             onClick={handleRunConvergence}
-            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-[12px] font-medium text-white hover:opacity-90 transition-opacity"
+            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] hover:opacity-90 transition-opacity"
           >
             {showConv ? "重新模拟" : "开始模拟"}
           </button>

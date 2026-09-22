@@ -541,7 +541,7 @@ function ChebyshevDemoBase() {
             <button
               key={label}
               onClick={() => { setSigma(s); setEps(e); }}
-              className="rounded-lg bg-[var(--bg-muted)] px-2.5 py-1 text-[12px] font-medium text-[var(--ink-soft)] hover:bg-[var(--accent)] hover:text-white transition-colors"
+              className="rounded-lg bg-[var(--bg-muted)] px-2.5 py-1 text-[12px] font-medium text-[var(--ink-soft)] hover:bg-[var(--accent)] hover:text-[var(--md-sys-color-on-primary)] transition-colors"
             >
               {label}
             </button>

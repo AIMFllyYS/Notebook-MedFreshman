@@ -7,6 +7,7 @@ import { LOCALES, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
 import {
   FONT_CHOICES,
+  contrastText,
   type AppearanceMode,
   type AppearanceSettings,
   type CustomAppearanceSettings,
@@ -18,7 +19,18 @@ import {
 export const APPEARANCE_LABEL_KEYS: Record<AppearanceMode, string> = {
   default: "settings.appearance.modeDefault",
   colorful: "settings.appearance.modeColorful",
+  anthropic: "settings.appearance.modeAnthropic",
+  ios: "settings.appearance.modeIos",
+  codex: "settings.appearance.modeCodex",
   custom: "settings.appearance.modeCustom",
+};
+
+/** 预设模式在模式格子里露一小条三色色板，便于一眼认出来。 */
+const APPEARANCE_SWATCHES: Partial<Record<AppearanceMode, string[]>> = {
+  colorful: ["#3d6db5", "#8a5bb8", "#2c8470"],
+  anthropic: ["#faf9f5", "#d97757", "#1f1e1b"],
+  ios: ["#ffffff", "#007aff", "#1c1c1e"],
+  codex: ["#0d1117", "#3fb950", "#39c5cf"],
 };
 
 function AppearanceModeButton({
@@ -31,6 +43,7 @@ function AppearanceModeButton({
   onClick: () => void;
 }) {
   const t = useT();
+  const swatches = APPEARANCE_SWATCHES[mode];
   return (
     <button
       type="button"
@@ -43,7 +56,20 @@ function AppearanceModeButton({
           : "var(--md-sys-color-on-surface-variant)",
       }}
     >
-      {t(APPEARANCE_LABEL_KEYS[mode])}
+      <span className="flex items-center justify-center gap-1.5">
+        {swatches ? (
+          <span className="flex items-center -space-x-1" aria-hidden>
+            {swatches.map((color) => (
+              <span
+                key={color}
+                className="h-2.5 w-2.5 rounded-full border"
+                style={{ background: color, borderColor: "rgba(128,128,128,0.35)" }}
+              />
+            ))}
+          </span>
+        ) : null}
+        {t(APPEARANCE_LABEL_KEYS[mode])}
+      </span>
     </button>
   );
 }
@@ -73,6 +99,46 @@ function ColorField({
         </span>
       </span>
     </label>
+  );
+}
+
+/** 自定义模式的迷你预览：按当前明暗侧用所选颜色画一条假界面。 */
+function CustomPreview({
+  theme,
+  custom,
+}: {
+  theme: ThemeMode;
+  custom: CustomAppearanceSettings;
+}) {
+  const t = useT();
+  const light = theme === "light";
+  const bg = light ? custom.lightBackground : custom.darkBackground;
+  const ink = light ? custom.lightText : custom.darkText;
+  const accent = light ? custom.lightAccent : custom.darkAccent;
+  const onAccent = contrastText(accent);
+  const cardBg = `color-mix(in srgb, ${bg} 93%, ${ink})`;
+  return (
+    <div
+      aria-label={t("settings.appearance.preview")}
+      className="overflow-hidden rounded-lg border border-[var(--md-sys-color-outline-variant)]"
+      style={{ background: bg, color: ink }}
+    >
+      <div
+        className="px-3 py-1.5 text-[11px] font-semibold"
+        style={{ background: cardBg }}
+      >
+        {t("settings.appearance.preview")}
+      </div>
+      <div className="flex items-center gap-2 px-3 py-2.5">
+        <span className="text-[12px]">{t("settings.appearance.previewText")}</span>
+        <span
+          className="press ml-auto rounded-full px-3 py-1 text-[11.5px] font-semibold"
+          style={{ background: accent, color: onAccent }}
+        >
+          {t("settings.appearance.previewButton")}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -168,10 +234,10 @@ export default function AppearanceSettingsControls({
       </div>
 
       <div
-        className="flex items-center gap-0.5 rounded-full p-0.5"
+        className="grid grid-cols-3 gap-0.5 rounded-2xl p-0.5"
         style={{ background: "var(--md-sys-color-surface-container-highest)" }}
       >
-        {(["default", "colorful", "custom"] as const).map((mode) => (
+        {(["default", "colorful", "anthropic", "ios", "codex", "custom"] as const).map((mode) => (
           <AppearanceModeButton
             key={mode}
             mode={mode}
@@ -181,16 +247,46 @@ export default function AppearanceSettingsControls({
         ))}
       </div>
 
+      {appearance.mode === "custom" ? (
+        <CustomPreview theme={theme} custom={appearance.custom} />
+      ) : null}
+
       <div className="grid grid-cols-1 gap-2">
+        <div className="text-[11px] font-semibold text-[var(--md-sys-color-on-surface-variant)]">
+          {t("settings.appearance.light")}
+        </div>
+        <ColorField
+          label={t("settings.appearance.lightBackground")}
+          value={appearance.custom.lightBackground}
+          onChange={(value) => updateCustomAppearance({ lightBackground: value })}
+        />
         <ColorField
           label={t("settings.appearance.lightAccent")}
           value={appearance.custom.lightAccent}
           onChange={(value) => updateCustomAppearance({ lightAccent: value })}
         />
         <ColorField
+          label={t("settings.appearance.lightText")}
+          value={appearance.custom.lightText}
+          onChange={(value) => updateCustomAppearance({ lightText: value })}
+        />
+        <div className="text-[11px] font-semibold text-[var(--md-sys-color-on-surface-variant)]">
+          {t("settings.appearance.dark")}
+        </div>
+        <ColorField
+          label={t("settings.appearance.darkBackground")}
+          value={appearance.custom.darkBackground}
+          onChange={(value) => updateCustomAppearance({ darkBackground: value })}
+        />
+        <ColorField
           label={t("settings.appearance.darkAccent")}
           value={appearance.custom.darkAccent}
           onChange={(value) => updateCustomAppearance({ darkAccent: value })}
+        />
+        <ColorField
+          label={t("settings.appearance.darkText")}
+          value={appearance.custom.darkText}
+          onChange={(value) => updateCustomAppearance({ darkText: value })}
         />
         <ColorField
           label={t("settings.appearance.selectionColor")}

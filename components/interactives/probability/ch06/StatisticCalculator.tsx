@@ -187,7 +187,7 @@ function StepCard({ step, title, children }: StepCardProps) {
         style={{ background: ACCENT_LIGHT }}
       >
         <span
-          className="flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold text-white flex-shrink-0"
+          className="flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold text-[var(--md-sys-color-on-primary)] flex-shrink-0"
           style={{ background: ACCENT }}
         >
           {step}
@@ -326,7 +326,7 @@ function StatisticCalculatorBase() {
           </div>
           <button
             onClick={generateRandom}
-            className="rounded-lg px-3 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+            className="rounded-lg px-3 py-1.5 text-[13px] font-medium text-[var(--md-sys-color-on-primary)] transition-opacity hover:opacity-90"
             style={{ background: ACCENT }}
           >
             随机生成
@@ -346,7 +346,7 @@ function StatisticCalculatorBase() {
                 className={
                   "rounded-md px-3 py-1 text-[12px] font-semibold transition-colors " +
                   (useBiased === biased
-                    ? "text-white"
+                    ? "text-[var(--md-sys-color-on-primary)]"
                     : "text-[var(--ink-soft)] bg-[var(--bg-elevated)] border border-[var(--line)] hover:border-[var(--accent)]")
                 }
                 style={useBiased === biased ? { background: ACCENT } : {}}
@@ -497,7 +497,7 @@ function StatisticCalculatorBase() {
               {stats.sorted.map((v, i) => (
                 <div key={i} className="flex flex-col items-center gap-0.5">
                   <span
-                    className="rounded-md px-2 py-0.5 font-mono text-[12px] font-semibold text-white"
+                    className="rounded-md px-2 py-0.5 font-mono text-[12px] font-semibold text-[var(--md-sys-color-on-primary)]"
                     style={{ background: ACCENT, opacity: 0.75 + (i / (stats.n - 1 || 1)) * 0.25 }}
                   >
                     {fmt(v, 2)}

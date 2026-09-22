@@ -177,7 +177,7 @@ function JointDistExplorerBase() {
             className={
               "rounded-lg px-2.5 py-1 text-[12px] font-medium transition-colors " +
               (preset === key
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                 : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--accent-weak,#ede9fe)]")
             }
           >
