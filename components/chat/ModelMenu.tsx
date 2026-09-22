@@ -292,7 +292,7 @@ export default function ModelMenu({
           aria-expanded={active} onMouseEnter={(event) => { if (!position.mobile) navigate("category:" + name, event.currentTarget); }} onClick={(event) => navigate("category:" + name, event.currentTarget)}>
           {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
           <Icon aria-hidden size={14} className="shrink-0" style={{ color: CATEGORY_COLORS[name] }} />
-          <span className="flex-1">{labelKey ? t(labelKey) : name}</span>
+          <span className="min-w-0 flex-1 truncate whitespace-nowrap">{labelKey ? t(labelKey) : name}</span>
           <CategoryBrandDots brands={categoryBrands(name)} />
           <span aria-hidden className="model-cat-count shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold leading-none"
             style={{ background: active ? "color-mix(in srgb, " + CATEGORY_COLORS[name] + " 16%, transparent)" : "var(--bg-muted)", color: active ? CATEGORY_COLORS[name] : "var(--ink-faint)" }}
@@ -369,7 +369,7 @@ function ModelTraitDots({ model }: { model: ModelInfo }) {
  * 分类行右侧的品牌图标圆点簇：每个圆框 = 该分类内一个模型品牌。
  * 最多铺 4 个，超出收敛为一个「⋯」圆点；悬停看该品牌下的模型名。
  */
-const MAX_BRAND_DOTS = 4;
+const MAX_BRAND_DOTS = 3;
 function CategoryBrandDots({ brands }: { brands: { brand: string; labels: string[] }[] }) {
   if (brands.length === 0) return null;
   const shown = brands.slice(0, MAX_BRAND_DOTS);

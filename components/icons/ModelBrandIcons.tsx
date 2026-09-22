@@ -129,15 +129,25 @@ const TongyiIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) =
   </SvgBox>
 );
 
-// Gemini — Google 四色星标简化
-const GeminiIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
-  <SvgBox size={size} className={className} decorative={decorative} label="Gemini">
-    <path d="M12 2.2l1.15 6.4L20 10l-6.85 1.4L12 17.8l-1.15-6.4L4 10l6.85-1.4L12 2.2z" fill="#4285F4" />
-    <path d="M12 6.2l.55 3.05L16 10l-3.45.75L12 13.8l-.55-3.05L8 10l3.45-.75L12 6.2z" fill="#EA4335" />
-    <circle cx="12" cy="10" r="1.4" fill="#FBBC05" />
-    <circle cx="12" cy="10" r="0.7" fill="#34A853" />
-  </SvgBox>
-);
+// Gemini — Google 官方四芒星（simple-icons 原版路径），品牌蓝→紫渐变
+const GeminiIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => {
+  const id = useId();
+  const gradientId = `gemini-gradient-${id}`;
+  return (
+    <SvgBox size={size} className={className} decorative={decorative} label="Gemini">
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#4796E3" />
+          <stop offset="100%" stopColor="#9177C7" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"
+        fill={`url(#${gradientId})`}
+      />
+    </SvgBox>
+  );
+};
 
 // OpenAI — 官方六瓣纽结标（simple-icons 原版路径），单色跟随主题文本色（深浅主题自适应）
 const OpenAIIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
