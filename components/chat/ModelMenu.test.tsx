@@ -42,7 +42,7 @@ describe('ModelMenu progressive selection', () => {
     expect(screen.getByRole('region', { name: '模型系列' })).toBeTruthy();
     expect(screen.getByRole('region', { name: '具体模型' })).toBeTruthy();
     expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
-    expect(screen.getByRole('region', { name: '模型系列' }).style.width).toBe('190px');
+    expect(screen.getByRole('region', { name: '模型系列' }).style.width).toBe('196px');
   });
   it('preserves vendor training disclosure in both row and details', () => {
     render(<ModelMenu />);
@@ -52,7 +52,7 @@ describe('ModelMenu progressive selection', () => {
   });
   it('selects thinking strength and respects required thinking', () => {
     const onChange = vi.fn(), onThinkingChange = vi.fn();
-    render(<ModelMenu value="mimo-v2.5" onChange={onChange} onThinkingChange={onThinkingChange} />);
+    render(<ModelMenu value="mimo-v2.6-pro" onChange={onChange} onThinkingChange={onThinkingChange} />);
     openCategory('多模态模型');
     fireEvent.click(screen.getByTestId('model-menu-item-google/gemini-3.8-flash'));
     expect(screen.queryByTestId('model-thinking-option-off')).toBeNull();
@@ -85,7 +85,7 @@ describe('ModelMenu progressive selection', () => {
     render(<ModelMenu />);
     fireEvent.click(screen.getByTestId('model-menu-button'));
     fireEvent.mouseEnter(screen.getByRole('button', { name: '多模态模型' }));
-    fireEvent.mouseEnter(screen.getByTestId('model-menu-item-mimo-v2.5'));
+    fireEvent.mouseEnter(screen.getByTestId('model-menu-item-mimo-v2.6-pro'));
     expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
     fireEvent.mouseEnter(screen.getByRole('button', { name: '免费模型' }));
     expect(screen.getByTestId('model-menu-item-poolside/laguna-s-2.1-free')).toBeTruthy();
@@ -125,7 +125,7 @@ describe('ModelMenu progressive selection', () => {
     openCategory('多模态模型');
     expect(screen.getByTestId('model-menu-item-auto').querySelector('.lucide-compass')).toBeTruthy();
     expect(screen.getByRole('button', { name: '快速模型' }).querySelector('.lucide-zap')).toBeTruthy();
-    fireEvent.click(screen.getByTestId('model-menu-item-mimo-v2.5'));
+    fireEvent.click(screen.getByTestId('model-menu-item-mimo-v2.6-pro'));
     expect(screen.getByTestId('model-thinking-option-low')).toBeTruthy();
     expect(screen.getByTestId('model-thinking-option-medium')).toBeTruthy();
     expect(screen.getByTestId('model-thinking-option-high')).toBeTruthy();

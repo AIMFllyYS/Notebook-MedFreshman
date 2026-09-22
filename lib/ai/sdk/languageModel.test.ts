@@ -93,12 +93,12 @@ test("buildThinkingSettings：none → 空对象", () => {
 });
 
 test("resolveLanguageModel：内置模型返回 openai-compatible 模型并暴露能力", () => {
-  const r = resolveLanguageModel("mimo-v2.5");
-  assert.equal(r.provider.registryId, "mimo-v2.5");
+  const r = resolveLanguageModel("mimo-v2.6-pro");
+  assert.equal(r.provider.registryId, "mimo-v2.6-pro");
   assert.equal(r.getActualProvider(), r.provider);
   assert.equal(r.supportsThinking, true);
   assert.equal(r.supportsTools, true);
-  assert.equal(r.model.modelId, "mimo-v2.5");
+  assert.equal(r.model.modelId, "mimo-v2.6-pro");
   assert.ok(r.thinkingSettings("medium").providerOptions?.[UPSTREAM_PROVIDER_NAME]);
 });
 
@@ -170,7 +170,7 @@ test("buildThinkingSettings：mimo-thinking → thinking.type，不含 reasoning
 test("buildThinkingSettings：GLM 降级到 mimo 后按落地端点 中转 OpenAI 格式下发", () => {
   const stale = fakeProvider({
     registryId: "z-ai/glm-5.3-flash",
-    apiModelId: "mimo-v2.5",
+    apiModelId: "mimo-v2.6-flash",
     thinkingRequestStyle: "openai-reasoning-effort",
   });
   const landed = getModelInfo(stale.apiModelId);

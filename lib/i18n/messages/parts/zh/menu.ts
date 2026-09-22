@@ -81,6 +81,7 @@ export const menuZh = {
       thinking: "思考",
       thinkingRequired: "思考不可关",
       image: "生图",
+      tools: "工具",
     },
   },
   // 输入区外壳（工具条 / 排队 / 引用 / 占位符 / 发送）

@@ -81,6 +81,7 @@ export const menuEn = {
       thinking: "Thinking",
       thinkingRequired: "Thinking always on",
       image: "Image gen",
+      tools: "Tools",
     },
   },
   // Composer shell: toolbar, queue, quote, placeholders, send.

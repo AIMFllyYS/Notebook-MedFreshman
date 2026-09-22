@@ -342,10 +342,10 @@ test("resolveEntryProvider：链首没配凭证就跳到第一个配好的端点
 });
 
 test("resolveProvider：mimo 走中转，DeepSeek 走七牛云（主力供应商已换第一跳）", () => {
-  const r = resolveProvider("mimo-v2.5");
+  const r = resolveProvider("mimo-v2.6-pro");
   assert.equal(r.isCustom, false);
-  assert.equal(r.registryId, "mimo-v2.5");
-  assert.equal(r.apiModelId, "mimo-v2.5");
+  assert.equal(r.registryId, "mimo-v2.6-pro");
+  assert.equal(r.apiModelId, "mimo-v2.6-pro");
   assert.ok(r.baseUrl.includes("relay.protocom.org"), r.baseUrl);
 
   // DeepSeek / Qwen / GLM 的第一跳现在是七牛云；中转站退到第二跳做容灾。
@@ -368,7 +368,7 @@ test("resolveProvider：GLM 三跳 = 七牛云 → Protocom → MiMo", () => {
   assert.equal(relayHop.gatewayDefaults, true, "Protocom 这一跳仍是网关契约");
 
   const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 2);
-  assert.equal(backup.apiModelId, "mimo-v2.5");
+  assert.equal(backup.apiModelId, "mimo-v2.6-flash");
   assert.equal(backup.endpointIndex, 2);
 });
 
@@ -379,7 +379,7 @@ test("resolveProvider：GLM 最后一跳的 thinkingRequestStyle 跟落地 MiMo�
 
   const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 2);
   assert.equal(backup.registryId, "z-ai/glm-5.3-flash");
-  assert.equal(backup.apiModelId, "mimo-v2.5");
+  assert.equal(backup.apiModelId, "mimo-v2.6-flash");
   assert.equal(backup.endpointIndex, 2);
   assert.equal(backup.thinkingRequestStyle, "openai-reasoning-effort");
   assert.equal(backup.reasoningField, primary.reasoningField);
@@ -625,7 +625,7 @@ test("resolveProvider：老配置 thinkingRequestStyle=siliconflow 时推断 api
 });
 
 test("resolveProvider：内置模型 apiProtocol 恒为 openai", () => {
-  const r = resolveProvider("mimo-v2.5");
+  const r = resolveProvider("mimo-v2.6-pro");
   assert.equal(r.apiProtocol, "openai");
 });
 

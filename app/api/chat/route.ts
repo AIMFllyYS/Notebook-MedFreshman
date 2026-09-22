@@ -193,7 +193,7 @@ export async function POST(req: NextRequest) {
         return;
       }
       if (hasFileParts(body.messages) && modelInfo && !modelInfo.vision) {
-        throw new Error(`当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo V2.5）。`);
+        throw new Error(`当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo 2.6 Pro）。`);
       }
 
       // 自动联网的透明提示：本轮为什么能用搜索，用户有权知道（搜索是要花钱的）。

@@ -472,9 +472,9 @@ test('chat SDK: GLM failover bills the landed mimo model, not GLM', async (t) =>
   assert.ok(hosts.some((host) => host.includes('primary.invalid')));
   assert.equal(hosts.every((host) => host.includes('primary.invalid')), true);
   const usagePart = chunks.find((chunk) => chunk.type === 'data-usage');
-  assert.equal(usagePart && 'data' in usagePart ? (usagePart.data as { actualModelId?: string }).actualModelId : undefined, 'mimo-v2.5');
+  assert.equal(usagePart && 'data' in usagePart ? (usagePart.data as { actualModelId?: string }).actualModelId : undefined, 'mimo-v2.6-flash');
   const primaryBody = bodies.find((entry) => entry.body.model === 'z-ai/glm-5.3-flash')?.body;
-  const backupBody = bodies.find((entry) => entry.body.model === 'mimo-v2.5')?.body;
+  const backupBody = bodies.find((entry) => entry.body.model === 'mimo-v2.6-flash')?.body;
   assert.ok(primaryBody, 'primary hop body missing');
   assert.ok(backupBody, 'backup hop body missing');
   assert.equal(primaryBody.reasoning_effort ?? primaryBody.reasoningEffort, 'max');

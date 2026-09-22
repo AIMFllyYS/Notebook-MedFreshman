@@ -5,6 +5,8 @@ import React, { useId } from "react";
 interface IconProps {
   size?: number;
   className?: string;
+  /** 装饰性用法：svg 转 aria-hidden、不渲染 <title>，避免污染宿主按钮的 textContent/可访问名。 */
+  decorative?: boolean;
 }
 
 function SvgBox({
@@ -12,23 +14,26 @@ function SvgBox({
   className,
   children,
   label,
+  decorative,
 }: {
   size: number;
   className?: string;
   children: React.ReactNode;
   label: string;
+  decorative?: boolean;
 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" className={className} role="img" aria-label={label}>
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className}
+      role={decorative ? undefined : "img"} aria-label={decorative ? undefined : label} aria-hidden={decorative || undefined}>
+      {decorative ? null : <title>{label}</title>}
       {children}
     </svg>
   );
 }
 
 // DeepSeek — 官方鲸鱼图标，品牌蓝 #4D6BFE
-const DeepSeekIcon: React.FC<IconProps> = ({ size = 14, className }) => (
-  <SvgBox size={size} className={className} label="DeepSeek">
-    <title>DeepSeek</title>
+const DeepSeekIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="DeepSeek">
     <path
       d="M23.748 4.482c-.254-.124-.364.113-.512.234-.051.039-.094.09-.137.136-.372.397-.806.657-1.373.626-.829-.046-1.537.214-2.163.848-.133-.782-.575-1.248-1.247-1.548-.352-.156-.708-.311-.955-.65-.172-.241-.219-.51-.305-.774-.055-.16-.11-.323-.293-.35-.2-.031-.278.136-.356.276-.313.572-.434 1.202-.422 1.84.027 1.436.633 2.58 1.838 3.393.137.093.172.187.129.323-.082.28-.18.552-.266.833-.055.179-.137.217-.329.14a5.526 5.526 0 01-1.736-1.18c-.857-.828-1.631-1.742-2.597-2.458a11.365 11.365 0 00-.689-.471c-.985-.957.13-1.743.388-1.836.27-.098.093-.432-.779-.428-.872.004-1.67.295-2.687.684a3.055 3.055 0 01-.465.137 9.597 9.597 0 00-2.883-.102c-1.885.21-3.39 1.102-4.497 2.623C.082 8.606-.231 10.684.152 12.85c.403 2.284 1.569 4.175 3.36 5.653 1.858 1.533 3.997 2.284 6.438 2.14 1.482-.085 3.133-.284 4.994-1.86.47.234.962.327 1.78.397.63.059 1.236-.03 1.705-.128.735-.156.684-.837.419-.961-2.155-1.004-1.682-.595-2.113-.926 1.096-1.296 2.746-2.642 3.392-7.003.05-.347.007-.565 0-.845-.004-.17.035-.237.23-.256a4.173 4.173 0 001.545-.475c1.396-.763 1.96-2.015 2.093-3.517.02-.23-.004-.467-.247-.588zM11.581 18c-2.089-1.642-3.102-2.183-3.52-2.16-.392.024-.321.471-.235.763.09.288.207.486.371.739.114.167.192.416-.113.603-.673.416-1.842-.14-1.897-.167-1.361-.802-2.5-1.86-3.301-3.307-.774-1.393-1.224-2.887-1.298-4.482-.02-.386.093-.522.477-.592a4.696 4.696 0 011.529-.039c2.132.312 3.946 1.265 5.468 2.774.868.86 1.525 1.887 2.202 2.891.72 1.066 1.494 2.082 2.48 2.914.348.292.625.514.891.677-.802.09-2.14.11-3.054-.614zm1-6.44a.306.306 0 01.415-.287.302.302 0 01.2.288.306.306 0 01-.31.307.303.303 0 01-.304-.308zm3.11 1.596c-.2.081-.399.151-.59.16a1.245 1.245 0 01-.798-.254c-.274-.23-.47-.358-.552-.758a1.73 1.73 0 01.016-.588c.07-.327-.008-.537-.239-.727-.187-.156-.426-.199-.688-.199a.559.559 0 01-.254-.078c-.11-.054-.2-.19-.114-.358.028-.054.16-.186.192-.21.356-.202.767-.136 1.146.016.352.144.618.408 1.001.782.391.451.462.576.685.914.176.265.336.537.445.848.067.195-.019.354-.25.452z"
       fill="#4D6BFE"
@@ -38,12 +43,11 @@ const DeepSeekIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // Qwen — 官方品牌图标，紫渐变 #6336E7 → #6F69F7
-const QwenIcon: React.FC<IconProps> = ({ size = 14, className }) => {
+const QwenIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => {
   const id = useId();
   const gradientId = `qwen-gradient-${id}`;
   return (
-    <SvgBox size={size} className={className} label="Qwen">
-      <title>Qwen</title>
+    <SvgBox size={size} className={className} decorative={decorative} label="Qwen">
       <defs>
         <linearGradient id={gradientId} x1="0%" x2="100%" y1="0%" y2="0%">
           <stop offset="0%" stopColor="#6336E7" stopOpacity="0.84" />
@@ -60,9 +64,8 @@ const QwenIcon: React.FC<IconProps> = ({ size = 14, className }) => {
 };
 
 // Zhipu / GLM — 官方品牌图标，品牌蓝 #3859FF
-const ZhipuIcon: React.FC<IconProps> = ({ size = 14, className }) => (
-  <SvgBox size={size} className={className} label="Zhipu">
-    <title>Zhipu</title>
+const ZhipuIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="Zhipu">
     <path
       d="M11.991 23.503a.24.24 0 00-.244.248.24.24 0 00.244.249.24.24 0 00.245-.249.24.24 0 00-.22-.247l-.025-.001zM9.671 5.365a1.697 1.697 0 011.099 2.132l-.071.172-.016.04-.018.054c-.07.16-.104.32-.104.498-.035.71.47 1.279 1.186 1.314h.366c1.309.053 2.338 1.173 2.286 2.523-.052 1.332-1.152 2.38-2.478 2.327h-.174c-.715.018-1.274.64-1.239 1.368 0 .124.018.23.053.337.209.373.54.658.96.8.75.23 1.517-.125 1.9-.782l.018-.035c.402-.64 1.17-.96 1.92-.711.854.284 1.378 1.226 1.099 2.167a1.661 1.661 0 01-2.077 1.102 1.711 1.711 0 01-.907-.711l-.017-.035c-.2-.323-.463-.58-.851-.711l-.056-.018a1.646 1.646 0 00-1.954.746 1.66 1.66 0 01-1.065.764 1.677 1.677 0 01-1.989-1.279c-.209-.906.332-1.83 1.257-2.043a1.51 1.51 0 01.296-.035h.018c.68-.071 1.151-.622 1.116-1.333a1.307 1.307 0 00-.227-.693 2.515 2.515 0 01-.366-1.403 2.39 2.39 0 01.366-1.208c.14-.195.21-.444.227-.693.018-.71-.506-1.261-1.186-1.332l-.07-.018a1.43 1.43 0 01-.299-.07l-.05-.019a1.7 1.7 0 01-1.047-2.114 1.68 1.68 0 012.094-1.101zm-5.575 10.11c.26-.264.639-.367.994-.27.355.096.633.379.728.74.095.362-.007.748-.267 1.013-.402.41-1.053.41-1.455 0a1.062 1.062 0 010-1.482zm14.845-.294c.359-.09.738.024.992.297.254.274.344.665.237 1.025-.107.36-.396.634-.756.718-.551.128-1.1-.22-1.23-.781a1.05 1.05 0 01.757-1.26zm-.064-4.39c.314.32.49.753.49 1.206 0 .452-.176.886-.49 1.206-.315.32-.74.5-1.185.5-.444 0-.87-.18-1.184-.5a1.727 1.727 0 010-2.412 1.654 1.654 0 012.369 0zm-11.243.163c.364.484.447 1.128.218 1.691a1.665 1.665 0 01-2.188.923c-.855-.36-1.26-1.358-.907-2.228a1.68 1.68 0 011.33-1.038c.593-.08 1.183.169 1.547.652zm11.545-4.221c.368 0 .708.2.892.524.184.324.184.724 0 1.048a1.026 1.026 0 01-.892.524c-.568 0-1.03-.47-1.03-1.048 0-.579.462-1.048 1.03-1.048zm-14.358 0c.368 0 .707.2.891.524.184.324.184.724 0 1.048a1.026 1.026 0 01-.891.524c-.569 0-1.03-.47-1.03-1.048 0-.579.461-1.048 1.03-1.048zm10.031-1.475c.925 0 1.675.764 1.675 1.706s-.75 1.705-1.675 1.705-1.674-.763-1.674-1.705c0-.942.75-1.706 1.674-1.706zm-2.626-.684c.362-.082.653-.356.761-.718a1.062 1.062 0 00-.238-1.028 1.017 1.017 0 00-.996-.294c-.547.14-.881.7-.752 1.257.13.558.675.907 1.225.783zm0 16.876c.359-.087.644-.36.75-.72a1.062 1.062 0 00-.237-1.019 1.018 1.018 0 00-.985-.301 1.037 1.037 0 00-.762.717c-.108.361-.017.754.239 1.028.245.263.606.377.953.305l.043-.01zM17.19 3.5a.631.631 0 00.628-.64c0-.355-.279-.64-.628-.64a.631.631 0 00-.628.64c0 .355.28.64.628.64zm-10.38 0a.631.631 0 00.628-.64c0-.355-.28-.64-.628-.64a.631.631 0 00-.628.64c0 .355.279.64.628.64zm-5.182 7.852a.631.631 0 00-.628.64c0 .354.28.639.628.639a.63.63 0 00.627-.606l.001-.034a.62.62 0 00-.628-.64zm5.182 9.13a.631.631 0 00-.628.64c0 .355.279.64.628.64a.631.631 0 00.628-.64c0-.355-.28-.64-.628-.64zm10.38.018a.631.631 0 00-.628.64c0 .355.28.64.628.64a.631.631 0 00.628-.64c0-.355-.279-.64-.628-.64zm5.182-9.148a.631.631 0 00-.628.64c0 .354.279.639.628.639a.631.631 0 00.628-.64c0-.355-.28-.64-.628-.64zm-.384-4.992a.24.24 0 00.244-.249.24.24 0 00-.244-.249.24.24 0 00-.244.249c0 .142.122.249.244.249zM11.991.497a.24.24 0 00.245-.248A.24.24 0 0011.99 0a.24.24 0 00-.244.249c0 .133.108.236.223.247l.021.001zM2.011 6.36a.24.24 0 00.245-.249.24.24 0 00-.244-.249.24.24 0 00-.244.249.24.24 0 00.244.249zm0 11.263a.24.24 0 00-.243.248.24.24 0 00.244.249.24.24 0 00.244-.249.252.252 0 00-.244-.248zm19.995-.018a.24.24 0 00-.245.248.24.24 0 00.245.25.24.24 0 00.244-.25.252.252 0 00-.244-.248z"
       fill="#3859FF"
@@ -72,9 +75,8 @@ const ZhipuIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // Kimi — 官方品牌图标，蓝点 #1783FF + 主体跟随主题色（currentColor）
-const KimiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
-  <SvgBox size={size} className={className} label="Kimi">
-    <title>Kimi</title>
+const KimiIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="Kimi">
     <path
       d="M21.846 0a1.923 1.923 0 110 3.846H20.15a.226.226 0 01-.227-.226V1.923C19.923.861 20.784 0 21.846 0z"
       fill="#1783FF"
@@ -87,12 +89,11 @@ const KimiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // MiniMax — 官方品牌图标，粉橙渐变 #E2167E → #FE603C
-const MiniMaxIcon: React.FC<IconProps> = ({ size = 14, className }) => {
+const MiniMaxIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => {
   const id = useId();
   const gradientId = `minimax-gradient-${id}`;
   return (
-    <SvgBox size={size} className={className} label="MiniMax">
-      <title>MiniMax</title>
+    <SvgBox size={size} className={className} decorative={decorative} label="MiniMax">
       <defs>
         <linearGradient id={gradientId} x1="0%" x2="100.182%" y1="50.057%" y2="50.057%">
           <stop offset="0%" stopColor="#E2167E" />
@@ -109,9 +110,8 @@ const MiniMaxIcon: React.FC<IconProps> = ({ size = 14, className }) => {
 };
 
 // MiMo — 官方品牌图标，使用小米橙 #FF6700
-const MiMoIcon: React.FC<IconProps> = ({ size = 14, className }) => (
-  <SvgBox size={size} className={className} label="MiMo">
-    <title>MiMo</title>
+const MiMoIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="MiMo">
     <path
       d="M.958 15.936a.459.459 0 01.459.44v2.729a.46.46 0 01-.918 0v-2.729a.459.459 0 01.459-.44zm4.814-2.035a.46.46 0 01.553.45v4.754a.458.458 0 11-.918 0V15.48L3.74 17.202a.462.462 0 01-.655.016.462.462 0 01-.065-.082L.628 14.67a.459.459 0 01.658-.637l2.124 2.187 2.127-2.188a.46.46 0 01.235-.13zm2.068.004a.46.46 0 01.458.445v4.755a.46.46 0 01-.458.458.459.459 0 01-.458-.458V14.35a.459.459 0 01.458-.445zm1.973 2.014a.46.46 0 01.46.457v2.729a.46.46 0 01-.784.324.46.46 0 01-.134-.324v-2.729a.46.46 0 01.458-.458zm.002-2.045a.458.458 0 01.328.157l2.127 2.19 2.125-2.19a.459.459 0 01.784.318v4.756a.46.46 0 01-.455.458.46.46 0 01-.458-.458V15.48l-1.667 1.723a.46.46 0 01-.65.008l-.005-.005c0-.002-.002-.002-.004-.003l-2.455-2.534a.46.46 0 01-.008-.667.461.461 0 01.338-.128zm6.797 1.206a.46.46 0 01.53.651A1.966 1.966 0 0019.81 18.4a.462.462 0 01.623.18.46.46 0 01-.181.624 2.863 2.863 0 01-1.38.353l-.142-.004a2.88 2.88 0 01-2.393-4.263.461.461 0 01.274-.21zm.864-.931a2.884 2.884 0 013.915 3.914.46.46 0 01-.402.24l-.057-.004a.458.458 0 01-.164-.055.46.46 0 01-.182-.622 1.967 1.967 0 00-2.669-2.67.459.459 0 11-.441-.803zM9.59 6.368c1.481 0 1.696 1.202 1.696 1.654v2.648h-.917v-.432c-.26.346-.792.535-1.36.535-.133 0-1.289-.03-1.384-1.136-.082-.932.675-1.61 2.053-1.61h.691c0-.563-.367-.886-.983-.886-.44.013-.864.174-1.2.458l-.36-.664c.484-.379 1.012-.567 1.764-.567zm4.427.1c1.263 0 2.082.97 2.083 2.15 0 1.181-.824 2.154-2.083 2.154-1.26 0-2.084-.972-2.084-2.152 0-1.18.82-2.153 2.084-2.153zm6.801.015c.68 0 1.202.465 1.197 1.548v2.642H21.1V8.29c0-.312-.002-.98-.63-.98s-.628.667-.628.838v2.524h-.89V8.148c0-.17-.001-.838-.63-.838-.628 0-.628.668-.628.98v2.383h-.917v-4.03h.917V7a1.22 1.22 0 01.947-.516c.398 0 .76.193.982.686a1.321 1.321 0 011.195-.686zm-18.093.872l1.457-1.772H5.32L3.311 8.07l2.14 2.602H4.24L2.725 8.796 1.21 10.672H0L2.138 8.07.13 5.583h1.138l1.458 1.772zm4.149 3.317h-.916V6.644h.916v4.028zm16.99 0h-.916V6.644h.916v4.028zM9.925 8.71c-1.055 0-1.359.412-1.326.742.032.329.324.537.757.537a1.013 1.013 0 001.014-.968l.002-.31h-.447zM14.018 7.3c-.663 0-1.184.487-1.184 1.32 0 .832.52 1.32 1.184 1.32.662 0 1.182-.49 1.182-1.32 0-.832-.52-1.32-1.182-1.32zM6.417 5.001a.568.568 0 01.587.582.588.588 0 01-1.175 0A.57.57 0 016.417 5zm16.991 0a.57.57 0 01.592.582.588.588 0 01-1.174 0 .57.57 0 01.357-.542.572.572 0 01.225-.04z"
       fill="#FF6700"
@@ -120,9 +120,8 @@ const MiMoIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // Tongyi (通义) — 阿里通义实验室，品牌紫 #615CED
-const TongyiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
-  <SvgBox size={size} className={className} label="Tongyi">
-    <title>Tongyi</title>
+const TongyiIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="Tongyi">
     <path
       d="M12 2c-.4 0-.76.24-.92.61L7.2 12.3l-1.5-3.36a1 1 0 10-1.84.78l2.42 5.43a1 1 0 001.84-.01L12 5.2l4.88 10.93a1 1 0 001.84.01l2.42-5.43a1 1 0 10-1.84-.78l-1.5 3.36-3.88-9.69A1 1 0 0012 2z"
       fill="#615CED"
@@ -131,9 +130,8 @@ const TongyiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // Gemini — Google 四色星标简化
-const GeminiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
-  <SvgBox size={size} className={className} label="Gemini">
-    <title>Gemini</title>
+const GeminiIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="Gemini">
     <path d="M12 2.2l1.15 6.4L20 10l-6.85 1.4L12 17.8l-1.15-6.4L4 10l6.85-1.4L12 2.2z" fill="#4285F4" />
     <path d="M12 6.2l.55 3.05L16 10l-3.45.75L12 13.8l-.55-3.05L8 10l3.45-.75L12 6.2z" fill="#EA4335" />
     <circle cx="12" cy="10" r="1.4" fill="#FBBC05" />
@@ -141,10 +139,70 @@ const GeminiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   </SvgBox>
 );
 
+// OpenAI — 六瓣纽结简化版，单色跟随主题文本色（深浅主题自适应）
+const OpenAIIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="OpenAI">
+    <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <path d="M12 5.4a2.9 2.9 0 0 1 2.9-2.9 2.9 2.9 0 0 1 2.9 2.9v5.7a2.9 2.9 0 0 1-2.9 2.9" />
+      <path d="M17.7 8.7a2.9 2.9 0 0 1 2.9 2.8 2.9 2.9 0 0 1-2.9 2.9h-5.7a2.9 2.9 0 0 1-2.9-2.9" />
+      <path d="M17.6 15.5a2.9 2.9 0 0 1-2.9 2.9 2.9 2.9 0 0 1-2.9-2.9v-5.7a2.9 2.9 0 0 1 2.9-2.9" />
+      <path d="M11.9 18.6a2.9 2.9 0 0 1-2.9 2.9 2.9 2.9 0 0 1-2.9-2.9v-5.7a2.9 2.9 0 0 1 2.9-2.9" />
+      <path d="M6.2 15.3a2.9 2.9 0 0 1-2.9-2.8 2.9 2.9 0 0 1 2.9-2.9h5.7a2.9 2.9 0 0 1 2.9 2.9" />
+      <path d="M6.3 8.5a2.9 2.9 0 0 1 2.9-2.9 2.9 2.9 0 0 1 2.9 2.9v5.7a2.9 2.9 0 0 1-2.9 2.9" />
+    </g>
+  </SvgBox>
+);
+
+// Baidu — 熊掌印，品牌蓝 #4E6EF2
+const BaiduIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="Baidu">
+    <g fill="#4E6EF2">
+      <ellipse cx="8.1" cy="6.9" rx="1.9" ry="2.4" transform="rotate(-14 8.1 6.9)" />
+      <ellipse cx="15.9" cy="6.9" rx="1.9" ry="2.4" transform="rotate(14 15.9 6.9)" />
+      <ellipse cx="4.7" cy="11.3" rx="1.8" ry="2.3" transform="rotate(-28 4.7 11.3)" />
+      <ellipse cx="19.3" cy="11.3" rx="1.8" ry="2.3" transform="rotate(28 19.3 11.3)" />
+      <path d="M12 11.6c3 0 5.3 2 5.3 4.4 0 1.9-1.6 3.2-3.5 3.2-1 0-1.7-.4-1.8-.4s-.8.4-1.8.4c-1.9 0-3.5-1.3-3.5-3.2 0-2.4 2.3-4.4 5.3-4.4z" />
+    </g>
+  </SvgBox>
+);
+
+// Meta — 无限环，品牌蓝 #0082FB
+const MetaIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="Meta">
+    <path
+      d="M12 12c0-1.7-1.4-3.5-3.6-3.5-2.6 0-4.4 1.9-4.4 3.5s1.8 3.5 4.4 3.5c2.2 0 3.6-1.8 3.6-3.5zm0 0c0 1.7 1.4 3.5 3.6 3.5 2.6 0 4.4-1.9 4.4-3.5s-1.8-3.5-4.4-3.5c-2.2 0-3.6 1.8-3.6 3.5z"
+      fill="none"
+      stroke="#0082FB"
+      strokeWidth="2.1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </SvgBox>
+);
+
+// Poolside — 水波纹泳池，品牌蓝 #4F8CFF
+const PoolsideIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="Poolside">
+    <circle cx="12" cy="12" r="8.4" fill="none" stroke="#4F8CFF" strokeWidth="1.9" />
+    <path d="M6.4 10.4q2.8-2.2 5.6 0t5.6 0" fill="none" stroke="#4F8CFF" strokeWidth="1.7" strokeLinecap="round" />
+    <path d="M6.4 14.4q2.8-2.2 5.6 0t5.6 0" fill="none" stroke="#4F8CFF" strokeWidth="1.7" strokeLinecap="round" />
+  </SvgBox>
+);
+
+// InclusionAI — 蚂蚁灵波四芒星，品牌蓝 #1677FF
+const InclusionAIIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="InclusionAI">
+    <path
+      d="M12 3.4l2.1 6.5 6.5 2.1-6.5 2.1L12 20.6l-2.1-6.5-6.5-2.1 6.5-2.1L12 3.4z"
+      fill="#1677FF"
+    />
+    <circle cx="12" cy="12" r="1.5" fill="#fff" fillOpacity="0.9" />
+  </SvgBox>
+);
+
 // 默认图标 — 通用灰色，跟随主题文本色
-const DefaultModelIcon: React.FC<IconProps> = ({ size = 14, className }) => (
-  <SvgBox size={size} className={className} label="Model">
-    <title>Model</title>
+const DefaultModelIcon: React.FC<IconProps> = ({ size = 14, className, decorative }) => (
+  <SvgBox size={size} className={className} decorative={decorative} label="Model">
     <rect x="3" y="7" width="7" height="10" rx="1.5" fill="currentColor" fillOpacity="0.25" />
     <rect x="14" y="4" width="7" height="16" rx="1.5" fill="currentColor" fillOpacity="0.45" />
   </SvgBox>
@@ -159,6 +217,11 @@ const ICON_MAP: Record<string, React.FC<IconProps>> = {
   mimo: MiMoIcon,
   tongyi: TongyiIcon,
   gemini: GeminiIcon,
+  openai: OpenAIIcon,
+  baidu: BaiduIcon,
+  meta: MetaIcon,
+  poolside: PoolsideIcon,
+  inclusionai: InclusionAIIcon,
 };
 
 export function ModelIcon({ brand, ...props }: { brand?: string } & IconProps): React.ReactElement {

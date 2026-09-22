@@ -231,8 +231,8 @@ const DEFAULTS: Persisted = {
   customApiGroups: [],
   // 默认走廉价快速通道（10–40s 出图）；慢速高价模型由用户显式选择。
   defaultImageModelId: DEFAULT_IMAGE_MODEL_ID,
-  imageModeTextModel: "mimo-v2.5",
-  imageModeTextModelFallback: "mimo-v2.5",
+  imageModeTextModel: "mimo-v2.6-pro",
+  imageModeTextModelFallback: "mimo-v2.6-pro",
   capabilityEndpoints: EMPTY_CAPABILITY_ENDPOINTS,
   // 摘录默认用中转站 DeepSeek V4 Flash：性价比高、成卡质量稳定。
   recordModelId: "deepseek/deepseek-v4-flash",
@@ -303,8 +303,8 @@ function load(): Persisted & { settingsLoadWarning?: string | null } {
         }
       }
       if (!parsed.defaultImageModelId) parsed.defaultImageModelId = null;
-      if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.5";
-      if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "mimo-v2.5";
+      if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.6-pro";
+      if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "mimo-v2.6-pro";
       parsed.capabilityEndpoints = normalizeCapabilityEndpoints(parsed.capabilityEndpoints);
       if (typeof parsed.usdExchangeRate !== "number" || !Number.isFinite(parsed.usdExchangeRate) || parsed.usdExchangeRate <= 0) {
         parsed.usdExchangeRate = 7.00;

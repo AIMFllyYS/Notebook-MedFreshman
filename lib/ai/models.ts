@@ -63,6 +63,12 @@ export interface ModelInfo {
   label: string;
   /** 分组名（用于下拉菜单分区）。 */
   group: string;
+  /**
+   * 额外归属的菜单分类（与 group 同一命名空间，如 "多模态" / "快速模型"）。
+   * 声明后模型会同时出现在这些分类列里，行内特征圆点也会包含它们。
+   * 例：MiMo 2.6 Flash 主列在「快速模型」，extraGroups ["多模态"] 让它也进多模态列。
+   */
+  extraGroups?: string[];
   /** 是否支持思考链（reasoning_content）。 */
   thinking: boolean;
   /**
@@ -148,6 +154,21 @@ export function modelsForPicker(models: ModelInfo[]): ModelInfo[] {
   return models.filter((m) => !isPickerHiddenModel(m.id));
 }
 
+/** 菜单分类列名归一：注册表 group 值 → 菜单分类名（多模态 → 多模态模型）。 */
+export function menuCategoryOfGroup(group: string): string {
+  return group === "多模态" ? "多模态模型" : group;
+}
+
+/** 模型归属的全部菜单分类：主分类在前，extraGroups 归一后去重追加。 */
+export function modelMenuCategories(model: ModelInfo): string[] {
+  const out = [menuCategoryOfGroup(model.group)];
+  for (const g of model.extraGroups ?? []) {
+    const c = menuCategoryOfGroup(g);
+    if (!out.includes(c)) out.push(c);
+  }
+  return out;
+}
+
 /** 已下架注册 id → 当前注册 id（用户本地设置兼容） */
 export const LEGACY_REGISTRY_ALIASES: Record<string, string> = {
   "MiniMaxAI/MiniMax-M3": "Qwen/Qwen3.8-Flash",
@@ -156,13 +177,17 @@ export const LEGACY_REGISTRY_ALIASES: Record<string, string> = {
   "Qwen/Qwen3.6-27B": "Qwen/Qwen3.8-Flash",
   "moonshotai/Kimi-K2.7-Code": "Qwen/Qwen3.8-Flash",
   "Qwen/Qwen3.8-27B": "Qwen/Qwen3.8-Flash",
+  // 上游真实 id（Omni）回指注册表 id：落地查询/计费归集都用得上。
+  "Qwen/Qwen3.8-Omni-Flash": "Qwen/Qwen3.8-Flash",
   "Pro/moonshotai/Kimi-K2.6": "kimi-k3",
   "google/gemini-3.7-flash": "google/gemini-3.8-flash",
   "deepseek-ai/DeepSeek-V4-Pro": "deepseek/deepseek-v4.1-flash",
   "deepseek-ai/DeepSeek-V4-Flash": "deepseek/deepseek-v4.1-flash",
   "deepseek/deepseek-v4-flash": "deepseek/deepseek-v4.1-flash",
-  "mimo-v2.5-pro": "mimo-v2.5",
-  "mimo-v2-flash": "mimo-v2.5",
+  // MiMo 2.5 整系退役：Pro 接多模态位，Flash 接快速位。
+  "mimo-v2.5": "mimo-v2.6-pro",
+  "mimo-v2.5-pro": "mimo-v2.6-pro",
+  "mimo-v2-flash": "mimo-v2.6-flash",
   "zai-org/GLM-5.2": "z-ai/glm-5.3-flash",
   "Pro/zai-org/GLM-5.1": "z-ai/glm-5.3-flash",
   "zai-org/GLM-Z1-AirX": "z-ai/glm-5.3-flash",
@@ -251,6 +276,43 @@ export const MODELS: ModelInfo[] = [
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
   },
+  {
+    id: "mimo-v2.6-flash",
+    label: "MiMo 2.6 Flash",
+    group: "快速模型",
+    // 全模态模型但只列在「快速模型」：不重复占多模态行；vision=true 仍给 ▦ 特征圆点。
+    thinking: true,
+    thinkingLevels: ["low", "medium", "high"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "小米 · 全模态 · 1M · 快速 · 可调思考",
+    endpoints: [ep(RELAY, "mimo-v2.6-flash")],
+    icon: "mimo",
+    // 官方牌价（与 V2.5 持平）：输入 ¥1/M、输出 ¥2/M；缓存写入限时免费，按未命中输入保守记。
+    pricing: { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 },
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
+  },
+  {
+    id: "xiaomi/mimo-v2.6-pro-ultraspeed",
+    label: "MiMo 2.6 Pro UltraSpeed",
+    group: "快速模型",
+    thinking: true,
+    thinkingLevels: ["low", "medium", "high"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "小米 · 最高 20× 速 · 全模态 · 1M",
+    endpoints: [ep(RELAY, "xiaomi/mimo-v2.6-pro-ultraspeed")],
+    icon: "mimo",
+    // 官方牌价 = Pro ×10：输入 ¥30/M、输出 ¥60/M、缓存命中 ¥0.25/M；cacheWrite 按未命中输入保守记。
+    pricing: { input: 30, cachedInput: 0.25, cacheWrite: 30, output: 60 },
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
+  },
   // ── 多模态 ──────────────────────────
   {
     id: "gpt-5.6-luna",
@@ -265,12 +327,13 @@ export const MODELS: ModelInfo[] = [
     contextK: 1000,
     hint: "多模态 · 视觉 · 1M",
     endpoints: [ep(RELAY, "gpt-5.6-luna")],
+    icon: "openai",
     pricing: { input: 1.4, cachedInput: 0.14, cacheWrite: 1.75, output: 8.4 },
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
   },
   {
-    id: "mimo-v2.5",
-    label: "MiMo V2.5",
+    id: "mimo-v2.6-pro",
+    label: "MiMo 2.6 Pro",
     group: "多模态",
     thinking: true,
     thinkingLevels: ["low", "medium", "high"],
@@ -279,16 +342,19 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
-    hint: "全模态 · 1M · 可调思考深度",
-    endpoints: [ep(RELAY, "mimo-v2.5")],
+    hint: "小米 · 全模态 · 1M · 可调思考深度",
+    endpoints: [ep(RELAY, "mimo-v2.6-pro")],
     icon: "mimo",
-    pricing: { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 },
+    // 官方牌价：输入 ¥3/M、输出 ¥6/M、缓存命中 ¥0.025/M；cacheWrite 按未命中输入保守记。
+    pricing: { input: 3, cachedInput: 0.025, cacheWrite: 3, output: 6 },
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
   },
   {
     id: "google/gemini-3.8-flash",
     label: "Gemini 3.8 Flash",
     group: "多模态",
+    // 同时归入「快速模型」分类（低延迟主力），特征圆点会带上 ⚡。
+    extraGroups: ["快速模型"],
     thinking: true,
     thinkingRequired: true,
     thinkingLevels: ["low", "medium", "high"],
@@ -320,11 +386,11 @@ export const MODELS: ModelInfo[] = [
     vision: true,
     contextK: 1000,
     hint: "1M · 思考不可关",
-    // 第一跳七牛云，第二跳 Protocom 同模型，第三跳 MiMo（换模型兜底）。
+    // 第一跳七牛云，第二跳 Protocom 同模型，第三跳 MiMo 2.6 Flash（换模型兜底）。
     endpoints: [
       ep(QINIU, "z-ai/glm-5.3-flash"),
       ep(RELAY, "z-ai/glm-5.3-flash"),
-      ep(RELAY, "mimo-v2.5"),
+      ep(RELAY, "mimo-v2.6-flash"),
     ],
     icon: "zhipu",
     pricing: { input: 0.8, cachedInput: 0.23, output: 2.8 },
@@ -343,7 +409,8 @@ export const MODELS: ModelInfo[] = [
     vision: true,
     contextK: 1000,
     hint: "视觉 · 1M · 混合思考",
-    endpoints: [ep(RELAY, "Qwen/Qwen3.8-Flash")],
+    // 上游真实模型 id 是 Omni 版；registry id / 前端展示名保持 3.8 Flash 不变。
+    endpoints: [ep(RELAY, "Qwen/Qwen3.8-Omni-Flash")],
     icon: "qwen",
     pricing: { input: 0.8, cachedInput: 0.1, output: 2.7 },
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
@@ -364,6 +431,7 @@ export const MODELS: ModelInfo[] = [
     hint: "视觉 · 1M · high→xhigh",
     vendorTrainingNotice: MUSE_VENDOR_TRAINING_NOTICE,
     endpoints: [ep(RELAY, "meta/muse-spark-1.3-contributor")],
+    icon: "meta",
     pricing: { input: 0.7, cachedInput: 0.014, output: 1.4 },
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
@@ -381,6 +449,7 @@ export const MODELS: ModelInfo[] = [
     contextK: 256,
     hint: "免费 · 256K",
     endpoints: [ep(RELAY, "poolside/laguna-s-2.1-free")],
+    icon: "poolside",
     pricing: { input: 0, cachedInput: 0, output: 0 },
   },
   {
@@ -395,6 +464,7 @@ export const MODELS: ModelInfo[] = [
     contextK: 256,
     hint: "免费 · 256K",
     endpoints: [ep(RELAY, "inclusionai/ling-3.0-flash-sante:free")],
+    icon: "inclusionai",
     pricing: { input: 0, cachedInput: 0, output: 0 },
   },
   // ── 旗舰模型 ──────────────────────────
@@ -411,6 +481,7 @@ export const MODELS: ModelInfo[] = [
     contextK: 1000,
     hint: "旗舰 · 视觉 · 1M",
     endpoints: [ep(RELAY, "gpt-5.6-sol")],
+    icon: "openai",
     pricing: { input: 28, cachedInput: 2.8, cacheWrite: 35, output: 140 },
     cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
@@ -446,6 +517,7 @@ export const MODELS: ModelInfo[] = [
     contextK: 0,
     hint: "默认生图 · ¥0.50/张 · 10–40s · 中文友好",
     endpoints: sf("baidu/ERNIE-Image-Turbo"),
+    icon: "baidu",
     pricing: { input: 0, cachedInput: 0, output: 0.5 },
     imageApiStyle: "siliconflow",
     imageParams: {
@@ -488,6 +560,7 @@ export const MODELS: ModelInfo[] = [
     contextK: 0,
     hint: "Gemini 生图 · ¥1.00/张 · 约 100–400s",
     endpoints: [ep(XHUOAI, "nano-banana")],
+    icon: "gemini",
     pricing: { input: 0, cachedInput: 0, output: 1 },
     imageApiStyle: "openai",
     imageParams: { sizes: ["1024x1024", "960x1280", "1280x960"], maxCount: 4, expectedMs: 120_000 },
@@ -504,6 +577,7 @@ export const MODELS: ModelInfo[] = [
     contextK: 0,
     hint: "OpenAI 生图 · ¥1.00/张 · 约 100–400s",
     endpoints: [ep(XHUOAI, "gpt-image-2.5")],
+    icon: "openai",
     pricing: { input: 0, cachedInput: 0, output: 1 },
     imageApiStyle: "openai",
     imageParams: { sizes: ["1024x1024", "1536x1024", "1024x1536"], maxCount: 4, expectedMs: 150_000 },
@@ -520,6 +594,7 @@ export const MODELS: ModelInfo[] = [
     contextK: 0,
     hint: "OpenAI 生图 · ¥1.00/张 · 约 100–400s",
     endpoints: [ep(XHUOAI, "gpt-image-2")],
+    icon: "openai",
     pricing: { input: 0, cachedInput: 0, output: 1 },
     imageApiStyle: "openai",
     imageParams: { sizes: ["1024x1024", "1536x1024", "1024x1536"], maxCount: 4, expectedMs: 150_000 },

@@ -147,8 +147,8 @@ export const chatRequestSchema = z.object({
     .max(REQUEST_LIMITS.customApiGroups, `自定义 API 分组超过上限（最多 ${REQUEST_LIMITS.customApiGroups} 个）。`)
     .default([]),
   defaultImageModelId: z.string().nullable().optional(),
-  imageModeTextModel: z.string().default("mimo-v2.5"),
-  imageModeTextModelFallback: z.string().default("mimo-v2.5"),
+  imageModeTextModel: z.string().default("mimo-v2.6-pro"),
+  imageModeTextModelFallback: z.string().default("mimo-v2.6-pro"),
   capabilityEndpoints: z
     .unknown()
     .optional()

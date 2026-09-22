@@ -30,6 +30,7 @@ import {
   modelAllowsDisableThinking,
   clampThinkingEffort,
   wireThinkingEffort,
+  modelMenuCategories,
 } from "./models.ts";
 import { getMaxTokens } from "@/lib/context/types.ts";
 
@@ -115,9 +116,9 @@ test("MODELS：model id 唯一", () => {
   }
 });
 
-test("MODELS：17 个菜单模型价格与 cacheWrite", () => {
+test("MODELS：19 个菜单模型价格与 cacheWrite", () => {
   const picker = MODELS.filter((m) => m.id !== CUSTOM_OPENAI_MODEL_ID);
-  assert.equal(picker.length, 17);
+  assert.equal(picker.length, 19);
   const price = (id: string) => {
     const m = getModelInfo(id);
     assert.ok(m?.pricing, id);
@@ -126,7 +127,9 @@ test("MODELS：17 个菜单模型价格与 cacheWrite", () => {
   assert.deepEqual(price("deepseek/deepseek-v4.1-flash"), { input: 2.1, cachedInput: 0.042, output: 8.4 });
   assert.deepEqual(price("Qwen/Qwen3.7-Flash"), { input: 1.2, cachedInput: 0.24, output: 4.8 });
   assert.deepEqual(price("gpt-5.6-luna"), { input: 1.4, cachedInput: 0.14, cacheWrite: 1.75, output: 8.4 });
-  assert.deepEqual(price("mimo-v2.5"), { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 });
+  assert.deepEqual(price("mimo-v2.6-flash"), { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 });
+  assert.deepEqual(price("mimo-v2.6-pro"), { input: 3, cachedInput: 0.025, cacheWrite: 3, output: 6 });
+  assert.deepEqual(price("xiaomi/mimo-v2.6-pro-ultraspeed"), { input: 30, cachedInput: 0.25, cacheWrite: 30, output: 60 });
   assert.deepEqual(price("google/gemini-3.8-flash"), { input: 10.5, cachedInput: 1.05, output: 52.5 });
   assert.deepEqual(price("z-ai/glm-5.3-flash"), { input: 0.8, cachedInput: 0.23, output: 2.8 });
   assert.deepEqual(price("Qwen/Qwen3.8-Flash"), { input: 0.8, cachedInput: 0.1, output: 2.7 });
@@ -149,7 +152,9 @@ const MODELS_MD_SECTION2_CONTEXT_K: Record<string, number> = {
   "deepseek/deepseek-v4.1-flash": 1000,
   "Qwen/Qwen3.7-Flash": 1000,
   "gpt-5.6-luna": 1000,
-  "mimo-v2.5": 1000,
+  "mimo-v2.6-flash": 1000,
+  "mimo-v2.6-pro": 1000,
+  "xiaomi/mimo-v2.6-pro-ultraspeed": 1000,
   "google/gemini-3.8-flash": 1000,
   "z-ai/glm-5.3-flash": 1000,
   "Qwen/Qwen3.8-Flash": 1000,
@@ -287,12 +292,14 @@ test("MODELS：对话走 relay/mimo，硅基流动仅保留生图", () => {
   assert.equal(glm!.endpoints[0].apiModelId, "z-ai/glm-5.3-flash");
   assert.equal(glm!.endpoints[0].provider, "qiniu");
   assert.equal(glm!.endpoints[1]?.provider, "relay");
-  assert.equal(glm!.endpoints[2]?.apiModelId, "mimo-v2.5", "最后一跳换模型兜底");
+  assert.equal(glm!.endpoints[2]?.apiModelId, "mimo-v2.6-flash", "最后一跳换模型兜底");
   assert.equal(glm!.timeoutMs, 120_000);
 
   const qwen = getModelInfo("Qwen/Qwen3.8-Flash");
   assert.ok(qwen);
   assert.equal(qwen?.icon, "qwen");
+  // 上游真实 id 是 Omni 版，registry id 与前端展示保持 3.8 Flash。
+  assert.equal(qwen?.endpoints[0]?.apiModelId, "Qwen/Qwen3.8-Omni-Flash");
   assert.equal(qwen?.timeoutMs, 120_000);
   assert.equal(qwen?.vision, true);
   assert.equal(qwen?.thinkingRequestStyle, "openai-reasoning-effort");
@@ -342,9 +349,9 @@ test("LEGACY_REGISTRY_ALIASES：每个 value 都能 getModelInfo", () => {
 });
 
 test("getLandedModelInfo：apiModelId 能对上注册表时用落地模型，否则退回 registryId", () => {
-  assert.equal(getLandedModelInfo("mimo-v2.5", "z-ai/glm-5.3-flash")?.id, "mimo-v2.5");
+  assert.equal(getLandedModelInfo("mimo-v2.6-flash", "z-ai/glm-5.3-flash")?.id, "mimo-v2.6-flash");
   assert.equal(getLandedModelInfo("z-ai/glm-5.3-flash", "z-ai/glm-5.3-flash")?.id, "z-ai/glm-5.3-flash");
-  assert.equal(getLandedModelInfo("unknown-upstream", "mimo-v2.5")?.id, "mimo-v2.5");
+  assert.equal(getLandedModelInfo("unknown-upstream", "mimo-v2.6-pro")?.id, "mimo-v2.6-pro");
 });
 
 test("getModelInfo：旧 id 映射到当前注册表", () => {
@@ -354,20 +361,45 @@ test("getModelInfo：旧 id 映射到当前注册表", () => {
   assert.equal(getModelInfo("Qwen/Qwen3.8-27B")?.id, "Qwen/Qwen3.8-Flash");
   assert.equal(getModelInfo("zai-org/GLM-5.2")?.id, "z-ai/glm-5.3-flash");
   assert.equal(getModelInfo("MiniMaxAI/MiniMax-M3")?.id, "Qwen/Qwen3.8-Flash");
-  assert.equal(getModelInfo("mimo-v2-flash")?.id, "mimo-v2.5");
-  assert.equal(getModelInfo("mimo-v2.5-pro")?.id, "mimo-v2.5");
+  assert.equal(getModelInfo("mimo-v2-flash")?.id, "mimo-v2.6-flash");
+  assert.equal(getModelInfo("mimo-v2.5")?.id, "mimo-v2.6-pro");
+  assert.equal(getModelInfo("mimo-v2.5-pro")?.id, "mimo-v2.6-pro");
   assert.equal(getModelInfo("google/gemini-3.7-flash")?.id, "google/gemini-3.8-flash");
   assert.equal(getModelInfo("Pro/moonshotai/Kimi-K2.6")?.id, "kimi-k3");
 });
 
-test("MODELS：MiMo 走统一中转，可调思考深度", () => {
-  const mimo = getModelInfo("mimo-v2.5");
-  assert.ok(mimo);
-  assert.equal(primaryProvider(mimo!), "relay");
-  assert.equal(mimo!.group, "多模态");
-  assert.equal(mimo!.thinkingRequestStyle, "openai-reasoning-effort");
-  assert.deepEqual(mimo!.thinkingLevels, ['low', 'medium', 'high']);
-  assert.equal(modelSupportsThinkingEffort(mimo), true);
+test("MODELS：MiMo 2.6 走统一中转，Flash 只列快速，Gemini 快速+多模态双归属", () => {
+  const pro = getModelInfo("mimo-v2.6-pro");
+  assert.ok(pro);
+  assert.equal(primaryProvider(pro!), "relay");
+  assert.equal(pro!.group, "多模态");
+  assert.equal(pro!.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.deepEqual(pro!.thinkingLevels, ['low', 'medium', 'high']);
+  assert.equal(modelSupportsThinkingEffort(pro), true);
+
+  const flash = getModelInfo("mimo-v2.6-flash");
+  assert.ok(flash);
+  assert.equal(flash!.group, "快速模型");
+  // 全模态能力（vision → ▦ 圆点）但不在多模态列重复出现。
+  assert.equal(flash!.extraGroups, undefined);
+  assert.deepEqual(modelMenuCategories(flash!), ["快速模型"]);
+  assert.equal(flash!.vision, true);
+  assert.equal(primaryProvider(flash!), "relay");
+
+  const ultra = getModelInfo("xiaomi/mimo-v2.6-pro-ultraspeed");
+  assert.ok(ultra);
+  assert.equal(ultra!.group, "快速模型");
+  assert.deepEqual(modelMenuCategories(ultra!), ["快速模型"]);
+  assert.equal(ultra!.vision, true);
+  assert.equal(ultra!.icon, "mimo");
+  assert.equal(primaryProvider(ultra!), "relay");
+  assert.equal(ultra!.endpoints[0].apiModelId, "xiaomi/mimo-v2.6-pro-ultraspeed");
+
+  const gemini = getModelInfo("google/gemini-3.8-flash");
+  assert.ok(gemini);
+  assert.equal(gemini!.group, "多模态");
+  assert.deepEqual(gemini!.extraGroups, ["快速模型"]);
+  assert.deepEqual(modelMenuCategories(gemini!), ["多模态模型", "快速模型"]);
 });
 
 test("思考强度：生图模型不支持档位，GLM 把 medium 钳到 high 并原样下发 max", () => {
@@ -446,7 +478,7 @@ test("hasNextEndpoint：自定义分组恒 false，内置 GLM 有第二跳", () 
   assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 0), true);
   assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 1), true, "第二跳是 Protocom 同模型");
   assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 2), false, "第三跳 MiMo 是最后一跳");
-  assert.equal(hasNextEndpoint("mimo-v2.5", 0), false);
+  assert.equal(hasNextEndpoint("mimo-v2.6-pro", 0), false);
 });
 
 test("selectCustomApiGroupsForRequest：只返回本次用到的分组", () => {
@@ -475,6 +507,6 @@ test("modelAcceptsImageInput：自定义 vision 声明生效", () => {
   }];
   assert.equal(modelAcceptsImageInput(buildCustomModelRegistryId("g", "see"), groups), true);
   assert.equal(modelAcceptsImageInput(buildCustomModelRegistryId("g", "text"), groups), false);
-  assert.equal(modelAcceptsImageInput("mimo-v2.5", []), true);
+  assert.equal(modelAcceptsImageInput("mimo-v2.6-pro", []), true);
   assert.equal(modelAcceptsImageInput("meituan/LongCat-2.0:free", []), false);
 });

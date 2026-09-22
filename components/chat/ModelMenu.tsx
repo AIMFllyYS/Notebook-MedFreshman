@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
-import { ChevronDown, ChevronLeft, ChevronRight, Check, Cpu, Compass, Gift, Zap, Layers, Crown, Image as ImageIcon, Plug, Server, type LucideIcon } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Check, Compass, Gift, Zap, Layers, Crown, Image as ImageIcon, Plug, Server, Brain, Wrench, MoreHorizontal, type LucideIcon } from "lucide-react";
 import { submenuTop } from '@/lib/chat/modelMenuPosition';
 import { useSettings, type ThinkingEffort } from "@/lib/hooks/useSettings";
 import {
   AUTO_MODEL_ID, AUTO_MODEL_INFO, MODELS, modelsForPicker, getAllModels, getModelInfoWithCustom, CUSTOM_PREFIX,
   modelSupportsThinkingEffort, modelAllowsDisableThinking, modelThinkingLevels,
-  clampThinkingEffort, defaultEffortFor, type ModelInfo,
+  clampThinkingEffort, defaultEffortFor, modelMenuCategories, type ModelInfo,
 } from "@/lib/ai/models";
 import { ModelIcon } from "@/components/icons/ModelBrandIcons";
 import { AgentCheckIcon, AgentPauseIcon } from "@/components/icons/AgentIcons";
@@ -26,9 +26,63 @@ const CATEGORY_LABEL_KEYS: Record<string, string> = {
   "旗舰模型": "menu.model.category.flagship",
   "生图模型": "menu.model.category.image",
 };
-const COLUMN_WIDTHS = [190, 210, 224];
+/**
+ * 分类专属色：全部走主题 token（MD3 / 语义色），light / dark / colorful / custom 外观自动适配。
+ * 同一颜色同时驱动分类行图标与模型行右侧的特征圆点，形成「分类↔圆点」的视觉对应。
+ */
+const CATEGORY_COLORS: Record<string, string> = {
+  "免费模型": "var(--color-success)",
+  "快速模型": "var(--color-warning)",
+  "多模态模型": "var(--color-info)",
+  "旗舰模型": "var(--md-sys-color-primary)",
+  "生图模型": "var(--md-sys-color-secondary)",
+};
+const COLUMN_WIDTHS = [196, 244, 228];
 const GAP = 6;
-function category(model: ModelInfo) { return model.group === "多模态" ? "多模态模型" : model.group; }
+
+/** 模型行右侧特征圆点的语义类型：前五个对应菜单分类，后两个是能力标签。 */
+type ModelTrait = "flagship" | "free" | "fast" | "multimodal" | "image" | "thinking" | "tools";
+
+const TRAIT_META: Record<ModelTrait, { icon: LucideIcon; color: string; labelKey: string }> = {
+  flagship: { icon: Crown, color: "var(--md-sys-color-primary)", labelKey: "menu.model.category.flagship" },
+  free: { icon: Gift, color: "var(--color-success)", labelKey: "menu.model.category.free" },
+  fast: { icon: Zap, color: "var(--color-warning)", labelKey: "menu.model.category.fast" },
+  multimodal: { icon: Layers, color: "var(--color-info)", labelKey: "menu.model.category.multimodal" },
+  image: { icon: ImageIcon, color: "var(--md-sys-color-secondary)", labelKey: "menu.model.category.image" },
+  thinking: { icon: Brain, color: "var(--md-sys-color-tertiary)", labelKey: "menu.model.badge.thinking" },
+  tools: { icon: Wrench, color: "var(--ink-soft)", labelKey: "menu.model.badge.tools" },
+};
+
+/** 菜单分类名 → 特征类型（CATEGORIES 全集，含归一化后的「多模态模型」）。 */
+const CATEGORY_TRAIT: Record<string, ModelTrait> = {
+  "旗舰模型": "flagship",
+  "免费模型": "free",
+  "快速模型": "fast",
+  "多模态模型": "multimodal",
+  "生图模型": "image",
+};
+
+const TRAIT_ORDER = Object.keys(TRAIT_META) as ModelTrait[];
+
+/**
+ * 模型的全部特征（分类归属 + 能力），按 TRAIT_META 声明顺序输出。
+ * 分类归属含 extraGroups 多重归属；视觉模型补 multimodal、生图模型补 image。
+ */
+function modelTraits(model: ModelInfo): ModelTrait[] {
+  const set = new Set<ModelTrait>();
+  for (const cat of modelMenuCategories(model)) {
+    const trait = CATEGORY_TRAIT[cat];
+    if (trait) set.add(trait);
+  }
+  if (model.vision) set.add("multimodal");
+  if (model.type === "image") set.add("image");
+  if (model.thinking) set.add("thinking");
+  if (model.tools) set.add("tools");
+  return TRAIT_ORDER.filter((t) => set.has(t));
+}
+
+/** 一次最多渲染 3 个特征圆点；超出用「⋯」圆点收尾（tooltip 列出全部特征）。 */
+const MAX_TRAIT_DOTS = 3;
 function formatContextWindow(k?: number): string | null {
   if (!k || k <= 0) return null;
   return k >= 1000 ? `${Number((k / 1000).toFixed(2))}M` : `${k}K`;
@@ -63,7 +117,7 @@ export default function ModelMenu({
   }, []);
   useOverlayRegistration({ id: "model-menu", open, onClose: close, priority: 45 });
   const models = series?.startsWith("category:")
-    ? modelsForPicker(MODELS).filter((model) => category(model) === series.slice(9))
+    ? modelsForPicker(MODELS).filter((model) => modelMenuCategories(model).includes(series.slice(9)))
     : series?.startsWith("custom:")
       ? getAllModels(customApiGroups.filter((group) => group.id === series.slice(7))).filter((model) => model.id.startsWith(CUSTOM_PREFIX))
       : [];
@@ -187,10 +241,11 @@ export default function ModelMenu({
   };
   const rowClass = "flex w-full items-center gap-2 rounded-md text-left text-[var(--ink)] hover:bg-[var(--bg-muted)] focus-visible:outline-2 focus-visible:outline-[var(--accent-ink)] " +
     (position.mobile ? "min-h-11 px-3 py-2 text-[13px]" : "min-h-8 px-2 py-1.5 text-[12px]");
-  const columnClass = "hide-scrollbar min-w-0 overflow-y-auto overscroll-contain rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-1.5 shadow-lg";
+  const columnClass = "hide-scrollbar min-w-0 overflow-y-auto overscroll-contain rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-panel)_96%,transparent)] p-1.5 shadow-lg backdrop-blur-md animate-[dropdown-in_160ms_var(--ease-out)_both]";
   const columnStyle = (index: number) => ({
     width: position.mobile ? "min(300px, calc(100vw - 16px))" : COLUMN_WIDTHS[index],
     maxHeight: position.maxHeight,
+    animationDelay: `${index * 35}ms`,
     ...(!position.mobile && index > 0 ? { position: 'absolute' as const, left: position.growLeft
       ? -(COLUMN_WIDTHS.slice(1, index + 1).reduce((a, b) => a + b, 0) + GAP * index)
       : COLUMN_WIDTHS.slice(0, index).reduce((a, b) => a + b, 0) + GAP * index } : {}),
@@ -199,6 +254,21 @@ export default function ModelMenu({
   const categoryKey = categoryName ? CATEGORY_LABEL_KEYS[categoryName] : undefined;
   const title = categoryName ? (categoryKey ? t(categoryKey) : categoryName)
     : customApiGroups.find((group) => group.id === series?.slice(7))?.name ?? t("menu.model.custom");
+  const TitleIcon = categoryName ? CATEGORY_ICONS[categoryName] : Plug;
+  const builtinPickerModels = modelsForPicker(MODELS);
+  const categoryCount = (name: string) =>
+    builtinPickerModels.filter((model) => modelMenuCategories(model).includes(name)).length;
+  /** 分类行右侧的品牌图标圆点：按注册表顺序取该分类内去重品牌，附模型名 tooltip。 */
+  const categoryBrands = (name: string) => {
+    const brands = new Map<string, string[]>();
+    for (const model of builtinPickerModels) {
+      if (!modelMenuCategories(model).includes(name)) continue;
+      const key = model.icon ?? "default";
+      if (!brands.has(key)) brands.set(key, []);
+      brands.get(key)!.push(model.label);
+    }
+    return [...brands.entries()].map(([brand, labels]) => ({ brand, labels }));
+  };
   const details = detail ? <>
     <ModelDetails model={detail} onUse={() => pick(detail)} />
     {detail.thinking && (modelSupportsThinkingEffort(detail) || modelAllowsDisableThinking(detail)) ? <div role="menu" aria-label={t("menu.thinking.strength")} data-testid="model-thinking-submenu"><ThinkingSubmenu model={detail} selected={selectedId === detail.id} thinkingEnabled={thinkingEnabled} thinkingEffort={thinkingEffort} onPick={(thinking) => pick(detail, thinking)} /></div> : null}
@@ -208,7 +278,7 @@ export default function ModelMenu({
     <button ref={btnRef} type="button" aria-haspopup="dialog" aria-expanded={open}
       onClick={() => { if (open) close(); else { setOpen(true); focusColumn(1); } }} title={t("menu.model.choose")} data-testid="model-menu-button"
       className="press flex max-w-[180px] min-w-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]">
-      {selectedId === AUTO_MODEL_ID ? <Compass size={12} /> : <Cpu size={12} />}
+      {selectedId === AUTO_MODEL_ID ? <Compass size={12} /> : <ModelIcon brand={current?.icon} size={12} decorative />}
       <span className="model-menu-label model-menu-label-full truncate">{current?.label ?? selectedId}</span>
       <span className="model-menu-label model-menu-label-short">{t("menu.model.short")}</span><ChevronDown size={12} />
     </button>
@@ -218,22 +288,31 @@ export default function ModelMenu({
       {(!position.mobile || !series) ? <section data-menu-level="1" aria-label={t("menu.model.series")} className={columnClass} style={columnStyle(0)}>
         <div className="px-2 py-1.5 text-[10px] font-semibold text-[var(--ink-faint)]">{t("menu.model.builtin")}</div>
         <button type="button" className={rowClass} onClick={() => pick(AUTO_MODEL_INFO)} data-testid="model-menu-item-auto"><Compass aria-hidden size={14} className="shrink-0 text-[var(--accent-ink)]" /><span className="flex-1">{t("menu.model.auto")}</span>{selectedId === AUTO_MODEL_ID ? <Check size={12} /> : null}</button>
-        {CATEGORIES.map((name) => { const Icon = CATEGORY_ICONS[name]; const labelKey = CATEGORY_LABEL_KEYS[name]; return <button type="button" key={name} className={rowClass + (series === "category:" + name ? " bg-[var(--accent-weak)]" : "")}
-          aria-expanded={series === "category:" + name} onMouseEnter={(event) => { if (!position.mobile) navigate("category:" + name, event.currentTarget); }} onClick={(event) => navigate("category:" + name, event.currentTarget)}>
+        {CATEGORIES.map((name) => { const Icon = CATEGORY_ICONS[name]; const labelKey = CATEGORY_LABEL_KEYS[name]; const active = series === "category:" + name; return <button type="button" key={name} className={rowClass + (active ? " bg-[var(--accent-weak)]" : "")}
+          aria-expanded={active} onMouseEnter={(event) => { if (!position.mobile) navigate("category:" + name, event.currentTarget); }} onClick={(event) => navigate("category:" + name, event.currentTarget)}>
           {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
-          <Icon aria-hidden size={14} className="shrink-0 text-[var(--ink-soft)]" />
-          <span className="flex-1">{labelKey ? t(labelKey) : name}</span>{position.mobile || !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
+          <Icon aria-hidden size={14} className="shrink-0" style={{ color: CATEGORY_COLORS[name] }} />
+          <span className="flex-1">{labelKey ? t(labelKey) : name}</span>
+          <CategoryBrandDots brands={categoryBrands(name)} />
+          <span aria-hidden className="model-cat-count shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold leading-none"
+            style={{ background: active ? "color-mix(in srgb, " + CATEGORY_COLORS[name] + " 16%, transparent)" : "var(--bg-muted)", color: active ? CATEGORY_COLORS[name] : "var(--ink-faint)" }}
+            data-count={categoryCount(name)} />
+          {position.mobile || !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
         </button>; })}
         {customApiGroups.length ? <div className="mt-1 flex items-center gap-2 border-t border-[var(--line)] px-2 py-2 text-[10px] text-[var(--ink-faint)]"><Plug aria-hidden size={13} />{t("menu.model.customHeading")}</div> : null}
         {customApiGroups.map((group) => <button type="button" key={group.id} className={rowClass} aria-expanded={series === "custom:" + group.id}
           onMouseEnter={(event) => { if (!position.mobile) navigate("custom:" + group.id, event.currentTarget); }} onClick={(event) => navigate("custom:" + group.id, event.currentTarget)}>
           {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
-          <Server aria-hidden size={14} className="shrink-0 text-[var(--ink-soft)]" /><span className="min-w-0 flex-1 truncate">{group.name}</span>{position.mobile || !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
+          <Server aria-hidden size={14} className="shrink-0 text-[var(--ink-soft)]" /><span className="min-w-0 flex-1 truncate">{group.name}</span>
+          <span aria-hidden className="model-cat-count shrink-0 rounded-full bg-[var(--bg-muted)] px-1.5 py-0.5 text-[9px] font-semibold leading-none text-[var(--ink-faint)]" data-count={group.models.length} />
+          {position.mobile || !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
         </button>)}
       </section> : null}
       {series ? <section data-menu-level="2" aria-label={t("menu.model.models")} className={columnClass} style={columnStyle(1)}>
-        <div className="flex items-center gap-1 px-1 py-1 text-[10px] text-[var(--ink-faint)]">
-          {position.mobile ? <button type="button" aria-label={t("menu.model.backToSeries")} onClick={() => back(2)} className="rounded p-2"><ChevronLeft size={14} /></button> : null}{title}
+        <div className="flex items-center gap-1.5 px-1 py-1 text-[10px] font-medium text-[var(--ink-faint)]">
+          {position.mobile ? <button type="button" aria-label={t("menu.model.backToSeries")} onClick={() => back(2)} className="rounded p-2"><ChevronLeft size={14} /></button> : null}
+          <TitleIcon aria-hidden size={11} style={categoryName ? { color: CATEGORY_COLORS[categoryName] } : undefined} />
+          {title}
         </div>
         {models.map((model) => <div key={model.id}>
           <button type="button" className={rowClass + (detailId === model.id ? " bg-[var(--accent-weak)]" : "")} aria-expanded={detailId === model.id}
@@ -241,8 +320,9 @@ export default function ModelMenu({
             onMouseEnter={(event) => { modelAnchor.current = event.currentTarget; if (!position.mobile) setDetailId(model.id); }}
             onClick={(event) => { modelAnchor.current = event.currentTarget; setDetailId(position.mobile && detailId === model.id ? null : model.id); }}>
             {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
-            <ModelIcon brand={model.icon} size={14} /><span className="min-w-0 flex-1"><span className="block truncate">{model.label}</span>
+            <ModelIcon brand={model.icon} size={14} decorative /><span className="min-w-0 flex-1"><span className="block truncate">{model.label}</span>
             {model.vendorTrainingNotice ? <span className="block text-[10px] text-[var(--md-sys-color-error)]">{model.vendorTrainingNotice}</span> : null}</span>
+            <ModelTraitDots model={model} />
             {selectedId === model.id ? <Check aria-label={t("menu.model.selected")} size={12} className="shrink-0" /> : null}
             {position.mobile ? <ChevronDown aria-hidden size={12} className="shrink-0" /> : !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
           </button>
@@ -252,6 +332,73 @@ export default function ModelMenu({
       {!position.mobile && detail ? <section data-menu-level="3" aria-label={t("menu.model.details")} data-testid="model-submenu" className={columnClass} style={columnStyle(2)}>{details}</section> : null}
     </div>, document.body) : null}
   </>;
+}
+
+/**
+ * 模型行右侧的特征圆点簇：每个圆框 = 一个分类归属 / 能力标签。
+ * 最多铺 3 个，超出收敛为一个「⋯」圆点；悬停任一圆点看全部标签。
+ * 颜色全部走主题 token（CATEGORY_COLORS / TRAIT_META），随外观切换自动适配。
+ */
+function ModelTraitDots({ model }: { model: ModelInfo }) {
+  const t = useT();
+  const traits = modelTraits(model);
+  if (traits.length === 0) return null;
+  const shown = traits.slice(0, MAX_TRAIT_DOTS);
+  const hidden = traits.slice(MAX_TRAIT_DOTS);
+  const label = (key: ModelTrait) => t(TRAIT_META[key].labelKey);
+  return (
+    <span aria-hidden="true" className="flex shrink-0 items-center -space-x-[3px]">
+      {shown.map((key) => {
+        const meta = TRAIT_META[key];
+        const Icon = meta.icon;
+        return (
+          <span key={key} title={label(key)}
+            className="model-trait-dot grid place-items-center rounded-full border"
+            style={{
+              color: meta.color,
+              background: `color-mix(in srgb, ${meta.color} 20%, var(--bg-panel))`,
+              borderColor: `color-mix(in srgb, ${meta.color} 45%, transparent)`,
+            }}>
+            <Icon size={9} strokeWidth={2.25} aria-hidden />
+          </span>
+        );
+      })}
+      {hidden.length > 0 ? (
+        <span title={traits.map(label).join(" · ")}
+          className="model-trait-dot grid place-items-center rounded-full border text-[var(--ink-faint)]"
+          style={{ background: "var(--bg-muted)", borderColor: "var(--line)" }}>
+          <MoreHorizontal size={9} aria-hidden />
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
+/**
+ * 分类行右侧的品牌图标圆点簇：每个圆框 = 该分类内一个模型品牌。
+ * 最多铺 4 个，超出收敛为一个「⋯」圆点；悬停看该品牌下的模型名。
+ */
+const MAX_BRAND_DOTS = 4;
+function CategoryBrandDots({ brands }: { brands: { brand: string; labels: string[] }[] }) {
+  if (brands.length === 0) return null;
+  const shown = brands.slice(0, MAX_BRAND_DOTS);
+  const hidden = brands.slice(MAX_BRAND_DOTS);
+  return (
+    <span aria-hidden="true" className="flex shrink-0 items-center -space-x-[3px]">
+      {shown.map(({ brand, labels }) => (
+        <span key={brand} title={labels.join(" · ")}
+          className="model-brand-dot grid place-items-center rounded-full border border-[var(--line)] bg-[var(--bg-elevated)]">
+          <ModelIcon brand={brand === "default" ? undefined : brand} size={10} decorative />
+        </span>
+      ))}
+      {hidden.length > 0 ? (
+        <span title={hidden.flatMap((b) => b.labels).join(" · ")}
+          className="model-brand-dot grid place-items-center rounded-full border border-[var(--line)] bg-[var(--bg-muted)] text-[var(--ink-faint)]">
+          <MoreHorizontal size={9} aria-hidden />
+        </span>
+      ) : null}
+    </span>
+  );
 }
 
 function ModelDetails({
@@ -299,7 +446,10 @@ function ModelDetails({
         {t("menu.model.info")}
       </div>
       <div className="px-2 pb-2">
-        <div className="text-[12.5px] font-medium text-[var(--ink)]">{model.label}</div>
+        <div className="flex items-center justify-between gap-2">
+          <div className="text-[12.5px] font-medium text-[var(--ink)]">{model.label}</div>
+          <ModelTraitDots model={model} />
+        </div>
         <div className="mt-0.5 text-[10.5px] leading-relaxed text-[var(--ink-faint)]">{model.hint}</div>
         {model.vendorTrainingNotice && (
           <div
