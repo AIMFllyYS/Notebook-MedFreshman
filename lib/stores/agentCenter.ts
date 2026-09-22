@@ -17,8 +17,15 @@ export type AgentCenterTab = "answer" | "links" | "images";
  */
 /** 卡片四周留白：卡片是浮起来的（圆角 + 阴影），但**占的是真实宽度**，所以留白也算进那一列的宽度。 */
 export const SOURCES_PANEL_INSET = 12;
-/** SSR / 单测回退值；浏览器里的默认宽由 defaultSourcesPanelSize() 按对话行宽折算（见下）。 */
-export const SOURCES_PANEL_DEFAULT_SIZE = { width: 400, height: 460 } as const;
+/**
+ * 来源列的默认尺寸（**回到用户口径的「好看」档**）。
+ *
+ * 曾经按视口折算成 30%（≈576px@1920），理由是"太窄"；但走马灯（WebSourceCarousel）
+ * 进来以后，那一列已经不需要那么宽——400 宽时卡片横跨整列显得空、标题被拉成一条长线，
+ * 反而不如窄一点紧凑。用户明确要求回到"加内容之前"的尺寸，故此处写死为原默认值。
+ * 用户拖过的尺寸照旧读盘恢复（`readSavedSize`），这里只兜「从没拖过」的情形。
+ */
+export const SOURCES_PANEL_DEFAULT_SIZE = { width: 300, height: 420 } as const;
 export const SOURCES_PANEL_MIN_SIZE = { width: 220, height: 200 } as const;
 export const SOURCES_PANEL_MAX_SIZE = { width: 720, height: 1200 } as const;
 const SOURCES_PANEL_SIZE_KEY = "studysolo-agent-sources-panel-size";
@@ -30,18 +37,9 @@ export function clampSourcesPanelSize(size: { width: number; height: number }): 
   };
 }
 
-/**
- * 来源列的默认尺寸：AI 输出后它自动弹在对话行右侧，用户口径「太窄」——
- * 默认宽取**对话行的 ~1/3**（行 ≈ 视口去掉左对话栏 14%，0.34×0.86 ≈ 0.30 视口宽），
- * 与右侧主面板（37%）协调：小栏始终略小于主面板；高度同理取约半屏，均卡在可调范围内。
- * 用户拖过的尺寸照旧读盘恢复，这个默认只兜「从没拖过」的情形。
- */
+/** 默认尺寸的唯一入口（SSR / 单测 / 首访都走它）。 */
 export function defaultSourcesPanelSize(): { width: number; height: number } {
-  const width =
-    typeof window === "undefined" ? SOURCES_PANEL_DEFAULT_SIZE.width : window.innerWidth * 0.3;
-  const height =
-    typeof window === "undefined" ? SOURCES_PANEL_DEFAULT_SIZE.height : window.innerHeight * 0.5;
-  return clampSourcesPanelSize({ width, height });
+  return clampSourcesPanelSize({ ...SOURCES_PANEL_DEFAULT_SIZE });
 }
 
 function readSavedSize(): { width: number; height: number } {

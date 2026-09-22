@@ -1,42 +1,79 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import clsx from "clsx";
 import { Link2 } from "lucide-react";
-import { AgentDocumentIcon, AgentQuizIcon, AgentTerminalIcon } from "@/components/icons/AgentIcons";
+import {
+  AgentDocumentIcon,
+  AgentImageIcon,
+  AgentQuizIcon,
+  AgentTerminalIcon,
+} from "@/components/icons/AgentIcons";
 import { SourcePreviewRows, sourcePreviewMeta } from "@/components/chat/SourcePreviewRows";
 import WebSourceCarousel from "@/components/chat/WebSourceCarousel";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import { webSourceHost } from "@/lib/chat/webSearchDisplay";
-import type { AgentProductItem } from "@/lib/chat/sessionProducts";
+import type { AgentProductItem, AgentProductKind } from "@/lib/chat/sessionProducts";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { openAgentQuiz } from "@/lib/quiz-dock/open";
 import { useArtifacts } from "@/lib/stores/artifacts";
 import { useDocuments } from "@/lib/stores/documents";
+import { useImageGen } from "@/lib/stores/imageGen";
 import { useStore } from "@/lib/stores/ui";
 import { SOURCES_PANEL_INSET as INSET, clampSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
 import { useT } from "@/lib/i18n";
 
 type ResizeAxes = "x" | "y" | "xy";
 
+/** 参考列里各产物板块的展示顺序：来源之外，出题 → 演示 → 生图 → 文档，同级并列。 */
+const PRODUCT_SECTIONS: readonly AgentProductKind[] = ["quiz", "interactive", "image", "document"];
+
+function productSectionLabel(t: ReturnType<typeof useT>, kind: AgentProductKind, count: number): string {
+  if (kind === "quiz") return t("agent.rail.quiz", { count });
+  if (kind === "interactive") return t("agent.rail.interactive", { count });
+  if (kind === "image") return t("agent.rail.image", { count });
+  return t("agent.rail.document", { count });
+}
+
+function productIcon(kind: AgentProductKind) {
+  if (kind === "quiz") return AgentQuizIcon;
+  if (kind === "document") return AgentDocumentIcon;
+  if (kind === "image") return AgentImageIcon;
+  return AgentTerminalIcon;
+}
+
+function productHint(t: ReturnType<typeof useT>, kind: AgentProductKind): string {
+  if (kind === "quiz") return t("agent.rail.openQuiz");
+  if (kind === "document") return t("agent.rail.openDocument");
+  if (kind === "image") return t("agent.rail.openImage");
+  return t("agent.rail.openInteractive");
+}
+
+/**
+ * 面板标题。
+ *
+ * 只有**一类**内容时直接报这一类（"来源 · 46"），少一层冗余；一旦同类并列
+ * （来源 / 出题 / 演示 / 生图 / 文档），标题退回中性的容器名，各板块再各自出小节标题——
+ * 这样它们才是同一个层级，而不是"来源"当主标题、其余挂在下面。
+ */
 function railTitle(
   t: ReturnType<typeof useT>,
   sources: TraceSource[],
   products: AgentProductItem[],
 ): string {
-  const kinds = [
-    sources.length > 0 ? "sources" : null,
-    ...new Set(products.map((item) => item.kind)),
-  ].filter(Boolean);
+  const kinds = productKinds(sources, products);
   if (kinds.length <= 1) {
     if (sources.length) return t("agent.sources.count", { count: sources.length });
     const kind = products[0]?.kind;
-    const count = products.length;
-    if (kind === "quiz") return t("agent.rail.quiz", { count });
-    if (kind === "interactive") return t("agent.rail.interactive", { count });
-    if (kind === "document") return t("agent.rail.document", { count });
+    if (kind) return productSectionLabel(t, kind, products.length);
   }
-  return t("agent.rail.count", { count: sources.length + products.length });
+  return t("agent.rail.title", { count: sources.length + products.length });
+}
+
+/** 当前面板里实际出现的类别（按展示顺序），用于决定要不要出小节标题。 */
+function productKinds(sources: TraceSource[], products: AgentProductItem[]): string[] {
+  const kinds = PRODUCT_SECTIONS.filter((kind) => products.some((item) => item.kind === kind));
+  return sources.length ? ["sources", ...kinds] : kinds;
 }
 
 function ProductRows({
@@ -50,19 +87,11 @@ function ProductRows({
   return (
     <>
       {items.map((item) => {
-        const Icon = item.kind === "quiz"
-          ? AgentQuizIcon
-          : item.kind === "document"
-            ? AgentDocumentIcon
-            : AgentTerminalIcon;
+        const Icon = productIcon(item.kind);
         const detail = item.kind === "quiz"
           ? t("agent.rail.questions", { count: Number(item.detail) || 0 })
           : item.detail;
-        const hint = item.kind === "quiz"
-          ? t("agent.rail.openQuiz")
-          : item.kind === "document"
-            ? t("agent.rail.openDocument")
-            : t("agent.rail.openInteractive");
+        const hint = productHint(t, item.kind);
         return (
           <button
             key={`${item.kind}:${item.id}`}
@@ -128,6 +157,7 @@ export default function AgentSourcePanel({
   const setAgentDockCollapsed = useStore((state) => state.setAgentDockCollapsed);
   const openArtifact = useArtifacts((state) => state.openViewer);
   const openDocument = useDocuments((state) => state.openViewer);
+  const openImageGen = useImageGen((state) => state.openViewer);
   /** 拖拽改尺寸期间关掉过渡，否则跟手迟滞（与 [data-resizing] 对全局面板的处理同一个道理）。 */
   const [resizing, setResizing] = useState(false);
 
@@ -147,11 +177,12 @@ export default function AgentSourcePanel({
   const openProduct = useCallback(
     (item: AgentProductItem) => {
       if (item.kind === "quiz") openAgentQuiz(item.payload);
-      else if (item.kind === "interactive") openArtifact(item.id);
-      else openDocument(item.id);
+      else if (item.kind === "interactive") openArtifact(item.id, item.title);
+      else if (item.kind === "image") openImageGen(item.payload);
+      else openDocument(item.id, item.title);
       expandDock();
     },
-    [expandDock, openArtifact, openDocument],
+    [expandDock, openArtifact, openDocument, openImageGen],
   );
 
   /**
@@ -198,7 +229,9 @@ export default function AgentSourcePanel({
 
   if (sources.length === 0 && products.length === 0) return null;
 
-  const showSections = sources.length > 0 && products.length > 0;
+  const kinds = productKinds(sources, products);
+  /** 同类并列时才出小节标题：单类时标题已经报了它，再挂一行是冗余。 */
+  const showSections = kinds.length > 1;
   // Perplexity 式来源条：网页来源横排在清单顶，编号与正文 [n] 对齐（扁平数组序号）。
   const webItems = sources.flatMap((source, index) =>
     source.kind === "web"
@@ -213,9 +246,6 @@ export default function AgentSourcePanel({
         }]
       : [],
   );
-  const quizzes = products.filter((item) => item.kind === "quiz");
-  const interactives = products.filter((item) => item.kind === "interactive");
-  const documents = products.filter((item) => item.kind === "document");
 
   return (
     <aside
@@ -273,30 +303,18 @@ export default function AgentSourcePanel({
           </>
         ) : null}
 
-        {quizzes.length ? (
-          <>
-            {showSections || products.length !== quizzes.length ? (
-              <SectionLabel>{t("agent.rail.quiz", { count: quizzes.length })}</SectionLabel>
-            ) : null}
-            <ProductRows items={quizzes} onOpen={openProduct} />
-          </>
-        ) : null}
-        {interactives.length ? (
-          <>
-            {showSections || products.length !== interactives.length ? (
-              <SectionLabel>{t("agent.rail.interactive", { count: interactives.length })}</SectionLabel>
-            ) : null}
-            <ProductRows items={interactives} onOpen={openProduct} />
-          </>
-        ) : null}
-        {documents.length ? (
-          <>
-            {showSections || products.length !== documents.length ? (
-              <SectionLabel>{t("agent.rail.document", { count: documents.length })}</SectionLabel>
-            ) : null}
-            <ProductRows items={documents} onOpen={openProduct} />
-          </>
-        ) : null}
+        {PRODUCT_SECTIONS.map((kind) => {
+          const items = products.filter((item) => item.kind === kind);
+          if (!items.length) return null;
+          return (
+            <Fragment key={kind}>
+              {showSections ? (
+                <SectionLabel>{productSectionLabel(t, kind, items.length)}</SectionLabel>
+              ) : null}
+              <ProductRows items={items} onOpen={openProduct} />
+            </Fragment>
+          );
+        })}
       </div>
 
       <span
