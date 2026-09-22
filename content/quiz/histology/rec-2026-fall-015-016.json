@@ -1,0 +1,260 @@
+{
+    "subjectId":  "histology",
+    "chapterId":  "rec-2026-fall-015-016",
+    "generatedAt":  "2026-09-21",
+    "examConfig":  {
+                       "source":  "content/histology/lectures/rec-2026-fall-015-016/recording.md；content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                       "totalPoints":  110,
+                       "timeLimit":  45
+                   },
+    "contentRef":  {
+                       "lessonId":  "rec-2026-fall-015-016",
+                       "revision":  1,
+                       "recordingHash":  "a48649f522cadf5d4e81bb3c6886a0ae9c2a7e066971d2bafd4c8860960944b5",
+                       "notesTextHash":  "1236caa9dd44849ed3f79b9107b58dfd0ec00793da053c3dab0bd5d77dfed8a8"
+                   },
+    "questions":  [
+                      {
+                          "id":  "q001",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "尼氏体的电镜本质（粗面内质网+游离核糖体）"
+                                        },
+                          "stem":  "神经元胞质内的尼氏体（Nissl body）在电镜下的本质是什么？",
+                          "options":  [
+                                          "粗面内质网和游离核糖体",
+                                          "高尔基复合体和溶酶体",
+                                          "滑面内质网和线粒体",
+                                          "微管和神经丝"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**尼氏体在光镜下呈嗜碱性斑块或颗粒，电镜下本质为粗面内质网和游离核糖体，反映神经元旺盛的蛋白质合成功能。B错：高尔基复合体参与分泌加工，不是尼氏体的成分。C错：滑面内质网不参与蛋白质合成，线粒体是产能细胞器，均与嗜碱性无关。D错：微管和神经丝是神经原纤维的电镜本质，不是尼氏体。",
+                          "hint":  "嗜碱性=核糖体（含RNA），两种存在形式：游离和附着在内质网上。"
+                      },
+                      {
+                          "id":  "q002",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "神经元细胞核的光镜特点"
+                                        },
+                          "stem":  "关于神经元细胞核的光镜下特点，下列描述正确的是？",
+                          "options":  [
+                                          "通常多个核，位于细胞周边，染色深",
+                                          "通常一个核，大致位于细胞中央，染色浅，核仁明显",
+                                          "通常一个核，位于细胞一侧，染色深",
+                                          "通常双核，位于中央，无明显核仁"
+                                      ],
+                          "answer":  1,
+                          "explanation":  "**B 正确。**神经元通常只有一个细胞核，大致位于细胞中央；因常染色质丰富而异染色质少，故染色较浅；染色浅使得核仁等细节清晰可见，老师形容像\u0027一个眼珠一样灯盯着你\u0027。A错：多核且位于周边是骨骼肌细胞的特点，不是神经元。C错：一个核位于细胞一侧是浆细胞的特点，且染色深与神经元不符。D错：神经元通常是单核而非双核，且核仁明显而非不明显。",
+                          "hint":  "常染色质多→染色浅→能看清核仁；神经元核大而圆、近中央。"
+                      },
+                      {
+                          "id":  "q003",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "化学性突触的传递方向与媒介"
+                                        },
+                          "stem":  "关于化学性突触的信号传递特点，下列描述正确的是？",
+                          "options":  [
+                                          "双向传递，以离子电流直接传导",
+                                          "单向传递，以神经递质为媒介",
+                                          "单向传递，通过缝隙连接直接传导",
+                                          "双向传递，以神经递质为媒介"
+                                      ],
+                          "answer":  1,
+                          "explanation":  "**B 正确。**化学性突触以神经递质为媒介，信号只能从突触前神经元传向突触后神经元，是单向传递的，占突触的绝大多数。A错：双向传递、以离子电流直接传导是电突触（缝隙连接）的特点，不是化学性突触。C错：通过缝隙连接直接传导是电突触的结构基础，与化学性突触无关。D错：化学性突触是单向而非双向传递。",
+                          "hint":  "化学递质=单向；缝隙连接（电突触）=双向。"
+                      },
+                      {
+                          "id":  "q004",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "中枢神经系统髓鞘形成细胞"
+                                        },
+                          "stem":  "中枢神经系统中形成髓鞘的神经胶质细胞是？",
+                          "options":  [
+                                          "星形胶质细胞",
+                                          "室管膜细胞",
+                                          "少突胶质细胞",
+                                          "小胶质细胞"
+                                      ],
+                          "answer":  2,
+                          "explanation":  "**C 正确。**少突胶质细胞（Oligodendrocyte）是中枢神经系统的髓鞘形成细胞，其多个突起末端各包绕一个轴突形成髓鞘，一个少突胶质细胞可形成多个髓鞘节段。A错：星形胶质细胞数量最多、体积最大，参与血脑屏障构成，但不形成髓鞘。B错：室管膜细胞衬在脑室和脊髓中央管腔面，起支持保护作用，不形成髓鞘。D错：小胶质细胞是中枢的免疫吞噬细胞，相当于巨噬细胞，不形成髓鞘。",
+                          "hint":  "中枢髓鞘=少突胶质；周围髓鞘=施万细胞。"
+                      },
+                      {
+                          "id":  "q005",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "尼氏体的分布规律（树突有、轴突无）"
+                                        },
+                          "stem":  "关于尼氏体在神经元内的分布规律，下列哪项描述正确？",
+                          "options":  [
+                                          "存在于胞体和轴突中，树突中没有",
+                                          "存在于胞体和树突中，轴突中没有",
+                                          "存在于所有突起中，包括轴突和树突",
+                                          "仅存在于胞体中，所有突起中均无"
+                                      ],
+                          "answer":  1,
+                          "explanation":  "**B 正确。**尼氏体（粗面内质网+游离核糖体）存在于胞体和树突中，但轴突和轴丘中没有尼氏体。这是鉴别树突和轴突的关键形态学标志——轴突无核糖体→蛋白质合成功能不完全→需轴突运输从胞体获取蛋白。A错：正好说反了，尼氏体在树突中有、轴突中没有。C错：轴突中没有尼氏体，这是核心考点。D错：树突中有尼氏体，并非所有突起中均无。",
+                          "hint":  "尼氏体=核糖体=蛋白合成；轴突没有→需运输。"
+                      },
+                      {
+                          "id":  "q006",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "GFAP的本质与标记细胞"
+                                        },
+                          "stem":  "星形胶质细胞的特异性标记物GFAP（胶质原纤维酸性蛋白）本质上是一种什么结构？",
+                          "options":  [
+                                          "微管蛋白",
+                                          "微丝（肌动蛋白）",
+                                          "中间丝（胶质原纤维酸性蛋白）",
+                                          "胶原蛋白"
+                                      ],
+                          "answer":  2,
+                          "explanation":  "**C 正确。**GFAP（Glial Fibrillary Acidic Protein，胶质原纤维酸性蛋白）本质是一种中间丝（细胞骨架成分），是星形胶质细胞的特异性标记物，做实验鉴定星形胶质细胞时必用免疫组化染色标记GFAP。A错：微管蛋白构成微管，不是GFAP。B错：微丝的主要成分是肌动蛋白，不是GFAP。D错：胶原蛋白是细胞外基质成分，不是细胞内骨架蛋白。",
+                          "hint":  "GFAP=胶质原纤维酸性蛋白=中间丝=星形胶质细胞标记。"
+                      },
+                      {
+                          "id":  "q007",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "施万细胞与少突胶质细胞形成髓鞘的数量差异"
+                                        },
+                          "stem":  "关于施万细胞和少突胶质细胞形成髓鞘的方式，下列配对正确的是？",
+                          "options":  [
+                                          "施万细胞一个细胞形成一个髓鞘；少突胶质细胞一个细胞可形成多个髓鞘",
+                                          "施万细胞一个细胞可形成多个髓鞘；少突胶质细胞一个细胞形成一个髓鞘",
+                                          "两者都是一个细胞形成一个髓鞘",
+                                          "两者都是一个细胞形成多个髓鞘"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**施万细胞（周围神经系统）像卷筒纸一样反复包卷轴突，一个施万细胞只形成一个髓鞘节段；少突胶质细胞（中枢神经系统）伸出多个突起，每个突起末端包绕一个轴突，一个少突胶质细胞可形成多个髓鞘。这是两者最重要的区别。B错：正好说反了。C错：少突胶质细胞一个细胞可形成多个髓鞘，不是一个。D错：施万细胞一个细胞只形成一个髓鞘，不是多个。",
+                          "hint":  "中少突多包一，周施万一包一。"
+                      },
+                      {
+                          "id":  "q008",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/recording.md",
+                                            "label":  "突触传递中动作电位到达后首个事件（钙通道开放）"
+                                        },
+                          "stem":  "在化学性突触传递过程中，动作电位到达轴突终末后首先引起下列哪个事件？",
+                          "options":  [
+                                          "突触小泡直接与前膜融合释放递质",
+                                          "突触后膜钠离子通道首先开放",
+                                          "电压门控（电位门控）钙离子通道开放，Ca²⁺内流",
+                                          "神经递质直接扩散穿过突触前膜"
+                                      ],
+                          "answer":  2,
+                          "explanation":  "**C 正确。**动作电位到达轴突终末后，首先引起突触前膜上电压门控（电位门控）钙离子通道开放，Ca²⁺内流；Ca²⁺内流是触发突触小泡从微丝上脱离、向前膜移动并融合释放神经递质的关键步骤。A错：突触小泡融合释放递质是Ca²⁺内流之后的下游事件，不是首先发生的。B错：突触后膜钠离子通道开放是神经递质与后膜受体结合后的事件，发生在递质释放之后。D错：神经递质不能直接穿过突触前膜，必须通过突触小泡胞吐方式释放。",
+                          "hint":  "电位到→钙通道开→钙内流→泡释放。"
+                      },
+                      {
+                          "id":  "q009",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "tau蛋白过度磷酸化与阿尔茨海默病机制"
+                                        },
+                          "stem":  "关于tau蛋白过度磷酸化导致阿尔茨海默病（老年痴呆）的机制，下列描述正确的是？",
+                          "options":  [
+                                          "tau蛋白过度磷酸化后从微管解离并自身聚集，失去对微管的稳定作用，导致微管解聚、骨架坍塌和物质运输中断",
+                                          "tau蛋白过度磷酸化后促进微管组装，导致骨架过度稳定",
+                                          "tau蛋白本身转化为β淀粉样斑块沉积在细胞外",
+                                          "tau蛋白过度磷酸化导致突触后膜受体减少"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**tau蛋白是一种微管相关蛋白（MAP），正常功能是稳定微管、促进微管组装。tau蛋白过度磷酸化后从微管上解离、自身聚集形成神经原纤维缠结（NFTs），失去对微管的稳定作用→微管解聚→细胞骨架坍塌+轴突物质运输中断→神经元死亡。B错：tau蛋白的作用是稳定微管而非促进组装，过度磷酸化后是解离而非促进组装。C错：β淀粉样斑块是阿尔茨海默病的另一病理特征，但它不是由tau蛋白转化而来的，两者是独立的病理改变。D错：tau蛋白病变影响的是微管骨架和物质运输，不是直接导致突触后膜受体减少。",
+                          "hint":  "tau是微管稳定蛋白；过度磷酸化→解离聚集→微管散架→神经元死亡。"
+                      },
+                      {
+                          "id":  "q010",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "血脑屏障的组成"
+                                        },
+                          "stem":  "血脑屏障（BBB）的结构组成不包括下列哪一项？",
+                          "options":  [
+                                          "连续性毛细血管内皮细胞及其间的紧密连接",
+                                          "毛细血管基膜",
+                                          "星形胶质细胞脚板（终足）",
+                                          "少突胶质细胞的突起"
+                                      ],
+                          "answer":  3,
+                          "explanation":  "**D 正确。**少突胶质细胞的突起不参与血脑屏障构成——少突胶质细胞的功能是形成中枢神经系统髓鞘。血脑屏障由三层结构组成：①连续性毛细血管内皮细胞（细胞间有紧密连接，通透性低）；②毛细血管基膜（较完善）；③星形胶质细胞脚板（终足）覆盖在毛细血管周围。A错：连续性毛细血管内皮+紧密连接是血脑屏障的第一层，正确属于其组成。B错：基膜是血脑屏障的第二层，正确属于其组成。C错：星形胶质细胞脚板是血脑屏障的第三层，正确属于其组成。",
+                          "hint":  "BBB三层：连续内皮（紧密连接）+基膜+星形胶质脚板；少突胶质只管髓鞘。"
+                      },
+                      {
+                          "id":  "q011",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/histology/lectures/rec-2026-fall-015-016/notes.html",
+                                            "label":  "三种有被囊感觉神经小体的功能配对"
+                                        },
+                          "stem":  "关于三种有被囊感觉神经末梢小体的功能配对，下列哪项正确？",
+                          "options":  [
+                                          "触觉小体→触觉；环层小体→压觉和震动觉；肌梭→本体感觉",
+                                          "触觉小体→压觉；环层小体→触觉；肌梭→痛觉",
+                                          "触觉小体→痛温觉；环层小体→本体感觉；肌梭→触觉",
+                                          "触觉小体→本体感觉；环层小体→压觉；肌梭→触觉"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**触觉小体（Meissner小体）位于真皮乳头（手掌足底多），长椭圆形、内有扁平细胞，感受触觉；环层小体（Pacinian小体）呈洋葱样同心圆排列、中央有圆柱体，感受压觉和震动觉；肌梭位于骨骼肌内，是梭内小型骨骼肌、核聚集中段，感受本体感觉（骨骼肌收缩状态和肢体姿势）。B错：触觉小体感受触觉而非压觉，环层小体感受压觉/震动而非触觉，肌梭感受本体感觉而非痛觉——三处全错。C错：游离神经末梢才感受痛温觉，触觉小体感受触觉；环层小体感受压觉/震动而非本体感觉；肌梭感受本体感觉而非触觉。D错：触觉小体感受触觉而非本体感觉；肌梭感受本体感觉而非触觉。",
+                          "hint":  "触小体=触觉，环层=压觉震动，肌梭=本体觉（姿势/收缩状态）。"
+                      }
+                  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "anatomy",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-021-022",
+  "courseName": "系统解剖学",
+  "sessionRange": {
+    "start": 21,
+    "end": 22
+  },
+  "taughtOn": "2026-09-21",
+  "topic": "消化系统——消化管（二）：胃、小肠、大肠；消化腺：肝、胰、唾液腺",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-021-022"
+}
