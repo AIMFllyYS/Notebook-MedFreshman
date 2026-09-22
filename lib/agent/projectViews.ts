@@ -29,7 +29,7 @@ export function sortSessions(sessions: SessionMeta[]): SessionMeta[] {
 }
 
 export function isSystemKindSession(session: SessionMeta): boolean {
-  return session.kind === "note" || session.kind === "floating";
+  return session.kind === "note" || session.kind === "floating" || session.kind === "scheduled";
 }
 
 export function selectRecentSessions(sessionsMeta: SessionMeta[]): SessionMeta[] {

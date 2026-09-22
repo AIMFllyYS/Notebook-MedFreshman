@@ -19,7 +19,7 @@ export interface SessionMeta {
   title: string;
   createdAt: number;
   updatedAt: number;
-  kind?: 'main' | 'floating' | 'note';
+  kind?: 'main' | 'floating' | 'note' | 'scheduled';
   context?: ChatContext;
   messageCount: number;
   preview?: string;
@@ -36,8 +36,8 @@ export interface SessionMeta {
   readSliceIds?: string[];
 }
 
-/** 系统项目的来源标记：笔记窗内 Agent 会话 / 划词助手会话。 */
-export type ProjectSystemKind = 'note' | 'floating';
+/** 系统项目的来源标记：笔记窗内 Agent 会话 / 划词助手会话 / 定时任务会话。 */
+export type ProjectSystemKind = 'note' | 'floating' | 'scheduled';
 
 /**
  * 对话项目（= 会话分组，可选字段，老 manifest 无此项时按空数组处理）。
@@ -51,10 +51,11 @@ export interface ChatFolder {
   system?: ProjectSystemKind;
 }
 
-/** 两个默认项目：笔记记录（笔记窗内 Agent 会话）/ 划词摘录（划词助手会话）。 */
+/** 三个默认项目：笔记记录（笔记窗内 Agent 会话）/ 划词摘录（划词助手会话）/ 定时任务（调度器触发的会话）。 */
 export const SYSTEM_PROJECTS: readonly ChatFolder[] = [
   { id: 'project-note', name: '笔记记录', createdAt: 0, system: 'note' },
   { id: 'project-floating', name: '划词摘录', createdAt: 0, system: 'floating' },
+  { id: 'project-scheduled', name: '定时任务', createdAt: 0, system: 'scheduled' },
 ];
 
 export const SYSTEM_PROJECT_IDS = SYSTEM_PROJECTS.map((project) => project.id);

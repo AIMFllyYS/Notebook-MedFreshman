@@ -30,6 +30,8 @@ export const PERSIST_KEYS = {
   projectFiles: "project-files",
   /** 笔记变更候选稿的幂等账本（已应用 / 已取消的 proposalId，不上云）。 */
   noteChangeProposals: "note-change-proposals",
+  /** Agent 定时任务定义与运行历史（不上云）。 */
+  scheduledTasks: "scheduled-tasks",
 } as const;
 
 export const CHAT_SESSION_KEY_PREFIX = "chat-session:";

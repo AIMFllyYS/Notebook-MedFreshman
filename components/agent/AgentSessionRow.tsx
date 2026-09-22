@@ -4,14 +4,16 @@ import { MessageSquare } from "lucide-react";
 import FolderTreeRow from "@/components/layout/FolderTreeRow";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
+import { AgentScheduleIcon } from "@/components/icons/AgentIcons";
 import { translate, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 
-/** 会话行的图标：划词助手 / 笔记记录 / 普通对话各一种，不要互相借。 */
+/** 会话行的图标：划词助手 / 笔记记录 / 定时任务 / 普通对话各一种，不要互相借。 */
 export function sessionIcon(session: SessionMeta) {
   if (session.kind === "floating") return <PencilSparklesIcon size={14} />;
   if (session.kind === "note") return <NotebookFormulaIcon size={14} />;
+  if (session.kind === "scheduled") return <AgentScheduleIcon size={14} />;
   return <MessageSquare size={14} />;
 }
 
