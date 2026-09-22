@@ -218,18 +218,23 @@ export default function WebSourceCarousel({
             </motion.li>
           ))}
           {pending
-            ? Array.from({ length: SKELETON_COUNT }, (_, index) => (
-                <li key={`skeleton:${index}`} aria-hidden="true">
-                  <span className="web-source-card is-skeleton">
-                    <span className="web-source-card-top">
-                      <span className="web-source-skel-ico" />
-                      <span className="web-source-skel-line is-host" />
+            ? Array.from(
+                // 还没有任何来源时铺满骨架；已经有真卡了只留一张尾巴表示「还在搜」，
+                // 免得「搜到一个显示一个」的增量节奏被三张骨架盖住。
+                { length: items.length === 0 ? SKELETON_COUNT : 1 },
+                (_, index) => (
+                  <li key={`skeleton:${index}`} aria-hidden="true">
+                    <span className="web-source-card is-skeleton">
+                      <span className="web-source-card-top">
+                        <span className="web-source-skel-ico" />
+                        <span className="web-source-skel-line is-host" />
+                      </span>
+                      <span className="web-source-skel-line" />
+                      <span className="web-source-skel-line is-short" />
                     </span>
-                    <span className="web-source-skel-line" />
-                    <span className="web-source-skel-line is-short" />
-                  </span>
-                </li>
-              ))
+                  </li>
+                ),
+              )
             : null}
         </ol>
         {scrollable && canScrollLeft ? (

@@ -69,6 +69,12 @@ export interface SearchProgressEvent {
   providerState?: "ok" | "error";
   /** 该供应商本次拿到的条数（briefing 记 1）。 */
   resultCount?: number;
+  /**
+   * stage=provider：这家刚拿到的原始条目（**未经精选**）。
+   * 只喂前端做「搜到一个显示一个」的流式来源条；模型侧只看最终精选结果，
+   * 所以这里给原始条目不会污染上下文，也不会绕过 selectSources 的截断预算。
+   */
+  items?: SearchItem[];
   error?: string;
   /** stage=done：最终入选的来源数。 */
   sourcesKept?: number;

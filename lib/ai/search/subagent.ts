@@ -189,6 +189,8 @@ export async function runSearchSubagent(input: RunSearchInput, onProgress?: Sear
         provider: id,
         providerState: outcome.error ? "error" : "ok",
         resultCount: outcome.results.length + (outcome.briefing ? 1 : 0),
+        // 原始条目随事件一起走：前端「搜到一个显示一个」的来源条靠它流式长出来。
+        items: outcome.results,
         error: outcome.error,
       });
       return outcome;
