@@ -204,7 +204,7 @@ function ClassicalProbLabBase() {
               className={
                 "rounded-lg px-2.5 py-1 text-[12px] font-medium transition-colors " +
                 (scene === k
-                  ? "bg-[var(--accent)] text-white"
+                  ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                   : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--accent-weak)]")
               }
             >
@@ -559,7 +559,7 @@ function ClassicalProbLabBase() {
         </div>
         <button
           onClick={runSim}
-          className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[13px] font-semibold text-white hover:opacity-90 active:scale-95 transition-transform"
+          className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[13px] font-semibold text-[var(--md-sys-color-on-primary)] hover:opacity-90 active:scale-95 transition-transform"
         >
           运行
         </button>

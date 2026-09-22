@@ -453,7 +453,7 @@
 .quiz-option:has(input:checked) .quiz-option-mark {
   border-color: var(--quiz-accent, var(--md-sys-color-primary));
   background: var(--quiz-accent, var(--md-sys-color-primary));
-  color: #ffffff;
+  color: var(--subj-on-accent, var(--md-sys-color-on-primary));
 }
 .quiz-option-mono { font-family: var(--font-mono); }
 

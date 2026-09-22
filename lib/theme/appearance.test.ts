@@ -4,6 +4,7 @@ import {
   DEFAULT_APPEARANCE_SETTINGS,
   FONT_CHOICES,
   buildAppearanceCssVars,
+  contrastText,
   normalizeAppearanceSettings,
   safeHexColor,
   serializeAppearanceSettings,
@@ -31,26 +32,42 @@ test("normalizeAppearanceSettings preserves valid mode, colors, and font", () =>
   const settings = normalizeAppearanceSettings({
     mode: "custom",
     custom: {
+      lightBackground: "#223344",
       lightAccent: "#1188CC",
+      lightText: "#101820",
       darkAccent: "#F3B65E",
+      darkText: "#E8F0F8",
       selection: "#22AA77",
       font: "songti",
     },
   });
 
   assert.equal(settings.mode, "custom");
+  assert.equal(settings.custom.lightBackground, "#223344");
   assert.equal(settings.custom.lightAccent, "#1188cc");
+  assert.equal(settings.custom.lightText, "#101820");
   assert.equal(settings.custom.darkAccent, "#f3b65e");
+  assert.equal(settings.custom.darkText, "#e8f0f8");
   assert.equal(settings.custom.selection, "#22aa77");
   assert.equal(settings.custom.font, "songti");
+});
+
+test("normalizeAppearanceSettings accepts the new preset modes", () => {
+  for (const mode of ["anthropic", "ios", "codex"] as const) {
+    assert.equal(normalizeAppearanceSettings({ mode }).mode, mode);
+  }
 });
 
 test("serializeAppearanceSettings writes a compact stable payload", () => {
   const settings: AppearanceSettings = {
     mode: "custom",
     custom: {
+      lightBackground: "#ffffff",
       lightAccent: "#2255aa",
+      lightText: "#101418",
+      darkBackground: "#101418",
       darkAccent: "#c7d8ff",
+      darkText: "#e2e2e9",
       selection: "#bb7722",
       font: "kaiti",
     },
@@ -58,28 +75,51 @@ test("serializeAppearanceSettings writes a compact stable payload", () => {
 
   assert.equal(
     serializeAppearanceSettings(settings),
-    '{"mode":"custom","custom":{"lightAccent":"#2255aa","darkAccent":"#c7d8ff","selection":"#bb7722","font":"kaiti"}}',
+    '{"mode":"custom","custom":{"lightBackground":"#ffffff","lightAccent":"#2255aa","lightText":"#101418","darkBackground":"#101418","darkAccent":"#c7d8ff","darkText":"#e2e2e9","selection":"#bb7722","font":"kaiti"}}',
   );
 });
 
-test("buildAppearanceCssVars exposes custom color and font variables", () => {
+test("contrastText picks readable text for light and dark accent colors", () => {
+  assert.equal(contrastText("#ffffff"), "#111318");
+  assert.equal(contrastText("#000000"), "#ffffff");
+  assert.equal(contrastText("#d97757"), "#111318");
+  assert.equal(contrastText("#6750a4"), "#ffffff");
+  assert.equal(contrastText("#007aff"), "#ffffff");
+});
+
+test("buildAppearanceCssVars exposes custom background, color, and font variables", () => {
   const vars = buildAppearanceCssVars({
     mode: "custom",
     custom: {
+      lightBackground: "#faf5ea",
       lightAccent: "#2255aa",
+      lightText: "#20242a",
+      darkBackground: "#14171c",
       darkAccent: "#c7d8ff",
+      darkText: "#e6e9ee",
       selection: "#bb7722",
       font: "songti",
     },
   });
 
+  assert.equal(vars["--appearance-light-bg"], "#faf5ea");
+  assert.equal(vars["--appearance-dark-bg"], "#14171c");
+  assert.equal(vars["--appearance-light-ink"], "#20242a");
+  assert.equal(vars["--appearance-dark-ink"], "#e6e9ee");
+  assert.equal(vars["--appearance-light-extreme"], "#ffffff");
+  assert.equal(vars["--appearance-dark-extreme"], "#000000");
   assert.equal(vars["--appearance-light-accent"], "#2255aa");
   assert.equal(vars["--appearance-dark-accent"], "#c7d8ff");
+  assert.equal(vars["--appearance-light-on-accent"], "#ffffff");
   assert.equal(vars["--appearance-selection"], "#bb7722");
   assert.equal(vars["--appearance-selection-bg"], "color-mix(in srgb, #bb7722 34%, transparent)");
   assert.equal(vars["--font-sans"], FONT_CHOICES.songti.cssValue);
 });
 
-test("buildAppearanceCssVars keeps default mode from overriding CSS tokens", () => {
+test("buildAppearanceCssVars keeps non-custom modes from overriding CSS tokens", () => {
   assert.deepEqual(buildAppearanceCssVars(DEFAULT_APPEARANCE_SETTINGS), {});
+  assert.deepEqual(
+    buildAppearanceCssVars({ mode: "anthropic", custom: DEFAULT_APPEARANCE_SETTINGS.custom }),
+    {},
+  );
 });

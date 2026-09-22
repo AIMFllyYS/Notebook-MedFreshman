@@ -155,6 +155,8 @@
   --subj-phy: #58b8ff;
   --subj-chem: #43d6a0;
   --subj-hist: #ff7d8a;
+  /* 深色学科色都是浅蜡色，底上文字用深字才读得清。 */
+  --subj-on-accent: #14151c;
 
   /* State Layers */
   --md-sys-state-hover: 0.08;
@@ -281,6 +283,8 @@
   --subj-phy: #1286c4;
   --subj-chem: #20894f;
   --subj-hist: #d54458;
+  /* 浅色学科色为中深色，底上用白字。 */
+  --subj-on-accent: #ffffff;
 
   /* ── 兼容层：浅色模式覆盖 ────────────────────────────── */
   --bg-app: var(--md-sys-color-background);
