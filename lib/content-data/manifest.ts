@@ -20,7 +20,7 @@ import { biochemistryTextbookItems } from './biochemistry-textbook';
 import { anatomyTextbookItems } from './anatomy-textbook';
 import { histologyTextbookItems } from './histology-textbook';
 import { instrumentalAnalysisTextbookItems } from './instrumental-analysis-textbook';
-import { medicalEnglishTextbookItems, medicalEnglishKaoqianItems, medicalEnglishShizhanItems } from './medical-english-items';
+import { medicalEnglishTextbookItems, medicalEnglishDetailItems, medicalEnglishKaoqianItems, medicalEnglishShizhanItems } from './medical-english-items';
 import { medicalStatisticsTextbookItems, medicalStatisticsDetailItems, medicalStatisticsKaoqianItems } from './medical-statistics-items';
 import { cellBiologyLabTextbookItems } from './cell-biology-lab-items';
 import { biochemistryDetailItems, biochemistrySummaryItems, biochemistryKaoqianItems, biochemistryShizhanItems } from './biochemistry-extras';
@@ -186,6 +186,7 @@ const baseContentTree: ContentTree = {
       ...subjectHeader('medical-english'),
       categories: sophomoreCategories({
         textbook: medicalEnglishTextbookItems,
+        detail: medicalEnglishDetailItems,
         kaoqianMoni: medicalEnglishKaoqianItems,
         shizhanYanlian: medicalEnglishShizhanItems,
       }),

@@ -4063,10 +4063,10 @@
           "keyStrategy": "section-dot",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "1.1",
+              "title": "Medical Terminology 词汇包 · 词缀分类详解",
               "type": "document",
-              "status": "stub"
+              "status": "done"
             }
           ]
         },

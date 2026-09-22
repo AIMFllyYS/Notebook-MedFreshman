@@ -9,6 +9,10 @@ export const medicalEnglishTextbookItems: ContentItem[] = [
   { id: "ch12", title: "Lesson 12 · Medical Ethics", type: "document", status: "done" },
 ];
 
+export const medicalEnglishDetailItems: ContentItem[] = [
+  { id: "1.1", title: "Medical Terminology 词汇包 · 词缀分类详解", type: "document", status: "done" },
+];
+
 export const medicalEnglishKaoqianItems: ContentItem[] = [
   { id: "sim-01", title: "15 级医学英语样题", type: "document", status: "done" },
   { id: "sim-02", title: "Examination Paper 样题", type: "document", status: "done" },
