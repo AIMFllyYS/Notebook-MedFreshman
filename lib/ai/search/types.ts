@@ -11,8 +11,6 @@
 
 export type SearchProviderId = "kimi" | "zhipu" | "perplexity";
 
-export const SEARCH_PROVIDER_IDS: readonly SearchProviderId[] = ["kimi", "zhipu", "perplexity"];
-
 /** 搜索广度：决定默认并发几个供应商。 */
 export type SearchMode = "auto" | "daily" | "academic" | "comprehensive";
 

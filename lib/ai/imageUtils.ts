@@ -135,10 +135,6 @@ function documentExtension(file: File): string {
   return file.name.split(".").pop()?.toLowerCase() ?? "";
 }
 
-export function isSupportedDocument(file: File): boolean {
-  return ACCEPTED_DOCUMENT_EXTENSIONS.has(documentExtension(file));
-}
-
 export function isSupportedLocalPreview(file: File): boolean {
   return ACCEPTED_LOCAL_PREVIEW_EXTENSIONS.has(documentExtension(file));
 }
@@ -337,13 +333,6 @@ export function getImagesFromClipboard(e: React.ClipboardEvent | ClipboardEvent)
     }
   }
   return files;
-}
-
-/** 从 DragEvent 中提取所有图片 File。 */
-export function getImagesFromDragEvent(e: React.DragEvent | DragEvent): File[] {
-  const dt = "dataTransfer" in e ? e.dataTransfer : null;
-  if (!dt) return [];
-  return Array.from(dt.files || []).filter((f) => f.type.startsWith("image/"));
 }
 
 /** 从拖放事件提取项目支持的图片和文档；非法文件交由处理管线生成可读错误。 */

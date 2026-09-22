@@ -17,7 +17,6 @@ export const MARKET_MANIFEST_URL = "/plugins/market.json";
 // ── 类型 ─────────────────────────────────────────────────────────
 
 // 分区类型在 ./market-section（server-safe，详情页路由也要用），这里转发出口径统一。
-export { MARKET_SECTIONS, parseMarketSection } from "./market-section";
 export type { MarketSection } from "./market-section";
 
 interface EntryBase {

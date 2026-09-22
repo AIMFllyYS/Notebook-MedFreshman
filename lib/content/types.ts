@@ -2,37 +2,6 @@
 
 import type { SubjectId } from "@/lib/types/content";
 
-export type ContentStatus = "stub" | "draft" | "done";
-
-export interface SectionRef {
-  /** 小节 id，同时也是 md 文件名，如 "1.2" -> content/chapters/ch01/1.2.md */
-  id: string;
-  /** 小节标题，如 "事件间的关系与运算" */
-  title: string;
-  /** 一句话摘要，供大纲与 AI 工具快速了解 */
-  summary?: string;
-  /** 内容完成度 */
-  status?: ContentStatus;
-  /** 挂载的视频 id（指向 media-manifest） */
-  videoIds?: string[];
-  /** 挂载的交互组件 id（指向 interactives/registry） */
-  interactiveIds?: string[];
-}
-
-export interface ChapterRef {
-  /** 章 id，如 "ch01" */
-  id: string;
-  /** 章序号 */
-  number: number;
-  /** 章标题，如 "随机事件与概率" */
-  title: string;
-  /** 一句话摘要 */
-  summary?: string;
-  /** 来源录音逐字稿文件名（docs/ 下） */
-  recordings?: string[];
-  sections: SectionRef[];
-}
-
 /** 媒体清单：视频条目 */
 export interface VideoEntry {
   id: string;

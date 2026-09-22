@@ -4,15 +4,11 @@
     "app/**/{page,layout,route,manifest,not-found,error,loading}.{ts,tsx}",
     "electron/**/*.{js,mjs,ts}",
     "scripts/*.{ts,mjs,js}",
-    "tests/helpers/vitest-setup.ts",
     "**/*.test.{ts,tsx}"
   ],
   "project": ["app/**", "components/**", "lib/**", "electron/**", "scripts/*.{ts,mjs,js}"],
   "ignoreDependencies": [
     "electron-builder",
-    "docx",
-    "remark-parse",
-    "unified",
     "@types/mdast"
   ],
   "ignoreBinaries": ["robocopy"],
