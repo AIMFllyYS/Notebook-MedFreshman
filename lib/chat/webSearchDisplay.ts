@@ -5,7 +5,7 @@
 // 同序，但客户端拿不到各家 key 的可用性，所以只能给「计划态」，不是「已搜态」。
 
 import { looksAcademic } from "@/lib/ai/search/policy";
-import type { WebSearchProvider } from "@/lib/ai/agent/tools/webSearch/types";
+import type { WebSearchProgress, WebSearchProvider } from "@/lib/ai/agent/tools/webSearch/types";
 
 export { PROVIDER_LABELS as WEB_SEARCH_PROVIDER_LABELS } from "@/lib/ai/search/policy";
 
@@ -75,6 +75,15 @@ export interface ProviderChip {
 interface WebSearchOutputLike {
   providers?: WebSearchProvider[];
   skipped?: { provider: WebSearchProvider; reason: string }[];
+  /** 数据层渐进状态（preliminary/最终结果都带），优先于 providers/skipped 字段。 */
+  progress?: WebSearchProgress;
+}
+
+/** 数据层实态 → 展示层点态；stage=done 后残留的 pending 按未返回处理。 */
+function progressChipState(state: "pending" | "done" | "error", finished: boolean): ProviderChipState {
+  if (state === "done") return "done";
+  if (state === "error") return "skipped";
+  return finished ? "skipped" : "running";
 }
 
 /**
@@ -94,6 +103,16 @@ export function webSearchProviderChips(args: {
   const planned = plannedWebSearchProviders(args.input);
   if (args.errorText != null) {
     return planned.map((provider) => ({ provider, state: "skipped", reason: args.errorText }));
+  }
+  const progressProviders = args.output?.progress?.providers;
+  if (progressProviders?.length) {
+    const finished = !args.running || args.output?.progress?.stage === "done";
+    return progressProviders
+      .filter((item) => isWebSearchProvider(item.id))
+      .map((item) => ({
+        provider: item.id as WebSearchProvider,
+        state: progressChipState(item.state, finished),
+      }));
   }
   const used = (args.output?.providers ?? []).filter(isWebSearchProvider);
   const skipped = args.output?.skipped ?? [];
