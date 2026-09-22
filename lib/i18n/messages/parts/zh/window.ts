@@ -74,6 +74,12 @@ export const windowZh = {
     urlExpiry: "图片 URL 1 小时后失效，请及时下载",
     generating: "正在生成图片…",
     interrupted: "生成中断，请重试",
+    // 从参考列等旁路入口开出来的图窗：还没拿到「批准」，先停下来问一次。
+    confirm: {
+      title: "确认后开始生成",
+      hint: "生图按张计费，需要你确认后才会真正调用模型。",
+      start: "开始生成",
+    },
     // 生图进度（上游不回传进度，这里是按模型典型耗时的估算）
     progress: {
       elapsed: "已等待 {seconds}s",
@@ -127,6 +133,7 @@ export const windowZh = {
     streamReadFailed: "流读取失败",
     outlineFailed: "大纲生成失败",
     sectionFailed: "本节生成失败",
+    notReady: "这篇文档还没生成好：分节写完后会自动出现在这里。若长时间没动静，可以让助教重新生成一次。",
   },
   // 可交互演示卡片（renderInteractive 的对话内卡片）
   artifact: {
@@ -154,6 +161,7 @@ export const windowZh = {
     generatingHtml: "正在生成 HTML…",
     errorHint: "该演示生成出错，可让助教重新生成，或改用文字讲解。",
     dataMissing: "交互演示数据缺失（可重新生成，或让助教再调用一次）。",
+    notReady: "这个演示还没生成好：生成完成后会自动出现在这里。若长时间没动静，可以让助教重新生成一次。",
     regenerate: "重新生成",
   },
   // 笔记相关窗口

@@ -179,13 +179,16 @@ export const zh = {
     },
     rail: {
       count: "参考 · {count}",
+      title: "参考与产物 · {count}",
       sources: "来源",
       quiz: "出题 · {count}",
       interactive: "演示 · {count}",
+      image: "生图 · {count}",
       document: "文档 · {count}",
       questions: "{count} 题",
       openQuiz: "在右侧作答",
       openInteractive: "在右侧查看演示",
+      openImage: "在右侧查看图片",
       openDocument: "在右侧查看文档",
     },
     citation: {

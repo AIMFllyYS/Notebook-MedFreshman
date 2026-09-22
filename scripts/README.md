@@ -40,6 +40,22 @@
 - `workflows/` — 章节生成工作流
 - `legacy/` — 已弃用的构建辅助，见该目录 README
 
+## 本地产物板块（均被 `.gitignore` 忽略，不进版本库）
+
+约定：**日志、临时产物、归档一律归入下列板块，不再散落在仓库根目录。**
+
+| 目录 | 用途 |
+|---|---|
+| `logs/` | 运行/构建/调试日志（`dev-server.log`、`.build_content*.log` 等重定向输出） |
+| `archive/` | 历史一次性脚本；`archive/tmp-2026-09/` 为 2026-09-22 从根 `tmp/` 归位的历史临时产物（探针脚本、验收截图、转储、issue 草稿等） |
+| `temp/` | 内容处理中途的工作目录 |
+| `handoffs/` | 交接文档 |
+| `pdf_extracts/` / `transcripts/` | PDF 抽取与逐字稿中间产物 |
+
+> 运行时的 Agent 生命周期日志 `log/agent-lifecycle.jsonl` 路径由
+> `lib/ai/observability/agentLog.ts` 写死为仓库根 `log/`，**不要挪动**；
+> 数据库备份默认写到 `tmp/db-backups`（见 `lib/db/backup.ts`），同样保持原位。
+
 ## `one-off/`（历史任务，不保证可运行）
 
 章节号硬编码、任务已完成的一次性脚本。计划 18 从顶层移入，共 36 个（计划原文写 35，清单实际 36：34 个脚本 + 2 个 txt）。

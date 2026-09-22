@@ -166,10 +166,10 @@ describe("ToolResultCards aggregation", () => {
         ] as ChatMessagePart[])}
       />,
     );
-    // 一张卡：已到的来源可见 + 尾部骨架占位（仍在搜索）。
+    // 一张卡：已到的来源可见 + 尾部一张骨架（还在搜索；有真卡时不铺满骨架）。
     expect(screen.getAllByTestId("web-source-fold")).toHaveLength(1);
     expect(screen.getByText("a.example")).toBeInTheDocument();
-    expect(document.querySelectorAll(".web-source-card.is-skeleton")).toHaveLength(3);
+    expect(document.querySelectorAll(".web-source-card.is-skeleton")).toHaveLength(1);
   });
 
   it("流结束后 output-error 的调用补一张失败卡", () => {

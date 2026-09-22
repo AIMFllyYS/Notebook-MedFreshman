@@ -29,7 +29,7 @@ interface ArtifactsState {
   _setHasHydrated: (v: boolean) => void;
 
   saveDone: (id: string, title: string, html: string, reasoning?: string) => void;
-  openViewer: (id: string) => void;
+  openViewer: (id: string, title?: string) => void;
   closeViewer: () => void;
   /** 删除不在 keepIds 中的 artifact，用于跨 store 孤儿清理。 */
   prune: (keepIds: string[]) => void;
@@ -80,15 +80,31 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
           };
         }),
 
-      openViewer: (id) =>
+      /**
+       * 打开（或复用）演示浮窗。
+       *
+       * **产物还没落盘也要开窗**：Agent 面里卡片是 silent 的（中间栏不画），生成中就能从右上
+       * 参考列点进来——以前这里 `if (artifact)` 才开窗，于是生成中/生成失败时点一下毫无反应
+       * （用户口径「不好使」）。现在窗口先开出来，ArtifactViewer 自己渲染「生成中 / 数据缺失」态。
+       * `title` 供产物尚未落盘时给窗口一个像样的标题（调用方通常拿的是产物标题）。
+       */
+      openViewer: (id, title) =>
         set((state) => {
           const artifact = state.byId[id];
-          if (artifact) {
+          const windowId = artifactWindowId(id);
+          const wm = useWindowManager.getState();
+          const existing = wm.windows.find((win) => win.id === windowId);
+          const nextTitle = artifact?.title || title || windowId;
+          if (existing) {
+            wm.updateWindow(windowId, { title: nextTitle });
+            if (existing.minimized) wm.restoreWindow(windowId);
+            else wm.bringToFront(windowId);
+          } else {
             const { pos, size } = artifactWindowGeometry();
-            useWindowManager.getState().openWindow({
-              id: artifactWindowId(id),
+            wm.openWindow({
+              id: windowId,
               type: "artifact-viewer",
-              title: artifact.title,
+              title: nextTitle,
               pos,
               size,
               data: { artifactId: id },

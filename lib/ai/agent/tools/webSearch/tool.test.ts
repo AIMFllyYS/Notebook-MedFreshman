@@ -102,6 +102,59 @@ test("webSearch：进度事件流转成 preliminary 输出（stage + 各源状�
   assert.equal(final.sources[0]?.citeIndex, 1);
 });
 
+test("webSearch：每家一回就把来源流给前端（搜到一个显示一个，不等到最后）", async (t) => {
+  t.mock.method(
+    webSearchIo,
+    "runWebSearchDetailed",
+    async (_query: string, _n: number, opts?: { onProgress?: (e: SearchProgressEvent) => void }): Promise<WebSearchDetailed> => {
+      const emit = opts?.onProgress ?? (() => {});
+      emit({ stage: "planned", planned: ["kimi", "zhipu"] });
+      emit({
+        stage: "provider",
+        provider: "zhipu",
+        providerState: "ok",
+        resultCount: 2,
+        items: [
+          { title: "甲", url: "https://a.test/x", snippet: "sa", provider: "zhipu" },
+          { title: "乙", url: "https://b.test/y", snippet: "sb", provider: "zhipu" },
+        ],
+      });
+      emit({
+        stage: "provider",
+        provider: "kimi",
+        providerState: "ok",
+        resultCount: 2,
+        // 丙与甲同 URL（去掉 query 后同一篇）：必须被去重，不能重复出卡。
+        items: [
+          { title: "丙", url: "https://a.test/x?utm=1", snippet: "sc", provider: "kimi" },
+          { title: "丁", url: "https://c.test/z", snippet: "sd", provider: "kimi" },
+        ],
+      });
+      emit({ stage: "synthesizing" });
+      emit({ stage: "done", sourcesKept: 3 });
+      return {
+        content: "正文",
+        sources: [{ title: "甲", url: "https://a.test/x", snippet: "sa" }],
+        cacheHit: false,
+      };
+    },
+  );
+  const { preliminary, final } = await drain(createWebSearchTool(createToolRuntime()).execute, { query: "增量" });
+
+  // 第一家返回前：还没有任何来源可显示。
+  assert.equal(preliminary[1]?.sources.length, 0);
+  // 智谱一回来，两张卡就在流里了 —— 不必等 kimi，也不必等综述。
+  assert.deepEqual(preliminary[2]?.sources.map((s) => s.title), ["甲", "乙"]);
+  // kimi 回来后累积到四→三（同 URL 去重），且顺序稳定。
+  assert.deepEqual(preliminary[3]?.sources.map((s) => s.title), ["甲", "乙", "丁"]);
+  // 综述阶段仍带着已收到的来源，卡片不会中途清空。
+  assert.deepEqual(preliminary[4]?.sources.map((s) => s.title), ["甲", "乙", "丁"]);
+
+  // 模型侧只看最终精选结果：preliminary 里的候选不参与 toModelOutput。
+  assert.deepEqual(final.sources.map((s) => s.title), ["甲"]);
+  assert.equal(final.sources[0]?.citeIndex, 1);
+});
+
 test("webSearch：上游异常也不悬挂，落成失败文本", async (t) => {
   t.mock.method(webSearchIo, "runWebSearchDetailed", async () => {
     throw new Error("boom");

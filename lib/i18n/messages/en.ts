@@ -176,13 +176,16 @@ export const en = {
     },
     rail: {
       count: "Refs · {count}",
+      title: "Refs & outputs · {count}",
       sources: "Sources",
       quiz: "Quiz · {count}",
       interactive: "Demos · {count}",
+      image: "Images · {count}",
       document: "Docs · {count}",
       questions: "{count} questions",
       openQuiz: "Answer in the side panel",
       openInteractive: "View demo in the side panel",
+      openImage: "View images in the side panel",
       openDocument: "View document in the side panel",
     },
     citation: {

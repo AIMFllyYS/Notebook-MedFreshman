@@ -1,8 +1,9 @@
 import { getToolPartsByName } from "@/lib/chat/messageParts";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { AgentQuizPayload } from "@/lib/quiz-dock/open";
+import type { ImageGenSessionInit } from "@/lib/stores/imageGen";
 
-export type AgentProductKind = "quiz" | "interactive" | "document";
+export type AgentProductKind = "quiz" | "interactive" | "document" | "image";
 
 interface AgentProductBase {
   kind: AgentProductKind;
@@ -24,8 +25,18 @@ export interface AgentDocumentProduct extends AgentProductBase {
   kind: "document";
 }
 
-/** 对话里产出的、Agent 右栏可以打开的产物（出题 / 演示 / 文档）。 */
-export type AgentProductItem = AgentQuizProduct | AgentInteractiveProduct | AgentDocumentProduct;
+/** 生图产物：payload 是开图窗所需的全套 init，右栏点一下就能建会话并打开。 */
+export interface AgentImageProduct extends AgentProductBase {
+  kind: "image";
+  payload: ImageGenSessionInit;
+}
+
+/** 对话里产出的、Agent 右栏可以打开的产物（出题 / 演示 / 生图 / 文档）。 */
+export type AgentProductItem =
+  | AgentQuizProduct
+  | AgentInteractiveProduct
+  | AgentDocumentProduct
+  | AgentImageProduct;
 
 const EMPTY_PRODUCTS: AgentProductItem[] = [];
 
@@ -73,6 +84,25 @@ export function collectSessionProducts(messages: readonly ChatMessage[]): AgentP
         id: output.artifactId,
         title: output.title.trim() || output.artifactId,
         detail: output.prompt?.trim() ?? "",
+      });
+    }
+
+    for (const part of getToolPartsByName(message, "generateImage")) {
+      if (part.state !== "output-available" || part.preliminary || !part.output?.imageGenId) continue;
+      const output = part.output;
+      push({
+        kind: "image",
+        id: output.imageGenId,
+        title: output.title.trim() || output.prompt.trim().slice(0, 40) || output.imageGenId,
+        detail: `${output.size} · ${output.count} 张`,
+        payload: {
+          id: output.imageGenId,
+          prompt: output.prompt,
+          title: output.title,
+          size: output.size,
+          count: output.count,
+          modelId: output.modelId,
+        },
       });
     }
 

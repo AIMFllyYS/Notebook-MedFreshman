@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback } from "react";
-import { FileText, FileDigit } from "lucide-react";
+import { FileText, FileDigit, LoaderCircle } from "lucide-react";
 import { useDocuments, getDocumentMarkdown } from "@/lib/hooks/useDocuments";
+import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
 import { MessageContent } from "@/components/chat/MessageContent";
 import { downloadAsMarkdown } from "@/lib/documents/export";
@@ -16,8 +17,35 @@ function documentWindowId(id: string) {
 export default function DocumentViewerLayer() {
   const viewerId = useDocuments((s) => s.viewerId);
   const byId = useDocuments((s) => s.byId);
+  const windowTitle = useWindowManager((s) =>
+    viewerId ? s.windows.find((win) => win.id === documentWindowId(viewerId))?.title : undefined,
+  );
+  const t = useT();
 
-  if (!viewerId || !byId[viewerId]) return null;
+  if (!viewerId) return null;
+
+  // 文档还没落盘（正在分节撰写 / 生成失败 / 数据被清掉）：窗口照开，画一张说明卡。
+  if (!byId[viewerId]) {
+    return (
+      <ManagedWindow
+        windowId={documentWindowId(viewerId)}
+        title={windowTitle || t("window.document.viewDocument")}
+        icon={<FileText size={15} />}
+        onClose={() => useDocuments.getState().closeViewer()}
+        fullscreenTarget="notes"
+        overlayId={`document-viewer-${viewerId}`}
+        bodyClassName="flex flex-col bg-[var(--bg-panel)]"
+        unmountWhenMinimized
+      >
+        <div className="flex h-full min-h-0 flex-col items-center justify-center gap-3 px-6 text-center">
+          <LoaderCircle size={22} className="animate-spin motion-reduce:animate-none text-[var(--ink-faint)]" />
+          <p className="max-w-[38ch] text-[12.5px] leading-relaxed text-[var(--ink-soft)]">
+            {t("window.document.notReady")}
+          </p>
+        </div>
+      </ManagedWindow>
+    );
+  }
   return <DocumentViewerSingle documentId={viewerId} />;
 }
 

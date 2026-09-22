@@ -7,6 +7,8 @@ import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { SOURCES_PANEL_DEFAULT_SIZE, useAgentCenter } from "@/lib/stores/agentCenter";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useStore } from "@/lib/stores/ui";
+import { useArtifacts } from "@/lib/stores/artifacts";
+import { useImageGen } from "@/lib/stores/imageGen";
 import { resetAutoOpenedQuizzes } from "@/lib/quiz-dock/open";
 
 const zh = (key: string, vars?: Record<string, string | number>) => translate("zh", key, vars);
@@ -27,6 +29,8 @@ afterEach(() => {
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   useStore.setState({ agentDockCollapsed: true });
   useAgentCenter.setState({ sourcesPanelSize: { ...SOURCES_PANEL_DEFAULT_SIZE }, sourcesPanelOpen: true });
+  useArtifacts.setState({ order: [], byId: {}, viewerId: null });
+  useImageGen.setState({ openIds: [], sessions: {} });
   resetAutoOpenedQuizzes();
 });
 
@@ -117,5 +121,111 @@ describe("AgentSourcePanel", () => {
     pointer(handle, "pointermove", 100, -5000);
     // 往上拖到负数：夹到最小高度，而不是变成 NaN 或负值。
     expect(useAgentCenter.getState().sourcesPanelSize.height).toBe(200);
+  });
+
+  /**
+   * 「来源 / 出题 / 演示 / 生图 / 文档 同一个层级」（用户口径，对齐 Codex）：
+   * 多类并存时标题退回中性容器名，每一类各自出小节标题、各自成行，谁也不从属于谁。
+   */
+  it("lists every product kind as a peer section under a neutral container title", () => {
+    render(
+      <AgentSourcePanel
+        rounds={rounds}
+        sources={sources}
+        products={[
+          { kind: "quiz", id: "quiz_1", title: "即时检验", detail: "2", payload: { quizId: "quiz_1", title: "即时检验", questions: [] } },
+          { kind: "interactive", id: "art_1", title: "解偶联机理", detail: "" },
+          { kind: "image", id: "img_1", title: "线粒体示意图", detail: "1024x1024 · 2 张", payload: { id: "img_1", prompt: "线粒体", title: "线粒体示意图", size: "1024x1024", count: 2 } },
+          { kind: "document", id: "doc_1", title: "综述", detail: "" },
+        ]}
+        open
+      />,
+    );
+    // 中性容器标题：不再拿「参考 · N」当主标题把其余几类压成子项。
+    expect(screen.getByText(zh("agent.rail.title", { count: 6 }))).toBeVisible();
+    for (const label of [
+      "来源",
+      zh("agent.rail.quiz", { count: 1 }),
+      zh("agent.rail.interactive", { count: 1 }),
+      zh("agent.rail.image", { count: 1 }),
+      zh("agent.rail.document", { count: 1 }),
+    ]) {
+      expect(screen.getByText(label)).toBeVisible();
+    }
+    // 四类产物各自成卡，测试 id 齐备。
+    expect(screen.getByTestId("agent-rail-quiz")).toBeVisible();
+    expect(screen.getByTestId("agent-rail-interactive")).toBeVisible();
+    expect(screen.getByTestId("agent-rail-image")).toBeVisible();
+    expect(screen.getByTestId("agent-rail-document")).toBeVisible();
+  });
+
+  /** 单类时不该多挂一行冗余小节标题。 */
+  it("keeps the header as the only label when a single kind is present", () => {
+    render(
+      <AgentSourcePanel
+        rounds={[]}
+        sources={[]}
+        products={[{ kind: "image", id: "img_9", title: "海报", detail: "1024x1024 · 1 张", payload: { id: "img_9", prompt: "海报", title: "海报", size: "1024x1024", count: 1 } }]}
+        open
+      />,
+    );
+    expect(screen.getByText(zh("agent.rail.image", { count: 1 }))).toBeVisible();
+    expect(screen.getByTestId("agent-rail-image")).toBeVisible();
+  });
+
+  /** 生图入列后必须点得动：开图窗 + 建会话（以前这一列根本没有生图）。 */
+  it("opens the image viewer from the rail, creating the session on the spot", () => {
+    useImageGen.setState({ openIds: [], sessions: {} });
+    render(
+      <AgentSourcePanel
+        rounds={[]}
+        sources={[]}
+        products={[{
+          kind: "image",
+          id: "img_7",
+          title: "线粒体示意图",
+          detail: "1024x1024 · 2 张",
+          payload: { id: "img_7", prompt: "线粒体内膜", title: "线粒体示意图", size: "1024x1024", count: 2 },
+        }]}
+        open
+      />,
+    );
+    fireEvent.click(screen.getByTestId("agent-rail-image"));
+    expect(useStore.getState().agentDockCollapsed).toBe(false);
+    expect(useWindowManager.getState().windows.some((win) => win.type === "image-gen-viewer")).toBe(true);
+    expect(useImageGen.getState().sessions.img_7?.prompt).toBe("线粒体内膜");
+    expect(useImageGen.getState().openIds).toContain("img_7");
+    // 参考列是旁路入口：**不能**替用户批准（生图按张计费），图窗会先停在确认页。
+    expect(useImageGen.getState().sessions.img_7?.autoStart).toBeFalsy();
+  });
+
+  /**
+   * 演示在 Agent 面里是 silent 卡（中间栏不画），产物落盘前用户就可能点参考列。
+   * 以前 openViewer 只在产物已存在时才开窗 —— 这一下点击完全没反应（用户口径「不好使」）。
+   */
+  it("opens the demo dock window even when the artifact has not been saved yet", () => {
+    useArtifacts.setState({ order: [], byId: {}, viewerId: null });
+    render(
+      <AgentSourcePanel
+        rounds={[]}
+        sources={[]}
+        products={[{ kind: "interactive", id: "art_pending", title: "解偶联机理", detail: "" }]}
+        open
+      />,
+    );
+    fireEvent.click(screen.getByTestId("agent-rail-interactive"));
+    const win = useWindowManager.getState().windows.find((w) => w.type === "artifact-viewer");
+    expect(win).toBeTruthy();
+    expect(win?.title).toBe("解偶联机理");
+    expect(useArtifacts.getState().viewerId).toBe("art_pending");
+  });
+
+  it("reuses the demo window instead of stacking duplicates", () => {
+    useArtifacts.setState({ order: [], byId: {}, viewerId: null });
+    const products = [{ kind: "interactive" as const, id: "art_dup", title: "演示", detail: "" }];
+    render(<AgentSourcePanel rounds={[]} sources={[]} products={products} open />);
+    fireEvent.click(screen.getByTestId("agent-rail-interactive"));
+    fireEvent.click(screen.getByTestId("agent-rail-interactive"));
+    expect(useWindowManager.getState().windows.filter((w) => w.type === "artifact-viewer")).toHaveLength(1);
   });
 });

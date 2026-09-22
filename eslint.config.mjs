@@ -45,6 +45,12 @@ export default defineConfig([
     "showroom/**",
     "docs/refer/**",
     "scripts/one-off/**",
+    // 归档区：历史一次性脚本（探针 / 验收 / 转储），与 one-off 同一口径 —— 不参与代码质量门禁。
+    // 它们是**证据材料**而不是运行时依赖：里面大量 require() 与未用变量是当时的真实形态，
+    // 改干净反而丢证据；纳入门禁只会让 lint 永久变红、把真问题淹掉（计划 18 从根 tmp/ 归位）。
+    "scripts/archive/**",
+    // 设计快照：只读留档，其中 design-library/.tmp/ 是快照自带的构建产物，同样不是运行时依赖。
+    "docs/design-snapshots/**",
     ".claude/**",
     ".trae/**",
     ".mimocode/**",

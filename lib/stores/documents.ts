@@ -18,7 +18,7 @@ interface DocumentsState {
   setSectionStatus: (id: string, index: number, status: DocumentSection["status"], error?: string) => void;
   appendSection: (id: string, section: DocumentSection) => void;
   setStatus: (id: string, status: DocumentStatus, error?: string) => void;
-  openViewer: (id: string) => void;
+  openViewer: (id: string, title?: string) => void;
   closeViewer: () => void;
   prune: (keepIds: string[]) => void;
 }
@@ -104,19 +104,33 @@ export const useDocuments = createPersistedStore<DocumentsState>(
           return { byId: { ...s.byId, [id]: { ...doc, status, error, updatedAt: Date.now() } } };
         }),
 
-      openViewer: (id) =>
+      /**
+       * 打开（或复用）文档浮窗。与演示同一口径：**文档还没落盘也要开窗**——
+       * Agent 面里卡片是 silent 的，参考列点进来时它可能还在分节撰写，
+       * 以前 `if (!doc) return s` 会让这一下点击毫无反应（同 artifacts.openViewer 的老毛病）。
+       */
+      openViewer: (id, title) =>
         set((s) => {
           const doc = s.byId[id];
-          if (!doc) return s;
-          const { pos, size } = documentWindowGeometry();
-          useWindowManager.getState().openWindow({
-            id: documentWindowId(id),
-            type: "document-viewer",
-            title: doc.spec.title,
-            pos,
-            size,
-            data: { documentId: id },
-          });
+          const windowId = documentWindowId(id);
+          const wm = useWindowManager.getState();
+          const existing = wm.windows.find((win) => win.id === windowId);
+          const nextTitle = doc?.spec.title || title || windowId;
+          if (existing) {
+            wm.updateWindow(windowId, { title: nextTitle });
+            if (existing.minimized) wm.restoreWindow(windowId);
+            else wm.bringToFront(windowId);
+          } else {
+            const { pos, size } = documentWindowGeometry();
+            wm.openWindow({
+              id: windowId,
+              type: "document-viewer",
+              title: nextTitle,
+              pos,
+              size,
+              data: { documentId: id },
+            });
+          }
           return { viewerId: id };
         }),
 

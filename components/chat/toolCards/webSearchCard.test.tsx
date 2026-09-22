@@ -71,7 +71,8 @@ describe("webSearch ResultCard", () => {
     expect(document.querySelectorAll(".web-search-chip[data-state='done']")).toHaveLength(1);
     expect(document.querySelectorAll(".web-search-chip[data-state='running']")).toHaveLength(1);
     expect(screen.getByText("b.example")).toBeInTheDocument();
-    expect(document.querySelectorAll(".web-source-card.is-skeleton")).toHaveLength(3);
+    // 已经有真来源卡了：尾部只留一张骨架表示"还在搜"，不再铺满三张盖住增量节奏。
+    expect(document.querySelectorAll(".web-source-card.is-skeleton")).toHaveLength(1);
   });
 
   it("output-error → 失败卡：原因 + 计划源灰态", () => {

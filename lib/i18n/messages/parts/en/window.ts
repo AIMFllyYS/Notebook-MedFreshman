@@ -72,6 +72,12 @@ export const windowEn = {
     urlExpiry: "Image URLs expire in 1 hour — download them soon",
     generating: "Generating images…",
     interrupted: "Generation was interrupted. Please retry",
+    // Opened from a side entry (e.g. the references rail): no approval yet, so ask once first.
+    confirm: {
+      title: "Confirm to start generating",
+      hint: "Image generation is billed per image — the model is only called after you confirm.",
+      start: "Start generating",
+    },
     // Image progress (the upstream sends no progress; this is estimated from the model's typical latency)
     progress: {
       elapsed: "Waiting {seconds}s",
@@ -125,6 +131,7 @@ export const windowEn = {
     streamReadFailed: "Stream read failed",
     outlineFailed: "Outline generation failed",
     sectionFailed: "Section generation failed",
+    notReady: "This document has not finished generating yet — it will appear here once its sections are written. If nothing happens for a while, ask the assistant to regenerate it.",
   },
   // Interactive artifact card (renderInteractive).
   artifact: {
@@ -152,6 +159,7 @@ export const windowEn = {
     generatingHtml: "Generating HTML…",
     errorHint: "This demo failed to generate. Ask the assistant to try again or explain it in text instead.",
     dataMissing: "Interactive demo data is missing (regenerate it, or ask the assistant to call the tool again).",
+    notReady: "This demo has not finished generating yet — it will appear here as soon as it is ready. If nothing happens for a while, ask the assistant to regenerate it.",
     regenerate: "Regenerate",
   },
   // Note-related windows.

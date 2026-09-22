@@ -11,7 +11,8 @@ import {
 import { allocateCiteIndex, appendCiteLegend, formatCiteLine } from "@/lib/ai/agent/tools/citeIndex";
 import { PROVIDER_LABELS } from "@/lib/ai/search/policy";
 import { SEARCH_MAX_SOURCES } from "@/lib/ai/search/selectSources";
-import type { SearchProgressEvent } from "@/lib/ai/search/types";
+import type { SearchItem, SearchProgressEvent } from "@/lib/ai/search/types";
+import type { WebSearchSource } from "@/lib/types/chat";
 
 /** 测试可替换联网搜索，避免打真实供应商。 */
 export const webSearchIo = { runWebSearchDetailed };
@@ -94,6 +95,27 @@ export function createWebSearchTool(runtime: StudyToolRuntime) {
         // 克隆条目：同一对象后续还会被改，不能把可变引用塞进已发出的输出。
         providers: [...status.values()].map((p) => ({ ...p })),
       });
+      /**
+       * 已流到前端的原始来源（按 URL 去重，保序）。
+       * 「搜到一个显示一个」就靠它：每家一返回就把条目并进来，下一次 preliminary 输出
+       * 带着完整累积清单——前端来源条因此是逐张长出来的，而不是等最后一次性冒出来。
+       * 这只是**展示层**的候选；喂给模型的仍只有最后一次 yield 的精选结果。
+       */
+      const streamed: WebSearchSource[] = [];
+      const streamedUrls = new Set<string>();
+      const absorb = (items: readonly SearchItem[] | undefined) => {
+        for (const item of items ?? []) {
+          const key = item.url.replace(/[#?].*$/, "").replace(/\/+$/, "").toLowerCase();
+          if (!key || streamedUrls.has(key)) continue;
+          streamedUrls.add(key);
+          streamed.push({
+            title: item.title,
+            url: item.url,
+            snippet: item.snippet,
+            media: item.media,
+          });
+        }
+      };
       const running = webSearchIo.runWebSearchDetailed(query, Number(numResults) || 5, {
         mode: mode ?? "auto",
         providers,
@@ -132,9 +154,15 @@ export function createWebSearchTool(runtime: StudyToolRuntime) {
           cur.state = ev.providerState === "error" ? "error" : "done";
           cur.count = ev.resultCount ?? 0;
           status.set(ev.provider, cur);
-          yield { text: progressText(snapshot("searching")), sources: [], progress: snapshot("searching") };
+          // 这一家刚回的条目立刻并进流式清单：前端下一次渲染就有新卡。
+          absorb(ev.items);
+          yield {
+            text: progressText(snapshot("searching")),
+            sources: [...streamed],
+            progress: snapshot("searching"),
+          };
         } else if (ev.stage === "synthesizing") {
-          yield { text: progressText(snapshot("synthesizing")), sources: [], progress: snapshot("synthesizing") };
+          yield { text: progressText(snapshot("synthesizing")), sources: [...streamed], progress: snapshot("synthesizing") };
         }
         // "done" 事件不必发 preliminary：正式结果紧随其后。
       }
