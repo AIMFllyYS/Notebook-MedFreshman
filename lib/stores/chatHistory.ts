@@ -22,6 +22,7 @@ import {
 import { getMessageText } from '@/lib/chat/messageParts';
 import { mergeRememberedSlices } from '@/lib/project/sessionSlices';
 import { scheduleCloudTombstone, scheduleCloudUpsert } from '@/lib/sync/schedule';
+import { useSessionRuns } from '@/lib/stores/sessionRuns';
 
 const MAX_LOADED_SESSIONS = 3;
 const MAX_SESSIONS = 50;
@@ -278,7 +279,11 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         pruneArtifactsFromMetas(capped);
       }
       const messagesById = { ...state.messagesById, [id]: [] };
-      for (const dropId of droppedIds) delete messagesById[dropId];
+      for (const dropId of droppedIds) {
+        delete messagesById[dropId];
+        // 被淘汰的会话可能还在跑：停掉并抹掉运行记录，否则侧栏徽标成孤儿。
+        useSessionRuns.getState().remove(dropId);
+      }
       persistManifest(
         state,
         manifestOf(state, { activeSessionId: claimActive ? id : state.activeSessionId, sessions: capped }),
@@ -317,6 +322,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     const active = state.sessionsMeta.find((meta) => meta.id === state.activeSessionId);
     if (active && isBlankMainSession(active)) {
       set({ blankChatPulse: state.blankChatPulse + 1 });
+      useSessionRuns.getState().markViewed(active.id);
       return active.id;
     }
     // 否则复用列表里最近的一条空白新对话（sessionsMeta 新的在前）。
@@ -343,10 +349,13 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     });
     persistManifest(state, manifestOf(state, { activeSessionId: blank.id, sessions: sessionsMeta }));
     if (sessionsMeta !== state.sessionsMeta) scheduleCloudUpsert('chat-session', blank.id);
+    useSessionRuns.getState().markViewed(blank.id);
     return blank.id;
   },
 
   deleteSession: (id) => {
+    // 先停掉这条会话可能还在跑的运行（abort + 抹记录），再删数据。
+    useSessionRuns.getState().remove(id);
     let nextActiveToLoad: string | null = null;
     set((state) => {
       const sessionsMeta = state.sessionsMeta.filter((s) => s.id !== id);
@@ -378,6 +387,8 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       };
     });
     if (nextActiveToLoad) {
+      // 删除后自动落到下一条会话 = 用户在看它，顺手消掉未读徽标。
+      useSessionRuns.getState().markViewed(nextActiveToLoad);
       void get().ensureSessionLoaded(nextActiveToLoad).then(() => {
         if (get().activeSessionId === nextActiveToLoad) {
           get()._setActiveMessagesReady(true);
@@ -388,6 +399,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
 
   switchSession: (id) => {
     set({ activeSessionId: id, _activeMessagesReady: false });
+    useSessionRuns.getState().markViewed(id);
     void get().ensureSessionLoaded(id).then(() => {
       if (get().activeSessionId === id) {
         get()._setActiveMessagesReady(true);
@@ -648,6 +660,8 @@ export async function ensureChatHistoryBootstrap(): Promise<void> {
       useChatHistory.setState({ _hasHydrated: true, _activeMessagesReady: true });
       useChatHistory.getState().ensureDefaultProjects();
     }
+    // 运行状态记录是本地副产物：别的设备删掉的会话、被淘汰的会话，徽标一并清。
+    useSessionRuns.getState().prune(new Set(useChatHistory.getState().sessionsMeta.map((s) => s.id)));
     scheduleOrphanChatGc();
   })();
   return bootstrapPromise;

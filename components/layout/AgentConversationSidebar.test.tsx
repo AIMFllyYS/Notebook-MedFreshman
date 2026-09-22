@@ -1,6 +1,7 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AgentConversationSidebar from "./AgentConversationSidebar";
+import { useSessionRuns } from "@/lib/stores/sessionRuns";
 
 type TestSession = {
   id: string;
@@ -77,6 +78,7 @@ beforeEach(() => {
   historyState.activeSessionId = null;
   historyState.activeProjectId = null;
   routeRef.pathname = "/agent";
+  useSessionRuns.setState({ byId: {} });
 });
 
 const ctx = {
@@ -164,6 +166,34 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
     fireEvent.click(screen.getByLabelText("解释线粒体"));
     expect(restoreWindow).toHaveBeenCalledWith("float-1");
     expect(historyState.switchSession).not.toHaveBeenCalled();
+  });
+
+  it("会话行运行态徽标：running 转圈 / 未读完成蓝点 / 未读错误红点 / 已读不亮", () => {
+    seedSessions();
+    useSessionRuns.setState({
+      byId: {
+        "main-1": { phase: "running", unseen: false, startedAt: 1, updatedAt: 1 },
+        "float-1": { phase: "done", unseen: true, startedAt: 1, updatedAt: 2 },
+        "note-1": { phase: "error", unseen: true, error: "上游返回错误", startedAt: 1, updatedAt: 3 },
+        "proj-1": { phase: "done", unseen: false, startedAt: 1, updatedAt: 4 },
+      },
+    });
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    expect(screen.getAllByTestId("session-run-running")).toHaveLength(1);
+    expect(screen.getAllByTestId("session-run-done")).toHaveLength(1);
+    expect(screen.getAllByTestId("session-run-error")).toHaveLength(1);
+  });
+
+  it("项目折叠时把成员会话运行态聚成一颗徽标", () => {
+    seedSessions();
+    useSessionRuns.setState({
+      byId: { "proj-1": { phase: "running", unseen: false, startedAt: 1, updatedAt: 1 } },
+    });
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    // 折叠项目行后，成员会话的运行态聚到项目行上（AnimatedCollapse 隐藏但保留子行 DOM）。
+    fireEvent.click(screen.getByLabelText("组胚"));
+    const projectRow = screen.getByLabelText("组胚").closest("div")!.parentElement!;
+    expect(within(projectRow).getByTestId("session-run-running")).toBeInTheDocument();
   });
 
   it("默认一次 10 条，续载后放出其余", () => {

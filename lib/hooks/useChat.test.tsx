@@ -10,6 +10,7 @@ import { useFloatingTokenTracker } from './useFloatingTokenTracker';
 import { useBillingStore } from './useBillingStore';
 import { useSkills } from './useSkills';
 import { useAcademicYear } from './useAcademicYear';
+import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/sessionRuns';
 import { hydrateAttachmentsForApi } from '@/lib/storage/chatStorage';
 import { createUserMessage, getMessageText } from '@/lib/chat/messageParts';
 import type { ChatContext, ChatMessage, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
@@ -95,6 +96,8 @@ beforeEach(() => {
   useFloatingTokenTracker.setState({ sessions: {} });
   useBillingStore.setState({ records: [] });
   useSkills.setState({ skills: [] });
+  __resetSessionRunControllers();
+  useSessionRuns.setState({ byId: {} });
   vi.mocked(hydrateAttachmentsForApi).mockReset().mockImplementation(async (messages) => messages);
 });
 
@@ -324,7 +327,7 @@ describe('useChat SDK transport regression', () => {
     expect(messagesFor()[0]).toBe(history[0]);
   });
 
-  it('水合期间取消不发 /api/chat；卸载会取消流并落定已有内容', async () => {
+  it('水合期间取消不发 /api/chat；卸载不杀流、后台跑完并落定内容', async () => {
     let resolveHydration: (messages: ChatMessage[]) => void;
     vi.mocked(hydrateAttachmentsForApi).mockImplementationOnce(() => new Promise((resolve) => { resolveHydration = resolve; }));
     const control = controlledResponse();
@@ -343,7 +346,13 @@ describe('useChat SDK transport regression', () => {
     await settle();
     unmount();
     await settle();
-    expect(control.cancel).toHaveBeenCalledTimes(1);
+    // 组件卸载不再中止请求：流继续在后台跑（运行态在 sessionRuns，与组件解耦）。
+    expect(control.cancel).not.toHaveBeenCalled();
+    expect(useSessionRuns.getState().byId.main?.phase).toBe('running');
+    control.emit({ type: 'text-end', id: 't' }, { type: 'finish' });
+    control.close();
+    await settle();
+    expect(useSessionRuns.getState().byId.main?.phase).toBe('done');
     expect(getMessageText(lastAssistant())).toBe('卸载前末帧');
   });
 

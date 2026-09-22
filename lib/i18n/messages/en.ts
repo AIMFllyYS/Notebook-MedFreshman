@@ -135,6 +135,12 @@ export const en = {
       untitled: "New chat",
       empty: "Empty chat",
       messageCount: "{count} messages",
+      run: {
+        running: "Running",
+        doneUnread: "Finished (unread)",
+        error: "Run failed",
+        interrupted: "Interrupted",
+      },
     },
     menu: {
       aria: "Chat actions",

@@ -138,6 +138,12 @@ export const zh = {
       untitled: "新对话",
       empty: "空对话",
       messageCount: "{count} 条消息",
+      run: {
+        running: "正在运行",
+        doneUnread: "已完成（未读）",
+        error: "运行出错",
+        interrupted: "已中断",
+      },
     },
     menu: {
       aria: "对话整理",

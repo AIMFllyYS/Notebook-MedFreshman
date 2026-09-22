@@ -49,6 +49,11 @@ export interface ChatInputProps {
   onSend: (content: string, options?: SendMessageOptions) => void;
   onStop: () => void;
   isLoading: boolean;
+  /**
+   * 本输入框写入的会话 id。生成中再发的消息会进队列；队列项绑定当时所在会话——
+   * 切到别的会话后 drain 不会把这条会话的待发消息错发给另一条。
+   */
+  sessionId?: string;
   chatContext: ChatContext;
   onOpenSettings?: () => void;
   disabled?: boolean;
@@ -79,6 +84,8 @@ export const MAX_INPUT_CHARACTERS = 50_000;
 
 type QueuedMessage = {
   id: string;
+  /** 排队时所在会话：drain 只放与当前会话一致的项，防止跨会话错发。 */
+  sessionId?: string;
   content: string;
   quotedText?: string;
   attachments?: SendMessageOptions["attachments"];
@@ -99,7 +106,7 @@ function countCharacters(text: string) {
 /** 输入框最大高度（与 `.chat-input-textarea` 的 CSS max-height 保持一致）。 */
 const MAX_TEXTAREA_HEIGHT = 120;
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, focusSignal, showProjectPicker = false, chatContext }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessionId, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, focusSignal, showProjectPicker = false, chatContext }) => {
   const t = useT();
   const [input, setInput] = useState('');
   const [queuedMessages, setQueuedMessages] = useState<QueuedMessage[]>([]);
@@ -311,6 +318,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       planMode: message.planMode,
       forcedTool: message.forcedTool,
       attachedFiles: message.attachedFiles,
+      sessionId: message.sessionId,
     });
   }, [onSend, effectiveEnableThinking, effectiveThinkingEffort, enableSearch]);
 
@@ -328,6 +336,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
     const message: QueuedMessage = {
       id: crypto.randomUUID(),
+      sessionId,
       content: trimmed || (attachedFiles.length > 0 ? t('menu.chatInput.autoPrompt.files') : t('menu.chatInput.autoPrompt.attachments')),
       quotedText: effectiveQuote || undefined,
       attachments: toChatFormat(),
@@ -346,7 +355,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       dispatchMessage(message);
     }
     clearDraft();
-  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft, effectivePlanMode, forcedTool, t]);
+  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft, effectivePlanMode, forcedTool, sessionId, t]);
 
   useEffect(() => {
     if (isLoading) {
@@ -358,12 +367,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     // onSend 通常会让父级立即进入 loading；即使父级更新稍有延迟，也不能
     // 在同一轮 effect 中把多条排队消息一次性发出。
     if (queueAwaitingLoadingRef.current) return;
-    const next = queuedMessages[0];
+    // 只放属于当前会话的排队项：别的会话的队列等用户切回去再发，不能发错地方。
+    const next = queuedMessages.find((item) => item.sessionId === sessionId);
+    if (!next) return;
     queueAwaitingLoadingRef.current = true;
-    setQueuedMessages((items) => items[0]?.id === next.id ? items.slice(1) : items);
-    setEditingQueuedId((current) => current === next.id ? null : current);
-    dispatchMessage(next);
-  }, [dispatchMessage, externalDisabled, isLoading, queuedMessages]);
+    // 微任务里再改 state：effect 体里同步 setState 会触发级联渲染（lint 明令禁止）。
+    queueMicrotask(() => {
+      setQueuedMessages((items) => items.filter((item) => item.id !== next.id));
+      setEditingQueuedId((current) => current === next.id ? null : current);
+      dispatchMessage(next);
+    });
+  }, [dispatchMessage, externalDisabled, isLoading, queuedMessages, sessionId]);
 
   const editQueuedMessage = useCallback((message: QueuedMessage) => {
     setInput(message.content);
@@ -426,6 +440,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   };
 
   const inputDisabled = !!externalDisabled;
+  // 队列按会话过滤展示：切到别的会话时不把那边排队的消息摆在这里。
+  const visibleQueuedMessages = queuedMessages.filter((item) => item.sessionId === sessionId);
   const sendDisabled = !!externalDisabled || (!isLoading && (overLimit || (!input.trim() && attachments.length === 0 && attachedFiles.length === 0)));
   const showStopButton = isLoading && !input.trim() && attachments.length === 0 && attachedFiles.length === 0;
   const thinkingProps = {
@@ -492,14 +508,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       )}
       {attachInfo ? <div className="chat-attachment-notice" role="status">{attachInfo}</div> : null}
 
-      {queuedMessages.length > 0 && (
+      {visibleQueuedMessages.length > 0 && (
         <div className="chat-input-queue" role="region" aria-label={t('menu.chatInput.queue.title')}>
           <div className="chat-input-queue-heading">
             <span className="chat-input-queue-label"><span className="chat-input-queue-pulse" />{t('menu.chatInput.queue.title')}</span>
-            <span className="chat-input-queue-count">{t('menu.chatInput.queue.count', { count: queuedMessages.length })}</span>
+            <span className="chat-input-queue-count">{t('menu.chatInput.queue.count', { count: visibleQueuedMessages.length })}</span>
           </div>
           <div className="chat-input-queue-list">
-            {queuedMessages.map((message, index) => (
+            {visibleQueuedMessages.map((message, index) => (
               <div className="chat-input-queue-item" key={message.id}>
                 <span className="chat-input-queue-index">{index + 1}</span>
                 <span className="chat-input-queue-text" title={message.content}>{message.content}</span>

@@ -6,6 +6,7 @@ import ChatPanel from './ChatPanel';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { useStore } from '@/lib/store';
 import { useSettings } from '@/lib/hooks/useSettings';
+import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/sessionRuns';
 import { getMessageText } from '@/lib/chat/messageParts';
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
@@ -68,6 +69,8 @@ beforeEach(() => {
     sessionsMeta: [{ id: 'main', title: 'main', createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [] }],
     loadedSessionIds: ['main'], pinnedSessionIds: [],
   });
+  __resetSessionRunControllers();
+  useSessionRuns.setState({ byId: {} });
 });
 afterEach(async () => {
   cleanup(); await vi.advanceTimersByTimeAsync(0);
@@ -182,7 +185,7 @@ describe('ChatPanel outbound lifecycle with real useChat', () => {
     } finally { unsubscribe(); }
   });
 
-  it('微任务前卸载不清空待发送项，重新挂载发送；已启动流仍在卸载时取消', async () => {
+  it('微任务前卸载不清空待发送项，重新挂载发送；已启动流在卸载后继续跑', async () => {
     const control = responseControl();
     mockFetch(() => control.response);
     useStore.getState().sendToChat('稍后挂载');
@@ -196,6 +199,11 @@ describe('ChatPanel outbound lifecycle with real useChat', () => {
     await settle();
     expect(requests).toHaveLength(1);
     second.unmount(); await settle();
-    expect(control.cancel).toHaveBeenCalledTimes(1);
+    // 卸载不再中止生成：流继续在后台跑，跑完落 done + 未读（用户没在看）。
+    expect(control.cancel).not.toHaveBeenCalled();
+    expect(useSessionRuns.getState().byId.main?.phase).toBe('running');
+    control.finish(); await settle();
+    expect(useSessionRuns.getState().byId.main?.phase).toBe('done');
+    expect(useSessionRuns.getState().byId.main?.unseen).toBe(true);
   });
 });

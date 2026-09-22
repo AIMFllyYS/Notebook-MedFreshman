@@ -84,9 +84,10 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
     useTokenTracker.getState().resetSession();
   }, [activeSessionId]);
 
-  useEffect(() => {
-    return () => stopGeneration();
-  }, [stopGeneration]);
+  /**
+   * 不在卸载时 stopGeneration：离开对话页/切路由不杀运行中的生成
+   * （运行态在 sessionRuns store 里，与组件生命周期解耦；关站时 fetch 自然死亡）。
+   */
 
   /**
    * 「点了新建对话、但其实已经站在一条空白新对话里」→ 轻反馈：聚焦输入框 + 一行提示。
@@ -131,8 +132,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
 
   const handleFollowUpClick = useCallback((question: string) => sendMessage(question), [sendMessage]);
   const handleNewChat = () => {
-    stopGeneration();
-    // 已经在新对话里就复用它，不再落第二条（连点不会刷出一堆空会话）
+    // 不 stopGeneration：新对话另开跑道，当前这条继续在后台跑（Codex 式并行）。
     startNewChat(chatContext);
     useTokenTracker.getState().resetSession();
   };
@@ -239,6 +239,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
         onSend={handleSend}
         onStop={stopGeneration}
         isLoading={isLoading || !chatReady}
+        sessionId={sessionId ?? undefined}
         chatContext={chatContext}
         // 只有 Agent 中央对话给「对话所属项目」这个入口（划词浮窗 / 题目解析 / 手机迷你聊天都不给）。
         showProjectPicker={emptyLayout === "agent"}

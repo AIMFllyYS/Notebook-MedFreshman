@@ -9,6 +9,7 @@ import LeftDock from "./LeftDock";
 import AgentNavRows from "@/components/agent/AgentNavRows";
 import AgentSectionHeader from "@/components/agent/AgentSectionHeader";
 import AgentSessionList from "@/components/agent/AgentSessionList";
+import { SessionRunBadge } from "@/components/agent/AgentSessionRow";
 import AgentPanelMenu, { type AgentMenuTarget } from "@/components/agent/AgentPanelMenu";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useT } from "@/lib/i18n";
@@ -16,6 +17,7 @@ import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/hooks/useChatH
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
 import { useStore } from "@/lib/stores/ui";
+import { useSessionRuns, type SessionRunRecord } from "@/lib/stores/sessionRuns";
 import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
 import { buildProjectViews, selectArchivedSessions, selectRecentSessions } from "@/lib/agent/projectViews";
 import type { ChatContext } from "@/lib/types/chat";
@@ -25,6 +27,27 @@ interface PanelMenuState {
   x: number;
   y: number;
   target: AgentMenuTarget;
+}
+
+/**
+ * 项目折叠时看不出里面有没有会话在跑/跑完：把成员会话的运行态聚成一条徽标。
+ * 优先级与 Codex 一致：running > 未读错误 > 未读完成。
+ */
+function aggregateProjectRun(
+  sessions: SessionMeta[],
+  byId: Record<string, SessionRunRecord>,
+): SessionRunRecord | undefined {
+  const runs = sessions.map((s) => byId[s.id]).filter(Boolean) as SessionRunRecord[];
+  if (runs.some((r) => r.phase === "running")) {
+    return { phase: "running", unseen: false, startedAt: 0, updatedAt: 0 };
+  }
+  if (runs.some((r) => r.unseen && (r.phase === "error" || r.phase === "interrupted"))) {
+    return { phase: "error", unseen: true, startedAt: 0, updatedAt: 0 };
+  }
+  if (runs.some((r) => r.unseen && r.phase === "done")) {
+    return { phase: "done", unseen: true, startedAt: 0, updatedAt: 0 };
+  }
+  return undefined;
 }
 
 /**
@@ -68,6 +91,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
   const deleteFolder = useChatHistory((s) => s.deleteFolder);
   const moveSessionToFolder = useChatHistory((s) => s.moveSessionToFolder);
   const setActiveProject = useChatHistory((s) => s.setActiveProject);
+  const runsById = useSessionRuns((s) => s.byId);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [menu, setMenu] = useState<PanelMenuState | null>(null);
@@ -357,6 +381,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                        * 系统项目（笔记记录 / 划词摘录）的成员由会话 kind 决定，手动新建挂不进去，所以不给。
                        * 重命名时也藏起来，免得和输入框抢焦点。
                        */}
+                      {/* 折叠时把成员会话的运行态聚成一颗徽标；展开后每行自己有徽标。 */}
+                      {!expanded ? <SessionRunBadge run={aggregateProjectRun(project.sessions, runsById)} /> : null}
                       {!project.system && renamingProjectId !== project.id ? (
                         <button
                           type="button"

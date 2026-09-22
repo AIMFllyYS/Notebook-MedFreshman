@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useChatHistory } from './useChatHistory';
 import { useSettings } from './useSettings';
 import { useSkills } from './useSkills';
@@ -7,6 +7,7 @@ import { useFloatingTokenTracker } from './useFloatingTokenTracker';
 import { useBillingStore, createBillingRecord } from './useBillingStore';
 import { useAcademicYear } from './useAcademicYear';
 import { useArtifacts } from './useArtifacts';
+import { useSessionRuns } from '@/lib/stores/sessionRuns';
 import { collectRequestArtifacts } from '@/lib/context/compactArtifacts';
 import type { ChatMessage, ChatContext, ChatOptions } from '@/lib/types/chat';
 import { createAssistantPlaceholder, createUserMessage } from '@/lib/chat/messageParts';
@@ -28,6 +29,22 @@ import { useReincludedAttachments } from '@/lib/stores/reincludedAttachments';
 import { shouldAutoEnableSearch } from '@/lib/ai/search/autoEnable';
 
 const EMPTY_MESSAGES: ChatMessage[] = [];
+
+/**
+ * 「这条会话此刻是否在被用户看着」→ 终态要不要亮蓝点/红点。
+ * 不是当前 active、标签页在后台、或人根本不在对话页（比如在学科页/资产页），都算没看见。
+ */
+function sessionUnseen(sessionId: string): boolean {
+  const activeId = useChatHistory.getState().activeSessionId;
+  if (activeId !== sessionId) return true;
+  if (typeof document !== 'undefined' && document.hidden) return true;
+  if (typeof window !== 'undefined') {
+    const path = window.location.pathname;
+    if (path !== '/agent' && !path.startsWith('/c/')) return true;
+  }
+  return false;
+}
+
 export function useChat(chatContext: ChatContext, options?: ChatOptions, overrides?: {
   sessionId?: string;
   modelId?: string;
@@ -42,23 +59,32 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const sid = ovSessionId ?? s.activeSessionId;
     return sid ? s.messagesById[sid] ?? EMPTY_MESSAGES : EMPTY_MESSAGES;
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [info, setInfo] = useState<string | null>(null);
-  const abortRef = useRef<AbortController | null>(null);
-  const loadingRef = useRef(false);
-  const mountedRef = useRef(true);
-  useEffect(() => {
-    mountedRef.current = true;
-    return () => { mountedRef.current = false; abortRef.current?.abort(); };
-  }, []);
-  const clearError = useCallback(() => setError(null), []);
-  const clearInfo = useCallback(() => setInfo(null), []);
-  const stopGeneration = useCallback(() => abortRef.current?.abort(), []);
+  // 运行状态按 sessionId 存 store（不在这个 hook 实例里）：切走会话不杀流，
+  // 多条会话并发互不干扰；组件卸载更不该中止——「离开对话仍继续，关站才停」。
+  const runPhase = useSessionRuns((s) => (resolvedSessionId ? s.byId[resolvedSessionId]?.phase : undefined));
+  const runError = useSessionRuns((s) => (resolvedSessionId ? s.byId[resolvedSessionId]?.error : undefined));
+  const runInfo = useSessionRuns((s) => (resolvedSessionId ? s.byId[resolvedSessionId]?.info : undefined));
+  const isLoading = runPhase === 'running';
+  const error = runPhase === 'error' ? runError ?? null : null;
+  const info = runInfo ?? null;
+  const clearError = useCallback(() => {
+    const sid = ovSessionId ?? useChatHistory.getState().activeSessionId;
+    if (sid) useSessionRuns.getState().clearError(sid);
+  }, [ovSessionId]);
+  const clearInfo = useCallback(() => {
+    const sid = ovSessionId ?? useChatHistory.getState().activeSessionId;
+    if (sid) useSessionRuns.getState().setInfo(sid, null);
+  }, [ovSessionId]);
+  const stopGeneration = useCallback(() => {
+    const sid = ovSessionId ?? useChatHistory.getState().activeSessionId;
+    if (sid) useSessionRuns.getState().abortRun(sid);
+  }, [ovSessionId]);
   const sendMessage = useCallback((content: string, sendOptions?: SendMessageOptions) => {
-    if (!content.trim() || loadingRef.current) return false;
+    if (!content.trim()) return false;
     const history = useChatHistory.getState();
-    if (!canSendNow(history, ovSessionId)) return false;
+    // 队列派发的消息可能绑定历史会话（sendOptions.sessionId）；门控按目标会话判，不看别的跑道。
+    const explicitSessionId = sendOptions?.sessionId ?? ovSessionId;
+    if (!canSendNow(history, explicitSessionId)) return false;
     const settings = useSettings.getState();
     // 「需要搜索就联网」：问题明显依赖外部/实时信息时，本轮自动打开联网搜索。
     // 客户端先开一次，是为了把用户自备的搜索 key 也带上去（服务端只剥离、不补齐）。
@@ -67,7 +93,9 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const resolved = autoSearch ? { ...resolvedSettings, enableSearch: true } : resolvedSettings;
     const academicYear = chatContext.academicYear ?? useAcademicYear.getState().year;
     const skills = useSkills.getState().skills;
-    const sessionId = (ovSessionId ?? history.activeSessionId) ?? history.createSession(chatContext);
+    const sessionId = explicitSessionId ?? history.activeSessionId ?? history.createSession(chatContext);
+    // 并发单位是「会话」而不是「这个 hook」：同一条会话已在跑才拒发，别的会话在跑不拦。
+    if (useSessionRuns.getState().byId[sessionId]?.phase === 'running') return false;
     const userContent = sendOptions?.quotedText
       ? `针对当前页面这段原文：\n\n> ${sendOptions.quotedText}\n\n${content}` : content;
     const userMessage = createUserMessage(crypto.randomUUID(), userContent, { attachments: sendOptions?.attachments });
@@ -103,8 +131,8 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
       tokens.setCurrentContext(ringTokens, budget.limit);
       tokens.setContextWarning(budget.softLimitReached, CONTEXT_WARNING);
     }
-    loadingRef.current = true; setIsLoading(true); setError(null); setInfo(null);
-    const abortController = new AbortController(); abortRef.current = abortController;
+    const abortController = new AbortController();
+    useSessionRuns.getState().markRunning(sessionId, abortController);
     const isNoteWindow = Boolean(ovEditingUserNoteId);
     const notesState = useUserNotes.getState();
     const cardsState = useReviewCards.getState();
@@ -168,7 +196,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
           onWrite: (message) => useChatHistory.getState().updateMessage(sessionId, assistant.id, {
             parts: message.parts, metadata: message.metadata, followUpQuestions: message.followUpQuestions,
           }),
-          onInfo: (message) => { if (mountedRef.current) setInfo(message); },
+          onInfo: (message) => { useSessionRuns.getState().setInfo(sessionId, message); },
           onContextBreakdown: (breakdown) => {
             if (ovSessionId) useFloatingTokenTracker.getState().setContextBreakdown(ovSessionId, breakdown);
             else if (useChatHistory.getState().activeSessionId === sessionId) useTokenTracker.getState().setContextBreakdown(breakdown);
@@ -196,20 +224,28 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
           ?.find((message) => message.id === assistant.id);
         const readSliceIds = collectReadSliceIds(finished?.parts);
         if (readSliceIds.length > 0) useChatHistory.getState().rememberReadSlices(sessionId, readSliceIds);
+        // 会话中途被删就别回填终态：deleteSession 已经把 run 记录一起抹了。
+        if (useChatHistory.getState().sessionsMeta.some((s) => s.id === sessionId)) {
+          useSessionRuns.getState().markDone(sessionId, sessionUnseen(sessionId));
+        }
       } catch (err: unknown) {
         const message = classifySendError(err, {
           stalled: stalled ?? false,
           aborted: abortController.signal.aborted,
           maxWaitMs: settings.maxWaitMs,
         });
-        if (message) {
-          if (!stalled) console.warn('Chat request failed:', message);
-          if (mountedRef.current) setError(message);
+        if (useChatHistory.getState().sessionsMeta.some((s) => s.id === sessionId)) {
+          const unseen = sessionUnseen(sessionId);
+          if (message) {
+            if (!stalled) console.warn('Chat request failed:', message);
+            useSessionRuns.getState().markError(sessionId, message, unseen);
+          } else {
+            // 用户主动停止 / 组件触发的 abort：按「完成」收口，不算错误。
+            useSessionRuns.getState().markDone(sessionId, unseen);
+          }
         }
       } finally {
-        loadingRef.current = false;
-        if (mountedRef.current) setIsLoading(false);
-        if (abortRef.current === abortController) abortRef.current = null;
+        useSessionRuns.getState().releaseController(sessionId, abortController);
       }
     })();
     return true;

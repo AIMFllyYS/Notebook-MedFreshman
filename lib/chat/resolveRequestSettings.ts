@@ -14,6 +14,11 @@ export interface SendMessageOptions {
   planMode?: boolean;
   forcedTool?: ComposerForcedTool;
   attachedFiles?: AttachedFileRef[];
+  /**
+   * 显式目标会话：排队消息 drain 时用——队列是按「排队时所在会话」绑定的，
+   * 切走会话后回来 drain 不能落到当时 active 的另一条会话上。
+   */
+  sessionId?: string;
 }
 
 export interface RequestSettingsInput {

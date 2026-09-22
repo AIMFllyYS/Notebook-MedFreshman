@@ -9,6 +9,7 @@ import ChatInput from "@/components/chat/ChatInput";
 import type { ChatContext, ChatOptions } from "@/lib/types/chat";
 import type { SendMessageOptions } from "@/lib/chat/sendMessage";
 import { useFloatingChats, type FloatingWin } from "@/lib/hooks/useFloatingChats";
+import { useSessionRuns } from "@/lib/stores/sessionRuns";
 
 interface FloatingChatBodyProps {
   win: FloatingWin;
@@ -33,6 +34,8 @@ export default function FloatingChatBody({ win, chatContext, onModelChange }: Fl
     const { pinSession, ensureSessionLoaded } = useChatHistory.getState();
     pinSession(win.sessionId);
     void ensureSessionLoaded(win.sessionId);
+    // 浮窗打开 = 用户在看这条会话：熄灭它的未读徽标（蓝点/红点）。
+    useSessionRuns.getState().markViewed(win.sessionId);
     return () => useChatHistory.getState().unpinSession(win.sessionId);
   }, [win.sessionId]);
 
@@ -60,7 +63,7 @@ export default function FloatingChatBody({ win, chatContext, onModelChange }: Fl
     return () => { cancelled = true; };
   }, [chatReady, isLoading, sendMessage, win.id, win.sessionId, win.seedMode, win.seedNonce, win.seedText]);
 
-  useEffect(() => () => stopGeneration(), [stopGeneration]);
+  // 最小化/关闭浮窗不 abort：会话运行态在 sessionRuns store，与组件挂载解耦。
 
   function handleSend(content: string, opts?: SendMessageOptions) {
     const isFirst = messages.length === 0;
@@ -93,6 +96,7 @@ export default function FloatingChatBody({ win, chatContext, onModelChange }: Fl
         onSend={handleSend}
         onStop={stopGeneration}
         isLoading={isLoading || !chatReady}
+        sessionId={win.sessionId}
         chatContext={chatContext}
         modelId={win.modelId}
         onModelChange={onModelChange}

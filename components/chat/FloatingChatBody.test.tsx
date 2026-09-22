@@ -9,6 +9,7 @@ import { useSettings } from '@/lib/hooks/useSettings';
 import { useBillingStore } from '@/lib/hooks/useBillingStore';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
 import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
+import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/sessionRuns';
 import { getMessageText } from '@/lib/chat/messageParts';
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
@@ -80,6 +81,8 @@ beforeEach(() => {
   useBillingStore.setState({ records: [] });
   useTokenTracker.getState().resetSession();
   useFloatingTokenTracker.setState({ sessions: {} });
+  __resetSessionRunControllers();
+  useSessionRuns.setState({ byId: {} });
 });
 
 afterEach(async () => {
@@ -125,7 +128,7 @@ describe('FloatingChatBody automatic seed lifecycle with real useChat', () => {
     expect(requests).toHaveLength(1);
   });
 
-  it('最小化卸载仍取消真实流，但恢复后不再次发送已经接收的 seed', async () => {
+  it('最小化卸载不杀真实流、后台跑完落终态；恢复后不再次发送已经接收的 seed', async () => {
     const control = responseControl();
     mockFetch(() => control.response);
     const view = render(<StrictMode><Host /></StrictMode>);
@@ -134,7 +137,12 @@ describe('FloatingChatBody automatic seed lifecycle with real useChat', () => {
     await settle();
     view.rerender(<StrictMode><Host visible={false} /></StrictMode>);
     await settle();
-    expect(control.cancel).toHaveBeenCalledTimes(1);
+    // 最小化不再中止：会话继续在后台跑完（离开对话仍继续）。
+    expect(control.cancel).not.toHaveBeenCalled();
+    expect(useSessionRuns.getState().byId.floating?.phase).toBe('running');
+    control.finish();
+    await settle();
+    expect(useSessionRuns.getState().byId.floating?.phase).toBe('done');
     expect(useChatHistory.getState().pinnedSessionIds).not.toContain('floating');
     view.rerender(<StrictMode><Host /></StrictMode>);
     await settle();
