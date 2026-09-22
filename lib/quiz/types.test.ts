@@ -11,7 +11,6 @@ import {
   COMPOSITE_TYPES,
   TYPE_LABELS,
   type QuizQuestion,
-  type UserAnswer,
 } from "./types.ts";
 
 function makeQ(overrides: Partial<QuizQuestion> = {}): QuizQuestion {
@@ -59,7 +58,6 @@ test("isComposite：非复合题为 false", () => {
 test("OBJECTIVE_TYPES / SUBJECTIVE_TYPES / COMPOSITE_TYPES 不重叠", () => {
   const objSet = new Set(OBJECTIVE_TYPES);
   const subSet = new Set(SUBJECTIVE_TYPES);
-  const compSet = new Set(COMPOSITE_TYPES);
   for (const t of OBJECTIVE_TYPES) assert.ok(!subSet.has(t));
   for (const t of SUBJECTIVE_TYPES) assert.ok(!objSet.has(t));
   for (const t of COMPOSITE_TYPES) assert.ok(!objSet.has(t));

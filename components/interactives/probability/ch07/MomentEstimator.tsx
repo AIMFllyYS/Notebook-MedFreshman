@@ -6,7 +6,6 @@ import { memo, useState } from "react";
 const ACCENT = "#5b46e5";
 const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
-const GREEN_LIGHT = "#ccfbf1";
 const ORANGE = "#c2410c";
 const GRAY_LINE = "var(--line)";
 
@@ -50,14 +49,6 @@ function sampleMean2(data: number[]): number {
   // 二阶样本矩 (1/n)·Σxᵢ²
   if (data.length === 0) return NaN;
   return data.reduce((s, x) => s + x * x, 0) / data.length;
-}
-
-function sampleVariance(data: number[]): number {
-  // 用样本矩计算：B₂ - x̄² = E[X²] - (E[X])²
-  if (data.length === 0) return NaN;
-  const m1 = sampleMean(data);
-  const m2 = sampleMean2(data);
-  return m2 - m1 * m1;
 }
 
 // ─── 矩估计量 ─────────────────────────────────────────────────────
@@ -624,7 +615,7 @@ function MomentEstimatorBase() {
             className={
               "rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors " +
               (d === dist
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                 : "border border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)]")
             }
           >
@@ -682,7 +673,7 @@ function MomentEstimatorBase() {
         </div>
         <button
           onClick={handleGenerateSample}
-          className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[12px] font-medium text-white hover:opacity-90 transition-opacity"
+          className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] hover:opacity-90 transition-opacity"
         >
           随机生成样本
         </button>
@@ -845,7 +836,7 @@ function MomentEstimatorBase() {
           </div>
           <button
             onClick={handleRunConvergence}
-            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-[12px] font-medium text-white hover:opacity-90 transition-opacity"
+            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] hover:opacity-90 transition-opacity"
           >
             {showConv ? "重新模拟" : "开始模拟"}
           </button>

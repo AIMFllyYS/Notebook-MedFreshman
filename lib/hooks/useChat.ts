@@ -6,7 +6,6 @@ import { useTokenTracker } from './useTokenTracker';
 import { useFloatingTokenTracker } from './useFloatingTokenTracker';
 import { useBillingStore, createBillingRecord } from './useBillingStore';
 import { useAcademicYear } from './useAcademicYear';
-import { AUTO_MODEL_ID } from '@/lib/ai/models';
 import { useArtifacts } from './useArtifacts';
 import { collectRequestArtifacts } from '@/lib/context/compactArtifacts';
 import type { ChatMessage, ChatContext, ChatOptions } from '@/lib/types/chat';

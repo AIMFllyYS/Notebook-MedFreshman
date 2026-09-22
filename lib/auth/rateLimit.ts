@@ -31,6 +31,16 @@ function sweepExpired(now: number): void {
   }
 }
 
+/** 取客户端 IP 作限流 key：最左一个 x-forwarded-for，缺省 x-real-ip。 */
+export function requestClientIp(headers: { get(name: string): string | null }): string {
+  const forwarded = headers.get("x-forwarded-for");
+  if (forwarded) {
+    const first = forwarded.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  return headers.get("x-real-ip")?.trim() || "unknown";
+}
+
 export function consumeRateLimit(key: string, opts: RateLimitConsumeOptions = {}): RateLimitHit {
   const now = opts.now ?? Date.now();
   const max = opts.max ?? AI_RATE_LIMIT_MAX;

@@ -155,6 +155,8 @@
   --subj-phy: #58b8ff;
   --subj-chem: #43d6a0;
   --subj-hist: #ff7d8a;
+  /* 深色学科色都是浅蜡色，底上文字用深字才读得清。 */
+  --subj-on-accent: #14151c;
 
   /* State Layers */
   --md-sys-state-hover: 0.08;
@@ -281,6 +283,8 @@
   --subj-phy: #1286c4;
   --subj-chem: #20894f;
   --subj-hist: #d54458;
+  /* 浅色学科色为中深色，底上用白字。 */
+  --subj-on-accent: #ffffff;
 
   /* ── 兼容层：浅色模式覆盖 ────────────────────────────── */
   --bg-app: var(--md-sys-color-background);
@@ -529,6 +533,15 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+/* 设置页「减少动画」开关：与上面的系统媒体查询同一套收口，触发源换成 <html> 属性，
+   由 MotionPreferenceProvider 写入（bootstrap 脚本已在首帧前预读）。 */
+html[data-reduce-motion="true"] *,
+html[data-reduce-motion="true"] *::before,
+html[data-reduce-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
 
 /* ── Vidstack 播放器主题适配 ─────────────────── */
 .vs-player {
@@ -572,11 +585,18 @@ body {
 .chat-messages {
   contain: layout;
   overflow-anchor: none;
+  /* 纵向滚动的列表横向一律裁剪：任何内容都不允许横着溢出对话栏。 */
+  overflow-x: clip;
 }
 /* 消息条目：只做 paint/style 隔离，不做 size/layout 隔离——
    高度必须由 tanstack measureElement 真实测得，见 docs/plans/19。 */
 .chat-message {
   contain: style paint;
+}
+/* 虚拟行是第二道硬边界：paint 隔离 + abs/fixed 包含块，
+   保证行内任何后代都画不出自己的行——消息内容再异常也只能在自己的行内叠，不能跨行覆盖其他消息。 */
+.chat-messages-sizer > [data-index] {
+  contain: paint;
 }
 /* 笔记内容中的 KaTeX 块公式施加 paint 包含，避免拖拽时重绘扩散 */
 .prose-notes .katex-display {

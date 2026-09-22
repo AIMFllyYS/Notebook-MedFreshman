@@ -262,6 +262,10 @@ export const traceZh = {
     title: "联网来源",
     foldTitle: "{label} · {count} 条{footnote}",
     cached: " · 缓存",
+    searching: "正在搜索 {providers}…",
+    failed: "搜索失败",
+    scrollPrev: "向前滚动来源",
+    scrollNext: "向后滚动来源",
   },
   // 追问卡
   followUp: {

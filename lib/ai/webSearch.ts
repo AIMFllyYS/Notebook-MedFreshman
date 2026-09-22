@@ -10,7 +10,8 @@ import { resolveSidecarBilling } from "@/lib/billing/usagePool";
 import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
 import { runSearchSubagent } from "@/lib/ai/search/subagent";
-import type { SearchMode, SearchProviderId } from "@/lib/ai/search/types";
+import { createTtlCache } from "@/lib/ai/ttlCache";
+import type { SearchMode, SearchProgressEvent, SearchProviderId } from "@/lib/ai/search/types";
 import type { WebSearchSource } from "@/lib/types/chat";
 
 export type { WebSearchSource } from "@/lib/types/chat";
@@ -49,6 +50,7 @@ async function fetchZhipuRaw(
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(20_000),
   });
   if (!res.ok) throw new Error("Zhipu Search " + res.status);
   const data = await res.json();
@@ -63,33 +65,9 @@ async function fetchZhipuRaw(
 }
 
 // ── 内存缓存（同一服务进程内 LRU + TTL）────────────────────────
-interface CacheEntry {
-  results: WebSearchSource[];
-  ts: number;
-}
-const CACHE = new Map<string, CacheEntry>();
-const TTL_MS = 10 * 60 * 1000;
-const MAX_ENTRIES = 100;
-
-function cacheGet(key: string): WebSearchSource[] | null {
-  const entry = CACHE.get(key);
-  if (!entry) return null;
-  if (Date.now() - entry.ts > TTL_MS) {
-    CACHE.delete(key);
-    return null;
-  }
-  CACHE.delete(key);
-  CACHE.set(key, entry);
-  return entry.results;
-}
-
-function cacheSet(key: string, results: WebSearchSource[]) {
-  CACHE.set(key, { results, ts: Date.now() });
-  if (CACHE.size > MAX_ENTRIES) {
-    const oldest = CACHE.keys().next().value;
-    if (oldest !== undefined) CACHE.delete(oldest);
-  }
-}
+const CACHE = createTtlCache<WebSearchSource[]>({ ttlMs: 10 * 60 * 1000, maxEntries: 100 });
+const cacheGet = (key: string) => CACHE.get(key);
+const cacheSet = CACHE.set.bind(CACHE);
 
 export async function searchCached(
   query: string,
@@ -99,7 +77,7 @@ export async function searchCached(
   const q = query.trim();
   const { key, usedPlatformCredentials } = resolveSearchKey(opts.apiKey);
   if (!q || !key) return { results: [], cacheHit: false, usedPlatformCredentials };
-  const cacheKey = q.toLowerCase() + "|" + count + "|" + (opts.domainFilter ?? "") + "|" + (usedPlatformCredentials ? "p" : "u");
+  const cacheKey = q.toLowerCase().replace(/\s+/g, " ") + "|" + count + "|" + (opts.domainFilter ?? "") + "|" + (usedPlatformCredentials ? "p" : "u");
   const cached = cacheGet(cacheKey);
   if (cached) return { results: cached, cacheHit: true, usedPlatformCredentials };
   const results = await fetchZhipuRaw(q, count, opts, key);
@@ -120,21 +98,28 @@ export async function searchCached(
 
 export interface WebSearchDetailed {
   content: string;
+  /** 精选后的来源清单（已按上限截断），与正文里的 [n] 编号一一对应。 */
   sources: WebSearchSource[];
   cacheHit: boolean;
   /** 本次实际用到的搜索源（供 UI/日志展示）。 */
   providers?: SearchProviderId[];
   /** 是否做了跨源综述（多供应商综合分析）。 */
   synthesized?: boolean;
+  /** 去重后仍未入选的来源数（>0 时正文已提示可换词再搜）。 */
+  omittedSources?: number;
+  /** 子智能体端到端耗时（毫秒）。 */
+  ms?: number;
 }
 
 export interface WebSearchRunOptions {
   mode?: SearchMode;
   providers?: readonly SearchProviderId[];
+  /** 渐进状态回调：选源完成 / 每家返回 / 综述 / 结束各推一次，供流式展示。 */
+  onProgress?: (event: SearchProgressEvent) => void;
 }
 
 /**
- * 主入口：交给搜索子智能体（选源 → 并行检索 → 综述）。
+ * 主入口：交给搜索子智能体（选源 → 并行检索 → 精选 → 综述）。
  * 子智能体内部永远不会抛错，失败会以可读文本返回。
  */
 export async function runWebSearchDetailed(
@@ -147,12 +132,14 @@ export async function runWebSearchDetailed(
     mode: options.mode,
     providers: options.providers,
     count: numResults,
-  });
+  }, options.onProgress);
   return {
     content: bundle.text,
     sources: bundle.sources,
     cacheHit: bundle.cacheHit,
     providers: bundle.used,
     synthesized: bundle.synthesized,
+    omittedSources: bundle.omittedSources,
+    ms: bundle.ms,
   };
 }

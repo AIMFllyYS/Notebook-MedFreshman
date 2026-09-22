@@ -59,4 +59,10 @@ export interface ToolModule<N extends StudyToolName = StudyToolName> {
    * 需要副作用的产物卡（出题自动开窗、演示生成）不要用这个开关，在卡片内部自己藏 UI。
    */
   hideInAgentChat?: boolean;
+  /**
+   * 运行中也渲染这张卡：流式期间把「非最终态」的 part（输入中 / preliminary 部分结果 /
+   * output-error）同样送进 ResultCard，由卡片内部按 part.state 分活（如 webSearch 的
+   * live 来源条）。聚合卡会把进行中的 part 与已完成 part 合成一张 live 卡。
+   */
+  liveWhileRunning?: boolean;
 }

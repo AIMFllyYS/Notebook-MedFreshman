@@ -42,7 +42,7 @@ function VennPlaygroundBase() {
             className={
               "rounded-lg px-2.5 py-1 text-[13px] font-medium transition-colors " +
               (o.key === opKey
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                 : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--accent-weak)]")
             }
           >

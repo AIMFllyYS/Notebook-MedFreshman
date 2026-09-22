@@ -16,16 +16,6 @@ export interface EmbeddingProvider {
   embedBatch(texts: string[]): Promise<number[][]>;
 }
 
-interface VectorStore {
-  index(
-    documents: { id: string; content: string; metadata?: Record<string, unknown> }[],
-  ): Promise<void>;
-  query(
-    embedding: number[],
-    topK: number,
-  ): Promise<{ id: string; content: string; score: number }[]>;
-}
-
 // ── 语义检索上下文管理器 ──
 
 export class SemanticSearchManager implements ContextManager {

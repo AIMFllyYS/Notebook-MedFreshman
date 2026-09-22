@@ -8,15 +8,6 @@ function key(subjectId: string, categoryId: string, itemId: string): string {
   return `${subjectId}/${categoryId}/${itemId}`;
 }
 
-function registerComponent(
-  subjectId: string,
-  categoryId: string,
-  itemId: string,
-  component: ComponentType,
-): void {
-  registry[key(subjectId, categoryId, itemId)] = component;
-}
-
 export function getComponent(
   subjectId: string,
   categoryId: string,

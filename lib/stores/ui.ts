@@ -264,7 +264,8 @@ export const useStore = create<AppState>((set) => ({
   toggleExpand: (id) =>
     set((s) => {
       const next = new Set(s.expandedIds);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return { expandedIds: next };
     }),
 

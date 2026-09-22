@@ -64,6 +64,8 @@ const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: f
 const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const AgentSettingsOverlay = dynamic(() => import("@/components/chat/AgentSettingsOverlay"), { ssr: false });
+const SchedulerRuntime = dynamic(() => import("@/components/agent/scheduler/SchedulerRuntime"), { ssr: false });
+const SelectionAssistantGuard = dynamic(() => import("@/components/notes/SelectionAssistantGuard"), { ssr: false });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
 
 /** 分栏缓动时长（唯一真相源是 globals.css 的 `--duration-pane`，这里只是读出来给定时器用）。 */
@@ -520,6 +522,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <DeferredWindowLayers />
         <AgentSettingsOverlay />
         <LoginOverlay />
+        <SchedulerRuntime />
+        <SelectionAssistantGuard />
         <ToastHost />
       </div>
       </KeyboardShortcutProvider>
@@ -587,6 +591,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <DeferredWindowLayers />
         <AgentSettingsOverlay />
         <LoginOverlay />
+        <SchedulerRuntime />
+        <SelectionAssistantGuard />
         <AnimatePresence>
           <PipPlayer />
         </AnimatePresence>
@@ -711,6 +717,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <DeferredWindowLayers />
       <AgentSettingsOverlay />
       <LoginOverlay />
+      <SchedulerRuntime />
+      <SelectionAssistantGuard />
       <ToastHost />
     </div>
     </KeyboardShortcutProvider>

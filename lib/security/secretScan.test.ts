@@ -119,10 +119,10 @@ test("真实 .env.example / README / fixture 不被启发式误杀", () => {
   }
 });
 
-test(".gitignore 忽略 .env 与 .env.production，保留 .env.example", () => {
+test(".gitignore 忽略所有 .env* 变体，保留 .env.example", () => {
   const gitignore = readFileSync(join(process.cwd(), ".gitignore"), "utf8");
-  assert.match(gitignore, /^\.env$/m);
-  assert.match(gitignore, /^\.env\.production$/m);
+  assert.match(gitignore, /^\.env\*$/m);
+  assert.match(gitignore, /^!\.env\.example$/m);
   assert.doesNotMatch(gitignore, /^[^!\n]*\.env\.example$/m);
 });
 

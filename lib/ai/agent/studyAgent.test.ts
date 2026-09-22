@@ -282,6 +282,39 @@ test("createStudyAgent：定位行在 instructions 末尾，换页不改稳定�
   assert.match(ib, /1\.5/);
 });
 
+test("createStudyAgent：同一输入两次构造逐字节一致，发往模型的 prompt/tools 稳定（C 项缓存证据）", async () => {
+  const over: Partial<StudyAgentInput> = {
+    skills: [
+      { id: "s2", name: "固定技能", description: "", content: "始终遵循", pinned: true, createdAt: 2 },
+      { id: "s1", name: "错题分析", description: "分析错因", content: "...", pinned: false, createdAt: 1 },
+      { id: "s3", name: "通用对话", description: "日常答疑", content: "...", pinned: false, createdAt: 3 },
+    ],
+    globalContext: "用户补充上下文",
+    userNotes: [{ id: "n1", title: "笔记", markdown: "x", subjectId: "histology", updatedAt: 1 }],
+    flashcards: [{ id: "f1", subjectId: "histology", sourceLabel: "s", front: "q", back: "a", originalText: "o", status: "active" }],
+    referenceContext: "参考材料正文",
+  };
+  const modelA = new MockLanguageModelV4({ doStream: [textStep("a"), textStep("b")] });
+  const modelB = new MockLanguageModelV4({ doStream: [textStep("a"), textStep("b")] });
+  const a = createStudyAgent(baseInput(modelA, over));
+  const b = createStudyAgent(baseInput(modelB, over));
+
+  // instructions 与工具键顺序逐字节一致：前缀不漂移才能命中 provider 侧 prompt cache。
+  assert.equal(a.promptParts.instructions, b.promptParts.instructions);
+  assert.deepEqual(Object.keys(a.tools), Object.keys(b.tools));
+
+  // 两个「同一会话」首轮请求：发给模型的 prompt / tools 序列化完全一致。
+  for (const { agent } of [a, b]) {
+    await convertReadableStreamToArray(
+      (await agent.stream({ messages: [{ role: "user", content: "q" }] })).toUIMessageStream(),
+    );
+  }
+  const callA = modelA.doStreamCalls[0];
+  const callB = modelB.doStreamCalls[0];
+  assert.deepEqual(callA.prompt, callB.prompt);
+  assert.deepEqual(callA.tools?.map((t) => t.name), callB.tools?.map((t) => t.name));
+});
+
 test("createStudyAgent：imageSearch 配额耗尽后 prepareStep 摘除该工具", async () => {
   const model = new MockLanguageModelV4({
     doStream: [textStep("基于已有图片继续")],

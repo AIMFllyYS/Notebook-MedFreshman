@@ -311,7 +311,7 @@ function ReliabilityExplorerBase() {
               className={
                 "rounded-lg px-3 py-1 text-[13px] font-medium transition-colors " +
                 (mode === m
-                  ? "bg-[var(--accent)] text-white"
+                  ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                   : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--accent-weak)]")
               }
             >
@@ -423,7 +423,7 @@ function ReliabilityExplorerBase() {
         <div className="flex flex-wrap gap-1.5 mb-2">
           <button
             onClick={runOnce}
-            className="rounded-lg bg-[var(--accent)] px-2.5 py-1 text-[12px] font-medium text-white hover:opacity-90"
+            className="rounded-lg bg-[var(--accent)] px-2.5 py-1 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] hover:opacity-90"
           >
             运行 1 次
           </button>
@@ -431,7 +431,7 @@ function ReliabilityExplorerBase() {
             <button
               key={k}
               onClick={() => runMany(k)}
-              className="rounded-lg bg-[var(--accent)] px-2.5 py-1 text-[12px] font-medium text-white hover:opacity-90"
+              className="rounded-lg bg-[var(--accent)] px-2.5 py-1 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] hover:opacity-90"
             >
               运行 {k} 次
             </button>

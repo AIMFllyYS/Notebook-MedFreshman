@@ -1,8 +1,8 @@
-import { normalizePlotExpression } from "@/lib/canvas/plot";
+import { isSafeMathExpression, normalizePlotExpression } from "@/lib/canvas/plot";
 
 /**
  * SVG Canvas utility functions:
- * - Math expression parser (safe, no eval)
+ * - Math expression parser (strict whitelist before compiling)
  * - Axis tick calculator
  * - SVG path generator from sampled points
  */
@@ -42,10 +42,17 @@ const MATH_CONSTS: Record<string, number> = {
   E: Math.E,
 };
 
+/*
+ * compileMathExpr 最终用 new Function 执行表达式，而表达式可能来自 AI 输出
+ * （SvgDiagram mode="math"）或笔记 :::plot 指令（含公开分享页）——属于半可信输入。
+ * 白名单校验统一用 lib/canvas/plot 的 isSafeMathExpression（normalizePlotExpression
+ * 出口同样走它），避免两份实现分叉。
+ */
+
 /**
  * Compile a math expression string into a function of x.
- * Uses the Function constructor with a controlled scope — only math
- * functions and constants are available, no access to global scope.
+ * Uses the Function constructor — the expression is whitelist-validated by
+ * isSafeMathExpression first, so only whitelisted math names/operators remain.
  */
 export function compileMathExpr(expr: string): (x: number) => number {
   const sanitized = normalizePlotExpression(expr)
@@ -53,6 +60,8 @@ export function compileMathExpr(expr: string): (x: number) => number {
     .replace(/(\d)([a-zA-Z(])/g, "$1*$2")  // 2x -> 2*x, 2( -> 2*(
     .replace(/\)(\d)/g, ")*$1")              // )2 -> )*2
     .replace(/\)([a-zA-Z(])/g, ")*$1");      // )x -> )*x, )( -> )*(
+
+  if (!isSafeMathExpression(sanitized)) return () => NaN;
 
   const funcNames = Object.keys(MATH_FUNCS);
   const funcValues = Object.values(MATH_FUNCS);

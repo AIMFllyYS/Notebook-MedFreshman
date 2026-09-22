@@ -89,7 +89,32 @@ export function normalizeAnthropicBaseUrl(baseUrl: string): string {
 function buildBaseModel(p: ResolvedProvider): LanguageModelV4 {
   if (p.apiProtocol === "anthropic") {
     const anthropic = createAnthropic({ baseURL: normalizeAnthropicBaseUrl(p.baseUrl), apiKey: p.apiKey });
-    return anthropic(p.apiModelId);
+    // Anthropic の prompt cache は明示的な cache_control マーカが無いと cache_read が常に 0。
+    // トップレベル cache_control は「最後の cacheable ブロックまで」に breakpoint を打つ
+    // API 仕様で、system + tools の大きな共有 prefix を吸収する。
+    // 呼び出し側が自分で cacheControl を指定した場合はそちらを尊重する。
+    // failover の prepareCall マージ（applyThinkingCallSettings）は thinking 以外の
+    // anthropic キーを保持するため、注入した cacheControl は全ホップで生き残る。
+    return wrapLanguageModel({
+      model: anthropic(p.apiModelId),
+      middleware: {
+        specificationVersion: "v4",
+        transformParams: async ({ params }) => {
+          const providerOptions = { ...(params.providerOptions ?? {}) } as Record<string, unknown>;
+          const anthropicOptions = {
+            ...((providerOptions.anthropic as Record<string, unknown> | undefined) ?? {}),
+          };
+          if (anthropicOptions.cacheControl == null) {
+            anthropicOptions.cacheControl = { type: "ephemeral" };
+          }
+          providerOptions.anthropic = anthropicOptions;
+          return {
+            ...params,
+            providerOptions: providerOptions as SharedV4ProviderOptions,
+          };
+        },
+      },
+    });
   }
   const upstream = createOpenAICompatible({
     name: UPSTREAM_PROVIDER_NAME,

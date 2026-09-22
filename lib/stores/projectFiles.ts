@@ -1,7 +1,6 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { createPersistedStore } from "@/lib/stores/_persist";
 import type { SliceTextResult } from "@/lib/project/slice";
-import { sliceText } from "@/lib/project/slice";
 import type { ProjectFileEntry, ProjectFileStatus, ProjectStudioRef } from "@/lib/project/types";
 
 /**
@@ -212,7 +211,3 @@ export function listProjectFiles(
   return state.order.map((id) => state.byId[id]).filter((entry): entry is ProjectFileEntry => Boolean(entry) && entry!.projectId === projectId);
 }
 
-/** 便于测试与非 React 代码构造切片（复用同一套规则）。 */
-export function slicesFromText(text: string, name: string): SliceTextResult {
-  return sliceText(text, { name });
-}

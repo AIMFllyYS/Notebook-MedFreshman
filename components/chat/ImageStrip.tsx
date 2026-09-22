@@ -45,7 +45,7 @@ export function ImageStrip({ children }: ImageStripProps) {
     }
   }, []);
 
-  const handlePointerUp = useCallback((e: RPointerEvent<HTMLDivElement>) => {
+  const handlePointerUp = useCallback(() => {
     const state = dragRef.current;
     const el = containerRef.current;
     if (state?.captured && el) {

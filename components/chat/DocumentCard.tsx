@@ -143,7 +143,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
     };
 
     void run();
-  }, [documentId, spec, modelId, shouldAutoGen, create, setSections, setSectionStatus, setSectionMarkdown, setStatus, unsupportedReason]);
+  }, [documentId, spec, modelId, shouldAutoGen, create, setSections, setSectionStatus, setSectionMarkdown, setStatus, unsupportedReason, t]);
 
   const inFlight = generating;
   const done = doc?.status === 'done';

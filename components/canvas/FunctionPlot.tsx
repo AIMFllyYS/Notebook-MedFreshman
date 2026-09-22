@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { compileMathExpr, sampleFunctionToPath, getCurveColor } from "./canvasUtils";
-import { diagnosePlotExpression } from "@/lib/canvas/plot";
+import { diagnosePlotExpression, type PlotDiagnostic } from "@/lib/canvas/plot";
 
 export interface FunctionPlotProps {
   /** Math expression in x, e.g. "sin(x)/x" */
@@ -40,7 +40,9 @@ export function FunctionPlot({
   strokeWidth = 2,
   samples = 500,
 }: FunctionPlotProps) {
-  const diagnostic = useMemo(
+  // diagnosePlotExpression 内部经 normalizePlotExpression 白名单收口后再编译采样，
+  // AI 输出 / 分享页笔记注入的 fn 在那里被统一拦截。
+  const diagnostic = useMemo<PlotDiagnostic>(
     () => diagnosePlotExpression(fn, { xmin: xMin, xmax: xMax, samples }),
     [fn, samples, xMax, xMin],
   );

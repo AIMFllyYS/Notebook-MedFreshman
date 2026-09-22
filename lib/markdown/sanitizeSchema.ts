@@ -157,8 +157,6 @@ const SVG_ATTRIBUTES = [
   "refY",
   "orient",
   "id",
-  "className",
-  "class",
   "clipPath",
   "clip-path",
   "mask",
@@ -225,8 +223,16 @@ export const markdownSanitizeSchema: SanitizeSchema = {
     ...DSL_ATTRIBUTES,
     [CITE_REF_TAG]: ["indexes"],
     ...svgAttributeMap,
-    // KaTeX 入口是 span/div.math-inline|math-display；消毒在 katex 之前，必须保住 className。
-    "*": [...defaultStar, "className"],
+    // className 只允许管线自身产出的 token：remark-math 入口的 math(-inline|-display)
+    // 与 fence 的 language-*。GFM 的 contains-task-list / task-list-item / footnotes /
+    // data-footnote-backref / sr-only 在 GitHub 默认 schema 里已按值白名单放行。
+    // 任意 className 会让正文里的原始 HTML 伪装成应用组件（实测 <div class="chat-input-container">
+    // 渲染成真正的绝对定位元素）——DOM 逃逸曾因此发生，不能再放行给所有元素。
+    code: [["className", /^language-[\s\S]*$/, "math", "math-inline", "math-display"]],
+    pre: [["className", "math", "math-display"]],
+    span: [["className", "math", "math-inline", "math-display"]],
+    div: [...(defaultAttributes.div ?? []), ["className", "math", "math-display"]],
+    "*": defaultStar,
   },
   protocols: {
     ...defaultSchema.protocols,

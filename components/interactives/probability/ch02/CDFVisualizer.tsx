@@ -241,7 +241,7 @@ function CDFVisualizerBase() {
   };
 
   // 钳制到有效范围
-  const clampX = (v: number) => clamp(v, xMin, xMax);
+  const clampX = useCallback((v: number) => clamp(v, xMin, xMax), [xMin, xMax]);
 
   // ─── PDF/PMF 最大值（用于 y 轴标准化）──────────────────────
   const getPDFMax = (): number => {
@@ -345,7 +345,7 @@ function CDFVisualizerBase() {
         setXVal(x);
       }
     },
-    [xMin, xMax, distType, binomN]
+    [xMin, xMax, distType, binomN, clampX]
   );
 
   const handleDragA = useCallback(
@@ -357,7 +357,7 @@ function CDFVisualizerBase() {
         setAVal(x);
       }
     },
-    [xMin, xMax, distType, binomN]
+    [xMin, xMax, distType, binomN, clampX]
   );
 
   const handleDragB = useCallback(
@@ -369,7 +369,7 @@ function CDFVisualizerBase() {
         setBVal(x);
       }
     },
-    [xMin, xMax, distType, binomN]
+    [xMin, xMax, distType, binomN, clampX]
   );
 
   const dragX = useDrag(handleDragX, svgRef);
@@ -493,7 +493,7 @@ function CDFVisualizerBase() {
             className={
               "rounded-lg px-3 py-1 text-[12px] font-medium transition-colors " +
               (distType === key
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                 : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--accent-weak)]")
             }
           >

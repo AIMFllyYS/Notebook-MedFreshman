@@ -81,7 +81,7 @@ function FrequencyConvergenceBase() {
           <button
             key={k}
             onClick={() => flip(k)}
-            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-[13px] font-medium text-white hover:opacity-90"
+            className="rounded-lg bg-[var(--accent)] px-3 py-1 text-[13px] font-medium text-[var(--md-sys-color-on-primary)] hover:opacity-90"
           >
             抛 {k} 次
           </button>

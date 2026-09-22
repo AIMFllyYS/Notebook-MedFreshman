@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
 import { useChat } from "@/lib/hooks/useChat";
-import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
+import { ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
 import { useChatReady } from "@/lib/hooks/useChatReady";
 import { useSettings } from "@/lib/hooks/useSettings";
 import ChatThread from "@/components/chat/ChatThread";

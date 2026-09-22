@@ -50,6 +50,8 @@ export const TOOL_REGISTRY = {
   webSearch: moduleOf("webSearch", {
     ResultCard: WebSearchResultCard,
     hideInAgentChat: true,
+    // 搜索进行中就挂出 live 卡：供应商脉冲点 + 骨架来源卡，来源流到了直接换真卡。
+    liveWhileRunning: true,
     shouldRender: (part) => part.state === "output-available" && !!part.output.sources?.length,
     aggregate: true,
     itemKey: (item) => webItemKey(item as WebSearchSource),
@@ -123,6 +125,7 @@ export interface ToolResultCardEntry {
   resultKey?: (part: ToolPart<StudyToolName>) => string | null;
   shouldRender?: (part: ToolPart<StudyToolName>) => boolean;
   hideInAgentChat?: boolean;
+  liveWhileRunning?: boolean;
   aggregate?: boolean;
   itemKey?: (item: unknown) => string | null;
   itemsOf?: (part: ToolPart<StudyToolName>) => readonly unknown[];
@@ -141,6 +144,7 @@ export const TOOL_RESULT_CARDS: readonly ToolResultCardEntry[] = RESULT_CARD_ORD
     resultKey: mod.resultKey as ToolResultCardEntry["resultKey"],
     shouldRender: mod.shouldRender as ToolResultCardEntry["shouldRender"],
     hideInAgentChat: mod.hideInAgentChat,
+    liveWhileRunning: mod.liveWhileRunning,
     aggregate: mod.aggregate,
     itemKey: mod.itemKey,
     itemsOf: mod.itemsOf as ToolResultCardEntry["itemsOf"],

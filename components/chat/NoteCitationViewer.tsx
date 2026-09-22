@@ -91,7 +91,7 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
         setError(err instanceof Error ? err.message : t('window.source.readNoteFailed'));
       });
     return () => controller.abort();
-  }, [active]);
+  }, [active, t]);
 
   if (!managed || !active) return null;
 

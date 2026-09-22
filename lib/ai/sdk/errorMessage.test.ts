@@ -29,6 +29,14 @@ test('fallback messages redact credentials and URLs and handle cyclic causes', (
   assert.notEqual(toChatErrorMessage(undefined), 'An error occurred.');
 });
 
+test('undici socket タイムアウトは生の "Headers Timeout Error" を出さず汎用超时メッセージへ', () => {
+  for (const code of ['UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_BODY_TIMEOUT', 'UND_ERR_CONNECT_TIMEOUT']) {
+    const text = toChatErrorMessage({ name: 'HeadersTimeoutError', message: 'Headers Timeout Error', code });
+    assert.match(text, /超时|稍后重试/, code);
+    assert.doesNotMatch(text, /Headers Timeout/, code);
+  }
+});
+
 test('HTTP 400 exposes the bounded upstream parameter reason, not the SDK class name or credentials', () => {
   const text = toChatErrorMessage({ name: 'AI_APICallError', message: 'AI_APICallError', statusCode: 400,
     responseBody: JSON.stringify({ error: { message: 'Temperature invalid, only 1 allowed. token=private' }, request: { password: 'never-display' } }) });

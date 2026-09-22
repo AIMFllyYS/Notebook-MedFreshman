@@ -71,11 +71,13 @@ afterEach(() => {
 });
 
 describe("ProjectFilesWindow", () => {
-  it("左树列出文件，默认显示隐藏索引与携带状态", () => {
+  it("左树列出文件，默认显示索引正文与携带状态", () => {
     render(<ProjectFilesWindow projectId="p1" />);
     expect(screen.getByTestId("project-file-tree")).toHaveTextContent("组胚讲义.md");
     expect(screen.getByTestId("project-carry-status")).toHaveTextContent("已全部带入（2 片 · 120 字）");
-    expect(screen.getByTestId("workspace-body")).toHaveTextContent(".index.md · 隐藏索引");
+    // 索引视图直接渲染索引 markdown；不再贴一行「.index.md · 隐藏索引」标题
+    expect(screen.getByTestId("workspace-body")).toHaveTextContent("组胚讲义.md · 索引");
+    expect(screen.getByTestId("workspace-body")).not.toHaveTextContent("隐藏索引");
     expect(screen.getByTestId("workspace-body")).toHaveTextContent("切片数：2");
   });
 

@@ -11,7 +11,7 @@
 //
 // The Next app code is unchanged; it just reads process.env.* from the injected env.
 
-const { app, BrowserWindow, ipcMain, safeStorage, Menu, dialog, shell } = require("electron");
+const { app, BrowserWindow, ipcMain, safeStorage, Menu, dialog, shell, session } = require("electron");
 const { spawn } = require("node:child_process");
 const path = require("node:path");
 const fs = require("node:fs");
@@ -47,6 +47,15 @@ function hasRequiredKeys(keys) {
 const KEYS_FILE = path.join(app.getPath("userData"), "keys.enc");
 const CUSTOM_SECRETS_FILE = path.join(app.getPath("userData"), "custom-api-secrets.enc");
 
+// keys.enc falls back to PLAINTEXT JSON on platforms without safeStorage (e.g. some
+// Linux keyrings), so lock the file to the current user regardless of platform.
+function writeSecretFile(file, data) {
+  fs.writeFileSync(file, data, { mode: 0o600 });
+  try {
+    fs.chmodSync(file, 0o600); // mode only applies at creation — fix up existing files too
+  } catch {}
+}
+
 let serverProc = null;
 let serverPort = null;
 let mainWindow = null;
@@ -74,7 +83,7 @@ function saveKeys(keys) {
   const data = safeStorage.isEncryptionAvailable()
     ? safeStorage.encryptString(json)
     : Buffer.from(json, "utf8");
-  fs.writeFileSync(KEYS_FILE, data);
+  writeSecretFile(KEYS_FILE, data);
   return clean;
 }
 
@@ -114,7 +123,7 @@ function saveCustomApiSecrets(payload) {
   const data = safeStorage.isEncryptionAvailable()
     ? safeStorage.encryptString(json)
     : Buffer.from(json, "utf8");
-  fs.writeFileSync(CUSTOM_SECRETS_FILE, data);
+  writeSecretFile(CUSTOM_SECRETS_FILE, data);
   return { ok: true };
 }
 
@@ -250,6 +259,26 @@ function stopServer() {
 }
 
 // ---------- windows ----------
+// The renderer can reach secrets IPC via the preload bridge, so every inbound
+// URL decision goes through isAppUrl: only the local standalone server is the app.
+function isAppUrl(url) {
+  try {
+    return new URL(url).origin === `http://127.0.0.1:${APP_PORT}`;
+  } catch {
+    return false;
+  }
+}
+
+// Only real web/mail links may leave the app. file:/custom schemes would let a page
+// trick the shell into launching local programs or protocol handlers.
+function openExternalSafe(url) {
+  try {
+    const u = new URL(url);
+    if (!["https:", "http:", "mailto:"].includes(u.protocol)) return;
+    shell.openExternal(u.toString());
+  } catch {}
+}
+
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1440,
@@ -261,6 +290,9 @@ function createMainWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
       // 启用 <webview> 标签 —— 内置浏览器在桌面端用真实 Chromium 视图运行（真·全站）。
       webviewTag: true,
     },
@@ -269,6 +301,9 @@ function createMainWindow() {
   mainWindow.webContents.on("will-attach-webview", (_e, webPreferences) => {
     webPreferences.nodeIntegration = false;
     webPreferences.contextIsolation = true;
+    webPreferences.sandbox = true;
+    webPreferences.webSecurity = true;
+    webPreferences.allowRunningInsecureContent = false;
     delete webPreferences.preload;
   });
   mainWindow.loadURL(`http://127.0.0.1:${serverPort}/`);
@@ -293,9 +328,16 @@ function createMainWindow() {
   });
   // open external links in the system browser, keep app links internal
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith("http://127.0.0.1")) return { action: "allow" };
-    shell.openExternal(url);
+    if (isAppUrl(url)) return { action: "allow" };
+    openExternalSafe(url);
     return { action: "deny" };
+  });
+  // Same rule for in-place navigation: leaving the app origin hands off to the
+  // system browser so remote pages never run in the window holding the IPC bridge.
+  mainWindow.webContents.on("will-navigate", (e) => {
+    if (isAppUrl(e.url)) return;
+    e.preventDefault();
+    openExternalSafe(e.url);
   });
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -315,7 +357,13 @@ function openSetupWindow() {
     parent: mainWindow || undefined,
     modal: !!mainWindow,
     backgroundColor: "#0b0b0f",
-    webPreferences: { preload: path.join(__dirname, "setup-preload.js"), contextIsolation: true },
+    webPreferences: {
+      preload: path.join(__dirname, "setup-preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+    },
   });
   setupWindow.removeMenu();
   setupWindow.loadFile(path.join(__dirname, "setup.html"));
@@ -375,13 +423,20 @@ function buildMenu() {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-// ---------- IPC (setup window) ----------
-ipcMain.handle("secrets:load", () => loadCustomApiSecrets());
-ipcMain.handle("secrets:save", (_e, payload) => saveCustomApiSecrets(payload));
+// ---------- IPC ----------
+// Handlers answer ANY webContents that can reach ipcRenderer, so verify the caller:
+// secrets:* is only for the app page on the loopback origin; setup:* only for the
+// setup window itself. Anything else gets nothing — not even an error string.
+const senderIsApp = (e) => isAppUrl(e.senderFrame && e.senderFrame.url);
+const senderIsSetupWindow = (e) => !!setupWindow && e.sender === setupWindow.webContents;
 
-ipcMain.handle("setup:get-keys", () => loadKeys());
+ipcMain.handle("secrets:load", (e) => (senderIsApp(e) ? loadCustomApiSecrets() : { v: 1, groups: {}, capability: {} }));
+ipcMain.handle("secrets:save", (e, payload) => (senderIsApp(e) ? saveCustomApiSecrets(payload) : { ok: false }));
 
-ipcMain.handle("setup:save", async (_e, keys) => {
+ipcMain.handle("setup:get-keys", (e) => (senderIsSetupWindow(e) ? loadKeys() : {}));
+
+ipcMain.handle("setup:save", async (e, keys) => {
+  if (!senderIsSetupWindow(e)) return { ok: false };
   const saved = saveKeys(keys);
   try {
     if (serverProc) {
@@ -401,16 +456,19 @@ ipcMain.handle("setup:save", async (_e, keys) => {
   }
 });
 
-// Best-effort validation: GET {base}/models with the SiliconFlow key.
-ipcMain.handle("setup:test", async (_e, keys) => {
+// Best-effort validation: GET {base}/models with the provided key.
+ipcMain.handle("setup:test", async (e, keys) => {
+  if (!senderIsSetupWindow(e)) return {};
   const result = {};
   const tryModels = async (base, key, label) => {
     if (!key || !key.trim()) return { label, status: "empty" };
     const url = normalizeOpenAIBaseUrl(base);
     if (!url) return { label, status: "empty" };
+    if (!/^https?:\/\//i.test(url)) return { label, status: "invalid url" };
     try {
       const resp = await fetch(`${url}/models`, {
         headers: { Authorization: `Bearer ${key.trim()}` },
+        signal: AbortSignal.timeout(10_000),
       });
       return { label, status: resp.ok ? "ok" : `http ${resp.status}` };
     } catch (e) {
@@ -424,6 +482,7 @@ ipcMain.handle("setup:test", async (_e, keys) => {
     try {
       const resp = await fetch("https://api.unsplash.com/photos?per_page=1", {
         headers: { Authorization: `Client-ID ${key.trim()}`, "Accept-Version": "v1" },
+        signal: AbortSignal.timeout(10_000),
       });
       return { label: "Unsplash", status: resp.ok ? "ok" : `http ${resp.status}` };
     } catch (e) {
@@ -463,6 +522,19 @@ if (!gotLock) {
       );
     }
   });
+
+  // Deny-by-default permission policy for BOTH sessions (the app page and the
+  // persisted webview partition): without a handler Electron auto-approves every
+  // request, so embedded sites could grab camera/mic/notifications silently.
+  const ALLOWED_PERMISSIONS = new Set([
+    "fullscreen", // 视频播放器全屏
+    "clipboard-read", // 粘贴图片等到笔记
+    "clipboard-sanitized-write", // 富文本复制
+  ]);
+  const permissionPolicy = (_wc, permission, callback) =>
+    callback(ALLOWED_PERMISSIONS.has(permission));
+  session.defaultSession.setPermissionRequestHandler(permissionPolicy);
+  session.fromPartition("persist:browser").setPermissionRequestHandler(permissionPolicy);
 
   app.whenReady().then(async () => {
     buildMenu();

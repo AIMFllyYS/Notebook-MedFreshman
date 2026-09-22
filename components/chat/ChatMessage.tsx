@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useUiReducedMotion } from '@/lib/hooks/useUiReducedMotion';
 import { AgentUserIcon } from '@/components/icons/AgentIcons';
 import BrandLogo from '@/components/layout/BrandLogo';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
@@ -52,7 +52,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   const isUser = message.role === 'user';
   const parts = message.parts;
   const stepDurationsMs = message.metadata?.stepDurationsMs;
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useUiReducedMotion();
   const t = useT();
   const streaming = !!isStreaming;
   const [revealFollowups, setRevealFollowups] = useState(!streaming);

@@ -1,14 +1,24 @@
 import fitz
 import os
+import sys
 
-units = {
-    5: r'C:\Users\AIMFl\OneDrive\文档\课程文件\1\unit5.pdf',
-    6: r'C:\Users\AIMFl\OneDrive\文档\课程文件\1\unit6.pdf',
-    7: r'C:\Users\AIMFl\OneDrive\文档\课程文件\1\unit7.pdf',
-    8: r'C:\Users\AIMFl\OneDrive\文档\课程文件\1\unit8.pdf',
-}
+# 用法: python scripts/render_pdfs.py <unit PDF 目录> [输出目录]
+# 在 <目录> 中寻找 unit<N>.pdf；输出默认写到 tmp/pdf_extracts/（已被 gitignore）。
+src_dir = sys.argv[1] if len(sys.argv) > 1 else os.environ.get('UNIT_PDF_DIR', '')
+if not src_dir or not os.path.isdir(src_dir):
+    print('Usage: python scripts/render_pdfs.py <dir with unitN.pdf> [out_dir]')
+    sys.exit(1)
 
-out_base = r'd:\new_project\Gailvlun\scripts\pdf_extracts'
+units = {}
+for name in sorted(os.listdir(src_dir)):
+    stem = name.lower().removesuffix('.pdf')
+    if stem.startswith('unit') and stem[4:].isdigit():
+        units[int(stem[4:])] = os.path.join(src_dir, name)
+if not units:
+    print(f'No unitN.pdf found under {src_dir}')
+    sys.exit(1)
+
+out_base = sys.argv[2] if len(sys.argv) > 2 else os.path.join('tmp', 'pdf_extracts')
 os.makedirs(out_base, exist_ok=True)
 
 for unit_num, pdf_path in units.items():

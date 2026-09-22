@@ -4,7 +4,7 @@
 // 约定（与前端 derivePoster 对应，渲染安全、无需改动自动生成的 media.generated.ts）：
 //   /media/videos/<rel>.mp4  →  /media/posters/<rel>.jpg
 //
-// 用法：node scripts/gen-posters.mjs [--force]
+// 用法：node scripts/media/gen-posters.mjs [--force]
 // 依赖：系统 ffmpeg 在 PATH 中。
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";

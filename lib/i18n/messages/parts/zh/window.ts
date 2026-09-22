@@ -73,6 +73,7 @@ export const windowZh = {
     regenerate: "重新生成",
     urlExpiry: "图片 URL 1 小时后失效，请及时下载",
     generating: "正在生成图片…",
+    interrupted: "生成中断，请重试",
     // 生图进度（上游不回传进度，这里是按模型典型耗时的估算）
     progress: {
       elapsed: "已等待 {seconds}s",
@@ -316,7 +317,7 @@ export const windowZh = {
     pinTitle: "这一片是否随对话一起带给 Agent",
     pinned: "已带入对话",
     pin: "带入对话",
-    indexTitle: ".index.md · 隐藏索引",
+
     indexEmpty: "（还没有索引：正在解析或解析失败）",
     windowTitle: "项目文件 · {name}",
     untitledProject: "未命名项目",

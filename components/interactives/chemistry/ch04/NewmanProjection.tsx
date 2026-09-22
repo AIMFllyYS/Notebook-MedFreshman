@@ -15,8 +15,6 @@ interface EnergyPoint {
 }
 
 const PRIMARY = "#6d28d9";
-const TWO_PI = Math.PI * 2;
-
 /** 将角度（度）规整到 [0, 360) */
 function normalizeDeg(deg: number): number {
   const m = deg % 360;

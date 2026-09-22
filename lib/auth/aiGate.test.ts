@@ -33,9 +33,12 @@ function headers(init?: Record<string, string>): { get(name: string): string | n
 const allowAda = async (token: string) => (token === "valid-ada" ? { id: "ada" } : null);
 const allowBob = async (token: string) => (token === "valid-bob" ? { id: "bob" } : null);
 
-test("PAID_AI_API_PATHS matches the proxy matcher and excludes free routes", () => {
-  assert.deepEqual([...config.matcher].sort(), [...PAID_AI_API_PATHS].sort());
+test("proxy matcher 覆盖全部 /api（剥掉伪造的可信 header），gate 只拦付费路由", () => {
+  // x-studyreview-user-id 是 proxy 验证后注入的内部信号：matcher 必须罩住每一条
+  // /api 请求才能先剥掉客户端自报值，而不是只罩 PAID_AI_API_PATHS。
+  assert.deepEqual(config.matcher, ["/api/:path*"]);
   for (const path of PAID_AI_API_PATHS) {
+    assert.ok(path.startsWith("/api/"), `${path} 应被 /api/:path* 覆盖`);
     assert.equal(isPaidAiApiPath(path), true);
     assert.equal(isPaidAiApiPath(`${path}/`), true);
     assert.equal(isPaidAiApiUrl(path), true);
@@ -45,7 +48,6 @@ test("PAID_AI_API_PATHS matches the proxy matcher and excludes free routes", () 
     assert.equal(isPaidAiApiPath(path), false);
     assert.equal(isPaidAiApiUrl(path), false);
   }
-  assert.ok(!config.matcher.includes("/api/can-embed"));
 });
 
 test("extractAccessToken prefers Authorization over the session cookie", () => {

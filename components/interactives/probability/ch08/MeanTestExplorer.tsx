@@ -737,7 +737,7 @@ function MeanTestExplorerBase() {
                 onClick={() => setTail(key)}
                 className={`rounded-lg px-3 py-1.5 text-left text-[12px] font-medium transition-colors ${
                   tail === key
-                    ? "text-white"
+                    ? "text-[var(--md-sys-color-on-primary)]"
                     : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--line)]"
                 }`}
                 style={tail === key ? { background: ACCENT } : {}}
@@ -759,7 +759,7 @@ function MeanTestExplorerBase() {
                 onClick={() => setAlpha(a)}
                 className={`rounded-lg px-3 py-1.5 text-[12px] font-mono font-semibold transition-colors ${
                   alpha === a
-                    ? "text-white"
+                    ? "text-[var(--md-sys-color-on-primary)]"
                     : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--line)]"
                 }`}
                 style={alpha === a ? { background: ACCENT } : {}}

@@ -65,7 +65,7 @@ export interface ChatProjectSyncPayload {
   name: string;
   createdAt: number;
   updatedAt: number;
-  system?: "note" | "floating";
+  system?: "note" | "floating" | "scheduled";
 }
 
 export interface SyncDocumentRow {

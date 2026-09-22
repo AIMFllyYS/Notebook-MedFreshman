@@ -197,3 +197,33 @@ test("管线：details/summary 仍保留（笔记页 HTML）", () => {
   assert.match(collectText(tree), /head/);
   assert.match(collectText(tree), /tail/);
 });
+
+test("管线：原始 HTML 的任意 class 被剥掉（DOM 逃逸防线）", () => {
+  const tree = toHast(
+    '<div class="chat-input-container evil" id="keep-me">inj</div>\n\n' +
+    '<span class="image-lightbox-backdrop">x</span>\n\n' +
+    '<svg class="evil" viewBox="0 0 1 1"><circle class="x" r="1"/></svg>',
+  );
+  // 注入的 App 类名一律剥掉：消息内容不得伪装成应用组件。
+  for (const n of elements(tree)) {
+    const cls = classList(n.properties);
+    assert.ok(!cls.some((c) => ["chat-input-container", "evil", "image-lightbox-backdrop", "x"].includes(c)),
+      `class leaked on <${n.tagName}>: ${cls.join(",")}`);
+  }
+  // 元素本身保留（不剥标签），仅丢属性。
+  assert.ok(elements(tree).some((n) => n.tagName === "div"));
+  assert.ok(elements(tree).some((n) => n.properties?.id === "keep-me"));
+  assert.ok(elements(tree).some((n) => n.tagName === "svg"));
+  assert.ok(elements(tree).some((n) => n.tagName === "circle"));
+});
+
+test("管线：管线自身产出的 class token 保留（math/language/task）", () => {
+  const tree = toHast("```js\nconst a=1;\n```\n\n```weird-lang\nx\n```\n\n- [ ] t\n\nmath $x^2$");
+  const allTokens = elements(tree).flatMap((n) => classList(n.properties));
+  assert.ok(allTokens.includes("language-js"), `tokens: ${allTokens.join(",")}`);
+  assert.ok(allTokens.includes("language-weird-lang"), `tokens: ${allTokens.join(",")}`);
+  assert.ok(allTokens.includes("contains-task-list"), `tokens: ${allTokens.join(",")}`);
+  assert.ok(allTokens.includes("task-list-item"), `tokens: ${allTokens.join(",")}`);
+  // KaTeX 渲染后 code.math-inline 变成 .katex 结构
+  assert.ok(elements(tree).some((n) => classList(n.properties).includes("katex")), `tokens: ${allTokens.join(",")}`);
+});

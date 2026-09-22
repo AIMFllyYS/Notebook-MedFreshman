@@ -13,12 +13,6 @@ export type DocumentLanguage = "zh" | "en";
 export const DOCUMENT_FORMATS: readonly DocumentFormat[] = ["markdown", "docx", "pdf"];
 export const DOCUMENT_GENRES: readonly DocumentGenre[] = ["article", "paper", "report", "review-notes", "essay"];
 
-const DOCUMENT_FORMAT_LABELS: Record<DocumentFormat, string> = {
-  markdown: "Markdown",
-  docx: "Word",
-  pdf: "PDF",
-};
-
 export const DOCUMENT_GENRE_LABELS: Record<DocumentGenre, string> = {
   article: "长文章",
   paper: "论文",
@@ -112,12 +106,6 @@ export function assembleDocumentMarkdown(doc: Pick<StoredDocument, "spec" | "sec
     parts.push(section.markdown.trim());
   }
   return parts.join("\n\n") + "\n";
-}
-
-function documentWordCount(markdown: string): number {
-  const cjk = (markdown.match(/[\u4e00-\u9fff]/g) ?? []).length;
-  const latin = (markdown.replace(/[\u4e00-\u9fff]/g, " ").match(/[A-Za-z0-9]+/g) ?? []).length;
-  return cjk + latin;
 }
 
 export const DEFAULT_TARGET_WORDS: Record<DocumentGenre, number> = {

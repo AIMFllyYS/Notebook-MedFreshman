@@ -65,11 +65,21 @@ function insertAfterHeadOpen(source: string, markup: string): string {
  * 两者都必须落在页面自己的脚本之前，所以统一插到 <head> 开头；
  * 且都要幂等——切换联网开关会让同一个 srcDoc 再走一次注入。
  */
+function previewCspTag(network: boolean): string {
+  return `<meta http-equiv="Content-Security-Policy" content="${htmlPreviewCsp(network)}">`;
+}
+
+const CSP_META_RE = /<meta\s+http-equiv="Content-Security-Policy"\s+content="[^"]*"\s*>/gi;
+
 export function prepareHtmlPreview(html: string, options: { network: boolean }): string {
-  const policy = `<meta http-equiv="Content-Security-Policy" content="${htmlPreviewCsp(options.network)}">`;
   // 先装 shim 再插 CSP：这样 CSP meta 一定排在 shim 之前，策略先于任何脚本被解析到。
+  // 幂等：联网开关切换会让同一 srcDoc 再走一次注入——按完整内容认出我们上次注入
+  // 的那条摘掉再按当前 network 重插；文档自带的 CSP meta 不动，多条 CSP 取交集
+  // 收紧，附件自带的宽松策略不能用来绕过「仅本地」的联网限制。
   const shimmed = injectOpaqueOriginStorageShim(html ?? "");
-  return shimmed.includes("Content-Security-Policy") ? shimmed : insertAfterHeadOpen(shimmed, policy);
+  const ours = new Set([previewCspTag(true), previewCspTag(false)]);
+  const withoutOurs = shimmed.replace(CSP_META_RE, (tag) => (ours.has(tag) ? "" : tag));
+  return insertAfterHeadOpen(withoutOurs, previewCspTag(options.network));
 }
 
 export default function AttachmentPreviewViewer() {

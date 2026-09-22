@@ -71,6 +71,7 @@ export const windowEn = {
     regenerate: "Regenerate",
     urlExpiry: "Image URLs expire in 1 hour — download them soon",
     generating: "Generating images…",
+    interrupted: "Generation was interrupted. Please retry",
     // Image progress (the upstream sends no progress; this is estimated from the model's typical latency)
     progress: {
       elapsed: "Waiting {seconds}s",
@@ -314,7 +315,7 @@ export const windowEn = {
     pinTitle: "Whether this slice travels with the chat for the Agent",
     pinned: "Carried in chat",
     pin: "Carry in chat",
-    indexTitle: ".index.md · hidden index",
+
     indexEmpty: "(no index yet: still parsing, or parsing failed)",
     windowTitle: "Project files · {name}",
     untitledProject: "Untitled project",

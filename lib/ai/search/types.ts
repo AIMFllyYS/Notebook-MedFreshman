@@ -11,8 +11,6 @@
 
 export type SearchProviderId = "kimi" | "zhipu" | "perplexity";
 
-export const SEARCH_PROVIDER_IDS: readonly SearchProviderId[] = ["kimi", "zhipu", "perplexity"];
-
 /** 搜索广度：决定默认并发几个供应商。 */
 export type SearchMode = "auto" | "daily" | "academic" | "comprehensive";
 
@@ -44,7 +42,7 @@ export interface ProviderOutcome {
 export interface SearchBundle {
   /** 给模型的最终正文（含来源编号与供应商归属）。 */
   text: string;
-  /** 合并去重后的来源（按权威性排序），供来源条与引用使用。 */
+  /** 合并去重 + 精选截断后的来源（按相关度/权威性排序），供来源条与引用使用。 */
   sources: SearchItem[];
   mode: SearchMode;
   used: SearchProviderId[];
@@ -54,4 +52,24 @@ export interface SearchBundle {
   /** 本次所有已选供应商都是缓存命中（调用方据此判断"没花钱"）。 */
   cacheHit: boolean;
   ms: number;
+  /** 精选截断统计：去重后未入选的来源数（>0 时正文已提示模型可再搜）。 */
+  omittedSources: number;
+}
+
+/**
+ * 搜索执行期间的渐进状态事件：工具层把它转成 preliminary 输出流给前端做走马灯，
+ * 同时这些真实流块也在给客户端看门狗"喂活动"，替代工具期的盲等。
+ */
+export interface SearchProgressEvent {
+  stage: "planned" | "provider" | "synthesizing" | "done";
+  /** stage=planned：本次实际要调用的供应商（已按策略过滤过可用性）。 */
+  planned?: SearchProviderId[];
+  /** stage=provider：对应供应商刚出结果。 */
+  provider?: SearchProviderId;
+  providerState?: "ok" | "error";
+  /** 该供应商本次拿到的条数（briefing 记 1）。 */
+  resultCount?: number;
+  error?: string;
+  /** stage=done：最终入选的来源数。 */
+  sourcesKept?: number;
 }

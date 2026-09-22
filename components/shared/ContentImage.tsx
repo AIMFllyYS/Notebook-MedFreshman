@@ -12,6 +12,7 @@ interface ContentImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
  * Wraps in <figure> when a title/caption is present; shows a fallback on error.
  */
 export function ContentImage({ src, alt, title, node, ...rest }: ContentImageProps) {
+  void node;
   const [errored, setErrored] = useState(false);
 
   if (errored || !src) {

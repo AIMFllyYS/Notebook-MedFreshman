@@ -13,4 +13,8 @@ export interface Skill {
   /** 手动固定开启：true = 每轮强制注入全文（不依赖 AI 判断，且不进可调用菜单）。 */
   pinned: boolean;
   createdAt: number;
+  /** 插件市场来源 id：有值说明这条技能是从市场导入的，用于去重 / 更新 / 卸载。 */
+  sourceId?: string;
+  /** 导入时 manifest 里的版本号，用于检测市场侧是否有更新。 */
+  sourceVersion?: string;
 }

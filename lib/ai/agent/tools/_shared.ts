@@ -9,12 +9,7 @@ import type {
 } from "@/lib/ai/agent/tools/projectFiles/types";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
-export {
-  MAX_TOOL_STEPS,
-  MIN_TOOL_ROUNDS,
-  MAX_TOOL_ROUNDS_CAP,
-  clampMaxToolRounds,
-} from "@/lib/ai/agent/toolRounds";
+export { MAX_TOOL_STEPS, clampMaxToolRounds } from "@/lib/ai/agent/toolRounds";
 /** 第 6 步仍返回 tool-calls、没有第 7 次 LLM 消化时下发给用户。 */
 export const TOOL_STEP_LIMIT_INFO =
   "本次达到了工具调用上限，讲解可能不完整，可以再问一次让我继续。";

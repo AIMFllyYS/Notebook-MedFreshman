@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AgentLoopIcon, AgentTerminalIcon, AgentFileIcon, AgentChevronIcon, AgentAlertIcon, AgentArrowUpRightIcon, AgentQuoteIcon } from '@/components/icons/AgentIcons';
 import { useArtifacts, type Artifact } from '@/lib/hooks/useArtifacts';
 import { useSharedArtifact } from '@/components/share/ShareViewContext';
@@ -50,8 +50,10 @@ export default function ArtifactCard({
    */
   const sharedArtifact = useSharedArtifact(artifactId);
   const storedArtifact = useArtifacts((s) => s.byId[artifactId]);
-  const art: Artifact | undefined =
-    storedArtifact ?? (sharedArtifact ? { ...sharedArtifact, status: 'done' } : undefined);
+  const art: Artifact | undefined = useMemo(
+    () => storedArtifact ?? (sharedArtifact ? { ...sharedArtifact, status: 'done' } : undefined),
+    [storedArtifact, sharedArtifact],
+  );
   const hydrated = useArtifacts((s) => s._hasHydrated);
   const saveDone = useArtifacts((s) => s.saveDone);
   const [status, setStatus] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
@@ -182,7 +184,7 @@ export default function ArtifactCard({
         setError(err instanceof Error ? err.message : t('window.artifact.generateFailed'));
       }
     })();
-  }, [artifactId, art, modelId, prompt, saveDone, title, unsupportedReason, runId, shouldAutoGen]);
+  }, [artifactId, art, modelId, prompt, saveDone, title, unsupportedReason, runId, shouldAutoGen, t]);
 
   const openExternal = () => {
     if (!html) return;

@@ -2450,7 +2450,7 @@
   border-radius: 20px;
   background: var(--md-sys-color-surface-container-low);
   box-shadow: var(--md-sys-elevation-level4, 0 16px 48px rgba(0, 0, 0, 0.36));
-  animation: agent-settings-dialog-in 180ms var(--ease-out, ease-out) both;
+  /* 进出动画由 AgentSettingsOverlay 的 AnimatePresence + scaleInVariants 统一负责 */
 }
 @keyframes agent-settings-dialog-in {
   from { opacity: 0.72; transform: translateY(8px) scale(0.98); }

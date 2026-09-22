@@ -98,10 +98,6 @@ export function AgentCloseIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="close"><path d="m5.5 5.5 9 9m0-9-9 9" /></IconFrame>;
 }
 
-export function AgentPaperclipIcon(props: AgentIconProps) {
-  return <IconFrame {...props} data-agent-icon="paperclip"><path d="m7.2 10.9 5-5a2.1 2.1 0 0 1 3 3l-7 7a3.7 3.7 0 0 1-5.2-5.2l7.1-7.1a5.2 5.2 0 0 1 7.3 7.3l-6.6 6.6" /></IconFrame>;
-}
-
 export function AgentSettingsIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="settings"><path d="M3 5.5h3m4 0h7M3 14.5h7m4 0h3" /><circle cx="8" cy="5.5" r="2" /><circle cx="12" cy="14.5" r="2" /></IconFrame>;
 }
@@ -113,10 +109,6 @@ export function AgentHistoryIcon(props: AgentIconProps) {
 /** Right-edge panel with a close chevron: collapse the Agent column. */
 export function AgentPanelCloseIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="panel-close"><rect x="2.6" y="3.2" width="14.8" height="13.6" rx="2.2" /><path d="M13.4 3.2v13.6M8.8 7.2 6.2 10l2.6 2.8" /></IconFrame>;
-}
-
-function AgentExpandIcon(props: AgentIconProps) {
-  return <IconFrame {...props} data-agent-icon="expand"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4" /></IconFrame>;
 }
 
 /** Clipboard with a ticked option row: quiz / structured questions. */

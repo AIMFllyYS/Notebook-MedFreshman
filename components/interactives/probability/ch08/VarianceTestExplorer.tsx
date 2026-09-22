@@ -4,7 +4,6 @@ import { memo, useState } from "react";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "var(--accent-weak)";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
 const GREEN = "#0f766e";
@@ -891,7 +890,7 @@ function VarianceTestExplorerBase() {
                 setSigma02(psg);
                 setTail(ptail);
               }}
-              className="rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-2.5 py-1.5 text-left text-[11px] hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-white transition-colors"
+              className="rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-2.5 py-1.5 text-left text-[11px] hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--md-sys-color-on-primary)] transition-colors"
             >
               <div className="font-semibold">{label}</div>
               <div className="opacity-70 font-mono">{desc}</div>

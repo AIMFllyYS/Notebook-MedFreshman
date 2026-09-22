@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { consumeRateLimit } from "@/lib/auth/rateLimit";
-import { resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { consumeRateLimit, requestClientIp } from "@/lib/auth/rateLimit";
+import { resolveSessionUserId } from "@/lib/billing/quotaGate";
 import {
   publicRedeemMessage,
   redeemCodeForUser,
@@ -13,17 +13,8 @@ import {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function clientIp(headers: { get(name: string): string | null }): string {
-  const forwarded = headers.get("x-forwarded-for");
-  if (forwarded) {
-    const first = forwarded.split(",")[0]?.trim();
-    if (first) return first;
-  }
-  return headers.get("x-real-ip")?.trim() || "unknown";
-}
-
 export async function POST(req: NextRequest) {
-  const userId = await resolveQuotaUserId(req.headers);
+  const userId = await resolveSessionUserId(req.headers);
   if (!userId) {
     return NextResponse.json({ error: publicRedeemMessage("unauthorized") }, { status: 401 });
   }
@@ -32,7 +23,7 @@ export async function POST(req: NextRequest) {
     max: REDEEM_RATE_LIMIT_MAX,
     windowMs: REDEEM_RATE_LIMIT_WINDOW_MS,
   });
-  const ipHit = consumeRateLimit(`redeem:ip:${clientIp(req.headers)}`, {
+  const ipHit = consumeRateLimit(`redeem:ip:${requestClientIp(req.headers)}`, {
     max: REDEEM_IP_RATE_LIMIT_MAX,
     windowMs: REDEEM_RATE_LIMIT_WINDOW_MS,
   });

@@ -34,18 +34,6 @@ function randUniform(): number {
   return Math.random();
 }
 
-/** 标准正态分布 CDF（Abramowitz & Stegun 近似，精度 ~1e-7） */
-function normCDF(x: number): number {
-  const t = 1 / (1 + 0.2316419 * Math.abs(x));
-  const poly =
-    t * (0.319381530 +
-      t * (-0.356563782 +
-        t * (1.781477937 +
-          t * (-1.821255978 +
-            t * 1.330274429))));
-  const cdf = 1 - (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x) * poly;
-  return x >= 0 ? cdf : 1 - cdf;
-}
 
 /** 标准正态分布分位数 — Beasley-Springer-Moro 近似 */
 function normQuantile(p: number): number {
@@ -122,22 +110,25 @@ function scaleY(v: number, lo: number, hi: number): number {
 
 // ─── 分布描述 ────────────────────────────────────────────────────────────────
 
-const DIST_META: Record<Distribution, { label: string; color: string; bg: string; desc: string }> = {
+const DIST_META: Record<Distribution, { label: string; color: string; on: string; bg: string; desc: string }> = {
   normal: {
     label: "正态 N(0,1)",
     color: ACCENT,
+    on: "var(--md-sys-color-on-primary)",
     bg: ACCENT_LIGHT,
     desc: "点接近对角线 → 服从正态分布",
   },
   uniform: {
     label: "均匀 U(0,1)",
     color: GREEN,
+    on: "#ffffff",
     bg: GREEN_LIGHT,
     desc: "S 形弯曲 → 尾部轻于正态（尾巴短）",
   },
   exponential: {
     label: "指数 Exp(1)",
     color: ORANGE,
+    on: "#ffffff",
     bg: ORANGE_LIGHT,
     desc: "右端上翘 → 右偏分布（长右尾）",
   },
@@ -485,7 +476,7 @@ function QuantileExplorerBase() {
                   className="rounded-lg px-3 py-1.5 text-[12px] font-medium transition-all"
                   style={{
                     background: active ? m.color : "transparent",
-                    color: active ? "white" : m.color,
+                    color: active ? m.on : m.color,
                     border: `1.5px solid ${m.color}`,
                   }}
                 >
@@ -525,8 +516,8 @@ function QuantileExplorerBase() {
         {/* 抽样按钮 */}
         <button
           onClick={handleSample}
-          className="w-full rounded-lg py-2 text-[14px] font-bold text-white transition-opacity hover:opacity-90 active:scale-[0.98]"
-          style={{ background: meta.color }}
+          className="w-full rounded-lg py-2 text-[14px] font-bold transition-opacity hover:opacity-90 active:scale-[0.98]"
+          style={{ background: meta.color, color: meta.on }}
         >
           {sorted.length === 0 ? "▶ 开始抽样" : "↻ 重新抽样"}
           {sampleCount > 0 && (

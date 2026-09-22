@@ -1,7 +1,7 @@
 // ChatMessage（UIMessage parts）的纯函数工具：取正文、判空、建消息、以及旧扁平结构的迁移。
 // 客户端/服务端/测试通用，不依赖 React 与存储。
 
-import { isToolUIPart, getToolName, type ToolUIPart } from 'ai';
+import { isToolUIPart, type ToolUIPart } from 'ai';
 import type { ChatMessage, ChatMessagePart, StoredChatAttachment, StudyMessageMetadata } from '@/lib/types/chat';
 import type { StudyTools } from '@/lib/ai/agent/toolTypes';
 import { extractThinkBlocksFromContent, splitThinkContent, stripThinkTagsFromContent } from '@/lib/chat/rendering/parseChatContent';

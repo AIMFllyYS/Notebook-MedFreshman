@@ -1,4 +1,5 @@
-import { unzipSync, strFromU8 } from "fflate";
+import { strFromU8 } from "fflate";
+import { unzipWithinLimits } from "@/lib/utils/unzip";
 import { parseSkillMarkdown, type ParsedSkillMd } from "@/lib/utils/skillFrontmatter";
 import { translateNow } from "@/lib/i18n";
 
@@ -23,7 +24,9 @@ export function detectSkillImportKind(fileName: string, mime = ""): SkillImportK
 
 function isSkippedArchivePath(path: string): boolean {
   const parts = path.split("/");
-  return parts.some((part) => part === "__MACOSX" || part.startsWith(".") || part === "Thumbs.db");
+  return parts.some(
+    (part) => part === ".." || part === "__MACOSX" || part.startsWith(".") || part === "Thumbs.db",
+  );
 }
 
 function folderNameForSkillMd(path: string, archiveName: string): string {
@@ -35,7 +38,7 @@ function folderNameForSkillMd(path: string, archiveName: string): string {
 
 /** Agent skills 包：优先每个 SKILL.md；否则收包内全部 Markdown。 */
 export function parseSkillArchive(bytes: Uint8Array, archiveName: string): ParsedSkillMd[] {
-  const files = unzipSync(bytes);
+  const files = unzipWithinLimits(bytes);
   const names = Object.keys(files).filter((name) => !name.endsWith("/") && !isSkippedArchivePath(name));
   const skillMdPaths = names.filter((name) => /(^|\/)SKILL\.md$/i.test(name));
   const sources = skillMdPaths.length > 0

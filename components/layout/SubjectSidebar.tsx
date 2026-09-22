@@ -37,8 +37,8 @@ export default function SubjectSidebar() {
     const el = treeRef.current?.querySelector<HTMLElement>(".scroll-y");
     if (el) el.scrollTop = savedSidebarScroll;
     return () => {
-      const current = treeRef.current?.querySelector<HTMLElement>(".scroll-y");
-      if (current) savedSidebarScroll = current.scrollTop;
+      // 清理阶段重读 treeRef.current 拿到的是卸载后的新节点；保存滚位要用同一个元素。
+      if (el) savedSidebarScroll = el.scrollTop;
     };
   }, []);
 

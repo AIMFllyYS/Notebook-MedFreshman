@@ -399,7 +399,7 @@ function asChatProject(value: unknown): ChatProjectSyncPayload | null {
     name: row.name,
     createdAt,
     updatedAt,
-    ...(row.system === "note" || row.system === "floating" ? { system: row.system } : {}),
+    ...(row.system === "note" || row.system === "floating" || row.system === "scheduled" ? { system: row.system } : {}),
   };
 }
 
@@ -683,7 +683,8 @@ async function forgetLocalSessionInZustand(id: string): Promise<void> {
     const state = useChatHistory.getState();
     if (!state._hasHydrated) return;
     const sessionsMeta = state.sessionsMeta.filter((item) => item.id !== id);
-    const { [id]: _drop, ...messagesById } = state.messagesById;
+    const messagesById = { ...state.messagesById };
+    delete messagesById[id];
     const deletedActive = state.activeSessionId === id;
     const activeSessionId = deletedActive ? sessionsMeta[0]?.id ?? null : state.activeSessionId;
     saveManifest(manifestFrom(state, { activeSessionId, sessions: sessionsMeta }));
@@ -712,7 +713,8 @@ function applyArtifactToZustand(artifact: Artifact): void {
 function forgetArtifactInZustand(id: string): void {
   withLocalApply(() => {
     useArtifacts.setState((state) => {
-      const { [id]: _drop, ...byId } = state.byId;
+      const byId = { ...state.byId };
+      delete byId[id];
       return { byId, order: state.order.filter((item) => item !== id) };
     });
   });
@@ -729,7 +731,8 @@ function applyDocumentToZustand(doc: StoredDocument): void {
 function forgetDocumentInZustand(id: string): void {
   withLocalApply(() => {
     useDocuments.setState((state) => {
-      const { [id]: _drop, ...byId } = state.byId;
+      const byId = { ...state.byId };
+      delete byId[id];
       return { byId };
     });
   });
@@ -747,8 +750,10 @@ function applyNoteToZustand(note: UserNote): void {
 function forgetNoteInZustand(id: string): void {
   withLocalApply(() => {
     useUserNotes.setState((state) => {
-      const { [id]: _drop, ...byId } = state.byId;
-      const { [id]: _session, ...noteAgentSessionById } = state.noteAgentSessionById;
+      const byId = { ...state.byId };
+      delete byId[id];
+      const noteAgentSessionById = { ...state.noteAgentSessionById };
+      delete noteAgentSessionById[id];
       return {
         byId,
         order: state.order.filter((item) => item !== id),
@@ -819,7 +824,8 @@ function applyCardToZustand(card: ReviewCard): void {
 function forgetCardInZustand(id: string): void {
   withLocalApply(() => {
     useReviewCards.setState((state) => {
-      const { [id]: _drop, ...byId } = state.byId;
+      const byId = { ...state.byId };
+      delete byId[id];
       return { byId, order: state.order.filter((item) => item !== id) };
     });
   });

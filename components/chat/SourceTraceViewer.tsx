@@ -14,6 +14,7 @@ import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
 import { noteBreadcrumb, noteHref, parseNotePath } from '@/lib/content/notePath';
 import { useEmbeddable } from '@/lib/hooks/useEmbeddable';
 import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { safeHttpUrl } from '@/components/browser/safeUrl';
 import { useT } from '@/lib/i18n';
 
 type LoadState = 'idle' | 'loading' | 'done' | 'missing' | 'error';
@@ -99,8 +100,8 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
       className="source-trace-window"
       overlayId={windowId === SOURCE_TRACE_WINDOW_ID ? 'source-trace-viewer' : `source-trace-${windowId}`}
       externalLink={
-        active?.kind === 'web' && active.url
-          ? { onOpen: () => window.open(active.url, '_blank', 'noopener,noreferrer'), label: t('window.source.openOriginal') }
+        active?.kind === 'web' && safeHttpUrl(active.url)
+          ? { onOpen: () => window.open(safeHttpUrl(active.url), '_blank', 'noopener,noreferrer'), label: t('window.source.openOriginal') }
           : active?.kind === 'note'
             ? (() => {
                 const parsed = parseNotePath(active.path);
@@ -202,7 +203,7 @@ function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'not
         setError(err instanceof Error ? err.message : t('window.source.readNoteFailed'));
       });
     return () => controller.abort();
-  }, [source.path, source.snippet, source.title]);
+  }, [source.path, source.snippet, source.title, t]);
 
   return (
     <div className="note-citation-body h-full overflow-auto bg-[var(--bg-panel)] p-4">
@@ -232,11 +233,12 @@ function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'not
 
 function WebSourceAddressBar({ url }: { url: string }) {
   const t = useT();
+  const safeUrl = safeHttpUrl(url);
   return (
     <div className="web-source-address-bar" data-testid="web-source-address">
-      {url ? (
+      {safeUrl ? (
         <a
-          href={url}
+          href={safeUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="web-source-address-link"
@@ -257,10 +259,13 @@ function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web'
     () => !!(window as unknown as { desktop?: { isElectron?: boolean } }).desktop?.isElectron,
     () => false,
   );
-  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : source.url || null);
+  // 来源 url 出自检索/工具结果，非 http(s) 的 scheme（javascript:/data:/file:）
+  // 不允许进 iframe src / 地址栏链接 / webview。
+  const safeUrl = safeHttpUrl(source.url);
+  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : safeUrl || null);
   const [loadFailed, setLoadFailed] = useState(false);
   const t = useT();
-  const showFallback = !source.url || (!isDesktop && (blocked || loadFailed));
+  const showFallback = !safeUrl || (!isDesktop && (blocked || loadFailed));
   const address = <WebSourceAddressBar url={source.url} />;
 
   if (showFallback) {
@@ -276,9 +281,9 @@ function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web'
           <summary className="cursor-pointer text-[12px] font-medium text-[var(--ink-soft)]">{t('window.source.rawJson')}</summary>
           <pre className="mt-2 overflow-auto text-[11px] leading-5 text-[var(--ink)]">{JSON.stringify(source, null, 2)}</pre>
         </details>
-        {source.url ? (
+        {safeUrl ? (
           <div className="min-h-48 flex-1">
-            <EmbedFallback url={source.url} reason={reason || (loadFailed ? t('window.state.pageLoadFailed') : undefined)} onForce={() => { setLoadFailed(false); forceEmbed(); }} />
+            <EmbedFallback url={safeUrl} reason={reason || (loadFailed ? t('window.state.pageLoadFailed') : undefined)} onForce={() => { setLoadFailed(false); forceEmbed(); }} />
           </div>
         ) : null}
       </div>
@@ -290,7 +295,7 @@ function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web'
       <div className="flex h-full min-h-0 flex-col">
         {address}
         <div className="min-h-0 flex-1">
-          <WebviewSite url={source.url} />
+          <WebviewSite url={safeUrl} />
         </div>
       </div>
     );
@@ -300,8 +305,8 @@ function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web'
     <div className="flex h-full min-h-0 flex-col">
       {address}
       <iframe
-        key={source.url}
-        src={source.url}
+        key={safeUrl}
+        src={safeUrl}
         title={source.title}
         className="h-full min-h-0 w-full flex-1 border-0 bg-white"
         sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads allow-modals"

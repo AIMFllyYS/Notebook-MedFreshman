@@ -15,6 +15,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { parseArgs } from "node:util";
+import { unzipSync } from "fflate";
 
 // 加载 .env.local
 const envPath = path.join(process.cwd(), ".env.local");
@@ -34,6 +35,17 @@ if (fs.existsSync(envPath)) {
 
 const MINERU_API_BASE = "https://mineru.net/api/v4";
 const TOKEN = process.env.MinerU_API_Token;
+
+// Presigned upload/result URLs come back from the API response — only ever fetch
+// them over https, and never wait on a hung connection forever.
+const REQUEST_TIMEOUT_MS = 30_000;
+const TRANSFER_TIMEOUT_MS = 300_000;
+
+function assertHttpsUrl(url: string, what: string): void {
+  if (!/^https:\/\//i.test(url)) {
+    throw new Error(`Refusing non-https ${what} url: ${url.slice(0, 80)}`);
+  }
+}
 
 if (!TOKEN) {
   console.error("ERROR: MinerU_API_Token not found in .env.local");
@@ -92,6 +104,7 @@ async function requestUploadUrls(files: BatchFile[]): Promise<{ batchId: string;
   const res = await fetch(`${MINERU_API_BASE}/file-urls/batch`, {
     method: "POST",
     headers: HEADERS,
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     body: JSON.stringify({
       files,
       model_version: modelVersion,
@@ -100,9 +113,15 @@ async function requestUploadUrls(files: BatchFile[]): Promise<{ batchId: string;
       language: "ch",
     }),
   });
+  if (!res.ok) {
+    throw new Error(`Failed to get upload URLs: HTTP ${res.status}`);
+  }
   const json = await res.json() as { code: number; msg: string; data: { batch_id: string; file_urls: string[] } };
   if (json.code !== 0) {
     throw new Error(`Failed to get upload URLs: ${json.msg}`);
+  }
+  if (!Array.isArray(json.data?.file_urls) || json.data.file_urls.length !== files.length) {
+    throw new Error("Upload URL count mismatch from MinerU response");
   }
   return { batchId: json.data.batch_id, fileUrls: json.data.file_urls };
 }
@@ -110,10 +129,12 @@ async function requestUploadUrls(files: BatchFile[]): Promise<{ batchId: string;
 // ─── Step 2: Upload files ───────────────────────────────────────────────────
 
 async function uploadFile(filePath: string, uploadUrl: string): Promise<void> {
+  assertHttpsUrl(uploadUrl, "upload");
   const fileBuffer = fs.readFileSync(filePath);
   const res = await fetch(uploadUrl, {
     method: "PUT",
     body: fileBuffer,
+    signal: AbortSignal.timeout(TRANSFER_TIMEOUT_MS),
   });
   if (res.status !== 200 && res.status !== 201) {
     throw new Error(`Upload failed for ${filePath}: HTTP ${res.status}`);
@@ -138,7 +159,11 @@ async function pollBatchResults(batchId: string, timeoutMs = 1800000): Promise<E
     const res = await fetch(`${MINERU_API_BASE}/extract-results/batch/${batchId}`, {
       method: "GET",
       headers: HEADERS,
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
+    if (!res.ok) {
+      throw new Error(`Poll failed: HTTP ${res.status}`);
+    }
     const json = await res.json() as { code: number; data: { extract_result: ExtractResult[] } };
     if (json.code !== 0) {
       throw new Error(`Poll failed: code ${json.code}`);
@@ -258,21 +283,29 @@ function injectImagesFromLayout(
 // ─── Step 4: Download and extract markdown ──────────────────────────────────
 
 async function downloadAndExtractMarkdown(zipUrl: string, outputPath: string): Promise<void> {
-  const res = await fetch(zipUrl);
+  assertHttpsUrl(zipUrl, "result zip");
+  const res = await fetch(zipUrl, { signal: AbortSignal.timeout(TRANSFER_TIMEOUT_MS) });
   if (!res.ok) throw new Error(`Failed to download zip: HTTP ${res.status}`);
 
   const arrayBuffer = await res.arrayBuffer();
-  const zipPath = outputPath.replace(/\.md$/, ".zip");
-  fs.writeFileSync(zipPath, Buffer.from(arrayBuffer));
+  const extractDir = outputPath.replace(/\.md$/, "_extracted");
 
   try {
-    const { execSync } = await import("node:child_process");
-    const extractDir = zipPath.replace(/\.zip$/, "_extracted");
-    fs.mkdirSync(extractDir, { recursive: true });
-    execSync(
-      `powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${extractDir}' -Force"`,
-      { stdio: "pipe" },
-    );
+    // In-process unzip (fflate): portable across Windows/Linux and immune to the
+    // shell-quoting pitfalls of the old PowerShell Expand-Archive call. Entries are
+    // written only under extractDir — names with traversal/abs paths are skipped.
+    const entries = unzipSync(new Uint8Array(arrayBuffer));
+    const extractRoot = path.resolve(extractDir);
+    for (const [name, data] of Object.entries(entries)) {
+      const rel = name.replace(/\\/g, "/").replace(/^\/+/, "");
+      if (!rel || rel.endsWith("/") || /^[a-zA-Z]:/.test(rel) || rel.split("/").includes("..")) {
+        continue;
+      }
+      const dest = path.join(extractDir, rel);
+      if (!path.resolve(dest).startsWith(extractRoot + path.sep)) continue;
+      fs.mkdirSync(path.dirname(dest), { recursive: true });
+      fs.writeFileSync(dest, Buffer.from(data));
+    }
 
     const fullMdPath = findFile(extractDir, "full.md");
     if (fullMdPath) {
@@ -311,7 +344,6 @@ async function downloadAndExtractMarkdown(zipUrl: string, outputPath: string): P
     }
 
     fs.rmSync(extractDir, { recursive: true, force: true });
-    fs.rmSync(zipPath, { force: true });
   } catch (e) {
     console.error(`  ✗ Failed to extract: ${(e as Error).message}`);
   }
@@ -393,7 +425,11 @@ async function main() {
     console.log("Downloading results...");
     for (const result of results) {
       if (result.state === "done" && result.full_zip_url) {
-        const baseName = result.file_name.replace(/\.[^.]+$/, "");
+        // file_name is echoed back by the API — strip any path components so a
+        // hostile/odd response can't write outside outputDir.
+        const baseName = path
+          .basename(String(result.file_name || "").replace(/\\/g, "/"))
+          .replace(/\.[^.]+$/, "");
         const outPath = path.join(outputDir, `${baseName}.md`);
         await downloadAndExtractMarkdown(result.full_zip_url, outPath);
       } else if (result.state === "failed") {

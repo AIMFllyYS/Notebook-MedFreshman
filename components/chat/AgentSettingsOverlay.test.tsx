@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AgentSettingsOverlay from "./AgentSettingsOverlay";
 import { useStore } from "@/lib/stores/ui";
@@ -43,12 +43,13 @@ describe("AgentSettingsOverlay", () => {
     expect(dialog.closest("[data-testid=agent-settings-overlay]")).toHaveClass("agent-settings-overlay");
   });
 
-  it("closes from the reused workspace back control", () => {
+  it("closes from the reused workspace back control", async () => {
     useStore.setState({ agentSettingsOpen: true });
     render(<AgentSettingsOverlay />);
     fireEvent.click(screen.getByRole("button", { name: "返回对话" }));
     expect(useStore.getState().agentSettingsOpen).toBe(false);
-    expect(screen.queryByTestId("agent-settings-overlay")).toBeNull();
+    // 退场动画由 AnimatePresence 托管：store 已关，节点再播一帧 exit 才卸载。
+    await waitForElementToBeRemoved(() => screen.queryByTestId("agent-settings-overlay"));
   });
 
   it("closes when clicking the dimmed backdrop", () => {

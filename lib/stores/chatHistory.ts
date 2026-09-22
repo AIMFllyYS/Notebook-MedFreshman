@@ -33,7 +33,7 @@ export interface ChatSession {
   createdAt: number;
   updatedAt: number;
   context?: ChatContext;
-  kind?: 'main' | 'floating' | 'note';
+  kind?: 'main' | 'floating' | 'note' | 'scheduled';
   /** Storage v2：历史列表在未加载消息体时使用 */
   messageCount?: number;
 }
@@ -64,7 +64,7 @@ interface ChatHistoryState {
   /** 选择/清空下一次新建对话的落点项目。 */
   setActiveProject: (projectId: string | null) => void;
   /** 新建会话；folderId 落到某个项目（系统项目的成员由 kind 决定，不从这条路径传）。 */
-  createSession: (context?: ChatContext, kind?: 'main' | 'floating' | 'note', folderId?: string | null) => string;
+  createSession: (context?: ChatContext, kind?: 'main' | 'floating' | 'note' | 'scheduled', folderId?: string | null) => string;
   /**
    * 显式「新建对话」：左栏按钮 / 右键菜单 / 快捷键 / 面板头部都走这里，规则只有一份。
    * 已经站在一条空白新对话里就什么都不做；否则**复用**最新那条空白 main 会话；都没有才真的新建。
@@ -139,7 +139,9 @@ function manifestOf(
  * 否则一个正在加载的真实对话会被误判成空白。
  */
 function isBlankMainSession(meta: SessionMeta): boolean {
-  return meta.kind !== 'floating' && meta.kind !== 'note' && !meta.archived && meta.messageCount === 0;
+  // 'scheduled' 会话不算空白新对话：startNewChat 复用空白的语义是「用户自己还没输入」，
+  // 把一条待触发/中断的调度会话回收成普通新对话会让运行记录与内容脱节。
+  return meta.kind !== 'floating' && meta.kind !== 'note' && meta.kind !== 'scheduled' && !meta.archived && meta.messageCount === 0;
 }
 
 function pruneArtifactsFromMetas(metas: SessionMeta[]): void {
@@ -246,7 +248,8 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   createSession: (context, kind, folderId) => {
     const id = crypto.randomUUID();
     const now = Date.now();
-    const claimActive = kind !== 'floating' && kind !== 'note';
+    // scheduled 会话也不抢占 active：定时任务在后台跑，不能把用户正在聊的对话顶掉。
+    const claimActive = kind !== 'floating' && kind !== 'note' && kind !== 'scheduled';
     const meta: SessionMeta = {
       id,
       title: '新对话',
@@ -355,7 +358,8 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
             : null
           : state.activeSessionId;
       nextActiveToLoad = deletedActive ? newActiveId : null;
-      const { [id]: _drop, ...messagesById } = state.messagesById;
+      const messagesById = { ...state.messagesById };
+      delete messagesById[id];
       pruneArtifactsFromMetas(sessionsMeta);
       persistManifest(state, manifestOf(state, { activeSessionId: newActiveId, sessions: sessionsMeta }));
       void (async () => {
@@ -577,8 +581,8 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     set((state) => {
       const target = state.sessionsMeta.find((s) => s.id === sessionId);
       if (!target) return state;
-      // 系统项目里的会话（note / floating）归属由来源决定，不允许改挂到别的项目。
-      if (target.kind === 'note' || target.kind === 'floating') return state;
+      // 系统项目里的会话（note / floating / scheduled）归属由来源决定，不允许改挂到别的项目。
+      if (target.kind === 'note' || target.kind === 'floating' || target.kind === 'scheduled') return state;
       if ((target.folderId ?? null) === (folderId ?? null)) return state;
       moved = true;
       const sessionsMeta = state.sessionsMeta.map((s) =>

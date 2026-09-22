@@ -52,13 +52,23 @@ function overlayAggregateMeta(
 function mergeAggregatedPart(
   card: ToolResultCardEntry,
   parts: Array<ToolPart<StudyToolName>>,
+  base?: ToolPart<StudyToolName>,
 ): ToolPart<StudyToolName> {
+  const anchor = base ?? parts[0];
   const items = dedupeByKey(
     parts.flatMap((part) => card.itemsOf?.(part) ?? []),
     (item) => card.itemKey?.(item) ?? null,
   );
-  const merged = card.withItems ? card.withItems(parts[0], items) : parts[0];
+  const merged = card.withItems ? card.withItems(anchor, items) : anchor;
   return overlayAggregateMeta(merged, parts);
+}
+
+/** live 聚合的锚点：优先最后一个带 output 的 part（含 preliminary 部分结果），保住已流到的条目。 */
+function liveMergeBase(parts: readonly ToolPart<StudyToolName>[]): ToolPart<StudyToolName> {
+  for (let index = parts.length - 1; index >= 0; index -= 1) {
+    if (parts[index].state === "output-available") return parts[index];
+  }
+  return parts[parts.length - 1];
 }
 
 export function ToolResultCards({
@@ -82,20 +92,54 @@ export function ToolResultCards({
       {cards.map((card) => {
         const { name, ResultCard, resultKey, shouldRender, aggregate, hideInAgentChat } = card;
         if (isAgentSurface && hideInAgentChat) return <Fragment key={name} />;
-        const ready = getToolPartsByName(message, name)
+        const all = getToolPartsByName(message, name);
+        const ready = all
           .filter((part) => part.state === "output-available" && !part.preliminary && (shouldRender?.(part as never) ?? true));
+        // liveWhileRunning 的工具把未完成 part 也送进卡片：流式期间全部 pending 都进 live 卡；
+        // 流已结束时只剩「output-error」值得补显示（输入态/preliminary 不会再推进了）。
+        const pending = card.liveWhileRunning
+          ? all.filter((part) => part.state !== "output-available" || Boolean(part.preliminary))
+          : [];
+        const liveParts = isStreaming ? pending : pending.filter((part) => part.state === "output-error");
 
         if (aggregate) {
-          if (!ready.length) return <Fragment key={name} />;
-          const part = mergeAggregatedPart(card, ready as Array<ToolPart<StudyToolName>>);
+          if (isStreaming && pending.length) {
+            const base = liveMergeBase([...ready, ...pending] as Array<ToolPart<StudyToolName>>);
+            const merged = mergeAggregatedPart(card, [...ready, ...pending] as Array<ToolPart<StudyToolName>>, base);
+            // 锚点是已完成调用时，merged 长得像终态卡——强制 preliminary 让卡片按 live 渲染。
+            const livePart =
+              merged.state === "output-available" ? { ...merged, preliminary: true } : merged;
+            return (
+              <ResultCard
+                key={name}
+                part={livePart as never}
+                message={message}
+                isStreaming={!!isStreaming}
+                ctx={ctx}
+              />
+            );
+          }
           return (
-            <ResultCard
-              key={name}
-              part={part as never}
-              message={message}
-              isStreaming={!!isStreaming}
-              ctx={ctx}
-            />
+            <Fragment key={name}>
+              {ready.length ? (
+                <ResultCard
+                  key="merged"
+                  part={mergeAggregatedPart(card, ready as Array<ToolPart<StudyToolName>>) as never}
+                  message={message}
+                  isStreaming={!!isStreaming}
+                  ctx={ctx}
+                />
+              ) : null}
+              {liveParts.map((part) => (
+                <ResultCard
+                  key={`live:${part.toolCallId}`}
+                  part={part as never}
+                  message={message}
+                  isStreaming={!!isStreaming}
+                  ctx={ctx}
+                />
+              ))}
+            </Fragment>
           );
         }
 
@@ -112,6 +156,15 @@ export function ToolResultCards({
                   ctx={ctx}
                 />
               ))}
+            {liveParts.map((part) => (
+              <ResultCard
+                key={`live:${part.toolCallId}`}
+                part={part as never}
+                message={message}
+                isStreaming={!!isStreaming}
+                ctx={ctx}
+              />
+            ))}
           </Fragment>
         );
       })}

@@ -53,26 +53,6 @@ function isPosSemiDef(s1sq: number, s2sq: number, rho: number): boolean {
   return det >= 0 && s1sq + s2sq >= 0;
 }
 
-/** 生成椭圆 SVG path（等高线椭圆），k 控制半径倍数 (√λ * k * SCALE) */
-function ellipsePath(
-  cx: number,
-  cy: number,
-  lambda1: number,
-  lambda2: number,
-  v1: [number, number],
-  v2: [number, number],
-  kScale: number,
-  svgScale: number
-): string {
-  if (lambda1 < 0 || lambda2 <= 0) return "";
-  const rx = Math.sqrt(Math.max(0, lambda2)) * kScale * svgScale;
-  const ry = Math.sqrt(Math.max(0, lambda1)) * kScale * svgScale;
-  // 旋转角（v2 是长轴方向）
-  const angle = (Math.atan2(v2[1], v2[0]) * 180) / Math.PI;
-  return `M ${cx} ${cy - ry}
-    A ${rx} ${ry} ${angle} 1 1 ${cx} ${cy + ry}
-    A ${rx} ${ry} ${angle} 1 1 ${cx} ${cy - ry} Z`;
-}
 
 /**
  * 椭圆用参数方程生成点，然后用 polyline 画（避免 A 指令旋转 bug）
@@ -561,7 +541,7 @@ function CovMatrixDemoBase() {
           className={
             "rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors " +
             (showAxes
-              ? "bg-[var(--accent)] text-white"
+              ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
               : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--line)]")
           }
         >
@@ -578,7 +558,7 @@ function CovMatrixDemoBase() {
             className={
               "rounded-lg px-2.5 py-1 text-[12px] font-medium transition-colors " +
               (activePreset === p.name
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                 : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--line)]")
             }
           >

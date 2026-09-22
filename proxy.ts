@@ -5,18 +5,13 @@ import { decideAiGate, TRUSTED_PROXY_USER_HEADER } from "@/lib/auth/aiGate";
  * Next.js 16 request gate (formerly middleware.ts).
  * Blocks anonymous calls to paid AI routes. No desktop / BYOK bypass.
  * Matcher must be a compile-time literal — Next cannot parse spreads or imports.
+ *
+ * Matcher 覆盖整个 /api：TRUSTED_PROXY_USER_HEADER 是「proxy 已验过签」的内部
+ * 信号，必须对每条 API 请求都先剥掉客户端自报值——否则 quota / redeem / share /
+ * profile 这类不在付费名单上的路由会把伪造的 user-id 当成可信身份。
  */
 export const config = {
-  matcher: [
-    "/api/chat",
-    "/api/chat-title",
-    "/api/artifact",
-    "/api/document",
-    "/api/canvas-revise",
-    "/api/follow-ups",
-    "/api/image-gen",
-    "/api/record",
-  ],
+  matcher: ["/api/:path*"],
 };
 
 export async function proxy(request: NextRequest) {
