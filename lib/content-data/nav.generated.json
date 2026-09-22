@@ -5163,6 +5163,45 @@
                   "quizRef": "rec-2026-fall-011-012"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-013-014",
+              "title": "第13-14节 · 分子荧光分析法（MFS）——荧光产生原理、激发与发射光谱、荧光强度与定量、影响因素与应用",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-013-014",
+                  "title": "课堂原文 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                },
+                {
+                  "id": "note-rec-2026-fall-013-014",
+                  "title": "课堂笔记 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                },
+                {
+                  "id": "card-rec-2026-fall-013-014",
+                  "title": "复习手卡 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                }
+              ]
             }
           ]
         },
@@ -5240,6 +5279,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-011-012",
               "quizRef": "rec-2026-fall-011-012",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-013-014",
+              "title": "课堂纪要 · 第13-14节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-013-014",
+              "quizRef": "rec-2026-fall-013-014",
               "layoutProfile": "full"
             }
           ]
@@ -5934,6 +5984,45 @@
                   "quizRef": "rec-2026-fall-019-020"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-021-022",
+              "title": "第21-22节 · 消化系统——消化管（二）：胃、小肠、大肠；消化腺：肝、胰、唾液腺",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-021-022",
+                  "title": "课堂原文 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                },
+                {
+                  "id": "note-rec-2026-fall-021-022",
+                  "title": "课堂笔记 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                },
+                {
+                  "id": "card-rec-2026-fall-021-022",
+                  "title": "复习手卡 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                }
+              ]
             }
           ]
         },
@@ -6022,6 +6111,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-019-020",
               "quizRef": "rec-2026-fall-019-020",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-021-022",
+              "title": "课堂纪要 · 第21-22节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-021-022",
+              "quizRef": "rec-2026-fall-021-022",
               "layoutProfile": "full"
             }
           ]
@@ -7213,6 +7313,45 @@
                   "quizRef": "rec-2026-fall-011-012"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-013-014",
+              "title": "第13-14节 · 线粒体与细胞的能量转换（二）——氧化磷酸化、线粒体自噬、溶酶体与细胞内膜系统",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-013-014",
+                  "title": "课堂原文 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                },
+                {
+                  "id": "note-rec-2026-fall-013-014",
+                  "title": "课堂笔记 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                },
+                {
+                  "id": "card-rec-2026-fall-013-014",
+                  "title": "复习手卡 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                }
+              ]
             }
           ]
         },
@@ -7290,6 +7429,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-011-012",
               "quizRef": "rec-2026-fall-011-012",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-013-014",
+              "title": "课堂纪要 · 第13-14节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-013-014",
+              "quizRef": "rec-2026-fall-013-014",
               "layoutProfile": "full"
             }
           ]
@@ -8560,6 +8710,45 @@
                   "quizRef": "rec-2026-fall-009-011"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-015-016",
+              "title": "第15-16节 · 神经组织——神经元与神经胶质细胞的结构、分类、突触、神经纤维与神经末梢",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-015-016",
+                  "title": "课堂原文 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                },
+                {
+                  "id": "note-rec-2026-fall-015-016",
+                  "title": "课堂笔记 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                },
+                {
+                  "id": "card-rec-2026-fall-015-016",
+                  "title": "复习手卡 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                }
+              ]
             }
           ]
         },
@@ -8626,6 +8815,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-009-011",
               "quizRef": "rec-2026-fall-009-011",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-015-016",
+              "title": "课堂纪要 · 第15-16节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-015-016",
+              "quizRef": "rec-2026-fall-015-016",
               "layoutProfile": "full"
             }
           ]

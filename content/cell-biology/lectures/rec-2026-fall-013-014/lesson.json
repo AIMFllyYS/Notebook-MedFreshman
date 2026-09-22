@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "cell-biology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-013-014",
+  "courseName": "细胞生物学",
+  "sessionRange": {
+    "start": 13,
+    "end": 14
+  },
+  "taughtOn": "2026-09-21",
+  "topic": "线粒体与细胞的能量转换（二）——氧化磷酸化、线粒体自噬、溶酶体与细胞内膜系统",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-013-014"
+}
