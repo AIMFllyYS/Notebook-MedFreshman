@@ -266,14 +266,14 @@ function ConfidenceIntervalExplorerBase() {
       <div className="flex flex-wrap gap-2 items-center">
         <button
           onClick={() => simulate(50)}
-          className="rounded-lg px-4 py-2 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
+          className="rounded-lg px-4 py-2 text-[13px] font-semibold text-[var(--md-sys-color-on-primary)] transition-opacity hover:opacity-90"
           style={{ background: ACCENT }}
         >
           模拟 50 次
         </button>
         <button
           onClick={() => simulate(1)}
-          className="rounded-lg px-4 py-2 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
+          className="rounded-lg px-4 py-2 text-[13px] font-semibold text-[var(--md-sys-color-on-primary)] transition-opacity hover:opacity-90"
           style={{ background: GREEN }}
         >
           模拟 1 次

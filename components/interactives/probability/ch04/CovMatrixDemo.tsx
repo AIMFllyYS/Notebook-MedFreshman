@@ -541,7 +541,7 @@ function CovMatrixDemoBase() {
           className={
             "rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors " +
             (showAxes
-              ? "bg-[var(--accent)] text-white"
+              ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
               : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--line)]")
           }
         >
@@ -558,7 +558,7 @@ function CovMatrixDemoBase() {
             className={
               "rounded-lg px-2.5 py-1 text-[12px] font-medium transition-colors " +
               (activePreset === p.name
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--md-sys-color-on-primary)]"
                 : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--line)]")
             }
           >

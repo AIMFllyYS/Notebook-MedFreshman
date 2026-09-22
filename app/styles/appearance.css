@@ -2,7 +2,8 @@
    Global appearance layers
    - default: no-op, preserves existing MD3 palette
    - colorful: watercolor semantic overrides by module/subject
-   - custom: unified user accent + selection + font
+   - anthropic / ios / codex: fixed brand-inspired presets
+   - custom: unified user accent + background + text + selection + font
    ───────────────────────────────────────────────────────────── */
 
 :root {
@@ -23,15 +24,34 @@
   --appearance-table-row-alt-bg: var(--md-sys-color-surface-container-low);
 }
 
+/* ═══════════════════════════ 自定义 ═══════════════════════════ */
+
 [data-appearance="custom"][data-theme="light"] {
+  --md-sys-color-background: var(--appearance-light-bg, #fffbfe);
+  --md-sys-color-surface: var(--appearance-light-bg, #fffbfe);
+  --md-sys-color-on-background: var(--appearance-light-ink, #1c1b1f);
+  --md-sys-color-on-surface: var(--appearance-light-ink, #1c1b1f);
+  --md-sys-color-surface-dim: color-mix(in srgb, var(--appearance-light-bg, #fffbfe) 88%, var(--appearance-light-ink, #1c1b1f));
+  --md-sys-color-surface-bright: color-mix(in srgb, var(--appearance-light-bg, #fffbfe) 92%, var(--appearance-light-extreme, #ffffff));
+  --md-sys-color-surface-container-lowest: color-mix(in srgb, var(--appearance-light-bg, #fffbfe) 94%, var(--appearance-light-extreme, #ffffff));
+  --md-sys-color-surface-container-low: color-mix(in srgb, var(--appearance-light-bg, #fffbfe) 96%, var(--appearance-light-ink, #1c1b1f));
+  --md-sys-color-surface-container: color-mix(in srgb, var(--appearance-light-bg, #fffbfe) 93%, var(--appearance-light-ink, #1c1b1f));
+  --md-sys-color-surface-container-high: color-mix(in srgb, var(--appearance-light-bg, #fffbfe) 89%, var(--appearance-light-ink, #1c1b1f));
+  --md-sys-color-surface-container-highest: color-mix(in srgb, var(--appearance-light-bg, #fffbfe) 85%, var(--appearance-light-ink, #1c1b1f));
+  --md-sys-color-on-surface-variant: color-mix(in srgb, var(--appearance-light-ink, #1c1b1f) 80%, var(--appearance-light-bg, #fffbfe));
+  --md-sys-color-outline: color-mix(in srgb, var(--appearance-light-ink, #1c1b1f) 58%, var(--appearance-light-bg, #fffbfe));
+  --md-sys-color-outline-variant: color-mix(in srgb, var(--appearance-light-ink, #1c1b1f) 20%, var(--appearance-light-bg, #fffbfe));
+  --glass-bg: color-mix(in srgb, var(--appearance-light-bg, #fffbfe) 75%, transparent);
+  --glass-border: color-mix(in srgb, var(--appearance-light-ink, #1c1b1f) 10%, transparent);
+
   --md-sys-color-primary: var(--appearance-light-accent, #6750a4);
   --md-sys-color-on-primary: var(--appearance-light-on-accent, #ffffff);
   --md-sys-color-primary-container: var(--appearance-light-accent-container, #eaddff);
   --md-sys-color-on-primary-container: var(--appearance-light-on-accent-container, #21005d);
   --md-sys-color-secondary: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 68%, #64748b);
-  --md-sys-color-secondary-container: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 14%, #ffffff);
+  --md-sys-color-secondary-container: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 14%, var(--appearance-light-bg, #fffbfe));
   --md-sys-color-tertiary: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 42%, #0f766e);
-  --md-sys-color-tertiary-container: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 12%, #ffffff);
+  --md-sys-color-tertiary-container: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 12%, var(--appearance-light-bg, #fffbfe));
   --accent: var(--md-sys-color-primary);
   --accent-weak: var(--md-sys-color-primary-container);
   --accent-ink: var(--md-sys-color-on-primary-container);
@@ -45,14 +65,31 @@
 
 [data-appearance="custom"][data-theme="dark"],
 :root[data-appearance="custom"]:not([data-theme="light"]) {
+  --md-sys-color-background: var(--appearance-dark-bg, #131318);
+  --md-sys-color-surface: var(--appearance-dark-bg, #131318);
+  --md-sys-color-on-background: var(--appearance-dark-ink, #e2e2e9);
+  --md-sys-color-on-surface: var(--appearance-dark-ink, #e2e2e9);
+  --md-sys-color-surface-dim: color-mix(in srgb, var(--appearance-dark-bg, #131318) 88%, var(--appearance-dark-ink, #e2e2e9));
+  --md-sys-color-surface-bright: color-mix(in srgb, var(--appearance-dark-bg, #131318) 92%, var(--appearance-dark-extreme, #000000));
+  --md-sys-color-surface-container-lowest: color-mix(in srgb, var(--appearance-dark-bg, #131318) 94%, var(--appearance-dark-extreme, #000000));
+  --md-sys-color-surface-container-low: color-mix(in srgb, var(--appearance-dark-bg, #131318) 96%, var(--appearance-dark-ink, #e2e2e9));
+  --md-sys-color-surface-container: color-mix(in srgb, var(--appearance-dark-bg, #131318) 93%, var(--appearance-dark-ink, #e2e2e9));
+  --md-sys-color-surface-container-high: color-mix(in srgb, var(--appearance-dark-bg, #131318) 89%, var(--appearance-dark-ink, #e2e2e9));
+  --md-sys-color-surface-container-highest: color-mix(in srgb, var(--appearance-dark-bg, #131318) 85%, var(--appearance-dark-ink, #e2e2e9));
+  --md-sys-color-on-surface-variant: color-mix(in srgb, var(--appearance-dark-ink, #e2e2e9) 80%, var(--appearance-dark-bg, #131318));
+  --md-sys-color-outline: color-mix(in srgb, var(--appearance-dark-ink, #e2e2e9) 58%, var(--appearance-dark-bg, #131318));
+  --md-sys-color-outline-variant: color-mix(in srgb, var(--appearance-dark-ink, #e2e2e9) 20%, var(--appearance-dark-bg, #131318));
+  --glass-bg: color-mix(in srgb, var(--appearance-dark-bg, #131318) 75%, transparent);
+  --glass-border: color-mix(in srgb, var(--appearance-dark-ink, #e2e2e9) 10%, transparent);
+
   --md-sys-color-primary: var(--appearance-dark-accent, #a8c7fa);
   --md-sys-color-on-primary: var(--appearance-dark-on-accent, #062e6f);
   --md-sys-color-primary-container: var(--appearance-dark-accent-container, #284777);
   --md-sys-color-on-primary-container: var(--appearance-dark-on-accent-container, #d3e3fd);
   --md-sys-color-secondary: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 62%, #c4b5fd);
-  --md-sys-color-secondary-container: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 24%, #1a1b22);
+  --md-sys-color-secondary-container: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 24%, var(--appearance-dark-bg, #131318));
   --md-sys-color-tertiary: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 46%, #8ddad5);
-  --md-sys-color-tertiary-container: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 24%, #141f23);
+  --md-sys-color-tertiary-container: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 24%, var(--appearance-dark-bg, #131318));
   --accent: var(--md-sys-color-primary);
   --accent-weak: var(--md-sys-color-primary-container);
   --accent-ink: var(--md-sys-color-on-primary-container);
@@ -64,20 +101,27 @@
   --highlight-shadow: var(--appearance-highlight-shadow, rgba(230, 81, 0, 0.18));
 }
 
+/* ═══════════════════════════ 彩色 ═══════════════════════════
+   主色三族：蓝（primary）/ 紫（secondary）/ 青绿（tertiary），
+   各取足够深度保证白字可读；学科再按色相轮换主色。 */
+
 [data-appearance="colorful"][data-theme="light"] {
-  --md-sys-color-primary: #3677a8;
+  --md-sys-color-primary: #3d6db5;
   --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #d7ecf7;
-  --md-sys-color-on-primary-container: #07344f;
-  --md-sys-color-secondary: #8b6fa8;
-  --md-sys-color-secondary-container: #eadff4;
-  --md-sys-color-on-secondary-container: #322044;
-  --md-sys-color-tertiary: #428a7f;
-  --md-sys-color-tertiary-container: #d8f0e9;
-  --md-sys-color-on-tertiary-container: #063b33;
+  --md-sys-color-primary-container: #d9e6f7;
+  --md-sys-color-on-primary-container: #0a3260;
+  --md-sys-color-secondary: #8a5bb8;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #ecddf9;
+  --md-sys-color-on-secondary-container: #341b52;
+  --md-sys-color-tertiary: #2c8470;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #d0ede2;
+  --md-sys-color-on-tertiary-container: #05392c;
   --color-success: #3f8f63;
   --color-warning: #b98627;
   --color-info: #3a8fc4;
+  --subj-on-accent: #ffffff;
   --accent: var(--md-sys-color-primary);
   --accent-weak: var(--md-sys-color-primary-container);
   --accent-ink: var(--md-sys-color-on-primary-container);
@@ -87,14 +131,14 @@
   --highlight-bg-c: rgba(219, 173, 92, 0.24);
   --highlight-bg-d: rgba(163, 138, 205, 0.26);
   --highlight-shadow: rgba(74, 111, 151, 0.18);
-  --appearance-card-bg-a: #edf6fa;
-  --appearance-card-bg-b: #f4f0fa;
-  --appearance-card-bg-c: #eef8f2;
-  --appearance-ai-answer-bg: #f1f7fb;
-  --appearance-ai-answer-border: #b8d6e8;
-  --appearance-dialog-header-bg: #edf4f7;
-  --appearance-table-head-bg: #e6f2f8;
-  --appearance-table-row-alt-bg: rgba(119, 194, 173, 0.10);
+  --appearance-card-bg-a: #e3eefb;
+  --appearance-card-bg-b: #efe7f9;
+  --appearance-card-bg-c: #e2f3ec;
+  --appearance-ai-answer-bg: #eaf3fb;
+  --appearance-ai-answer-border: #b0cfeb;
+  --appearance-dialog-header-bg: #e8f0f8;
+  --appearance-table-head-bg: #dcebf8;
+  --appearance-table-row-alt-bg: rgba(119, 194, 173, 0.12);
 }
 
 [data-appearance="colorful"][data-theme="dark"],
@@ -104,14 +148,17 @@
   --md-sys-color-primary-container: #21445a;
   --md-sys-color-on-primary-container: #d7ecf7;
   --md-sys-color-secondary: #d0b9e8;
+  --md-sys-color-on-secondary: #2e1b42;
   --md-sys-color-secondary-container: #3e314e;
   --md-sys-color-on-secondary-container: #f0e5fa;
   --md-sys-color-tertiary: #98d7cb;
+  --md-sys-color-on-tertiary: #06322b;
   --md-sys-color-tertiary-container: #1e4b45;
   --md-sys-color-on-tertiary-container: #d8f0e9;
   --color-success: #92d2a7;
   --color-warning: #e1bd72;
   --color-info: #94cae8;
+  --subj-on-accent: #10161d;
   --accent: var(--md-sys-color-primary);
   --accent-weak: var(--md-sys-color-primary-container);
   --accent-ink: var(--md-sys-color-on-primary-container);
@@ -163,11 +210,26 @@
   border-color: color-mix(in srgb, var(--md-sys-color-secondary) 32%, var(--line));
 }
 
+/* 头部与填充主按钮带一条低饱和主→次→第三色渐变，是「彩色」的招牌。 */
 [data-appearance="colorful"] .chat-header,
 [data-appearance="colorful"] .chat-history-header,
 [data-appearance="colorful"] .code-block-header,
 [data-appearance="colorful"] .window-chrome-header {
-  background: var(--appearance-dialog-header-bg);
+  background: linear-gradient(
+    115deg,
+    color-mix(in srgb, var(--md-sys-color-primary) 16%, var(--appearance-dialog-header-bg)),
+    color-mix(in srgb, var(--md-sys-color-secondary) 12%, var(--appearance-dialog-header-bg)) 55%,
+    color-mix(in srgb, var(--md-sys-color-tertiary) 16%, var(--appearance-dialog-header-bg))
+  );
+}
+
+[data-appearance="colorful"] button[class*="bg-[var(--accent)]"],
+[data-appearance="colorful"] a[class*="bg-[var(--accent)]"] {
+  background-image: linear-gradient(
+    135deg,
+    var(--md-sys-color-primary),
+    color-mix(in srgb, var(--md-sys-color-primary) 58%, var(--md-sys-color-secondary))
+  );
 }
 
 [data-theme="dark"] .file-type-icon {
@@ -184,28 +246,139 @@
   background: var(--appearance-table-row-alt-bg);
 }
 
-[data-appearance="colorful"] [data-subject="probability"] {
-  --subject-accent: #4e91c7;
+/* 学科强调色：以 subjects.registry 色相为准，浅色加深到白字 ≥4.5、
+   深色提到深字 ≥6.5 的蜡色（registry 无硬耦合，新增学科按同法补一行即可）。 */
+[data-appearance="colorful"][data-theme="light"] [data-subject="probability"] {
+  --subject-accent: #5e61f1;
+  --subject-on-accent: #ffffff;
 }
-[data-appearance="colorful"] [data-subject="physics"] {
-  --subject-accent: #5d9b82;
+[data-appearance="colorful"][data-theme="light"] [data-subject="physics"] {
+  --subject-accent: #0b7eb2;
+  --subject-on-accent: #ffffff;
 }
-[data-appearance="colorful"] [data-subject="chemistry"] {
-  --subject-accent: #b882bd;
+[data-appearance="colorful"][data-theme="light"] [data-subject="chemistry"] {
+  --subject-accent: #0c875e;
+  --subject-on-accent: #ffffff;
 }
-[data-appearance="colorful"] [data-subject="modern-history"] {
-  --subject-accent: #b68a44;
+[data-appearance="colorful"][data-theme="light"] [data-subject="modern-history"] {
+  --subject-accent: #eb1515;
+  --subject-on-accent: #ffffff;
 }
-[data-appearance="colorful"] [data-subject="maogai"] {
-  --subject-accent: #c77272;
+[data-appearance="colorful"][data-theme="light"] [data-subject="maogai"] {
+  --subject-accent: #a46907;
+  --subject-on-accent: #ffffff;
 }
-[data-appearance="colorful"] [data-subject="other"] {
-  --subject-accent: #6f8fb4;
+[data-appearance="colorful"][data-theme="light"] [data-subject="other"] {
+  --subject-accent: #64748b;
+  --subject-on-accent: #ffffff;
 }
-
-/* Apply the subject accent to the entire UI */
+[data-appearance="colorful"][data-theme="light"] [data-subject="medical-english"] {
+  --subject-accent: #8452f5;
+  --subject-on-accent: #ffffff;
+}
+[data-appearance="colorful"][data-theme="light"] [data-subject="instrumental-analysis"] {
+  --subject-accent: #2563eb;
+  --subject-on-accent: #ffffff;
+}
+[data-appearance="colorful"][data-theme="light"] [data-subject="anatomy"] {
+  --subject-accent: #c35305;
+  --subject-on-accent: #ffffff;
+}
+[data-appearance="colorful"][data-theme="light"] [data-subject="medical-statistics"] {
+  --subject-accent: #07809e;
+  --subject-on-accent: #ffffff;
+}
+[data-appearance="colorful"][data-theme="light"] [data-subject="cell-biology-lab"] {
+  --subject-accent: #0f766e;
+  --subject-on-accent: #ffffff;
+}
+[data-appearance="colorful"][data-theme="light"] [data-subject="cell-biology"] {
+  --subject-accent: #9e42f6;
+  --subject-on-accent: #ffffff;
+}
+[data-appearance="colorful"][data-theme="light"] [data-subject="histology"] {
+  --subject-accent: #0e8477;
+  --subject-on-accent: #ffffff;
+}
+[data-appearance="colorful"][data-theme="light"] [data-subject="biochemistry"] {
+  --subject-accent: #e2177b;
+  --subject-on-accent: #ffffff;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="probability"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="probability"] {
+  --subject-accent: #9294f1;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="physics"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="physics"] {
+  --subject-accent: #1ba8e8;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="chemistry"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="chemistry"] {
+  --subject-accent: #17b27f;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="modern-history"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="modern-history"] {
+  --subject-accent: #ee7c7c;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="maogai"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="maogai"] {
+  --subject-accent: #ec9c14;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="other"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="other"] {
+  --subject-accent: #939faf;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="medical-english"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="medical-english"] {
+  --subject-accent: #ad8df4;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="instrumental-analysis"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="instrumental-analysis"] {
+  --subject-accent: #749aed;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="anatomy"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="anatomy"] {
+  --subject-accent: #f17b29;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="medical-statistics"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="medical-statistics"] {
+  --subject-accent: #12acd2;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="cell-biology-lab"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="cell-biology-lab"] {
+  --subject-accent: #1eb4a9;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="cell-biology"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="cell-biology"] {
+  --subject-accent: #bd83f4;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="histology"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="histology"] {
+  --subject-accent: #1bb1a1;
+  --subject-on-accent: #10161d;
+}
+[data-appearance="colorful"][data-theme="dark"] [data-subject="biochemistry"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject="biochemistry"] {
+  --subject-accent: #eb73ae;
+  --subject-on-accent: #10161d;
+}
+/* Apply the subject accent to the entire UI —— 连同前景字色一起换，
+   否则浅色学科底上的白字会看不清。 */
 [data-appearance="colorful"] [data-subject] {
   --md-sys-color-primary: var(--subject-accent);
+  --md-sys-color-on-primary: var(--subject-on-accent, var(--subj-on-accent, #ffffff));
   --accent: var(--subject-accent);
 }
 
@@ -245,3 +418,412 @@
   color: #ff9f43;
 }
 
+/* ═══════════════════ Anthropic（claude.ai 米纸 + 陶土橙） ═══════════════════ */
+
+[data-appearance="anthropic"][data-theme="light"] {
+  --md-sys-color-background: #faf9f5;
+  --md-sys-color-on-background: #141413;
+  --md-sys-color-surface: #faf9f5;
+  --md-sys-color-surface-dim: #eae6da;
+  --md-sys-color-surface-bright: #fdfcf9;
+  --md-sys-color-surface-container-lowest: #fdfcf8;
+  --md-sys-color-surface-container-low: #f4f1e8;
+  --md-sys-color-surface-container: #efe9de;
+  --md-sys-color-surface-container-high: #e8e0d2;
+  --md-sys-color-surface-container-highest: #e0d8c6;
+  --md-sys-color-on-surface: #141413;
+  --md-sys-color-on-surface-variant: #57544a;
+  --md-sys-color-outline: #8e8b82;
+  --md-sys-color-outline-variant: #d8d4c6;
+
+  --md-sys-color-primary: #c15f3c;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #f3dcd1;
+  --md-sys-color-on-primary-container: #5a2c1a;
+  --md-sys-color-secondary: #7a7568;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #e8e4d8;
+  --md-sys-color-on-secondary-container: #3c392f;
+  --md-sys-color-tertiary: #4e8a7d;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #d5ebe3;
+  --md-sys-color-on-tertiary-container: #173e35;
+  --md-sys-color-error: #b3402e;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #f6dcd5;
+  --md-sys-color-on-error-container: #5a1a0e;
+
+  --color-formula: #a06a00;
+  --color-success: #5d8a5c;
+  --color-warning: #b9762c;
+  --color-info: #6a9bcc;
+
+  --glass-bg: rgba(250, 249, 245, 0.78);
+  --glass-border: rgba(20, 20, 19, 0.09);
+
+  --subj-prob: #8f63ad;
+  --subj-phy: #5b87a8;
+  --subj-chem: #4e8a7d;
+  --subj-hist: #b85c50;
+  --subj-on-accent: #ffffff;
+
+  --selection-bg: rgba(204, 120, 92, 0.30);
+  --highlight-bg-a: rgba(204, 120, 92, 0.22);
+  --highlight-bg-b: rgba(232, 165, 90, 0.30);
+  --highlight-bg-c: rgba(93, 184, 166, 0.26);
+  --highlight-bg-d: rgba(106, 155, 204, 0.24);
+  --highlight-shadow: rgba(140, 90, 60, 0.16);
+
+  --appearance-card-bg-a: #f3efe4;
+  --appearance-card-bg-b: #f6e9e1;
+  --appearance-card-bg-c: #e8f0ea;
+  --appearance-ai-answer-bg: #f4f0e6;
+  --appearance-ai-answer-border: #ddd2bc;
+  --appearance-dialog-header-bg: #f1ede1;
+  --appearance-table-head-bg: #efe9da;
+  --appearance-table-row-alt-bg: rgba(204, 120, 92, 0.08);
+}
+
+[data-appearance="anthropic"][data-theme="dark"],
+:root[data-appearance="anthropic"]:not([data-theme="light"]) {
+  --md-sys-color-background: #1f1e1b;
+  --md-sys-color-on-background: #f0eee6;
+  --md-sys-color-surface: #1f1e1b;
+  --md-sys-color-surface-dim: #181715;
+  --md-sys-color-surface-bright: #35332e;
+  --md-sys-color-surface-container-lowest: #131210;
+  --md-sys-color-surface-container-low: #26251f;
+  --md-sys-color-surface-container: #292824;
+  --md-sys-color-surface-container-high: #302f2a;
+  --md-sys-color-surface-container-highest: #38362f;
+  --md-sys-color-on-surface: #f0eee6;
+  --md-sys-color-on-surface-variant: #b9b6a9;
+  --md-sys-color-outline: #8e8b82;
+  --md-sys-color-outline-variant: #3f3d34;
+
+  --md-sys-color-primary: #d97757;
+  --md-sys-color-on-primary: #1d0f0a;
+  --md-sys-color-primary-container: #4a2c20;
+  --md-sys-color-on-primary-container: #f0c9b4;
+  --md-sys-color-secondary: #b0aea5;
+  --md-sys-color-on-secondary: #26241d;
+  --md-sys-color-secondary-container: #403e35;
+  --md-sys-color-on-secondary-container: #e0ddd0;
+  --md-sys-color-tertiary: #7fc4b4;
+  --md-sys-color-on-tertiary: #12211c;
+  --md-sys-color-tertiary-container: #24403a;
+  --md-sys-color-on-tertiary-container: #c4e8de;
+  --md-sys-color-error: #eba394;
+  --md-sys-color-on-error: #5a1a0e;
+  --md-sys-color-error-container: #7a3426;
+  --md-sys-color-on-error-container: #f6dcd5;
+
+  --color-formula: #e0c07a;
+  --color-success: #93c494;
+  --color-warning: #e0b26c;
+  --color-info: #9ab8dc;
+
+  --glass-bg: rgba(31, 30, 27, 0.78);
+  --glass-border: rgba(240, 238, 230, 0.12);
+
+  --subj-prob: #b89cd4;
+  --subj-phy: #8fb4d4;
+  --subj-chem: #8fd0b8;
+  --subj-hist: #d89484;
+  --subj-on-accent: #17181f;
+
+  --selection-bg: rgba(217, 119, 87, 0.38);
+  --highlight-bg-a: rgba(217, 119, 87, 0.24);
+  --highlight-bg-b: rgba(232, 165, 90, 0.28);
+  --highlight-bg-c: rgba(127, 196, 180, 0.24);
+  --highlight-bg-d: rgba(154, 184, 220, 0.22);
+  --highlight-shadow: rgba(217, 119, 87, 0.30);
+
+  --appearance-card-bg-a: #27241f;
+  --appearance-card-bg-b: #2c2521;
+  --appearance-card-bg-c: #232a26;
+  --appearance-ai-answer-bg: #262420;
+  --appearance-ai-answer-border: #4a3f33;
+  --appearance-dialog-header-bg: #282622;
+  --appearance-table-head-bg: #2c2924;
+  --appearance-table-row-alt-bg: rgba(217, 119, 87, 0.07);
+}
+
+/* ═══════════════════ iOS（系统蓝 + 灰阶分组 + 大圆角通透） ═══════════════════ */
+
+[data-appearance="ios"] {
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 18px;
+  --md-sys-shape-corner-extra-large: 24px;
+  --radius: var(--md-sys-shape-corner-large);
+}
+
+[data-appearance="ios"][data-theme="light"] {
+  --md-sys-color-background: #ffffff;
+  --md-sys-color-on-background: #111114;
+  --md-sys-color-surface: #ffffff;
+  --md-sys-color-surface-dim: #d9d9de;
+  --md-sys-color-surface-bright: #ffffff;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f7f7fa;
+  --md-sys-color-surface-container: #f2f2f7;
+  --md-sys-color-surface-container-high: #e9e9ee;
+  --md-sys-color-surface-container-highest: #e3e3e8;
+  --md-sys-color-on-surface: #111114;
+  --md-sys-color-on-surface-variant: #6d6d72;
+  --md-sys-color-outline: #8e8e93;
+  --md-sys-color-outline-variant: #d8d8dd;
+
+  --md-sys-color-primary: #007aff;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d6e9ff;
+  --md-sys-color-on-primary-container: #003a80;
+  --md-sys-color-secondary: #5856d6;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #e3e2f8;
+  --md-sys-color-on-secondary-container: #232347;
+  --md-sys-color-tertiary: #0d93b4;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #d1f0f8;
+  --md-sys-color-on-tertiary-container: #00414e;
+  --md-sys-color-error: #ff3b30;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffd9d6;
+  --md-sys-color-on-error-container: #5c110d;
+
+  --color-formula: #0a84ff;
+  --color-success: #248a3d;
+  --color-warning: #c93400;
+  --color-info: #0a84ff;
+
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(0, 0, 0, 0.06);
+
+  --subj-prob: #5856d6;
+  --subj-phy: #007aff;
+  --subj-chem: #248a3d;
+  --subj-hist: #d64545;
+  --subj-on-accent: #ffffff;
+
+  --selection-bg: rgba(0, 122, 255, 0.26);
+  --highlight-bg-a: rgba(0, 122, 255, 0.16);
+  --highlight-bg-b: rgba(88, 86, 214, 0.16);
+  --highlight-bg-c: rgba(255, 149, 0, 0.18);
+  --highlight-bg-d: rgba(90, 200, 250, 0.20);
+  --highlight-shadow: rgba(0, 90, 190, 0.14);
+
+  --appearance-card-bg-a: #eef5ff;
+  --appearance-card-bg-b: #f4f0fd;
+  --appearance-card-bg-c: #e8f6f9;
+  --appearance-ai-answer-bg: #f2f6fc;
+  --appearance-ai-answer-border: #c8dcf2;
+  --appearance-dialog-header-bg: #f2f4f9;
+  --appearance-table-head-bg: #e8f0fb;
+  --appearance-table-row-alt-bg: rgba(90, 200, 250, 0.10);
+}
+
+[data-appearance="ios"][data-theme="dark"],
+:root[data-appearance="ios"]:not([data-theme="light"]) {
+  --md-sys-color-background: #000000;
+  --md-sys-color-on-background: #f2f2f7;
+  --md-sys-color-surface: #000000;
+  --md-sys-color-surface-dim: #0c0c0e;
+  --md-sys-color-surface-bright: #38383c;
+  --md-sys-color-surface-container-lowest: #0a0a0c;
+  --md-sys-color-surface-container-low: #141416;
+  --md-sys-color-surface-container: #1c1c1e;
+  --md-sys-color-surface-container-high: #2c2c2e;
+  --md-sys-color-surface-container-highest: #3a3a3c;
+  --md-sys-color-on-surface: #f2f2f7;
+  --md-sys-color-on-surface-variant: #9a9aa0;
+  --md-sys-color-outline: #636366;
+  --md-sys-color-outline-variant: #38383a;
+
+  --md-sys-color-primary: #0a84ff;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #103a6e;
+  --md-sys-color-on-primary-container: #cfe4ff;
+  --md-sys-color-secondary: #5e5ce6;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #2c2c63;
+  --md-sys-color-on-secondary-container: #e0dfff;
+  --md-sys-color-tertiary: #64d2ff;
+  --md-sys-color-on-tertiary: #003347;
+  --md-sys-color-tertiary-container: #003a4d;
+  --md-sys-color-on-tertiary-container: #b3e8ff;
+  --md-sys-color-error: #ff6961;
+  --md-sys-color-on-error: #4a0d08;
+  --md-sys-color-error-container: #6e1b15;
+  --md-sys-color-on-error-container: #ffd5d1;
+
+  --color-formula: #64d2ff;
+  --color-success: #30d158;
+  --color-warning: #ff9f0a;
+  --color-info: #64d2ff;
+
+  --glass-bg: rgba(0, 0, 0, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.14);
+
+  --subj-prob: #7d7aff;
+  --subj-phy: #409cff;
+  --subj-chem: #30d158;
+  --subj-hist: #ff6968;
+  --subj-on-accent: #060d12;
+
+  --selection-bg: rgba(10, 132, 255, 0.40);
+  --highlight-bg-a: rgba(10, 132, 255, 0.24);
+  --highlight-bg-b: rgba(94, 92, 230, 0.24);
+  --highlight-bg-c: rgba(255, 159, 10, 0.22);
+  --highlight-bg-d: rgba(100, 210, 255, 0.22);
+  --highlight-shadow: rgba(10, 132, 255, 0.32);
+
+  --appearance-card-bg-a: #101a26;
+  --appearance-card-bg-b: #14141f;
+  --appearance-card-bg-c: #0f1f24;
+  --appearance-ai-answer-bg: #10161f;
+  --appearance-ai-answer-border: #1f3a55;
+  --appearance-dialog-header-bg: #14171d;
+  --appearance-table-head-bg: #14202e;
+  --appearance-table-row-alt-bg: rgba(100, 210, 255, 0.08);
+}
+
+/* ═══════════════════ Codex（终端深底 + 绿/青命令行风） ═══════════════════ */
+
+[data-appearance="codex"] {
+  --md-sys-shape-corner-small: 4px;
+  --md-sys-shape-corner-medium: 6px;
+  --md-sys-shape-corner-large: 8px;
+  --md-sys-shape-corner-extra-large: 12px;
+  --radius: var(--md-sys-shape-corner-large);
+  --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Microsoft YaHei", monospace;
+}
+
+[data-appearance="codex"][data-theme="light"] {
+  --md-sys-color-background: #f6f8fa;
+  --md-sys-color-on-background: #1f2328;
+  --md-sys-color-surface: #ffffff;
+  --md-sys-color-surface-dim: #e3e8ee;
+  --md-sys-color-surface-bright: #ffffff;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f6f8fa;
+  --md-sys-color-surface-container: #eaeef2;
+  --md-sys-color-surface-container-high: #e0e6ec;
+  --md-sys-color-surface-container-highest: #d6dde4;
+  --md-sys-color-on-surface: #1f2328;
+  --md-sys-color-on-surface-variant: #59636e;
+  --md-sys-color-outline: #818b98;
+  --md-sys-color-outline-variant: #d1d9e0;
+
+  --md-sys-color-primary: #1a7f37;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #dafbe1;
+  --md-sys-color-on-primary-container: #0f5323;
+  --md-sys-color-secondary: #0a7ea4;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #d3eff5;
+  --md-sys-color-on-secondary-container: #0a4d63;
+  --md-sys-color-tertiary: #8250df;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #f0e5ff;
+  --md-sys-color-on-tertiary-container: #512a97;
+  --md-sys-color-error: #cf222e;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffebe9;
+  --md-sys-color-on-error-container: #a40e26;
+
+  --color-formula: #9a6700;
+  --color-success: #1a7f37;
+  --color-warning: #9a6700;
+  --color-info: #0969da;
+
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(31, 35, 40, 0.08);
+
+  --subj-prob: #8250df;
+  --subj-phy: #0969da;
+  --subj-chem: #1a7f37;
+  --subj-hist: #d1242f;
+  --subj-on-accent: #ffffff;
+
+  --selection-bg: rgba(26, 127, 55, 0.24);
+  --highlight-bg-a: rgba(26, 127, 55, 0.16);
+  --highlight-bg-b: rgba(10, 126, 164, 0.18);
+  --highlight-bg-c: rgba(154, 103, 0, 0.16);
+  --highlight-bg-d: rgba(130, 80, 223, 0.14);
+  --highlight-shadow: rgba(26, 127, 55, 0.16);
+
+  --appearance-card-bg-a: #ecf8ef;
+  --appearance-card-bg-b: #eef3f7;
+  --appearance-card-bg-c: #f4effd;
+  --appearance-ai-answer-bg: #f0f7f1;
+  --appearance-ai-answer-border: #c3e0c9;
+  --appearance-dialog-header-bg: #eef1f4;
+  --appearance-table-head-bg: #e6f1ea;
+  --appearance-table-row-alt-bg: rgba(10, 126, 164, 0.08);
+}
+
+[data-appearance="codex"][data-theme="dark"],
+:root[data-appearance="codex"]:not([data-theme="light"]) {
+  --md-sys-color-background: #0d1117;
+  --md-sys-color-on-background: #c9d1d9;
+  --md-sys-color-surface: #0d1117;
+  --md-sys-color-surface-dim: #0a0d12;
+  --md-sys-color-surface-bright: #2d333b;
+  --md-sys-color-surface-container-lowest: #060a10;
+  --md-sys-color-surface-container-low: #161b22;
+  --md-sys-color-surface-container: #1c2129;
+  --md-sys-color-surface-container-high: #262d37;
+  --md-sys-color-surface-container-highest: #303844;
+  --md-sys-color-on-surface: #c9d1d9;
+  --md-sys-color-on-surface-variant: #9198a1;
+  --md-sys-color-outline: #6e7681;
+  --md-sys-color-outline-variant: #30363d;
+
+  --md-sys-color-primary: #3fb950;
+  --md-sys-color-on-primary: #0a1410;
+  --md-sys-color-primary-container: #1a3a24;
+  --md-sys-color-on-primary-container: #7ee787;
+  --md-sys-color-secondary: #39c5cf;
+  --md-sys-color-on-secondary: #062025;
+  --md-sys-color-secondary-container: #0e3338;
+  --md-sys-color-on-secondary-container: #a9ebf0;
+  --md-sys-color-tertiary: #a371f7;
+  --md-sys-color-on-tertiary: #1d1033;
+  --md-sys-color-tertiary-container: #382a5c;
+  --md-sys-color-on-tertiary-container: #d8c5ff;
+  --md-sys-color-error: #f85149;
+  --md-sys-color-on-error: #300a06;
+  --md-sys-color-error-container: #5c1e19;
+  --md-sys-color-on-error-container: #ffcec9;
+
+  --color-formula: #e3b341;
+  --color-success: #3fb950;
+  --color-warning: #d29922;
+  --color-info: #58a6ff;
+
+  --glass-bg: rgba(13, 17, 23, 0.8);
+  --glass-border: rgba(240, 246, 252, 0.1);
+
+  --subj-prob: #a371f7;
+  --subj-phy: #58a6ff;
+  --subj-chem: #7ee787;
+  --subj-hist: #f778ba;
+  --subj-on-accent: #0a1410;
+
+  --selection-bg: rgba(63, 185, 80, 0.30);
+  --highlight-bg-a: rgba(63, 185, 80, 0.20);
+  --highlight-bg-b: rgba(57, 197, 207, 0.20);
+  --highlight-bg-c: rgba(210, 153, 34, 0.20);
+  --highlight-bg-d: rgba(163, 113, 247, 0.20);
+  --highlight-shadow: rgba(63, 185, 80, 0.28);
+
+  --appearance-card-bg-a: #12211a;
+  --appearance-card-bg-b: #101d24;
+  --appearance-card-bg-c: #1c1727;
+  --appearance-ai-answer-bg: #121c17;
+  --appearance-ai-answer-border: #264631;
+  --appearance-dialog-header-bg: #151a21;
+  --appearance-table-head-bg: #152522;
+  --appearance-table-row-alt-bg: rgba(57, 197, 207, 0.08);
+}

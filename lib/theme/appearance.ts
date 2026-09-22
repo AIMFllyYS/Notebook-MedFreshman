@@ -1,12 +1,16 @@
 import type { I18nKey } from "@/lib/i18n";
 
 export type ThemeMode = "light" | "dark";
-export type AppearanceMode = "default" | "colorful" | "custom";
+export type AppearanceMode = "default" | "colorful" | "anthropic" | "ios" | "codex" | "custom";
 export type GlobalFontId = "system" | "songti" | "kaiti" | "hei" | "serif" | "mono";
 
 export interface CustomAppearanceSettings {
+  lightBackground: string;
   lightAccent: string;
+  lightText: string;
+  darkBackground: string;
   darkAccent: string;
+  darkText: string;
   selection: string;
   font: GlobalFontId;
 }
@@ -53,17 +57,34 @@ export const FONT_CHOICES: Record<GlobalFontId, { labelKey: I18nKey; cssValue: s
 export const DEFAULT_APPEARANCE_SETTINGS: AppearanceSettings = {
   mode: "default",
   custom: {
+    lightBackground: "#fffbfe",
     lightAccent: "#6750a4",
+    lightText: "#1c1b1f",
+    darkBackground: "#131318",
     darkAccent: "#a8c7fa",
+    darkText: "#e2e2e9",
     selection: "#ff9800",
     font: "system",
   },
 };
 
-const APPEARANCE_MODES = new Set<AppearanceMode>(["default", "colorful", "custom"]);
+const APPEARANCE_MODES = new Set<AppearanceMode>([
+  "default",
+  "colorful",
+  "anthropic",
+  "ios",
+  "codex",
+  "custom",
+]);
 const FONT_IDS = new Set<GlobalFontId>(Object.keys(FONT_CHOICES) as GlobalFontId[]);
 
 const INLINE_VAR_NAMES = [
+  "--appearance-light-bg",
+  "--appearance-dark-bg",
+  "--appearance-light-ink",
+  "--appearance-dark-ink",
+  "--appearance-light-extreme",
+  "--appearance-dark-extreme",
   "--appearance-light-accent",
   "--appearance-dark-accent",
   "--appearance-light-on-accent",
@@ -97,15 +118,24 @@ function parsePayload(value: unknown): unknown {
   }
 }
 
-function contrastText(hex: string): string {
+function relativeLuminance(hex: string): number {
   const rgb = hex.slice(1).match(/.{2}/g)?.map((part) => parseInt(part, 16));
-  if (!rgb || rgb.length !== 3) return "#ffffff";
+  if (!rgb || rgb.length !== 3) return 0;
   const [r, g, b] = rgb.map((channel) => {
     const v = channel / 255;
     return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
   });
-  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return luminance > 0.56 ? "#111318" : "#ffffff";
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** 底上文字取深还是浅：与 #111318/#ffffff 的对比度在 L≈0.24 处相等（白 4.9 / 深 5.4）。 */
+export function contrastText(hex: string): string {
+  return relativeLuminance(hex) > 0.24 ? "#111318" : "#ffffff";
+}
+
+/** container-lowest / surface-bright 的推演方向：浅底往白推、深底往黑推。 */
+function surfaceExtreme(hex: string): string {
+  return relativeLuminance(hex) > 0.5 ? "#ffffff" : "#000000";
 }
 
 function readFontId(value: unknown): GlobalFontId {
@@ -129,8 +159,12 @@ export function normalizeAppearanceSettings(value: unknown): AppearanceSettings 
   return {
     mode: raw.mode as AppearanceMode,
     custom: {
+      lightBackground: safeHexColor(custom.lightBackground, DEFAULT_APPEARANCE_SETTINGS.custom.lightBackground),
       lightAccent: safeHexColor(custom.lightAccent, DEFAULT_APPEARANCE_SETTINGS.custom.lightAccent),
+      lightText: safeHexColor(custom.lightText, DEFAULT_APPEARANCE_SETTINGS.custom.lightText),
+      darkBackground: safeHexColor(custom.darkBackground, DEFAULT_APPEARANCE_SETTINGS.custom.darkBackground),
       darkAccent: safeHexColor(custom.darkAccent, DEFAULT_APPEARANCE_SETTINGS.custom.darkAccent),
+      darkText: safeHexColor(custom.darkText, DEFAULT_APPEARANCE_SETTINGS.custom.darkText),
       selection: safeHexColor(custom.selection, DEFAULT_APPEARANCE_SETTINGS.custom.selection),
       font: readFontId(custom.font),
     },
@@ -149,8 +183,23 @@ export function buildAppearanceCssVars(settings: AppearanceSettings): Record<str
   const normalized = normalizeAppearanceSettings(settings);
   if (normalized.mode !== "custom") return {};
 
-  const { lightAccent, darkAccent, selection, font } = normalized.custom;
+  const {
+    lightBackground,
+    lightAccent,
+    lightText,
+    darkBackground,
+    darkAccent,
+    darkText,
+    selection,
+    font,
+  } = normalized.custom;
   return {
+    "--appearance-light-bg": lightBackground,
+    "--appearance-dark-bg": darkBackground,
+    "--appearance-light-ink": lightText,
+    "--appearance-dark-ink": darkText,
+    "--appearance-light-extreme": surfaceExtreme(lightBackground),
+    "--appearance-dark-extreme": surfaceExtreme(darkBackground),
     "--appearance-light-accent": lightAccent,
     "--appearance-dark-accent": darkAccent,
     "--appearance-light-on-accent": contrastText(lightAccent),

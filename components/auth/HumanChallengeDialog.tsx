@@ -289,7 +289,7 @@ export default function HumanChallengeDialog({
                         className="quiz-option-mark"
                         data-shape="square"
                         aria-hidden="true"
-                        style={selected ? { borderColor: accent, background: accent, color: "#fff" } : undefined}
+                        style={selected ? { borderColor: accent, background: accent, color: "var(--subj-on-accent, #fff)" } : undefined}
                       >
                         <Check size={11} strokeWidth={3.5} />
                       </span>
