@@ -38,7 +38,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   "生图模型": "var(--md-sys-color-secondary)",
 };
 const COLUMN_WIDTHS = [196, 244, 228];
-const GAP = 6;
+const GAP = 12;
 
 /** 模型行右侧特征圆点的语义类型：前五个对应菜单分类，后两个是能力标签。 */
 type ModelTrait = "flagship" | "free" | "fast" | "multimodal" | "image" | "thinking" | "tools";
@@ -320,9 +320,8 @@ export default function ModelMenu({
             onMouseEnter={(event) => { modelAnchor.current = event.currentTarget; if (!position.mobile) setDetailId(model.id); }}
             onClick={(event) => { modelAnchor.current = event.currentTarget; setDetailId(position.mobile && detailId === model.id ? null : model.id); }}>
             {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
-            <ModelIcon brand={model.icon} size={14} decorative /><span className="min-w-0 flex-1"><span className="block truncate">{model.label}</span>
+            <ModelIcon brand={model.icon} size={14} decorative /><span className="min-w-0 flex-1"><span className="flex min-w-0 items-center gap-1"><span className="truncate">{model.label}</span><ModelTraitDots model={model} /></span>
             {model.vendorTrainingNotice ? <span className="block text-[10px] text-[var(--md-sys-color-error)]">{model.vendorTrainingNotice}</span> : null}</span>
-            <ModelTraitDots model={model} />
             {selectedId === model.id ? <Check aria-label={t("menu.model.selected")} size={12} className="shrink-0" /> : null}
             {position.mobile ? <ChevronDown aria-hidden size={12} className="shrink-0" /> : !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
           </button>
@@ -335,8 +334,8 @@ export default function ModelMenu({
 }
 
 /**
- * 模型行右侧的特征圆点簇：每个圆框 = 一个分类归属 / 能力标签。
- * 最多铺 3 个，超出收敛为一个「⋯」圆点；悬停任一圆点看全部标签。
+ * 模型名右侧紧贴的特征图标簇：每个小 SVG = 一个分类归属 / 能力标签（无圆框）。
+ * 最多铺 3 个，超出收敛为一个「⋯」；悬停任一看全部标签。
  * 颜色全部走主题 token（CATEGORY_COLORS / TRAIT_META），随外观切换自动适配。
  */
 function ModelTraitDots({ model }: { model: ModelInfo }) {
@@ -347,27 +346,19 @@ function ModelTraitDots({ model }: { model: ModelInfo }) {
   const hidden = traits.slice(MAX_TRAIT_DOTS);
   const label = (key: ModelTrait) => t(TRAIT_META[key].labelKey);
   return (
-    <span aria-hidden="true" className="flex shrink-0 items-center -space-x-[3px]">
+    <span aria-hidden="true" className="flex shrink-0 items-center gap-[3px]">
       {shown.map((key) => {
         const meta = TRAIT_META[key];
         const Icon = meta.icon;
         return (
-          <span key={key} title={label(key)}
-            className="model-trait-dot grid place-items-center rounded-full border"
-            style={{
-              color: meta.color,
-              background: `color-mix(in srgb, ${meta.color} 20%, var(--bg-panel))`,
-              borderColor: `color-mix(in srgb, ${meta.color} 45%, transparent)`,
-            }}>
-            <Icon size={9} strokeWidth={2.25} aria-hidden />
+          <span key={key} title={label(key)} className="grid shrink-0 place-items-center">
+            <Icon size={11} strokeWidth={2.25} aria-hidden className="opacity-80" style={{ color: meta.color }} />
           </span>
         );
       })}
       {hidden.length > 0 ? (
-        <span title={traits.map(label).join(" · ")}
-          className="model-trait-dot grid place-items-center rounded-full border text-[var(--ink-faint)]"
-          style={{ background: "var(--bg-muted)", borderColor: "var(--line)" }}>
-          <MoreHorizontal size={9} aria-hidden />
+        <span title={traits.map(label).join(" · ")} className="grid shrink-0 place-items-center text-[var(--ink-faint)]">
+          <MoreHorizontal size={11} aria-hidden />
         </span>
       ) : null}
     </span>
@@ -446,7 +437,7 @@ function ModelDetails({
         {t("menu.model.info")}
       </div>
       <div className="px-2 pb-2">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5">
           <div className="text-[12.5px] font-medium text-[var(--ink)]">{model.label}</div>
           <ModelTraitDots model={model} />
         </div>

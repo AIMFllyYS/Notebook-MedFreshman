@@ -306,7 +306,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
-    hint: "小米 · 最高 20× 速 · 全模态 · 1M",
+    hint: "小米 · 最高 20× 速 · 全模态 · 1M · 价格是 Pro 的 10 倍",
     endpoints: [ep(RELAY, "xiaomi/mimo-v2.6-pro-ultraspeed")],
     icon: "mimo",
     // 官方牌价 = Pro ×10：输入 ¥30/M、输出 ¥60/M、缓存命中 ¥0.25/M；cacheWrite 按未命中输入保守记。

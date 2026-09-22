@@ -422,14 +422,8 @@ body {
   display: none;
 }
 
-/* ── 模型菜单：特征圆点 & 分类计数徽标 ───────────────────────── */
-/* 圆点簇有 -space-x 重叠，box-shadow 描一道面板色把相邻圆点分开。 */
-.model-trait-dot {
-  width: 15px;
-  height: 15px;
-  box-shadow: 0 0 0 1.5px var(--bg-panel);
-}
-/* 分类行右侧的品牌图标圆点：比特徵圆点略大，容纳 10px 品牌 logo。 */
+/* ── 模型菜单：分类品牌圆点 & 分类计数徽标 ───────────────────── */
+/* 分类行右侧的品牌图标圆点：圆点簇有 -space-x 重叠，box-shadow 描一道面板色把相邻圆点分开。 */
 .model-brand-dot {
   width: 17px;
   height: 17px;
