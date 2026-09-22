@@ -5,7 +5,7 @@ import type { ChatMessagePart, WebSearchSource } from '@/lib/types/chat';
 
 export type TraceSource =
   | { kind: 'note'; title: string; path: string; snippet: string; query?: string; roundId?: string }
-  | { kind: 'web'; title: string; url: string; snippet: string; query?: string; roundId?: string };
+  | { kind: 'web'; title: string; url: string; snippet: string; query?: string; roundId?: string; icon?: string };
 
 /** 按 key 去重；空 key 放行（无 id 的条目不该被误丢）。 */
 export function dedupeByKey<T>(items: readonly T[], keyFn: (item: T) => string | null | undefined): T[] {
@@ -79,6 +79,7 @@ export function collectMessageSources(parts: ChatMessagePart[]): TraceSource[] {
           title: source.title || source.url,
           url: source.url ?? '',
           snippet: source.snippet ?? '',
+          ...(source.icon ? { icon: source.icon } : {}),
         }))
       : [],
   );
@@ -131,6 +132,7 @@ function webSourcesOf(items: readonly WebSearchSource[]): TraceSource[] {
     title: source.title || source.alt || source.url || translateNow('agent.sources.untitled'),
     url: source.url ?? '',
     snippet: source.snippet ?? '',
+    ...(source.icon ? { icon: source.icon } : {}),
   }));
 }
 

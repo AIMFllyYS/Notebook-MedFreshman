@@ -21,7 +21,16 @@ vi.mock('framer-motion', async () => {
     const repeats = (transition as { repeat?: number } | undefined)?.repeat === Infinity;
     return React.createElement(tag, { ...rest, ref, 'data-motion-repeats': repeats ? 'true' : undefined });
   });
-  return { motion: { span: motionElement('span'), div: motionElement('div'), ol: motionElement('ol') }, useReducedMotion: () => motionPreference.reduced };
+  return {
+    motion: {
+      span: motionElement('span'),
+      div: motionElement('div'),
+      ol: motionElement('ol'),
+      li: motionElement('li'),
+    },
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    useReducedMotion: () => motionPreference.reduced,
+  };
 });
 
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));

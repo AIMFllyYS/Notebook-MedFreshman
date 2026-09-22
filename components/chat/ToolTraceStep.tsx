@@ -12,8 +12,10 @@ import {
   AgentTerminalIcon,
 } from '@/components/icons/AgentIcons';
 import { AgentTraceStep } from '@/components/chat/AgentTraceStep';
+import { WebSearchStepDetail } from '@/components/chat/WebSearchStepDetail';
 import { getTraceToolOutput, type TraceToolStep as ToolStep } from '@/lib/chat/buildTrace';
 import { getToolPresentation, type ToolIconKind } from '@/lib/chat/toolPresentation';
+import { useIsAgentSurface } from '@/lib/window/useManagedWindowSurface';
 import { useT } from '@/lib/i18n';
 
 export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step: ToolStep }) {
@@ -22,14 +24,20 @@ export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step:
   const input = part.input ?? (part.state === 'output-error' && 'rawInput' in part ? part.rawInput : undefined);
   const output = getTraceToolOutput(part, t);
   const hasInput = input != null && (typeof input !== 'object' || Object.keys(input).length > 0);
+  // 联网搜索步骤：展开区塞分源状态点 + 来源走马灯。Agent 面上结果卡整卡隐藏
+  // （hideInAgentChat），所以运行中自动展开这步让来源流式可见；普通对话里卡片
+  // 已展示同一条走马灯，保持收起避免重复。
+  const isWebSearch = step.name === 'webSearch';
+  const isAgentSurface = useIsAgentSurface();
 
   return (
-    <AgentTraceStep {...step} icon={<ToolIcon name={step.name} />}>
+    <AgentTraceStep {...step} icon={<ToolIcon name={step.name} />} expandWhileRunning={isWebSearch && isAgentSurface}>
       <div className="min-w-0 space-y-2">
         <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-[var(--md-sys-color-outline)]">
           <code className="break-all">{step.name}()</code>
           {step.status === 'running' || step.status === 'waiting' || step.status === 'interrupted' ? <span>{step.summary}</span> : null}
         </div>
+        {isWebSearch ? <WebSearchStepDetail step={step} /> : null}
         {hasInput ? (
           <div className="agent-trace-subdetail">
             <p className="mb-1 text-[10px] font-medium text-[var(--md-sys-color-outline)]">{t('trace.step.input')}</p>

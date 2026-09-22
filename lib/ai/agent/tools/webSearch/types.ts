@@ -38,6 +38,10 @@ export interface WebSearchOutput extends TextToolOutput {
   sources: WebSearchSource[];
   cacheHit?: boolean;
   deduped?: boolean;
+  /** 实际出结果的供应商（缺省 = 旧数据层未回执；展示层据此把「计划」升级为「已搜」）。 */
+  providers?: WebSearchProvider[];
+  /** 计划内但没出结果的供应商及原因（失败灰态）。 */
+  skipped?: { provider: WebSearchProvider; reason: string }[];
   /** 因精选上限未入选的来源数（仅最终结果给出）。 */
   omittedSources?: number;
   /** 渐进状态（preliminary 与最终结果都带）。 */
