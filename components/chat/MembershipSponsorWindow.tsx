@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback } from "react";
-import { Heart, Mail } from "lucide-react";
+import { useCallback, useState } from "react";
+import { Heart, Mail, Sparkles } from "lucide-react";
 
 function GithubMark({ size = 22 }: { size?: number }) {
   return (
@@ -13,6 +13,7 @@ function GithubMark({ size = 22 }: { size?: number }) {
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useT } from "@/lib/i18n";
+import { PAY_PLANS } from "@/lib/pay/plans";
 import {
   GITHUB_REPO_URL,
   MEMBERSHIP_SPONSOR_WINDOW_ID,
@@ -24,6 +25,98 @@ export default function MembershipSponsorLayer() {
   const windows = useWindowManager((state) => state.windows);
   if (!windows.some((win) => win.id === MEMBERSHIP_SPONSOR_WINDOW_ID)) return null;
   return <MembershipSponsorWindow />;
+}
+
+type Billing = "monthly" | "yearly";
+
+const PLAN_QUOTA_CNY = { plus: 70, pro: 700 } as const;
+
+function planFor(tier: "plus" | "pro", billing: Billing) {
+  return PAY_PLANS[`${tier}_${billing}` as keyof typeof PAY_PLANS];
+}
+
+function planPrice(usdCents: number): string {
+  const dollars = usdCents / 100;
+  return `$${Number.isInteger(dollars) ? dollars : dollars.toFixed(1)}`;
+}
+
+function MembershipPaySection() {
+  const t = useT();
+  const [billing, setBilling] = useState<Billing>("monthly");
+  const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const checkout = useCallback(async (planKey: string) => {
+    setBusy(planKey);
+    setError(null);
+    try {
+      const res = await fetch("/api/pay/checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ plan: planKey }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { url?: unknown; code?: unknown };
+      if (res.ok && typeof data.url === "string") {
+        window.open(data.url, "_blank", "noopener");
+        return;
+      }
+      if (data.code === "pay_not_configured") setError(t("panel.membership.pay.notConfigured"));
+      else if (data.code === "invalid_plan") setError(t("panel.membership.pay.invalidPlan"));
+      else if (res.status === 401) setError(t("panel.membership.pay.signInRequired"));
+      else setError(t("panel.membership.pay.failed"));
+    } catch {
+      setError(t("panel.membership.pay.failed"));
+    } finally {
+      setBusy(null);
+    }
+  }, [t]);
+
+  return (
+    <section className="rounded-xl border border-[var(--line)] bg-[var(--bg-muted)] px-3.5 py-3">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[12px] font-semibold text-[var(--ink)]">{t("panel.membership.pay.title")}</span>
+        <span className="flex rounded-lg border border-[var(--line)] p-0.5 text-[11px]">
+          {(["monthly", "yearly"] as const).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => setBilling(mode)}
+              className={`rounded-md px-2 py-0.5 ${billing === mode ? "bg-[var(--md-sys-color-primary)] text-white" : "text-[var(--ink-soft)]"}`}
+            >
+              {t(`panel.membership.pay.${mode}`)}
+            </button>
+          ))}
+        </span>
+      </div>
+      <div className="mt-2.5 grid grid-cols-2 gap-2">
+        {(["plus", "pro"] as const).map((tier) => {
+          const plan = planFor(tier, billing);
+          const loading = busy === plan.key;
+          return (
+            <div key={plan.key} className="rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] px-3 py-2.5">
+              <p className="text-[12px] font-semibold text-[var(--ink)]">{t(`panel.quota.tier.${tier}`)}</p>
+              <p className="mt-0.5 text-[11px] text-[var(--ink-soft)]">
+                {planPrice(plan.usdCents)} · {t("panel.membership.pay.quotaMonthly", { quota: PLAN_QUOTA_CNY[tier] })}
+              </p>
+              <button
+                type="button"
+                disabled={busy !== null}
+                onClick={() => void checkout(plan.key)}
+                className="mt-2 w-full rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1 text-[11.5px] font-semibold text-white disabled:opacity-60"
+              >
+                {loading ? t("panel.membership.pay.busy") : t("panel.membership.pay.cta")}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      {error ? <p className="mt-2 text-[11px] text-[var(--md-sys-color-error)]">{error}</p> : null}
+      <p className="mt-2 flex items-center gap-1 text-[10.5px] leading-4 text-[var(--ink-soft)]">
+        <Sparkles size={11} className="shrink-0" />
+        {t("panel.membership.pay.hint")}
+      </p>
+    </section>
+  );
 }
 
 function MembershipSponsorWindow() {
@@ -48,6 +141,8 @@ function MembershipSponsorWindow() {
         <p className="text-[13px] leading-6 text-[var(--ink)]">
           {t("panel.membership.intro")}
         </p>
+
+        <MembershipPaySection />
 
         <a
           href={GITHUB_REPO_URL}

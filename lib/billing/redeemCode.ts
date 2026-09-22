@@ -55,6 +55,8 @@ export interface RedeemFailure {
   errorCode: RedeemErrorCode;
 }
 
+export type GrantSource = "signup" | "redemption" | "manual" | "payment";
+
 export interface RedeemStore {
   findCode(code: string): Promise<RedeemCodeRow | null>;
   getUser(userId: string): Promise<RedeemUserRow | null>;
@@ -70,8 +72,12 @@ export interface RedeemStore {
     periodStart: Date;
     periodEnd: Date;
     redemptionId?: string;
+    source?: GrantSource;
   }): Promise<void>;
 }
+
+/** 升档 + 发额度共用的最小 store 面：支付履约与兑换码核销走同一条路径。 */
+export type MembershipUpgradeStore = Pick<RedeemStore, "getUser" | "applyUser" | "insertGrant">;
 
 export interface RedeemDeps {
   store?: RedeemStore;
@@ -207,7 +213,7 @@ function defaultStore(): RedeemStore {
         amount_cny: row.amountCny,
         period_start: row.periodStart.toISOString(),
         period_end: row.periodEnd.toISOString(),
-        source: "redemption",
+        source: row.source ?? "redemption",
         redemption_id: row.redemptionId ?? null,
       });
       if (error) throw new Error(error.message);
@@ -217,6 +223,65 @@ function defaultStore(): RedeemStore {
 
 function activeStore(): RedeemStore {
   return testDeps?.store ?? defaultStore();
+}
+
+export interface MembershipUpgradeOutcome {
+  tier: UserTier;
+  periodStart: string;
+  periodEnd: string;
+  months: number;
+}
+
+/**
+ * 升档 + 按档位面额发放平台/BYOK 双池额度，兑换码核销与在线支付履约共用：
+ * 档位与月数由调用方给出，周期顺延规则（nextMembershipPeriod）与额度面额完全一致。
+ */
+export async function applyMembershipUpgrade(input: {
+  userId: string;
+  user: RedeemUserRow;
+  tier: UserTier;
+  months: number;
+  source?: GrantSource;
+  store: MembershipUpgradeStore;
+  now: Date;
+}): Promise<MembershipUpgradeOutcome> {
+  const { store } = input;
+  const months = Math.max(1, Math.floor(input.months));
+  const next = nextMembershipPeriod({
+    currentTier: asUserTier(input.user.tier),
+    periodStart: new Date(input.user.period_start),
+    periodEnd: new Date(input.user.period_end),
+    codeTier: input.tier,
+    months,
+    now: input.now,
+  });
+
+  await store.applyUser(input.userId, {
+    tier: next.tier,
+    periodStart: next.periodStart,
+    periodEnd: next.periodEnd,
+  });
+
+  const amount = TIER_QUOTA_CNY[next.tier] * months;
+  for (const pool of ["platform", "byok"] as const) {
+    await store.insertGrant({
+      userId: input.userId,
+      pool,
+      tier: next.tier,
+      amountCny: amount,
+      periodStart: next.periodStart,
+      periodEnd: next.periodEnd,
+      source: input.source ?? "redemption",
+    });
+  }
+
+  invalidateQuotaCache(input.userId);
+  return {
+    tier: next.tier,
+    periodStart: next.periodStart.toISOString(),
+    periodEnd: next.periodEnd.toISOString(),
+    months,
+  };
 }
 
 export async function redeemCodeForUser(
@@ -241,51 +306,19 @@ export async function redeemCodeForUser(
   const user = await db.getUser(userId);
   if (!user) return { ok: false, errorCode: "invalid" };
 
-  const next = nextMembershipPeriod({
-    currentTier: asUserTier(user.tier),
-    periodStart: new Date(user.period_start),
-    periodEnd: new Date(user.period_end),
-    codeTier: found.tier,
-    months: found.months,
-    now,
-  });
-
   const inserted = await db.insertRedemption(found.id, userId);
   if (inserted === "duplicate") return { ok: false, errorCode: "already_redeemed" };
 
   const bumped = await db.incrementUsedCount(found.id, found.max_uses);
   if (!bumped) return { ok: false, errorCode: "max_uses" };
 
-  await db.applyUser(userId, {
-    tier: next.tier,
-    periodStart: next.periodStart,
-    periodEnd: next.periodEnd,
-  });
-
-  const amount = TIER_QUOTA_CNY[next.tier] * Math.max(1, Math.floor(found.months));
-  await db.insertGrant({
+  const upgraded = await applyMembershipUpgrade({
     userId,
-    pool: "platform",
-    tier: next.tier,
-    amountCny: amount,
-    periodStart: next.periodStart,
-    periodEnd: next.periodEnd,
-  });
-  await db.insertGrant({
-    userId,
-    pool: "byok",
-    tier: next.tier,
-    amountCny: amount,
-    periodStart: next.periodStart,
-    periodEnd: next.periodEnd,
-  });
-
-  invalidateQuotaCache(userId);
-  return {
-    ok: true,
-    tier: next.tier,
-    periodStart: next.periodStart.toISOString(),
-    periodEnd: next.periodEnd.toISOString(),
+    user,
+    tier: found.tier,
     months: found.months,
-  };
+    store: db,
+    now,
+  });
+  return { ok: true, ...upgraded };
 }
