@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "histology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-015-016",
+  "courseName": "人体组织学",
+  "sessionRange": {
+    "start": 15,
+    "end": 16
+  },
+  "taughtOn": "2026-09-21",
+  "topic": "神经组织——神经元与神经胶质细胞的结构、分类、突触、神经纤维与神经末梢",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-015-016"
+}

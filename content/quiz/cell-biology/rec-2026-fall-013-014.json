@@ -1,0 +1,260 @@
+{
+    "subjectId":  "cell-biology",
+    "chapterId":  "rec-2026-fall-013-014",
+    "generatedAt":  "2026-09-21",
+    "examConfig":  {
+                       "source":  "content/cell-biology/lectures/rec-2026-fall-013-014/recording.md；content/cell-biology/lectures/rec-2026-fall-013-014/notes.html",
+                       "totalPoints":  110,
+                       "timeLimit":  45
+                   },
+    "contentRef":  {
+                       "lessonId":  "rec-2026-fall-013-014",
+                       "revision":  1,
+                       "recordingHash":  "3f89079cf4e34e2e5b95d0a29e6a7b69aabee7820dfeb2f37e92df3bf74845ef",
+                       "notesTextHash":  "e8a298fe94d9efb19be791ac6db3a040519cac758ccce7217b5915a9f7e9a228"
+                   },
+    "questions":  [
+                      {
+                          "id":  "q001",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "溶酶体标志酶（酸性磷酸酶）"
+                                        },
+                          "stem":  "溶酶体的标志酶是下列哪一种？",
+                          "options":  [
+                                          "细胞色素氧化酶",
+                                          "酸性磷酸酶",
+                                          "单胺氧化酶",
+                                          "腺苷酸激酶"
+                                      ],
+                          "answer":  1,
+                          "explanation":  "**B 正确。**溶酶体内部为酸性环境（pH≈5.0），含多种酸性水解酶，其标志酶为酸性磷酸酶。A错：细胞色素氧化酶是线粒体内膜（复合物IV）的标志酶。C错：单胺氧化酶是线粒体外膜的标志酶。D错：腺苷酸激酶是线粒体外膜与内膜之间膜间隙的标志酶。",
+                          "hint":  "溶酶体内酸性，记\u0027酸性磷酸酶\u0027。"
+                      },
+                      {
+                          "id":  "q002",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "呼吸链复合物I名称（NADH脱氢酶）"
+                                        },
+                          "stem":  "呼吸链复合物I的正式名称是下列哪一个？",
+                          "options":  [
+                                          "琥珀酸脱氢酶",
+                                          "细胞色素还原酶",
+                                          "NADH脱氢酶（NADH-CoQ还原酶）",
+                                          "细胞色素C氧化酶"
+                                      ],
+                          "answer":  2,
+                          "explanation":  "**C 正确。**复合物I即NADH脱氢酶（NADH-CoQ还原酶），约45个亚基，是最大的呼吸链复合物，分子量约980 kDa。A错：琥珀酸脱氢酶是复合物II。B错：细胞色素还原酶（细胞色素bc1复合物）是复合物III。D错：细胞色素C氧化酶是复合物IV。",
+                          "hint":  "I脱氢II琥珀，III bc1 IV氧化。"
+                      },
+                      {
+                          "id":  "q003",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "化学渗透假说提出者与获奖年份"
+                                        },
+                          "stem":  "化学渗透假说（chemiosmotic theory）的提出者及其获得诺贝尔化学奖的年份是？",
+                          "options":  [
+                                          "Peter Mitchell，1978年",
+                                          "Otto Warburg，1931年",
+                                          "Boyer和Walker，1997年",
+                                          "Ernst Chain，1945年"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**Peter Mitchell于1961年提出化学渗透假说，1978年获诺贝尔化学奖。该假说认为电子传递释放的自由能先转化为跨膜质子电化学梯度（质子动力势），再由ATP合酶将其转化为ATP中的化学能。B错：Warburg因发现瓦伯格效应（肿瘤糖酵解）于1931年获奖。C错：Boyer和Walker因ATP合酶的结合变构机制于1997年获奖。D错：Chain因青霉素研究获奖，与氧化磷酸化无关。",
+                          "hint":  "Mitchell化学渗透，78年诺奖。"
+                      },
+                      {
+                          "id":  "q004",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "溶酶体膜蛋白高度糖基化的意义"
+                                        },
+                          "stem":  "溶酶体膜蛋白为什么需要高度糖基化？",
+                          "options":  [
+                                          "增强膜的流动性，便于囊泡融合",
+                                          "保护膜蛋白不被腔内的酸性水解酶降解",
+                                          "帮助转运底物进入溶酶体",
+                                          "作为质子泵的锚定位点"
+                                      ],
+                          "answer":  1,
+                          "explanation":  "**B 正确。**溶酶体内腔为酸性环境（pH≈5.0），含有多种酸性水解酶，可以降解蛋白质等生物大分子。溶酶体膜蛋白高度糖基化后，糖链可以保护膜蛋白不被腔内的酸性水解酶降解，类似于胃壁黏液层保护胃壁不被胃酸消化。A错：糖基化的主要目的不是增强膜流动性。C错：转运底物的是载体蛋白，不是糖基化的功能。D错：质子泵（V-ATPase）本身就是膜蛋白，糖基化不是为了锚定质子泵。",
+                          "hint":  "胃壁为什么不被胃酸消化？糖基化就是保护自己。"
+                      },
+                      {
+                          "id":  "q005",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "ATP合酶F₁头部亚基组成"
+                                        },
+                          "stem":  "ATP合酶F₁头部（偶联因子F₁）的亚基组成及其朝向是？",
+                          "options":  [
+                                          "α₃β₃γ，朝向线粒体基质侧",
+                                          "α₃β₃γ，朝向膜间隙侧",
+                                          "ab₂c₁₀₋₁₂，镶嵌于内膜中",
+                                          "αβγδ，朝向细胞质侧"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**F₁头部由α₃β₃γ亚基组成（α和β各3个，γ为中心轴），朝向线粒体基质侧，催化ADP+Pi→ATP的合成。质子通过F₀通道回流驱动γ亚基旋转，使β亚基发生构象变化（松弛/紧密/开放）。B错：F₁朝向基质而非膜间隙。C错：ab₂c₁₀₋₁₂是F₀基部的亚基组成，不是F₁头部。D错：F₁不在细胞质侧，且亚基组成错误。",
+                          "hint":  "F1在基质，α3β3γ旋转。"
+                      },
+                      {
+                          "id":  "q006",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "UCP1解偶联产热机制"
+                                        },
+                          "stem":  "UCP1（解偶联蛋白1）的作用机制及其生理意义是？",
+                          "options":  [
+                                          "位于棕色脂肪线粒体内膜，使质子不经过ATP合酶直接回流，将质子动力势转化为热能",
+                                          "位于肝细胞线粒体内膜，增强ATP合酶活性以提高产热",
+                                          "位于骨骼肌细胞质，通过糖酵解增加产热",
+                                          "位于神经元细胞膜，通过钠钾泵活动增加产热"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**UCP1（解偶联蛋白1）位于棕色脂肪组织线粒体内膜，它允许质子不经过ATP合酶直接从膜间隙回流到基质，使电子传递与ATP合成脱偶联（解偶联），质子动力势以热能形式释放而非合成ATP。这是非颤栗性产热的分子基础。B错：UCP1不增强ATP合酶活性，恰恰相反，它绕过ATP合酶。C错：UCP1在线粒体内膜而非骨骼肌细胞质。D错：UCP1在线粒体内膜而非神经元细胞膜。",
+                          "hint":  "UCP1漏质子，不合成ATP只产热。"
+                      },
+                      {
+                          "id":  "q007",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "巨自噬与微自噬的区别"
+                                        },
+                          "stem":  "关于巨自噬（macroautophagy）与微自噬（microautophagy）的区别，下列描述正确的是？",
+                          "options":  [
+                                          "巨自噬通过自噬体包裹底物后与溶酶体融合；微自噬由溶酶体膜直接内陷包裹底物",
+                                          "巨自噬由溶酶体膜直接内陷包裹底物；微自噬通过自噬体包裹底物后与溶酶体融合",
+                                          "巨自噬和微自噬都通过自噬体进行，只是大小不同",
+                                          "巨自噬降解胞外物质，微自噬降解胞内物质"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**巨自噬（大自噬）是最常见的自噬方式，由自噬体（双层膜囊泡）包裹底物后与溶酶体融合形成自噬溶酶体；微自噬（小自噬）则是由溶酶体膜直接内陷、出芽包裹底物进入溶酶体腔内降解。B错：两者的方式正好说反了。C错：微自噬不形成自噬体。D错：两者都降解胞内物质，胞外物质的降解属于内吞/吞噬途径。",
+                          "hint":  "大自噬靠自噬体，小自噬膜直接凹。"
+                      },
+                      {
+                          "id":  "q008",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "mtDNA母系遗传的原因"
+                                        },
+                          "stem":  "线粒体DNA表现为母系遗传，其主要原因是？",
+                          "options":  [
+                                          "受精卵中的线粒体几乎全部来自卵细胞，精子线粒体数量少且受精后被降解",
+                                          "mtDNA只在女性生殖细胞中进行复制",
+                                          "精子中的mtDNA比卵细胞中的更长更稳定",
+                                          "父源mtDNA携带显性致死基因"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**受精卵中的线粒体几乎全部来自卵细胞（数量巨大，约10万-20万个），而精子中的线粒体数量很少（约100个）且在受精后被降解，因此mtDNA只从母亲传递给后代，表现为母系遗传。B错：mtDNA并非只在女性生殖细胞中复制，体细胞中也复制。C错：精子线粒体数量少而非更长。D错：父源mtDNA并非携带显性致死基因，而是数量少且被降解。",
+                          "hint":  "卵给十万，精子一百还被降解。"
+                      },
+                      {
+                          "id":  "q009",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "Warburg效应的本质与意义"
+                                        },
+                          "stem":  "关于肿瘤细胞的Warburg效应（瓦伯格效应），下列理解最准确的是？",
+                          "options":  [
+                                          "肿瘤细胞即使在有氧条件下也优先通过糖酵解产生ATP，因为糖酵解中间产物可为快速增殖提供生物合成前体",
+                                          "肿瘤细胞的线粒体完全丧失了氧化磷酸化能力，只能通过糖酵解存活",
+                                          "Warburg效应是肿瘤细胞缺氧时的应急反应，有氧时立即恢复氧化磷酸化",
+                                          "Warburg效应与PET-CT使用¹⁸F-FDG示踪剂的原理无关"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**Warburg效应指肿瘤细胞即使在有氧条件下也优先通过糖酵解产生ATP（有氧糖酵解），其生物学意义在于糖酵解中间产物可为肿瘤细胞提供核苷酸、脂质、氨基酸等生物合成前体，满足快速增殖需求。B错：肿瘤细胞的线粒体并非完全丧失氧化磷酸化能力，而是主动选择糖酵解——线粒体仍参与代谢等其他功能。C错：Warburg效应不是缺氧应急反应，而是肿瘤细胞在有氧条件下的代谢偏好。D错：PET-CT正是利用肿瘤细胞高葡萄糖摄取特性，使用¹⁸F-FDG作为示踪剂。",
+                          "hint":  "不是线粒体不能用，是肿瘤主动选糖酵解供前体。"
+                      },
+                      {
+                          "id":  "q010",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "溶酶体储积症发病机制"
+                                        },
+                          "stem":  "溶酶体储积症（Lysosomal Storage Disease）的核心发病机制是？",
+                          "options":  [
+                                          "溶酶体酶基因突变导致相应底物无法被降解而在溶酶体内堆积",
+                                          "溶酶体膜破裂导致酸性水解酶释放到细胞质中",
+                                          "线粒体功能异常导致ATP产生不足，溶酶体无法维持酸性环境",
+                                          "高尔基体分选功能异常导致溶酶体酶被错误分泌到胞外"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**溶酶体储积症的核心机制是溶酶体中某一种或几种酸性水解酶基因突变，导致相应底物（如糖原、脂质、黏多糖等）无法被正常降解，在溶酶体内大量堆积，进而影响细胞正常功能。典型疾病包括泰-萨克斯病（Tay-Sachs，己糖胺酶A缺乏导致GM2神经节苷脂堆积）和庞贝病（酸性麦芽糖酶缺乏导致糖原堆积）。B错：膜破裂是溶酶体损伤的后果而非储积症的发病机制。C错：ATP不足导致酸性环境破坏不是储积症的核心机制。D错：分选异常可导致酶不足，但储积症的核心定义是酶本身缺陷导致底物堆积。",
+                          "hint":  "酶坏了→底物降解不了→堆在溶酶体里。"
+                      },
+                      {
+                          "id":  "q011",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/cell-biology/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "线粒体在肿瘤发生发展中的双面性"
+                                        },
+                          "stem":  "关于线粒体功能在肿瘤发生与发展中的作用，下列描述最准确的是？",
+                          "options":  [
+                                          "发生阶段：线粒体功能障碍促进正常细胞癌变；发展阶段：肿瘤细胞又需要线粒体维持生存",
+                                          "线粒体功能障碍始终抑制肿瘤，促进肿瘤凋亡",
+                                          "线粒体在肿瘤发生和发展中都只起抑制作用",
+                                          "肿瘤细胞一旦形成就完全不需要线粒体了"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**线粒体在肿瘤中的作用具有双面性：在肿瘤发生阶段，线粒体功能障碍（如ROS积累、氧化损伤、自噬清除能力下降）可促进正常细胞向癌细胞转化；但在肿瘤发展阶段，肿瘤细胞一旦形成又需要线粒体维持其生存——线粒体不仅参与代谢合成，还调控凋亡、钙稳态等，抑制线粒体功能反而可能影响肿瘤细胞存活。这也是为什么靶向线粒体的抗癌策略需要考虑阶段差异。B错：线粒体功能障碍不仅抑制肿瘤，在发生阶段反而促进癌变。C错：发展阶段肿瘤细胞依赖线粒体生存。D错：肿瘤细胞即使主要依赖糖酵解（Warburg效应），仍需要线粒体提供代谢合成等功能。",
+                          "hint":  "发生时坏了促癌变，发展时肿瘤还得靠它活。"
+                      }
+                  ]
+}

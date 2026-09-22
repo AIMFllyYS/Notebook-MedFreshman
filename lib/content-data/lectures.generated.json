@@ -310,6 +310,50 @@
       }
     },
     {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-021-022",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 21,
+        "end": 22
+      },
+      "taughtOn": "2026-09-21",
+      "topic": "消化系统——消化管（二）：胃、小肠、大肠；消化腺：肝、胰、唾液腺",
+      "revision": 1,
+      "quizId": "rec-2026-fall-021-022",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-021-022"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-021-022"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-021-022"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-021-022"
+        }
+      },
+      "hashes": {
+        "recording": "5fbd463147ddd8d5418d064a800184409e753e7f835e93b91bda60ad1c67332d",
+        "notesText": "2120c683d0dae120a8aee20859d361f3fbf3637e0359f6ba6ca0e85855afe566"
+      }
+    },
+    {
       "subjectId": "biochemistry",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -838,6 +882,50 @@
       }
     },
     {
+      "subjectId": "cell-biology",
+      "lessonId": "rec-2026-fall-013-014",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学",
+      "sessionRange": {
+        "start": 13,
+        "end": 14
+      },
+      "taughtOn": "2026-09-21",
+      "topic": "线粒体与细胞的能量转换（二）——氧化磷酸化、线粒体自噬、溶酶体与细胞内膜系统",
+      "revision": 1,
+      "quizId": "rec-2026-fall-013-014",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-013-014"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-013-014"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-013-014"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-013-014"
+        }
+      },
+      "hashes": {
+        "recording": "3f89079cf4e34e2e5b95d0a29e6a7b69aabee7820dfeb2f37e92df3bf74845ef",
+        "notesText": "e8a298fe94d9efb19be791ac6db3a040519cac758ccce7217b5915a9f7e9a228"
+      }
+    },
+    {
       "subjectId": "cell-biology-lab",
       "lessonId": "rec-2026-fall-005-008",
       "courseInstanceId": "rec-2026-fall",
@@ -1102,6 +1190,50 @@
       }
     },
     {
+      "subjectId": "histology",
+      "lessonId": "rec-2026-fall-015-016",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "人体组织学",
+      "sessionRange": {
+        "start": 15,
+        "end": 16
+      },
+      "taughtOn": "2026-09-21",
+      "topic": "神经组织——神经元与神经胶质细胞的结构、分类、突触、神经纤维与神经末梢",
+      "revision": 1,
+      "quizId": "rec-2026-fall-015-016",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-015-016"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-015-016"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-015-016"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-015-016"
+        }
+      },
+      "hashes": {
+        "recording": "a48649f522cadf5d4e81bb3c6886a0ae9c2a7e066971d2bafd4c8860960944b5",
+        "notesText": "1236caa9dd44849ed3f79b9107b58dfd0ec00793da053c3dab0bd5d77dfed8a8"
+      }
+    },
+    {
       "subjectId": "instrumental-analysis",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -1363,6 +1495,50 @@
       "hashes": {
         "recording": "a7235104d0504f1e4e49f1368f7e20b6ddc60dc613324af9e327ed4a39dec817",
         "notesText": "e688a027962eda335ef5626f86a1646072331833396e8a9673c9d676dc187e94"
+      }
+    },
+    {
+      "subjectId": "instrumental-analysis",
+      "lessonId": "rec-2026-fall-013-014",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "分析化学",
+      "sessionRange": {
+        "start": 13,
+        "end": 14
+      },
+      "taughtOn": "2026-09-21",
+      "topic": "分子荧光分析法（MFS）——荧光产生原理、激发与发射光谱、荧光强度与定量、影响因素与应用",
+      "revision": 1,
+      "quizId": "rec-2026-fall-013-014",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-013-014"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-013-014"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-013-014"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-013-014"
+        }
+      },
+      "hashes": {
+        "recording": "72b4c24914802fb0aff34c21af6ff907af60c6cf6ef0599a935bc6d6a2488a27",
+        "notesText": "572bc6e36e2baed15714dee6442026c3346167a730c2522d9e9e3639b4b63770"
       }
     },
     {

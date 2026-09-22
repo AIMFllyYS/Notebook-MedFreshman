@@ -1,0 +1,260 @@
+{
+    "subjectId":  "instrumental-analysis",
+    "chapterId":  "rec-2026-fall-013-014",
+    "generatedAt":  "2026-09-21",
+    "examConfig":  {
+                       "source":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-013-014/notes.html",
+                       "totalPoints":  110,
+                       "timeLimit":  45
+                   },
+    "contentRef":  {
+                       "lessonId":  "rec-2026-fall-013-014",
+                       "revision":  1,
+                       "recordingHash":  "72b4c24914802fb0aff34c21af6ff907af60c6cf6ef0599a935bc6d6a2488a27",
+                       "notesTextHash":  "572bc6e36e2baed15714dee6442026c3346167a730c2522d9e9e3639b4b63770"
+                   },
+    "questions":  [
+                      {
+                          "id":  "q001",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "MFS定义与光致发光"
+                                        },
+                          "stem":  "分子荧光分析法的缩写 MFS 及其发光机制是下列哪一项？",
+                          "options":  [
+                                          "MFS = Molecular Fluorescence Spectroscopy，属于光致发光——受紫外/可见光激发后发光，光照停止发光即停止",
+                                          "MFS = Molecular Fluorescence Spectroscopy，属于化学发光——由化学反应释放能量发光",
+                                          "MFS = Atomic Fluorescence Spectroscopy，属于原子荧光分析法",
+                                          "MFS = Molecular Fluorescence Spectroscopy，与紫外可见分光光度法同属吸光分析法"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**MFS 是 Molecular Fluorescence Spectroscopy（分子荧光光谱法），物质受紫外/可见光照射时发射荧光，光照停止发光即停止，本质是光致发光（光激发供能）。B 错：靠化学反应供能的是化学发光（如荧光棒），不是 MFS。C 错：Atomic Fluorescence Spectroscopy 是 AFS（原子荧光），本节不讲。D 错：MFS 是发光法（发射光），不是吸光法。",
+                          "hint":  "MFS 光致发光，荧光棒才是化学发光。"
+                      },
+                      {
+                          "id":  "q002",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "荧光方法三大特点"
+                                        },
+                          "stem":  "分子荧光分析法相比紫外可见分光光度法，其突出特点不包括下列哪一项？",
+                          "options":  [
+                                          "灵敏度高，可高出 2-4 个数量级",
+                                          "选择性好，因为能发荧光的物质相对较少",
+                                          "荧光有寿命，可利用时间分辨消除干扰",
+                                          "只能测定本身有颜色的物质，应用范围比紫外可见法窄得多"
+                                      ],
+                          "answer":  3,
+                          "explanation":  "**D 正确（即“不包括”的那一项）。**MFS 三大特点是灵敏度高、选择性好、有寿命（时间分辨），A、B、C 都是荧光法的真实优点。D 错：荧光法测的是受激发后发射的荧光，并不要求物质本身有颜色；能发荧光的物质少恰恰带来选择性好，而非“应用范围窄得多”。",
+                          "hint":  "荧光不要求本身有颜色，靠的是激发后发光。"
+                      },
+                      {
+                          "id":  "q003",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "荧光量子效率定义"
+                                        },
+                          "stem":  "荧光量子效率（荧光量子产率）Φ_f 的定义是下列哪一项？",
+                          "options":  [
+                                          "发出荧光的光子数 / 吸收激发光的光子数，其值 ≤ 1",
+                                          "吸收激发光的光子数 / 发出荧光的光子数，其值 ≥ 1",
+                                          "荧光强度 / 入射光强度，可大于 1",
+                                          "荧光发射波长 / 激发光波长，无量纲"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**荧光量子效率 = 发射荧光光子数 / 吸收激发光光子数，表示吸收的光中多大比例用来发光，最大为 1（吸的光全部用来发荧光），一般小于 1，数值越大荧光越强。B 错：分子分母颠倒了，且量子效率不可能 ≥ 1。C 错：这不是量子效率的定义。D 错：波长比与量子效率无关（那与斯托克斯位移相关）。",
+                          "hint":  "发出的除以吸收的，最大为 1。"
+                      },
+                      {
+                          "id":  "q004",
+                          "type":  "single_choice",
+                          "difficulty":  "basic",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "激发光/荧光/磷光波长比较"
+                                        },
+                          "stem":  "关于激发光（吸收光）、荧光、磷光三者的波长大小关系，下列正确的是？",
+                          "options":  [
+                                          "激发光 \u003c 荧光 \u003c 磷光",
+                                          "荧光 \u003c 激发光 \u003c 磷光",
+                                          "磷光 \u003c 荧光 \u003c 激发光",
+                                          "激发光 = 荧光 = 磷光"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**波长与能级差成反比。激发时从 S₀ 到 S₂/S₁ 能量最大、波长最短；荧光从 S₁V₀ 回到 S₀，能级差较小、波长较长（斯托克斯位移）；磷光从 T₁V₀ 回到 S₀，而 T₁ 比 S₁ 还低、能级差最小、波长最长。B、C、D 均违背能级差与波长的反比关系。",
+                          "hint":  "能级差越大波长越短；T₁ 最低所以磷光最长。"
+                      },
+                      {
+                          "id":  "q005",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "分子多重态 M=2S+1"
+                                        },
+                          "stem":  "关于分子多重态 M=2S+1 与电子自旋状态，下列说法正确的是？",
+                          "options":  [
+                                          "基态单线态 S₀ 中一对电子自旋相反（↑↓），M=1；三线态 T₁ 中两个电子自旋平行（↑↑），M=3",
+                                          "基态单线态中两个电子自旋平行，M=3；三线态中自旋相反，M=1",
+                                          "单线态和三线态的 M 都等于 2，与自旋方向无关",
+                                          "一个未成对电子时 M=1，称为双线态"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**S 为总自旋量子数。一对电子自旋相反（+1/2 与 -1/2）相加 S=0，M=2×0+1=1，为单线态；电子激发后若自旋方向翻转为两个同向（平行），S=1，M=2×1+1=3，为三线态。B 错：把单线态和三线态的自旋关系说反了。C 错：M 由自旋决定，不是恒为 2。D 错：单个未成对电子 S=1/2，M=2×(1/2)+1=2，才叫双线态，不是 M=1。",
+                          "hint":  "相反 S=0→M=1 单线；平行 S=1→M=3 三线。"
+                      },
+                      {
+                          "id":  "q006",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "Jablonski 图各弛豫过程"
+                                        },
+                          "stem":  "在 Jablonski 能级图中，关于激发后能量弛豫过程，下列配对错误的是？",
+                          "options":  [
+                                          "内转换 IC：S₁→T₁，伴随自旋方向翻转，重原子或氧气促进",
+                                          "振动弛豫 VR：同一电子态内由高振动能级降到低振动能级，以热能/动能释放",
+                                          "内转换 IC：S₂ 的 V₀ → S₁ 的高振动能级，均为单线态之间的转移",
+                                          "系间窜越 ISC：S₁ → T₁，自旋改变，重原子（I、Br）或氧气促进"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 错误（即题目所问“错误”项）。**把内转换和系间窜越混淆了：S₁→T₁、伴随自旋翻转、由重原子/氧气促进的是**系间窜越 ISC**，不是内转换。B 正确：振动弛豫发生在同一电子态内，逐级降振动能级、放热。C 正确：内转换 IC 是 S₂→S₁ 等单线态之间的转移。D 正确：系间窜越 ISC 才是 S₁→T₁ 的自旋翻转过程。",
+                          "hint":  "S₁→T₁ 且自旋变 = 系间窜越，不是内转换。"
+                      },
+                      {
+                          "id":  "q007",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "硫酸奎宁散射光辨析"
+                                        },
+                          "stem":  "在硫酸奎宁溶液的荧光测定中，用 320nm 和 350nm 光分别激发，下列关于各信号峰的判断正确的是？",
+                          "options":  [
+                                          "320nm、350nm 处出现的峰波长与激发光相同，属于瑞利散射；随激发波长移动而位移的峰属于拉曼散射；与激发波长无关的 448nm 峰才是荧光",
+                                          "320nm、350nm 处的峰是荧光，448nm 处的峰是瑞利散射",
+                                          "拉曼散射光波长与激发光波长始终相等，对荧光测定没有干扰",
+                                          "无论用什么波长激发，拉曼散射峰的位置都固定不动"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**瑞利散射是弹性散射，散射光波长 = 激发光波长（320 激发就在 320 出现、350 激发就在 350 出现），空白硫酸也有；拉曼散射是非弹性散射，波长 ≠ 激发波长且随激发波长移动（320 激发→360，350 激发→400）；荧光位置与激发波长无关（始终 448nm），只是强度不同。B 错：把荧光和散射光搞反了。C 错：拉曼散射波长 ≠ 激发波长，且干扰更大。D 错：拉曼峰随激发波长移动，正因如此才可用改变激发波长的办法消除干扰。",
+                          "hint":  "荧光位置不变；瑞利 = 激发波长；拉曼随激发移动。"
+                      },
+                      {
+                          "id":  "q008",
+                          "type":  "single_choice",
+                          "difficulty":  "medium",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "消除拉曼干扰与激发光谱测定"
+                                        },
+                          "stem":  "为消除拉曼散射对荧光测定的干扰，并获得最佳激发条件，下列做法正确的是？",
+                          "options":  [
+                                          "改变激发光波长，使拉曼散射峰移出荧光峰；先测激发光谱找到最强荧光对应的激发波长",
+                                          "固定激发光波长不变，把荧光检测器移到瑞利散射处测量",
+                                          "拉曼散射无法消除，只能放弃荧光法改用紫外可见法",
+                                          "把激发光波长调到与荧光波长完全相同即可消除一切散射"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**荧光位置与激发波长无关而拉曼峰随激发波长移动，因此改变激发波长可把拉曼峰移出荧光区；激发光谱的做法是固定荧光发射波长、扫描激发波长，其峰位即最佳激发波长。B 错：瑞利散射与激发光同波长，移到那里测的是散射而非荧光。C 错：拉曼干扰可通过改变激发波长消除。D 错：激发光与荧光波长本就不同（斯托克斯位移），调到相同并不能消除散射。",
+                          "hint":  "拉曼随激发移动，改变激发波长把它推开。"
+                      },
+                      {
+                          "id":  "q009",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "双波长法选波长两原则"
+                                        },
+                          "stem":  "双波长分光光度法选择两个波长 λ₁、λ₂ 以消除干扰组分的核心原则是？",
+                          "options":  [
+                                          "干扰组分在两波长处吸光度相等（等吸收点），且待测组分在两波长处吸光度差 ΔK 足够大",
+                                          "干扰组分在两波长处吸光度相差最大，待测组分吸光度相等",
+                                          "两个波长都选在待测组分吸收最大处，不考虑干扰组分",
+                                          "任意两个波长都可以，只要都在可见区即可"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**先从待测组分吸收曲线选 λ₁，再在干扰组分吸收曲线上找等吸收点 λ₂（使干扰组分在 λ₁、λ₂ 处吸光度相等），这样 ΔA = ΔK·b·c 只与待测组分浓度成正比；同时要求待测组分在两波长处 ΔK 足够大以保证灵敏度。B 错：把“干扰相等、待测 ΔK 大”正好说反。C 错：必须找干扰组分的等吸收点，否则 ΔA 中仍含干扰。D 错：波长选择必须满足上述原则，不能任意。",
+                          "hint":  "干扰等吸收，待测 ΔK 大。"
+                      },
+                      {
+                          "id":  "q010",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "notes",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/notes.html",
+                                            "label":  "荧光与分子结构关系"
+                                        },
+                          "stem":  "关于物质能发荧光的结构条件，以及荧光素与酚酞结构极相似却荧光性质迥异的原因，下列说法正确的是？",
+                          "options":  [
+                                          "必须有大的共轭 π 键体系且分子共平面；荧光素有氧桥固定共平面故强荧光，酚酞可自由旋转破坏共轭故无荧光",
+                                          "只要含有苯环就一定发荧光，与共平面性无关",
+                                          "共轭体系越小、分子越扭曲，荧光量子效率越高",
+                                          "酚酞发强荧光而荧光素不发光，因为酚酞分子量更大"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**能发荧光的前提是有大的共轭 π 键体系（先能吸光），且分子越共平面、电子云重叠越好，共轭越充分、荧光量子效率越高（苯 0.11 \u003c 萘 \u003c 蒽；芘≈1.0 vs 可旋转联苯≈0.2）。荧光素与酚酞结构仅差一个氧桥，氧桥把两个苯环固定成共平面→强荧光；酚酞可自由旋转、电子云不能充分重叠→无荧光。B 错：不是有苯环就发光，酚酞有苯环却不发光。C 错：共轭越大、越共平面荧光越强，说反了。D 错：恰好相反，荧光素发荧光、酚酞不发。",
+                          "hint":  "大共轭 + 共平面；荧光素氧桥固定平面。"
+                      },
+                      {
+                          "id":  "q011",
+                          "type":  "single_choice",
+                          "difficulty":  "hard",
+                          "points":  10,
+                          "source":  "current_chapter",
+                          "sourceRef":  {
+                                            "source":  "recording",
+                                            "path":  "content/instrumental-analysis/lectures/rec-2026-fall-013-014/recording.md",
+                                            "label":  "催化动力学光度法原理"
+                                        },
+                          "stem":  "关于催化动力学光度法的测定对象与实验设计，下列说法正确的是？",
+                          "options":  [
+                                          "测定的是催化剂（如酶）的浓度/活性，需催化剂少量、底物过量，使反应速率只与催化剂浓度成正比，并严格控制反应起止时间",
+                                          "测定的是反应物浓度，催化剂必须加至过量使反应瞬间完成",
+                                          "该方法灵敏度很低，仅适合常量组分测定",
+                                          "反应速率与反应物浓度无关，因此不需要监测吸光度变化"
+                                      ],
+                          "answer":  0,
+                          "explanation":  "**A 正确。**催化动力学光度法以催化反应为基础，测的是催化剂（酶）的浓度/活性；选一个本征很慢的反应，催化剂少量加入即显著加速，底物大量过量使其浓度在反应中近似不变，于是反应速率只与催化剂浓度成正比；通过监测吸光度随时间的变化速率定量，关键是严格同时加试剂、同时终止反应，灵敏度可达 10⁻⁶~10⁻⁹ g/mL 甚至 10⁻¹² g/mL。B 错：催化剂过量会使反应瞬间完成无法测量，且测的不是反应物。C 错：该方法灵敏度极高而非很低。D 错：反应速率与反应物浓度有关，正是靠吸光度随时间的变化来测速。",
+                          "hint":  "测催化剂（酶），底物过量催化剂少，卡时间。"
+                      }
+                  ]
+}
