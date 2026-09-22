@@ -27,6 +27,14 @@ export interface ImageGenSession {
   startedAt?: number;
   /** 该模型声明的典型耗时（毫秒），由开跑时按模型写入。 */
   expectedMs?: number;
+  /**
+   * 「已获用户批准，开窗即开跑」。
+   *
+   * 生图是**付费**动作，批准只能由用户点对话里的「批准」按钮给出（ImageGenCard.onApprove）。
+   * 右上参考列只是另一个入口，它建会话时 autoStart 保持 false —— 图窗会先亮出提示词与
+   * 「开始生成」按钮，绝不因为"打开看了一眼"就扣费。
+   */
+  autoStart?: boolean;
 }
 
 export interface ImageGenSessionInit {
@@ -44,7 +52,13 @@ interface ImageGenState {
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
 
-  openViewer: (init: ImageGenSessionInit) => void;
+  /**
+   * 打开（或复用）生图窗。
+   *
+   * @param options.approve 用户已点过「批准」：新会话直接标 autoStart，图窗开出来就开跑。
+   *   缺省（参考列等旁路入口）不标，图窗先停下来等用户在图窗里再点一次「开始生成」。
+   */
+  openViewer: (init: ImageGenSessionInit, options?: { approve?: boolean }) => void;
   closeViewer: (id: string) => void;
   bringToFront: (id: string) => void;
   updateSession: (id: string, patch: Partial<ImageGenSession>) => void;
@@ -81,23 +95,27 @@ export const useImageGen = createPersistedStore<ImageGenState>(
       _hasHydrated: false,
       _setHasHydrated: (v) => set({ _hasHydrated: v }),
 
-      openViewer: (init) => {
+      openViewer: (init, options) => {
         const id = init.id;
         const existing = get().sessions[id];
         const isAlreadyOpen = get().openIds.includes(id);
+        const approve = options?.approve ?? false;
 
-        const session: ImageGenSession = existing ?? {
-          id,
-          prompt: init.prompt,
-          // 对话里的生图卡也是这个兜底标题（ImageGenCard → window.imageGen.card.defaultTitle）。
-          title: init.title || translateNow("window.imageGen.card.defaultTitle"),
-          size: init.size || "1024x1024",
-          count: init.count || 1,
-          modelId: init.modelId,
-          status: "idle",
-          images: [],
-          createdAt: Date.now(),
-        };
+        const session: ImageGenSession = existing
+          ? (approve && !existing.autoStart ? { ...existing, autoStart: true } : existing)
+          : {
+              id,
+              prompt: init.prompt,
+              // 对话里的生图卡也是这个兜底标题（ImageGenCard → window.imageGen.card.defaultTitle）。
+              title: init.title || translateNow("window.imageGen.card.defaultTitle"),
+              size: init.size || "1024x1024",
+              count: init.count || 1,
+              modelId: init.modelId,
+              status: "idle",
+              images: [],
+              createdAt: Date.now(),
+              autoStart: approve,
+            };
 
         const { pos, size } = imageGenWindowGeometry();
         useWindowManager.getState().openWindow({

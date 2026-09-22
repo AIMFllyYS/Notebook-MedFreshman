@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import { Download, ImagePlus, RefreshCw, Loader, AlertTriangle } from "lucide-react";
+import { Download, ImagePlus, RefreshCw, Loader, AlertTriangle, Check as AgentCheckIcon } from "lucide-react";
 import { useImageGen, imageGenWindowId, type ImageGenImage } from "@/lib/hooks/useImageGen";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
@@ -105,16 +105,67 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   useEffect(() => {
     if (!session) return;
     if (session.status !== "idle") return;
+    // 没有用户批准（从参考列点进来的）就先停住：付费动作不能因为"打开看了一眼"就开跑。
+    if (!session.autoStart) return;
     if (requestStartedRef.current) return;
     void triggerGenerate(sessionId);
   }, [session, sessionId, triggerGenerate]);
 
   const handleCloseViewer = useCallback(() => closeViewer(sessionId), [closeViewer, sessionId]);
 
+  /** 图窗内的二次确认：标记 autoStart 之后 effect 会接着把生成跑起来。 */
+  const confirmStart = useCallback(() => {
+    updateSession(sessionId, { autoStart: true });
+  }, [sessionId, updateSession]);
+
   // Hook 必须在任何早返回之前调用（session 为 null 时它自己返回零进度）。
   const progress = useImageGenProgress(session);
 
   if (!session) return null;
+
+  if (session.status === "idle" && !session.autoStart) {
+    return (
+      <ManagedWindow
+        windowId={winId}
+        title={session.title}
+        icon={<ImagePlus size={15} />}
+        onClose={handleCloseViewer}
+        fullscreenTarget="notes"
+        minSize={{ minW: 380, minH: 360 }}
+        overlayId={`image-gen-viewer-${sessionId}`}
+        bodyClassName="flex flex-col"
+        unmountWhenMinimized
+      >
+        <div className="flex h-full min-h-0 flex-col items-center justify-center gap-3 px-6 text-center">
+          <ImagePlus size={22} className="text-[var(--md-sys-color-tertiary)]" />
+          <p className="text-[13px] font-semibold text-[var(--md-sys-color-on-surface)]">
+            {t("window.imageGen.confirm.title")}
+          </p>
+          <p className="max-w-[42ch] text-[12px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+            {t("window.imageGen.confirm.hint")}
+          </p>
+          <p className="max-w-[46ch] break-words rounded-lg bg-[var(--md-sys-color-surface-container)] px-3 py-2 text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+            {session.prompt}
+          </p>
+          <button
+            type="button"
+            onClick={confirmStart}
+            data-testid="image-gen-confirm-start"
+            className="press inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[12.5px] font-semibold"
+            style={{
+              background: "var(--md-sys-color-tertiary)",
+              color: "var(--md-sys-color-on-tertiary)",
+            }}
+          >
+            <AgentCheckIcon size={14} /> {t("window.imageGen.confirm.start")}
+          </button>
+          <span className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
+            {t("window.imageGen.sizeCount", { size: session.size, count: session.count })}
+          </span>
+        </div>
+      </ManagedWindow>
+    );
+  }
 
   const handleRetry = () => {
     requestStartedRef.current = false;

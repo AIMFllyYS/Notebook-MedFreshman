@@ -47,14 +47,19 @@ export default function ImageGenCard({
 
   const onApprove = () => {
     setCancelled(false);
-    openViewer({
-      id: imageGenId,
-      prompt: effectivePrompt,
-      title: effectiveTitle,
-      size: effectiveSize,
-      count: effectiveCount,
-      modelId,
-    });
+    // 批准是**付费闸门**：只有这里把 approve 传下去，图窗才会开出来就开跑。
+    // 其它入口（右上参考列）建会话时不带这个标记，图窗会停下来等用户再确认一次。
+    openViewer(
+      {
+        id: imageGenId,
+        prompt: effectivePrompt,
+        title: effectiveTitle,
+        size: effectiveSize,
+        count: effectiveCount,
+        modelId,
+      },
+      { approve: true },
+    );
   };
 
   const onReopen = () => {
