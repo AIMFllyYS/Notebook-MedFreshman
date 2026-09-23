@@ -110,6 +110,11 @@ export interface AttachmentPreviewData {
   mimeType: string;
   kind: "image" | "pdf" | "ppt" | "html" | "markdown" | "text" | "docx";
   content: string;
+  /**
+   * 原始 File（仅 composer 预览路径携带）。content 里的 blob: URL 归 composer 所有、
+   * 随时会被回收；预览窗据此自建 object URL 并在卸载时释放（借据模型）。
+   */
+  file?: File;
 }
 
 export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | MembershipSponsorData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | UserNoteEditorData | UserNoteLibraryData | FlashcardCitePickerData | AgentProductPickerData | MemoryProposalData | QuizExplainData | AgentQuizData | ProjectFilesData | Record<string, unknown>;

@@ -216,12 +216,17 @@ export async function POST(req: NextRequest) {
       // 参考材料 + 软上限。两端 80% 用同一套全量估算（system + 工具 schema + 参考材料 + 对话历史）。
       const userText = lastUserText(body.messages);
       const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId, customGroups);
-      let ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: body.contextTruncated });
-      const prunedHistory = pruneStudyMessages(compactArtifactMessages(await toModelMessages(body.messages, {
-        skills: body.skills,
-        artifacts: body.artifacts,
-        academicYear: body.academicYear,
-      })));
+      // 上下文装配（semantic 模式内含检索 RTT）与附件 rehydrate 互不依赖，并行省一个网络往返。
+      const [initialCtx, modelMessages] = await Promise.all([
+        ctxManager.buildContext(chatCtx, userText, { compact: body.contextTruncated }),
+        toModelMessages(body.messages, {
+          skills: body.skills,
+          artifacts: body.artifacts,
+          academicYear: body.academicYear,
+        }),
+      ]);
+      let ctxResult = initialCtx;
+      const prunedHistory = pruneStudyMessages(compactArtifactMessages(modelMessages));
       const candidateLimit = automaticModels
         ? Math.min(...automaticModels.map((id) => (getModelInfoWithCustom(id, customGroups)?.contextK ?? 128) * 1000))
         : ctxResult.maxTokens;

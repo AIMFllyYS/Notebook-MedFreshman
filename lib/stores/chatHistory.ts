@@ -5,6 +5,7 @@ import {
   type ChatFolder,
   type ChatManifestV2,
   type SessionMeta,
+  type SessionWindowLoad,
   manifestFrom,
   ensureDefaultProjects as ensureDefaultProjectRows,
   isSystemProject,
@@ -12,6 +13,11 @@ import {
   loadManifest,
   saveManifest,
   loadSessionMessages,
+  loadSessionWindow,
+  loadTurnsBefore,
+  appendSessionMessages,
+  writeSessionMessage,
+  dropSessionTailCache,
   saveSessionMessages,
   migrateFromV1IfNeeded,
   deleteSessionData,
@@ -19,6 +25,13 @@ import {
   persistInlineAttachments,
   scheduleOrphanChatGc,
 } from '@/lib/storage/chatStorage';
+import {
+  tailWindowSlice,
+  turnCountsOf,
+  EARLIER_TURNS_BATCH,
+  TURNS_PER_CHUNK,
+  type TurnSpineEntry,
+} from '@/lib/chat/turnSpine';
 import { getMessageText } from '@/lib/chat/messageParts';
 import { mergeRememberedSlices } from '@/lib/project/sessionSlices';
 import { scheduleCloudTombstone, scheduleCloudUpsert } from '@/lib/sync/schedule';
@@ -39,6 +52,16 @@ export interface ChatSession {
   messageCount?: number;
 }
 
+/** 已加载窗口的描述：messagesById[id] 保存的是轮次区间 [startTurn, turnCount) 的消息。 */
+export interface SessionWindowMeta {
+  startTurn: number;
+  /** 窗口首条消息在全量数组里的下标。 */
+  startIndex: number;
+  turnCount: number;
+  messageCount: number;
+  spine: TurnSpineEntry[];
+}
+
 interface ChatHistoryState {
   sessionsMeta: SessionMeta[];
   /** 对话项目（与 sessionsMeta 一起写进 manifest）；含两个系统项目。 */
@@ -46,6 +69,12 @@ interface ChatHistoryState {
   /** 下一次「新建对话」的落点项目；null = 不使用项目。 */
   activeProjectId: string | null;
   messagesById: Record<string, ChatMessage[]>;
+  /**
+   * 每条已加载会话的窗口边界 + 全量 spine。
+   * spine 是不读消息正文也能拿到的轮次索引（定位点 / 派生计数 / 「还有更早」全靠它）；
+   * 缺省的条目（老测试、sync 直写的内存态）按「全量已加载、没有更早」处理。
+   */
+  sessionWindowById: Record<string, SessionWindowMeta | undefined>;
   activeSessionId: string | null;
   sessionLoadState: Record<string, 'idle' | 'loading' | 'loaded' | 'error'>;
   loadedSessionIds: string[];
@@ -60,6 +89,12 @@ interface ChatHistoryState {
   pinSession: (id: string) => void;
   unpinSession: (id: string) => void;
   ensureSessionLoaded: (sessionId: string) => Promise<void>;
+  /** 「加载更早」：把窗口上界往前推 count 轮，返回实际prepend的轮数。 */
+  loadEarlierTurns: (sessionId: string, count?: number) => Promise<number>;
+  /** 定位点回跳：把窗口上界推到目标轮（含），返回该轮在 messagesById 里的新下标。 */
+  jumpToTurn: (sessionId: string, turn: number) => Promise<number | null>;
+  /** 全量物化（分享 / 导出 / 来源面板等用户主动「看全部」动作走这里）。 */
+  ensureSessionFullyLoaded: (sessionId: string) => Promise<void>;
   /** 补齐两个系统项目（幂等）。水合前不落盘。 */
   ensureDefaultProjects: () => void;
   /** 选择/清空下一次新建对话的落点项目。 */
@@ -154,12 +189,69 @@ function pruneArtifactsFromMetas(metas: SessionMeta[]): void {
   }
 }
 
-function evictLoadedSessions(state: ChatHistoryState, keepIds: Set<string>): Record<string, ChatMessage[]> {
+function evictLoadedSessions(
+  state: ChatHistoryState,
+  keepIds: Set<string>,
+): Pick<ChatHistoryState, 'messagesById' | 'sessionWindowById'> {
   const next = { ...state.messagesById };
+  const nextWindows = { ...state.sessionWindowById };
   for (const id of state.loadedSessionIds) {
     if (keepIds.has(id)) continue;
     delete next[id];
+    delete nextWindows[id];
+    dropSessionTailCache(id);
   }
+  return { messagesById: next, sessionWindowById: nextWindows };
+}
+
+function windowMetaFromLoad(load: SessionWindowLoad): SessionWindowMeta {
+  return {
+    startTurn: load.startTurn,
+    startIndex: load.startIndex,
+    turnCount: load.turnCount,
+    messageCount: load.messageCount,
+    spine: load.spine,
+  };
+}
+
+const EMPTY_WINDOW: SessionWindowMeta = { startTurn: 0, startIndex: 0, turnCount: 0, messageCount: 0, spine: [] };
+
+/**
+ * 追加消息时同步维护内存 spine（与存储层 buildChunkSpine 同一套规则：
+ * user 消息开新轮，其余并入上一轮）。定位点 / 「还有更早」 / 派生计数立刻可见新轮，
+ * 不必等下一次窗口加载。
+ */
+function runtimeSpineAppend(spine: TurnSpineEntry[], message: ChatMessage, globalIndex: number): TurnSpineEntry[] {
+  const last = spine[spine.length - 1];
+  if (message.role === 'user' || !last) {
+    const turn = last ? last.turn + 1 : 0;
+    const isUser = message.role === 'user';
+    return [
+      ...spine,
+      {
+        turn,
+        chunk: Math.floor(turn / TURNS_PER_CHUNK),
+        firstIndex: globalIndex,
+        messageCount: 1,
+        firstMessageId: message.id,
+        userMessageId: isUser ? message.id : null,
+        preview: isUser ? getMessageText(message).replace(/\s+/g, ' ').trim().slice(0, 80) : '',
+        timestamp: typeof message.timestamp === 'number' ? message.timestamp : Date.now(),
+        counts: turnCountsOf([message]),
+      },
+    ];
+  }
+  const add = turnCountsOf([message]);
+  const next = spine.slice();
+  next[next.length - 1] = {
+    ...last,
+    messageCount: last.messageCount + 1,
+    counts: {
+      sources: last.counts.sources + add.sources,
+      images: last.counts.images + add.images,
+      products: last.counts.products + add.products,
+    },
+  };
   return next;
 }
 
@@ -173,6 +265,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   folders: [],
   activeProjectId: null,
   messagesById: {},
+  sessionWindowById: {},
   activeSessionId: null,
   sessionLoadState: {},
   loadedSessionIds: [],
@@ -215,8 +308,9 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     set((s) => ({
       sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'loading' },
     }));
-    const messages = await loadSessionMessages(sessionId);
-    if (!messages) {
+    // 窗口读：只取最近若干轮 + 全量 spine；更早的轮次留在 chunk 里按需回读。
+    const window = await loadSessionWindow(sessionId);
+    if (!window) {
       set((s) => ({
         sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'error' },
       }));
@@ -235,15 +329,70 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         loadedSessionIds = loadedSessionIds.filter((x) => x !== candidate);
         keep.add(sessionId);
       }
-      const messagesById = { ...s.messagesById, [sessionId]: messages };
+      const messagesById = { ...s.messagesById, [sessionId]: window.messages };
+      const sessionWindowById = { ...s.sessionWindowById, [sessionId]: windowMetaFromLoad(window) };
       const evictKeep = new Set([...loadedSessionIds, ...s.pinnedSessionIds, s.activeSessionId].filter(Boolean) as string[]);
-      const pruned = evictLoadedSessions({ ...s, messagesById, loadedSessionIds }, evictKeep);
+      const pruned = evictLoadedSessions({ ...s, messagesById, sessionWindowById, loadedSessionIds }, evictKeep);
       return {
-        messagesById: pruned,
+        messagesById: pruned.messagesById,
+        sessionWindowById: pruned.sessionWindowById,
         loadedSessionIds,
         sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'loaded' },
       };
     });
+  },
+
+  loadEarlierTurns: async (sessionId, count = EARLIER_TURNS_BATCH) => {
+    const window = get().sessionWindowById[sessionId];
+    const loaded = get().messagesById[sessionId];
+    if (!window || !loaded || window.startTurn <= 0) return 0;
+    const range = await loadTurnsBefore(sessionId, window.startTurn, count);
+    if (!range || range.fromTurn >= window.startTurn) return 0;
+    set((state) => {
+      const current = state.sessionWindowById[sessionId];
+      const existing = state.messagesById[sessionId];
+      if (!current || !existing) return state;
+      // 重复调用/并发时按 id 去重：轮次区间本不该重叠，但 stream 落尾可能让边界相交。
+      const seen = new Set(existing.map((message) => message.id));
+      const prepend = range.messages.filter((message) => !seen.has(message.id));
+      return {
+        messagesById: { ...state.messagesById, [sessionId]: [...prepend, ...existing] },
+        sessionWindowById: {
+          ...state.sessionWindowById,
+          [sessionId]: { ...current, startTurn: range.fromTurn, startIndex: range.startIndex },
+        },
+      };
+    });
+    return window.startTurn - range.fromTurn;
+  },
+
+  jumpToTurn: async (sessionId, turn) => {
+    const window = get().sessionWindowById[sessionId];
+    if (!window || turn < 0 || turn >= window.turnCount) return null;
+    if (turn >= window.startTurn) {
+      const entry = window.spine[turn];
+      return entry ? entry.firstIndex - window.startIndex : null;
+    }
+    const loaded = await get().loadEarlierTurns(sessionId, window.startTurn - turn);
+    if (loaded <= 0) return null;
+    const next = get().sessionWindowById[sessionId];
+    const entry = next?.spine[turn];
+    return next && entry ? entry.firstIndex - next.startIndex : null;
+  },
+
+  ensureSessionFullyLoaded: async (sessionId) => {
+    const window = get().sessionWindowById[sessionId];
+    if (window && window.startTurn === 0 && get().messagesById[sessionId]) return;
+    // tailTurns=Infinity：窗口起点拉到 0，等于全量装配。
+    const full = await loadSessionWindow(sessionId, Number.MAX_SAFE_INTEGER);
+    if (!full) return;
+    set((state) => ({
+      messagesById: { ...state.messagesById, [sessionId]: full.messages },
+      sessionWindowById: { ...state.sessionWindowById, [sessionId]: windowMetaFromLoad(full) },
+      loadedSessionIds: state.loadedSessionIds.includes(sessionId)
+        ? state.loadedSessionIds
+        : [...state.loadedSessionIds, sessionId],
+    }));
   },
 
   createSession: (context, kind, folderId) => {
@@ -279,8 +428,11 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         pruneArtifactsFromMetas(capped);
       }
       const messagesById = { ...state.messagesById, [id]: [] };
+      const sessionWindowById = { ...state.sessionWindowById, [id]: { ...EMPTY_WINDOW } };
       for (const dropId of droppedIds) {
         delete messagesById[dropId];
+        delete sessionWindowById[dropId];
+        dropSessionTailCache(dropId);
         // 被淘汰的会话可能还在跑：停掉并抹掉运行记录，否则侧栏徽标成孤儿。
         useSessionRuns.getState().remove(dropId);
       }
@@ -291,6 +443,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       return {
         sessionsMeta: capped,
         messagesById,
+        sessionWindowById,
         loadedSessionIds: [...state.loadedSessionIds.filter((x) => x !== id && !droppedIds.has(x)), id],
         activeSessionId: claimActive ? id : state.activeSessionId,
         sessionLoadState: { ...state.sessionLoadState, [id]: 'loaded' },
@@ -343,6 +496,9 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       messagesById: state.messagesById[blank.id]
         ? state.messagesById
         : { ...state.messagesById, [blank.id]: [] },
+      sessionWindowById: state.sessionWindowById[blank.id]
+        ? state.sessionWindowById
+        : { ...state.sessionWindowById, [blank.id]: { ...EMPTY_WINDOW } },
       sessionLoadState: { ...state.sessionLoadState, [blank.id]: 'loaded' },
       loadedSessionIds: [...state.loadedSessionIds.filter((id) => id !== blank.id), blank.id],
       _activeMessagesReady: true,
@@ -369,6 +525,9 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       nextActiveToLoad = deletedActive ? newActiveId : null;
       const messagesById = { ...state.messagesById };
       delete messagesById[id];
+      const sessionWindowById = { ...state.sessionWindowById };
+      delete sessionWindowById[id];
+      dropSessionTailCache(id);
       pruneArtifactsFromMetas(sessionsMeta);
       persistManifest(state, manifestOf(state, { activeSessionId: newActiveId, sessions: sessionsMeta }));
       void (async () => {
@@ -380,6 +539,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       return {
         sessionsMeta,
         messagesById,
+        sessionWindowById,
         activeSessionId: newActiveId,
         loadedSessionIds: state.loadedSessionIds.filter((x) => x !== id),
         sessionLoadState: { ...state.sessionLoadState, [id]: 'idle' },
@@ -413,21 +573,41 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const storedMessage = persistInlineAttachments(message);
       const prev = state.messagesById[sessionId] ?? [];
       const messages = [...prev, storedMessage];
+      const prevWindow = state.sessionWindowById[sessionId];
+      // 有窗口元信息才增量维护 spine/messageCount；没有的按旧语义只记数组。
+      const nextWindow = prevWindow
+        ? {
+            ...prevWindow,
+            messageCount: prevWindow.messageCount + 1,
+            turnCount: 0, // 占位，下面 spine 推完再填
+            spine: runtimeSpineAppend(prevWindow.spine, storedMessage, prevWindow.startIndex + prev.length),
+          }
+        : undefined;
+      if (nextWindow) nextWindow.turnCount = nextWindow.spine.length;
+      const fullCount = prevWindow ? prevWindow.messageCount + 1 : messages.length;
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId
           ? {
               ...s,
               updatedAt: Date.now(),
-              messageCount: messages.length,
+              messageCount: fullCount,
               preview: storedMessage.role === 'user' ? getMessageText(storedMessage).slice(0, 80) : s.preview,
               artifactIds: mergeArtifactIds(s.artifactIds, [storedMessage]),
             }
           : s,
       );
-      saveSessionMessages(sessionId, messages);
+      // 持久化走增量追加（尾块重写），不是整段序列化。
+      appendSessionMessages(sessionId, [storedMessage]);
       persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       scheduleCloudUpsert('chat-session', sessionId);
-      return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
+      const sessionWindowById = nextWindow
+        ? { ...state.sessionWindowById, [sessionId]: nextWindow }
+        : state.sessionWindowById;
+      return {
+        messagesById: { ...state.messagesById, [sessionId]: messages },
+        sessionWindowById,
+        sessionsMeta,
+      };
     });
   },
 
@@ -451,7 +631,22 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       saveSessionMessages(sessionId, stored);
       persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       scheduleCloudUpsert("chat-session", sessionId);
-      return { messagesById: { ...state.messagesById, [sessionId]: stored }, sessionsMeta };
+      // 整段替换后窗口重置为新的尾部窗口（compact / 云拉取都走这里）。
+      const sliced = tailWindowSlice(stored);
+      return {
+        messagesById: { ...state.messagesById, [sessionId]: sliced.messages },
+        sessionWindowById: {
+          ...state.sessionWindowById,
+          [sessionId]: {
+            startTurn: sliced.startTurn,
+            startIndex: sliced.startIndex,
+            turnCount: sliced.spine.length,
+            messageCount: stored.length,
+            spine: sliced.spine,
+          },
+        },
+        sessionsMeta,
+      };
     });
   },
 
@@ -465,25 +660,45 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       if (!target) return state;
       const updated = { ...target, ...updates };
       const messages = prev.map((m) => (m.id === messageId ? updated : m));
+      // 流式期每 tick 都会走这里：只在 artifactIds 真变化时才新建 meta/数组——
+      // 否则 sessionsMeta 每 tick 都是新引用，侧栏/历史层/项目 chip 全量重渲。
       let shouldSaveManifest = false;
-      const sessionsMeta = state.sessionsMeta.map((s) =>
-        {
-          if (s.id !== sessionId) return s;
-          const artifactIds = mergeArtifactIds(s.artifactIds, [updated]);
-          if (!sameStringArray(s.artifactIds, artifactIds)) {
-            shouldSaveManifest = true;
-          }
-          return {
-            ...s,
-            updatedAt: Date.now(),
-            artifactIds,
-          };
-        });
-      saveSessionMessages(sessionId, messages);
+      let sessionsMeta = state.sessionsMeta;
+      const metaIndex = state.sessionsMeta.findIndex((s) => s.id === sessionId);
+      if (metaIndex >= 0) {
+        const meta = state.sessionsMeta[metaIndex];
+        const artifactIds = mergeArtifactIds(meta.artifactIds, [updated]);
+        if (!sameStringArray(meta.artifactIds, artifactIds)) {
+          sessionsMeta = state.sessionsMeta.slice();
+          sessionsMeta[metaIndex] = { ...meta, updatedAt: Date.now(), artifactIds };
+          shouldSaveManifest = true;
+        }
+      }
+      // 持久化只重写目标消息所在的那一个 chunk（流式期恒定命中尾块）。
+      writeSessionMessage(sessionId, updated);
       if (shouldSaveManifest) {
         persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       }
-      return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
+      // 流式吐出的工具结果会改变所在轮的派生计数：按轮重算（只扫本轮几条消息）。
+      let sessionWindowById = state.sessionWindowById;
+      const window = sessionWindowById[sessionId];
+      if (window) {
+        const globalIndex = window.startIndex + prev.findIndex((m) => m.id === messageId);
+        const entry = window.spine.find(
+          (s) => globalIndex >= s.firstIndex && globalIndex < s.firstIndex + s.messageCount,
+        );
+        if (entry) {
+          const turnStart = entry.firstIndex - window.startIndex;
+          const counts = turnCountsOf(messages.slice(turnStart, turnStart + entry.messageCount));
+          const spine = window.spine.map((s) => (s === entry ? { ...s, counts } : s));
+          sessionWindowById = { ...sessionWindowById, [sessionId]: { ...window, spine } };
+        }
+      }
+      return {
+        messagesById: { ...state.messagesById, [sessionId]: messages },
+        sessionWindowById,
+        sessionsMeta,
+      };
     });
   },
 

@@ -8,6 +8,8 @@ import ChatMessageDots, { type UserDotEntry } from '@/components/chat/ChatMessag
 import { TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
 import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
 import { getMessageText } from '@/lib/chat/messageParts';
+import { dotEntriesFromSpine } from '@/lib/chat/turnSpine';
+import { useChatHistory } from '@/lib/stores/chatHistory';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { useT } from '@/lib/i18n';
 
@@ -157,15 +159,22 @@ export default function ChatThread({
           start: index * MESSAGE_ESTIMATE_PX,
         }));
   const totalSize = virtualizer.getTotalSize() || displayMessages.length * MESSAGE_ESTIMATE_PX;
-  const userDots = useMemo<UserDotEntry[]>(
-    () => displayMessages.flatMap((msg, index) => (
-      msg.role === 'user'
-        ? [{ index, id: msg.id, preview: getMessageText(msg) }]
-        : []
-    )),
-    [displayMessages],
+  // 窗口化：sessionWindowById 给出全量 spine 与窗口起点。
+  // 定位点用「全局消息下标」（spine.firstIndex），窗口外轮次的点也在轨道上，
+  // 点击时按需回读对应轮次再拼进窗口 —— 而不是只给已加载段落画点。
+  const sessionWindow = useChatHistory((state) =>
+    sessionId ? state.sessionWindowById[sessionId] : undefined,
   );
-  const firstVisibleIndex = virtualItems[0]?.index ?? rows[0]?.index ?? 0;
+  const windowStartIndex = sessionWindow?.startIndex ?? 0;
+  const userDots = useMemo<UserDotEntry[]>(() => {
+    const spine = sessionWindow?.spine;
+    if (spine?.length) return dotEntriesFromSpine(spine);
+    // 无窗口元信息（旧内存态/测试直写）：退回按已载数组画点，语义与旧版一致。
+    return displayMessages.flatMap((msg, index) => (
+      msg.role === 'user' ? [{ index, id: msg.id, preview: getMessageText(msg) }] : []
+    ));
+  }, [sessionWindow?.spine, displayMessages]);
+  const firstVisibleIndex = windowStartIndex + (virtualItems[0]?.index ?? rows[0]?.index ?? 0);
 
   const { onScroll, isAtBottom, setWantStick, wantStickRef } = useStickToBottom(
     scrollRef,
@@ -219,7 +228,11 @@ export default function ChatThread({
     setWantStick(true);
   };
 
-  const jumpToUserMessage = (index: number) => {
+  const [earlierLoading, setEarlierLoading] = useState(false);
+  const prependAnchorRef = useRef<{ height: number; top: number } | null>(null);
+  const pendingJumpRef = useRef<number | null>(null);
+
+  const scrollToLocalIndex = (index: number) => {
     setWantStick(false);
     const align = { align: 'start' as const };
     virtualizer.scrollToIndex(index, align);
@@ -237,6 +250,55 @@ export default function ChatThread({
     };
     jumpRafRef.current = requestAnimationFrame(refine);
   };
+
+  /**
+   * 定位点点击：index 是全局消息下标。
+   * 在窗口内 → 直接滚动；在窗口外 → 记录滚动锚点，回读对应轮次拼接后落到目标行。
+   */
+  const jumpToUserMessage = (globalIndex: number) => {
+    if (globalIndex >= windowStartIndex) {
+      scrollToLocalIndex(globalIndex - windowStartIndex);
+      return;
+    }
+    const spine = sessionWindow?.spine;
+    if (!sessionId || !spine?.length) return;
+    const entry = spine.find((s) => s.firstIndex === globalIndex);
+    if (!entry) return;
+    const el = scrollRef.current;
+    if (el) prependAnchorRef.current = { height: el.scrollHeight, top: el.scrollTop };
+    pendingJumpRef.current = globalIndex;
+    void useChatHistory.getState().jumpToTurn(sessionId, entry.turn);
+  };
+
+  const handleLoadEarlier = () => {
+    if (!sessionId || earlierLoading) return;
+    const el = scrollRef.current;
+    if (el) prependAnchorRef.current = { height: el.scrollHeight, top: el.scrollTop };
+    setEarlierLoading(true);
+    void useChatHistory.getState().loadEarlierTurns(sessionId).finally(() => setEarlierLoading(false));
+  };
+
+  // 前置拼接后按 scrollHeight 差量回写 scrollTop：视口内容不因 prepend 跳变。
+  useLayoutEffect(() => {
+    const anchor = prependAnchorRef.current;
+    if (!anchor) return;
+    const el = scrollRef.current;
+    if (el) {
+      const delta = el.scrollHeight - anchor.height;
+      if (delta !== 0) el.scrollTop = anchor.top + delta;
+    }
+    prependAnchorRef.current = null;
+  });
+
+  // 窗口外跳转：前置轮次落地后再换算成窗口内下标滚过去。
+  useEffect(() => {
+    const target = pendingJumpRef.current;
+    if (target == null) return;
+    const local = target - windowStartIndex;
+    if (local < 0 || local >= displayMessages.length) return;
+    pendingJumpRef.current = null;
+    scrollToLocalIndex(local);
+  });
 
   return (
     <div className="chat-thread" data-dots-placement={dotsPlacement}>
@@ -263,6 +325,22 @@ export default function ChatThread({
           emptyState ?? null
         ) : (
           <>
+            {sessionWindow && sessionWindow.startTurn > 0 ? (
+              <div className="chat-load-earlier-wrap">
+                <button
+                  type="button"
+                  className="chat-load-earlier"
+                  onClick={handleLoadEarlier}
+                  disabled={earlierLoading}
+                  data-testid="chat-load-earlier"
+                >
+                  {earlierLoading ? (
+                    <AgentLoopIcon size={14} className="animate-pulse motion-reduce:animate-none" style={{ color: 'var(--ink-soft)' }} />
+                  ) : null}
+                  <span>{earlierLoading ? t('trace.thread.loadingEarlier') : t('trace.thread.loadEarlier')}</span>
+                </button>
+              </div>
+            ) : null}
             <div
               // 定宽容器：虚拟行（position:absolute; width:100%）以它为基准。
               // Agent 中央对话靠这个类把正文收进可读宽度居中（见 globals.css 的 --agent-chat-max）。

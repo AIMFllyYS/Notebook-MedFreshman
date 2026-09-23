@@ -14,7 +14,7 @@ import {
   type ScheduledRun,
 } from "@/lib/stores/scheduledTasks";
 import { useStore } from "@/lib/stores/ui";
-import { collectArtifactIdsFromMessages } from "@/lib/storage/chatStorage";
+import { collectArtifactIdsFromMessages, loadSessionMessages } from "@/lib/storage/chatStorage";
 import type { ChatContext } from "@/lib/types/chat";
 
 /**
@@ -152,23 +152,26 @@ function ScheduledRunDriver({ taskId, run }: { taskId: string; run: ScheduledRun
     if (isLoading) sawLoadingRef.current = true;
     if (doneRef.current || !sawLoadingRef.current || isLoading) return;
     doneRef.current = true;
-    const messages = useChatHistory.getState().messagesById[sessionId] ?? [];
-    const assistant = [...messages].reverse().find((m) => m.role === "assistant");
-    const artifactIds = collectArtifactIdsFromMessages(messages);
-    const raw = assistant ? getMessageText(assistant) : "";
-    // 摘要走渲染链同一套清洗：去掉 <think> 与 <FollowUp> 提示块。
-    const text = raw ? parseChatContent(raw, { streaming: false }).markdown : "";
-    const ok = !error;
-    useScheduledTasks.getState().completeRun({
-      taskId,
-      runId: run.id,
-      ok,
-      sessionId,
-      summary: ok ? truncateSummary(text, artifactIds.length) : undefined,
-      error: ok ? undefined : (error ?? "request failed"),
-      artifactIds,
-      now: Date.now(),
-    });
+    void (async () => {
+      // 调度会话的完成摘要要覆盖整段回答：窗口化后 messagesById 只是尾部窗口。
+      const messages = (await loadSessionMessages(sessionId)) ?? useChatHistory.getState().messagesById[sessionId] ?? [];
+      const assistant = [...messages].reverse().find((m) => m.role === "assistant");
+      const artifactIds = collectArtifactIdsFromMessages(messages);
+      const raw = assistant ? getMessageText(assistant) : "";
+      // 摘要走渲染链同一套清洗：去掉 <think> 与 <FollowUp> 提示块。
+      const text = raw ? parseChatContent(raw, { streaming: false }).markdown : "";
+      const ok = !error;
+      useScheduledTasks.getState().completeRun({
+        taskId,
+        runId: run.id,
+        ok,
+        sessionId,
+        summary: ok ? truncateSummary(text, artifactIds.length) : undefined,
+        error: ok ? undefined : (error ?? "request failed"),
+        artifactIds,
+        now: Date.now(),
+      });
+    })();
   }, [isLoading, error, taskId, run.id, sessionId]);
 
   return null;

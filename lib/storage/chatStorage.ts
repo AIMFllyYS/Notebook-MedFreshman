@@ -13,6 +13,16 @@ import {
 } from '@/lib/storage/idbStorage';
 import { compactStudyMessages } from '@/lib/chat/compactStudyParts';
 import { getMessageText, getToolPartsByName, normalizeStoredMessages } from '@/lib/chat/messageParts';
+import {
+  buildChunkSpine,
+  dotEntriesFromSpine,
+  planSessionChunks,
+  spineDerivedTotals,
+  turnsToMessageRange,
+  windowStartTurn,
+  INITIAL_WINDOW_TURNS,
+  type TurnSpineEntry,
+} from '@/lib/chat/turnSpine';
 
 export interface SessionMeta {
   id: string;
@@ -180,35 +190,407 @@ export function saveManifest(manifest: ChatManifestV2): void {
   idbStorage.setItem(PERSIST_KEYS.chatManifest, JSON.stringify(manifest));
 }
 
-export async function loadSessionMessages(sessionId: string): Promise<ChatMessage[] | null> {
-  if (!isBrowser()) return null;
-  const raw = await idbStorage.getItem(chatSessionKey(sessionId));
-  if (!raw) return null;
+// ── Storage v3：轮次分块 + spine ──────────────────────────────────
+// v2 把整段会话塞进一个 `chat-session:{id}` blob：读 = 全量 parse + normalize + compact，
+// 写 = 每次 flush 全量 stringify（100MB 级会话单次 ~100ms 主线程，流式期间每 800ms 一次）。
+// v3 布局：
+//   chat-s3:{id}:h      head：{ v:3, messageCount, turnCount, chunkCount, spine }
+//   chat-s3:{id}:c:{n}  第 n 个 chunk 的消息数组（每 chunk 固定 TURNS_PER_CHUNK 轮）
+// 流式追加只重写尾部 chunk + head；「加载更早 / 定位点跳转」按轮次区间读少数 chunk；
+// loadSessionMessages 仍返回全量装配结果，全量消费方（sync/导出/GC/请求构造）零改动。
+
+export const CHAT_S3_KEY_PREFIX = 'chat-s3:';
+
+function chatHeadKey(sessionId: string): string {
+  return `${CHAT_S3_KEY_PREFIX}${sessionId}:h`;
+}
+function chatChunkKey(sessionId: string, chunk: number): string {
+  return `${CHAT_S3_KEY_PREFIX}${sessionId}:c:${chunk}`;
+}
+function chatS3Prefix(sessionId: string): string {
+  return `${CHAT_S3_KEY_PREFIX}${sessionId}:`;
+}
+
+export interface SessionHeadV3 {
+  v: 3;
+  messageCount: number;
+  turnCount: number;
+  chunkCount: number;
+  spine: TurnSpineEntry[];
+}
+
+/** 已加载会话窗口的描述（store 的 sessionWindowById 直接用它）。 */
+export interface SessionWindowLoad {
+  messages: ChatMessage[];
+  spine: TurnSpineEntry[];
+  turnCount: number;
+  messageCount: number;
+  startTurn: number;
+  /** 窗口首条消息在全量数组里的下标。 */
+  startIndex: number;
+}
+
+/**
+ * 尾部 chunk 常驻缓存：追加/流式更新都是同步 mutate + setItemLazy 调度，
+ * flush 时序列化此刻最新内容（latest-wins，与旧防抖语义一致）。
+ * 只装一个 chunk，成本与「最近 8 轮」成正比，与会话总长无关。
+ */
+interface TailCacheEntry {
+  head: SessionHeadV3;
+  chunkIndex: number;
+  messages: ChatMessage[];
+}
+const tailCache = new Map<string, TailCacheEntry>();
+const sessionWriteQueues = new Map<string, Promise<void>>();
+
+function enqueueSessionWrite(sessionId: string, task: () => Promise<void>): Promise<void> {
+  const prev = sessionWriteQueues.get(sessionId) ?? Promise.resolve();
+  const next = prev.then(task, (err) => {
+    console.warn(`[chatStorage] write chain broken for ${sessionId}:`, err);
+    return task();
+  });
+  const tracked = next.catch((err) => console.warn(`[chatStorage] write failed for ${sessionId}:`, err));
+  sessionWriteQueues.set(sessionId, tracked);
+  return next;
+}
+
+function parseStoredMessages(raw: string): ChatMessage[] | null {
   try {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return null;
-    // 旧扁平结构（content / reasoningContent / toolCalls）在读取时就地迁移为 parts；
-    // 下次保存自然写回新形状，无需单独的存储版本迁移。
     return compactStudyMessages(normalizeStoredMessages(parsed), 'persist');
   } catch {
     return null;
   }
 }
 
+async function loadHeadV3(sessionId: string): Promise<SessionHeadV3 | null> {
+  const raw = await idbStorage.getItem(chatHeadKey(sessionId));
+  if (!raw) return null;
+  try {
+    const head = JSON.parse(raw) as SessionHeadV3;
+    if (head?.v === 3 && Array.isArray(head.spine)) return head;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+async function readChunk(sessionId: string, chunk: number): Promise<ChatMessage[] | null> {
+  const raw = await idbStorage.getItem(chatChunkKey(sessionId, chunk));
+  if (!raw) return null;
+  return parseStoredMessages(raw);
+}
+
+/** chunk c 覆盖的全局消息下标区间（spine 推导，不读正文）。 */
+function chunkIndexRange(head: SessionHeadV3, chunk: number): { start: number; end: number } {
+  const firstTurn = head.spine.find((entry) => entry.chunk === chunk);
+  const nextChunkTurn = head.spine.find((entry) => entry.chunk === chunk + 1);
+  return {
+    start: firstTurn?.firstIndex ?? head.messageCount,
+    end: nextChunkTurn?.firstIndex ?? head.messageCount,
+  };
+}
+
+/** 读轮次区间 [fromTurn, toTurnExclusive) 的消息（按 spine 切片，只碰覆盖到的 chunk）。 */
+async function readTurnRange(
+  sessionId: string,
+  head: SessionHeadV3,
+  fromTurn: number,
+  toTurnExclusive: number,
+): Promise<ChatMessage[]> {
+  if (toTurnExclusive <= fromTurn || head.spine.length === 0) return [];
+  const { start, end } = turnsToMessageRange(head.spine, head.messageCount, fromTurn, toTurnExclusive);
+  const firstChunk = head.spine[fromTurn]?.chunk ?? head.chunkCount - 1;
+  const lastTurn = Math.min(toTurnExclusive, head.turnCount) - 1;
+  const lastChunk = head.spine[lastTurn]?.chunk ?? head.chunkCount - 1;
+  const out: ChatMessage[] = [];
+  for (let chunk = firstChunk; chunk <= lastChunk; chunk += 1) {
+    const messages = (await readChunk(sessionId, chunk)) ?? [];
+    const range = chunkIndexRange(head, chunk);
+    const s = Math.max(start, range.start) - range.start;
+    const e = Math.min(end, range.end) - range.start;
+    out.push(...messages.slice(Math.max(0, s), Math.max(0, e)));
+  }
+  return out;
+}
+
+/** 整段重写 v3：先删旧键（含未落盘的 lazy 写）再顺序写 chunk，最后写 head。 */
+async function writeSessionV3Now(sessionId: string, messages: ChatMessage[]): Promise<SessionHeadV3 | null> {
+  const prefix = chatS3Prefix(sessionId);
+  const existing = await listPersistedKeys();
+  for (const key of existing) {
+    if (key.startsWith(prefix)) await idbStorage.removeItem(key);
+  }
+  const plan = planSessionChunks(messages);
+  for (let index = 0; index < plan.chunks.length; index += 1) {
+    const ok = await setItemNow(chatChunkKey(sessionId, index), serializeSessionMessages(plan.chunks[index]));
+    if (!ok) return null;
+  }
+  const head: SessionHeadV3 = {
+    v: 3,
+    messageCount: messages.length,
+    turnCount: plan.spine.length,
+    chunkCount: plan.chunks.length,
+    spine: plan.spine,
+  };
+  const ok = await setItemNow(chatHeadKey(sessionId), JSON.stringify(head));
+  if (!ok) return null;
+  // v2 单 blob 键在 head 落盘之后才清：中途失败时 v2 仍是完整真相，下次读会重试迁移。
+  await idbStorage.removeItem(chatSessionKey(sessionId));
+  tailCache.set(sessionId, {
+    head,
+    chunkIndex: plan.chunks.length - 1,
+    messages: [...plan.chunks[plan.chunks.length - 1]],
+  });
+  return head;
+}
+
+/** v2 单 blob → v3 分块的就地迁移（幂等；v3 head 已存在时不进这里）。 */
+async function migrateV2ToV3(sessionId: string): Promise<SessionHeadV3 | null> {
+  const raw = await idbStorage.getItem(chatSessionKey(sessionId));
+  if (!raw) return null;
+  const messages = parseStoredMessages(raw);
+  if (!messages) return null;
+  return writeSessionV3Now(sessionId, messages);
+}
+
+async function ensureHeadV3(sessionId: string): Promise<SessionHeadV3 | null> {
+  const cached = tailCache.get(sessionId)?.head;
+  if (cached) return cached;
+  return (await loadHeadV3(sessionId)) ?? (await migrateV2ToV3(sessionId));
+}
+
+async function ensureTailCache(sessionId: string): Promise<TailCacheEntry | null> {
+  const hit = tailCache.get(sessionId);
+  if (hit) return hit;
+  const head = await ensureHeadV3(sessionId);
+  if (!head) return null;
+  const chunkIndex = head.chunkCount - 1;
+  const messages = (await readChunk(sessionId, chunkIndex)) ?? [];
+  const entry: TailCacheEntry = { head, chunkIndex, messages };
+  tailCache.set(sessionId, entry);
+  return entry;
+}
+
+/** flush 闭包捕获 entry 对象本身：序列化发生在落盘时，内容永远是最新的。 */
+function scheduleTailFlush(sessionId: string, entry: TailCacheEntry): void {
+  const chunkKey = chatChunkKey(sessionId, entry.chunkIndex);
+  const headKey = chatHeadKey(sessionId);
+  idbStorage.setItemLazy(chunkKey, () => serializeSessionMessages(entry.messages));
+  idbStorage.setItemLazy(headKey, () => JSON.stringify(entry.head));
+}
+
+/**
+ * 追加到尾部 chunk（同步路径：缓存命中即改即排程）。
+ * 跨过 TURNS_PER_CHUNK 轮边界时把溢出的轮切进新 chunk——每 8 个 user 轮才发生一次，
+ * 流式高频期永远命中「同一尾块内增长」这条快路径。
+ */
+function applyAppendToTail(sessionId: string, appended: ChatMessage[]): void {
+  const entry = tailCache.get(sessionId);
+  if (!entry) return;
+  const all = [...entry.messages, ...appended];
+  const olderSpine = entry.head.spine.filter((s) => s.chunk < entry.chunkIndex);
+  const startTurn = olderSpine.length;
+  const lastOlder = olderSpine[olderSpine.length - 1];
+  const startIndex = lastOlder ? lastOlder.firstIndex + lastOlder.messageCount : 0;
+  const tailSpine = buildChunkSpine(all, { startTurn, startIndex, chunkIndex: entry.chunkIndex });
+  const byChunk = new Map<number, ChatMessage[]>();
+  for (const s of tailSpine) {
+    const arr = byChunk.get(s.chunk) ?? [];
+    arr.push(...all.slice(s.firstIndex - startIndex, s.firstIndex - startIndex + s.messageCount));
+    byChunk.set(s.chunk, arr);
+  }
+  entry.head.spine = [...olderSpine, ...tailSpine];
+  entry.head.turnCount = entry.head.spine.length;
+  entry.head.messageCount += appended.length;
+  let maxChunk = entry.chunkIndex;
+  for (const [chunk, msgs] of byChunk) {
+    if (chunk === entry.chunkIndex) {
+      entry.messages = msgs;
+      scheduleTailFlush(sessionId, entry);
+    } else {
+      // 新 chunk 只写一次；若它就是新尾块，把缓存接力过去。
+      const nextEntry: TailCacheEntry = { head: entry.head, chunkIndex: chunk, messages: msgs };
+      const chunkKey = chatChunkKey(sessionId, chunk);
+      idbStorage.setItemLazy(chunkKey, () => serializeSessionMessages(nextEntry.messages));
+      if (chunk > maxChunk) {
+        maxChunk = chunk;
+        tailCache.set(sessionId, nextEntry);
+      }
+    }
+  }
+  entry.head.chunkCount = maxChunk + 1;
+  idbStorage.setItemLazy(chatHeadKey(sessionId), () => JSON.stringify(entry.head));
+}
+
+/** 追加消息（store 的 addMessage 走这里）。缓存就绪则同步排程，否则排队先装尾块。 */
+export function appendSessionMessages(sessionId: string, appended: ChatMessage[]): void {
+  if (!isBrowser() || appended.length === 0) return;
+  if (tailCache.has(sessionId)) {
+    applyAppendToTail(sessionId, appended);
+    return;
+  }
+  void enqueueSessionWrite(sessionId, async () => {
+    const entry = await ensureTailCache(sessionId);
+    if (!entry) {
+      // head 都没有 = 会话还没建过：按整段写（空会话 addMessage 的落点）。
+      await writeSessionV3Now(sessionId, appended);
+      return;
+    }
+    applyAppendToTail(sessionId, appended);
+  });
+}
+
+/** 更新一条消息（流式 updateMessage 走这里）：命中尾块同步改，否则排队回扫旧 chunk。 */
+export function writeSessionMessage(sessionId: string, message: ChatMessage): void {
+  if (!isBrowser()) return;
+  const entry = tailCache.get(sessionId);
+  if (entry) {
+    const index = entry.messages.findIndex((m) => m.id === message.id);
+    if (index >= 0) {
+      entry.messages[index] = message;
+      scheduleTailFlush(sessionId, entry);
+      return;
+    }
+  }
+  void enqueueSessionWrite(sessionId, async () => {
+    const tail = await ensureTailCache(sessionId);
+    if (!tail) return;
+    const tailIndex = tail.messages.findIndex((m) => m.id === message.id);
+    if (tailIndex >= 0) {
+      tail.messages[tailIndex] = message;
+      scheduleTailFlush(sessionId, tail);
+      return;
+    }
+    // 非尾块更新（极少见：编辑旧轮）——从新到旧回扫，命中即重写那一个 chunk。
+    for (let chunk = tail.head.chunkCount - 2; chunk >= 0; chunk -= 1) {
+      const messages = await readChunk(sessionId, chunk);
+      if (!messages) continue;
+      const index = messages.findIndex((m) => m.id === message.id);
+      if (index < 0) continue;
+      messages[index] = message;
+      const chunkKey = chatChunkKey(sessionId, chunk);
+      idbStorage.setItemLazy(chunkKey, () => serializeSessionMessages(messages));
+      return;
+    }
+  });
+}
+
+/** 释放内存里的尾块缓存（会话被驱逐/删除时调用）。 */
+export function dropSessionTailCache(sessionId: string): void {
+  tailCache.delete(sessionId);
+  sessionWriteQueues.delete(sessionId);
+}
+
+/** 测试专用：清掉模块级尾块缓存与写队列（不同用例互不串场）。 */
+export function __resetSessionV3ForTests(): void {
+  tailCache.clear();
+  sessionWriteQueues.clear();
+}
+
+/** 测试专用：等某条会话的写队列清空（saveSessionMessages 等 fire-and-forget 的落点）。 */
+export function __waitSessionWritesForTests(sessionId: string): Promise<void> {
+  return (sessionWriteQueues.get(sessionId) ?? Promise.resolve()).catch(() => {});
+}
+
+/**
+ * 打开会话时的窗口读：head + 覆盖最近 tailTurns 轮的少数 chunk。
+ * 顺手把尾块塞进 tailCache——之后追加/流式更新都是同步排程，不再回读。
+ */
+export async function loadSessionWindow(
+  sessionId: string,
+  tailTurns = INITIAL_WINDOW_TURNS,
+): Promise<SessionWindowLoad | null> {
+  if (!isBrowser()) return null;
+  const head = await ensureHeadV3(sessionId);
+  if (!head) return null;
+  const startTurn = windowStartTurn(head.turnCount, tailTurns);
+  const startIndex = head.spine[startTurn]?.firstIndex ?? head.messageCount;
+  const messages = await readTurnRange(sessionId, head, startTurn, head.turnCount);
+  if (!tailCache.has(sessionId) && head.chunkCount > 0) {
+    const tail = (await readChunk(sessionId, head.chunkCount - 1)) ?? [];
+    tailCache.set(sessionId, { head, chunkIndex: head.chunkCount - 1, messages: tail });
+  }
+  return {
+    messages,
+    spine: head.spine,
+    turnCount: head.turnCount,
+    messageCount: head.messageCount,
+    startTurn,
+    startIndex,
+  };
+}
+
+/** 「加载更早」/定位点回跳：读 [startTurn - count, startTurn) 这段轮次的消息。 */
+export async function loadTurnsBefore(
+  sessionId: string,
+  startTurn: number,
+  count: number,
+): Promise<{ messages: ChatMessage[]; fromTurn: number; startIndex: number } | null> {
+  if (!isBrowser()) return null;
+  const head = await ensureHeadV3(sessionId);
+  if (!head) return null;
+  const fromTurn = Math.max(0, startTurn - count);
+  const messages = await readTurnRange(sessionId, head, fromTurn, startTurn);
+  return { messages, fromTurn, startIndex: head.spine[fromTurn]?.firstIndex ?? 0 };
+}
+
+/** 定位点/顶栏合计用的轻量视图：只读 head。 */
+/**
+ * 请求路径的尾部读：从 spine 尾端向前收满 minMessages 条为止，只解析覆盖到的 chunk。
+ * 会话比 minMessages 短时等价全量装配；长会话只碰尾部少数几个 chunk。
+ */
+export async function loadSessionTail(
+  sessionId: string,
+  minMessages: number,
+): Promise<ChatMessage[] | null> {
+  if (!isBrowser()) return null;
+  const head = await ensureHeadV3(sessionId);
+  if (!head) return null;
+  let covered = 0;
+  let fromTurn = head.turnCount;
+  while (fromTurn > 0 && covered < minMessages) {
+    fromTurn -= 1;
+    covered += head.spine[fromTurn]?.messageCount ?? 0;
+  }
+  return readTurnRange(sessionId, head, fromTurn, head.turnCount);
+}
+
+export async function loadSessionSpine(sessionId: string): Promise<TurnSpineEntry[] | null> {
+  if (!isBrowser()) return null;
+  const head = await ensureHeadV3(sessionId);
+  return head?.spine ?? null;
+}
+
+export { dotEntriesFromSpine, spineDerivedTotals };
+
+/**
+ * 全量装配读（sync 上行 / 导出 / GC / 请求构造 / 手动 compact 用）。
+ * 名字保留 loadSessionMessages：全量消费方的调用语义不变。
+ */
+export async function loadSessionMessages(sessionId: string): Promise<ChatMessage[] | null> {
+  if (!isBrowser()) return null;
+  const head = await ensureHeadV3(sessionId);
+  if (!head) return null;
+  if (head.turnCount === 0) return [];
+  return readTurnRange(sessionId, head, 0, head.turnCount);
+}
+
 export function serializeSessionMessages(messages: ChatMessage[]): string {
   return JSON.stringify(compactStudyMessages(messages, 'persist'));
 }
 
+/** 整段重写（replaceMessages / 同步拉取 / 迁移）：异步排队，调用方 fire-and-forget。 */
 export function saveSessionMessages(sessionId: string, messages: ChatMessage[]): void {
-  idbStorage.setItemLazy(chatSessionKey(sessionId), () => serializeSessionMessages(messages));
+  if (!isBrowser()) return;
+  void enqueueSessionWrite(sessionId, async () => {
+    await writeSessionV3Now(sessionId, messages);
+  });
 }
 
 async function saveManifestNow(manifest: ChatManifestV2): Promise<boolean> {
   return setItemNow(PERSIST_KEYS.chatManifest, JSON.stringify(manifest));
-}
-
-async function saveSessionMessagesNow(sessionId: string, messages: ChatMessage[]): Promise<boolean> {
-  return setItemNow(chatSessionKey(sessionId), serializeSessionMessages(messages));
 }
 
 export async function loadBlobDataUrl(blobId: string): Promise<string | null> {
@@ -243,6 +625,15 @@ function inlineAttachmentPayload(attachment: ChatAttachment): string | null {
 
 export async function deleteSessionData(sessionId: string, blobIds: string[] = []): Promise<void> {
   if (!isBrowser()) return;
+  // v3 分块键走写队列尾部：先让排队的 flush 落完，再整组删，避免删完又被 lazy 写复活。
+  await enqueueSessionWrite(sessionId, async () => {
+    const prefix = chatS3Prefix(sessionId);
+    const keys = await listPersistedKeys();
+    for (const key of keys) {
+      if (key.startsWith(prefix)) await idbStorage.removeItem(key);
+    }
+    tailCache.delete(sessionId);
+  });
   await idbStorage.removeItem(chatSessionKey(sessionId));
   for (const id of blobIds) {
     try {
@@ -324,7 +715,7 @@ export async function migrateFromV1IfNeeded(): Promise<boolean> {
       const messages = await migrateAttachmentsInMessages(
         normalizeStoredMessages(session.messages as unknown[]),
       );
-      const saved = await saveSessionMessagesNow(session.id, messages);
+      const saved = await writeSessionV3Now(session.id, messages);
       if (!saved) return false;
       metas.push(buildSessionMeta({ ...session, messages }));
     }
@@ -437,7 +828,10 @@ export async function listAllChatKeys(): Promise<string[]> {
   if (!isBrowser()) return [];
   const all = await listPersistedKeys();
   return all.filter(
-    (k) => k.startsWith(CHAT_BLOB_KEY_PREFIX) || k.startsWith(CHAT_SESSION_KEY_PREFIX),
+    (k) =>
+      k.startsWith(CHAT_BLOB_KEY_PREFIX) ||
+      k.startsWith(CHAT_SESSION_KEY_PREFIX) ||
+      k.startsWith(CHAT_S3_KEY_PREFIX),
   );
 }
 
@@ -472,16 +866,31 @@ export async function gcOrphanedChatKeys(deps: ChatGcDeps = {}): Promise<{ delet
   const keys = await listKeys();
   const deleted: string[] = [];
 
-  const orphanSessionKeys = keys.filter((key) => {
-    if (!key.startsWith(CHAT_SESSION_KEY_PREFIX)) return false;
-    const sessionId = key.slice(CHAT_SESSION_KEY_PREFIX.length);
-    return Boolean(sessionId) && !keepSessions.has(sessionId);
-  });
+  // v2 单 blob 与 v3 分块键都算「会话正文键」：chat-s3:{id}:h|c:{n} 与会话同生共死。
+  const orphanSessionIds = new Set<string>();
+  for (const key of keys) {
+    if (key.startsWith(CHAT_SESSION_KEY_PREFIX)) {
+      const sessionId = key.slice(CHAT_SESSION_KEY_PREFIX.length);
+      if (sessionId && !keepSessions.has(sessionId)) orphanSessionIds.add(sessionId);
+    } else if (key.startsWith(CHAT_S3_KEY_PREFIX)) {
+      const rest = key.slice(CHAT_S3_KEY_PREFIX.length);
+      const sessionId = rest.slice(0, rest.indexOf(':'));
+      if (sessionId && !keepSessions.has(sessionId)) orphanSessionIds.add(sessionId);
+    }
+  }
   // 孤儿异常多 = manifest 很可能不是真相（被空列表/旧列表覆盖过、或水合失败）。
   // 这时**一个都不删**：误删正文是不可逆的，留几个孤儿键只是占点空间。
-  if (orphanSessionKeys.length > MAX_ORPHAN_DELETIONS) return { deleted: [] };
+  if (orphanSessionIds.size > MAX_ORPHAN_DELETIONS) return { deleted: [] };
 
-  for (const key of orphanSessionKeys) {
+  for (const key of keys) {
+    let sessionId: string | null = null;
+    if (key.startsWith(CHAT_SESSION_KEY_PREFIX)) {
+      sessionId = key.slice(CHAT_SESSION_KEY_PREFIX.length);
+    } else if (key.startsWith(CHAT_S3_KEY_PREFIX)) {
+      const rest = key.slice(CHAT_S3_KEY_PREFIX.length);
+      sessionId = rest.slice(0, rest.indexOf(':'));
+    }
+    if (!sessionId || !orphanSessionIds.has(sessionId)) continue;
     await removeKey(key);
     deleted.push(key);
   }
@@ -492,7 +901,9 @@ export async function gcOrphanedChatKeys(deps: ChatGcDeps = {}): Promise<{ delet
   for (const sessionId of keepSessions) {
     const messages = await loadMessages(sessionId);
     if (!messages) {
-      if (keys.includes(CHAT_SESSION_KEY_PREFIX + sessionId)) return { deleted };
+      const bodyPresent =
+        keys.includes(CHAT_SESSION_KEY_PREFIX + sessionId) || keys.includes(chatHeadKey(sessionId));
+      if (bodyPresent) return { deleted };
       continue;
     }
     for (const blobId of extractBlobIdsFromMessages(messages)) keepBlobs.add(blobId);

@@ -193,6 +193,8 @@ export const traceZh = {
   // 对话流容器
   thread: {
     loadingHistory: "正在加载历史记录...",
+    loadEarlier: "加载更早消息",
+    loadingEarlier: "正在加载更早消息...",
     thinking: "AI 正在思考中...",
     closeInfo: "关闭连接提示",
     closeError: "关闭错误提示",

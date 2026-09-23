@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { beforeEach, afterEach, describe, test } from "node:test";
 import { flushPendingWrites, PERSIST_KEYS, chatBlobKey, chatSessionKey, __resetIdbStoragePendingForTests } from "@/lib/storage/idbStorage";
-import { cancelOrphanChatGc } from "@/lib/storage/chatStorage";
+import { cancelOrphanChatGc, __resetSessionV3ForTests, loadSessionMessages, saveSessionMessages, __waitSessionWritesForTests } from "@/lib/storage/chatStorage";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 
@@ -68,11 +68,13 @@ beforeEach(async () => {
   cancelOrphanChatGc();
   storage.clear();
   __resetIdbStoragePendingForTests();
+  __resetSessionV3ForTests();
   installBrowserMocks();
   const { useChatHistory } = await import("./chatHistory.ts");
   useChatHistory.setState({
     sessionsMeta: [],
     messagesById: {},
+    sessionWindowById: {},
     activeSessionId: null,
     sessionLoadState: {},
     loadedSessionIds: [],
@@ -118,6 +120,8 @@ test("deleteSession：删除 active 会话后加载新的 active 会话消息", 
 
 test("updateMessage：content-only 流式更新只写 session，不写 manifest", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
+  // v3 下 writeSessionMessage 需要会话正文已存在（v2 键会被就地迁移为分块）。
+  storage.set(chatSessionKey("s1"), JSON.stringify([msg("m1", "old")]));
   useChatHistory.setState({
     sessionsMeta: [meta("s1")],
     messagesById: { s1: [msg("m1", "old")] },
@@ -131,13 +135,17 @@ test("updateMessage：content-only 流式更新只写 session，不写 manifest"
 
   useChatHistory.getState().updateMessage("s1", "m1", { parts: [{ type: "text", text: "new" }] });
   await waitForPendingWrites();
+  await __waitSessionWritesForTests("s1");
+  await waitForPendingWrites();
 
-  assert.equal(textOf(JSON.parse(storage.get(chatSessionKey("s1")) ?? "[]")[0]), "new");
+  const stored = await loadSessionMessages("s1");
+  assert.equal(textOf(stored?.[0]), "new");
   assert.equal(storage.get(PERSIST_KEYS.chatManifest), undefined);
 });
 
 test("updateMessage：新增 artifactId 时写 manifest 供冷 prune 使用", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
+  storage.set(chatSessionKey("s1"), JSON.stringify([msg("m1", "old")]));
   useChatHistory.setState({
     sessionsMeta: [meta("s1")],
     messagesById: { s1: [msg("m1", "old")] },
@@ -232,12 +240,18 @@ test("evicting past MAX_SESSIONS deletes blobs and drops messagesById", async ()
   });
 
   useChatHistory.getState().createSession();
-  await new Promise((resolve) => setTimeout(resolve, 20));
+  // 淘汰链路 = listBlobIds（触发 v2→v3 迁移写）→ deleteSessionData（排队删 v3 键）：
+  // 都是异步队列，轮询到删除落地为止，而不是赌一个固定毫秒数。
+  for (let i = 0; i < 60 && (storage.has(chatBlobKey(blobId)) || storage.has(chatSessionKey(evicted))); i += 1) {
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    flushPendingWrites();
+  }
   await waitForPendingWrites();
 
   assert.equal(useChatHistory.getState().messagesById[evicted], undefined);
   assert.equal(storage.has(chatBlobKey(blobId)), false);
   assert.equal(storage.has(chatSessionKey(evicted)), false);
+  assert.equal(storage.has(`chat-s3:${evicted}:h`), false);
   const ids = useChatHistory.getState().sessionsMeta.map((item) => item.id);
   assert.equal(ids.includes(evicted), false);
   assert.equal(ids.length, 50);

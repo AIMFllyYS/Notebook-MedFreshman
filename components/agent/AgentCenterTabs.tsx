@@ -4,8 +4,7 @@ import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import { Image as ImageIcon, Link2, MessagesSquare } from "lucide-react";
 import { useAgentCenter, type AgentCenterTab } from "@/lib/stores/agentCenter";
-import { useSessionSourceRounds } from "@/lib/hooks/useSessionSources";
-import { useSessionImages } from "@/lib/hooks/useSessionImages";
+import { useSessionDerivedTotals } from "@/lib/hooks/useSessionDerivedTotals";
 import { useActiveChatSessionId } from "@/lib/window/sessionScope";
 import { useT } from "@/lib/i18n";
 
@@ -85,8 +84,8 @@ export default function AgentCenterTabs({
  * 顶栏不该知道"来源轮次"这种业务概念。
  */
 export function AgentCenterTabsLive() {
-  const { sources } = useSessionSourceRounds();
-  const images = useSessionImages();
+  // 徽标计数走 spine 合计：窗口外的轮次也计入，且不为计数扫消息正文。
+  const totals = useSessionDerivedTotals();
   const activeSessionId = useActiveChatSessionId();
   const setCenterTab = useAgentCenter((state) => state.setCenterTab);
 
@@ -98,5 +97,5 @@ export function AgentCenterTabsLive() {
     setCenterTab("answer");
   }, [activeSessionId, setCenterTab]);
 
-  return <AgentCenterTabs linksCount={sources.length} imagesCount={images.length} />;
+  return <AgentCenterTabs linksCount={totals.sources} imagesCount={totals.images} />;
 }

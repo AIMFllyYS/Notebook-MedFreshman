@@ -1,6 +1,7 @@
 import type { ChatMessage } from "@/lib/types/chat";
 import { getMessageText } from "@/lib/chat/messageParts";
 import { useChatHistory } from "@/lib/stores/chatHistory";
+import { loadSessionMessages } from "@/lib/storage/chatStorage";
 import { useTokenTracker } from "@/lib/stores/tokenTracker";
 import { translateNow } from "@/lib/i18n";
 
@@ -63,8 +64,8 @@ export async function compactActiveSession(sessionId?: string | null): Promise<{
   const store = useChatHistory.getState();
   const sid = sessionId ?? store.activeSessionId;
   if (!sid) return { compacted: false };
-  await store.ensureSessionLoaded(sid);
-  const messages = useChatHistory.getState().messagesById[sid] ?? [];
+  // compact 需要整段历史：窗口化后 messagesById 只是尾部窗口，直接全量装配读。
+  const messages = (await loadSessionMessages(sid)) ?? [];
   const result = compactChatMessages(messages);
   if (!result.compacted) return { compacted: false };
   useChatHistory.getState().replaceMessages(sid, result.messages);

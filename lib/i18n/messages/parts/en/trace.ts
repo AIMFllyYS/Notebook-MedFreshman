@@ -191,6 +191,8 @@ export const traceEn = {
   // Conversation stream container.
   thread: {
     loadingHistory: "Loading history...",
+    loadEarlier: "Load earlier messages",
+    loadingEarlier: "Loading earlier messages...",
     thinking: "AI is thinking...",
     closeInfo: "Dismiss the connection notice",
     closeError: "Dismiss the error",

@@ -27,6 +27,9 @@ const PAGES_GUTTER = 12;
 const PRELOAD_MARGIN = "800px 0px";
 /** 「跳到第 N 页」时目标页离容器顶留这么多像素，别把页眉贴死在边上。 */
 const SCROLL_TOP_OFFSET = 8;
+/** 显示宽放大到渲染宽的这个倍数以上才真重建预览器；
+ *  之下走 CSS scale——重建一次 = 重取 buffer + 重解析 + 逐页重渲，拖拽期绝不能随动。 */
+const REBUILD_SCALE_UP = 1.5;
 
 interface PptxDeck {
   width: number;
@@ -87,6 +90,12 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
   const renderedRef = useRef<Set<number>>(new Set());
   /** 上一次真正建过预览器的宽度（含抖动过滤）。 */
   const widthRef = useRef(FALLBACK_WIDTH - PAGES_GUTTER * 2);
+  /** 预览器实例的渲染宽：渲染一次后固定，resize 只改 CSS scale。 */
+  const renderWidthRef = useRef(0);
+  /** displayWidth 的 ref 镜像：重建/缩放读它，不进 effect 依赖。 */
+  const displayWidthRef = useRef(FALLBACK_WIDTH - PAGES_GUTTER * 2);
+  const metricsRef = useRef<PptxSlideMetrics | null>(null);
+  const [rebuildToken, setRebuildToken] = useState(0);
 
   const measured = useElementWidth(bodyRef);
   const [displayWidth, setDisplayWidth] = useState(FALLBACK_WIDTH - PAGES_GUTTER * 2);
@@ -97,13 +106,38 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
   const [status, setStatus] = useState<string | null>(() => translate(locale, "panel.pptx.loading"));
   const [error, setError] = useState<string | null>(null);
 
-  // 宽度先过一道「变化 < 8px 不重建」的闸，displayWidth 才是重建预览器的唯一触发源。
+  // 宽度先过一道「变化 < 8px 不动」的闸；超闸只改 CSS scale，
+  // 放大超 REBUILD_SCALE_UP 才触发预览器重建（清晰度兜底）。
   const rawWidth = Math.max(160, (measured > 0 ? measured : FALLBACK_WIDTH) - PAGES_GUTTER * 2);
   useEffect(() => {
     if (Math.abs(rawWidth - widthRef.current) < WIDTH_EPSILON) return;
     widthRef.current = rawWidth;
     setDisplayWidth(rawWidth);
+    const renderW = renderWidthRef.current;
+    if (renderW > 0 && rawWidth / renderW > REBUILD_SCALE_UP) {
+      setRebuildToken((n) => n + 1);
+    }
   }, [rawWidth]);
+
+  // resize 廉价路径：槽位跟着显示宽走，幻灯片本体在渲染宽坐标系里做 scale。
+  useEffect(() => {
+    displayWidthRef.current = displayWidth;
+    const metrics = metricsRef.current;
+    const renderW = renderWidthRef.current;
+    if (!metrics || renderW <= 0) return;
+    const scale = displayWidth / renderW;
+    const displayH = slideDisplayHeight(metrics.deckWidth, metrics.deckHeight, displayWidth);
+    for (const slot of slotsRef.current) {
+      slot.style.width = `${displayWidth}px`;
+      if (slot.classList.contains("is-text")) continue;
+      slot.style.height = `${displayH}px`;
+      const slide = slot.firstElementChild as HTMLElement | null;
+      if (slide) {
+        slide.style.transformOrigin = "top left";
+        slide.style.transform = `scale(${scale})`;
+      }
+    }
+  }, [displayWidth]);
 
   const scrollToSlide = useCallback((index: number) => {
     const body = bodyRef.current;
@@ -126,6 +160,10 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     const restoring = slotsRef.current.length > 0;
     const restoreIndex = restoring ? topmostSlotIndex(slotsRef.current, body?.scrollTop ?? 0) : 0;
     slotsRef.current = [];
+
+    // 渲染宽在本次实例生命周期内固定：resize 走 CSS scale，不再进本 effect。
+    const renderW = displayWidthRef.current > 0 ? displayWidthRef.current : FALLBACK_WIDTH - PAGES_GUTTER * 2;
+    renderWidthRef.current = renderW;
 
     setError(null);
     setStatus(translateNow("panel.pptx.loading"));
@@ -161,19 +199,30 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
         createSlideSlots(
           pages,
           metrics.count,
-          displayWidth,
-          slideDisplayHeight(metrics.deckWidth, metrics.deckHeight, displayWidth),
+          renderW,
+          slideDisplayHeight(metrics.deckWidth, metrics.deckHeight, renderW),
         );
+
+      // 幻灯片本体钉在渲染宽坐标系；槽位随 displayWidth 缩放（见 resize 分支）。
+      const pinSlide = (slot: HTMLElement, metrics: PptxSlideMetrics) => {
+        const slide = slot.firstElementChild as HTMLElement | null;
+        if (!slide || slot.classList.contains("is-text")) return;
+        slide.style.width = `${renderW}px`;
+        slide.style.height = `${slideDisplayHeight(metrics.deckWidth, metrics.deckHeight, renderW)}px`;
+        slide.style.transformOrigin = "top left";
+        slide.style.transform = `scale(${displayWidthRef.current / renderW})`;
+      };
 
       // A：list 模式只 load，不渲染；每一页等滚到附近再 renderSlide 进自己的槽。
       try {
         host.replaceChildren();
-        const instance: PptxPreviewer = init(host, { width: displayWidth, mode: "list" });
+        const instance: PptxPreviewer = init(host, { width: renderW, mode: "list" });
         previewer = instance;
         const deck = await instance.load(buffer);
         if (cancelled) return;
 
         const metrics = deckMetrics(deck);
+        metricsRef.current = metrics;
         const slots = buildSlots(metrics);
         slotsRef.current = slots;
 
@@ -184,6 +233,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
             if (!mountRenderedSlide(slots[index], instance.wrapper, index)) {
               throw new Error(`第 ${index + 1} 页没有渲染出内容`);
             }
+            pinSlide(slots[index], metrics);
             rendered.add(index);
           } catch {
             // 单页失败不该拖垮整份稿件：这一页退成文字卡，其余页照旧。
@@ -224,7 +274,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       try {
         previewer?.destroy();
         host.replaceChildren();
-        const instance: PptxPreviewer = init(host, { width: displayWidth, mode: "list" });
+        const instance: PptxPreviewer = init(host, { width: renderW, mode: "list" });
         previewer = instance;
         await instance.preview(buffer);
         if (cancelled) return;
@@ -232,11 +282,14 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
         const deck = instance.pptx;
         if (!deck?.slides.length) throw new Error("没有可渲染的幻灯片");
         const metrics = deckMetrics(deck);
+        metricsRef.current = metrics;
         const slots = buildSlots(metrics);
         slotsRef.current = slots;
         for (let index = 0; index < slots.length; index += 1) {
           if (!mountRenderedSlide(slots[index], instance.wrapper, index)) {
             renderTextFallback(slots[index], index + 1, textOf(index + 1));
+          } else {
+            pinSlide(slots[index], metrics);
           }
         }
 
@@ -253,6 +306,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
 
       // C：库整体不可用 → 文字化幻灯片舞台（老行为，至少能读）。
       if (cancelled) return;
+      metricsRef.current = null;
       slotsRef.current = [];
       pages.replaceChildren();
       setCount(Math.max(titles.length, 1));
@@ -270,7 +324,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       previewer = null;
       rendered.clear();
     };
-  }, [src, name, displayWidth, scrollToSlide]);
+  }, [src, name, rebuildToken, scrollToSlide]);
 
   // 滚动 → 当前页：rAF 节流，滚动过程中每帧最多量一次。
   useEffect(() => {

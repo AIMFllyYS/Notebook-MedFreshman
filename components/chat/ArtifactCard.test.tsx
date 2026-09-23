@@ -42,6 +42,8 @@ describe('ArtifactCard', () => {
     await act(async () => {
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'artifact', id: 'art_1', status: 'start', title: '演示' })}\n\n`));
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'artifact', id: 'art_1', status: 'reasoning', delta: '先画坐标轴' })}\n\n`));
+      // SSE delta 走 60ms 尾随节流：等定时器自然排空再断言。
+      await new Promise((resolve) => setTimeout(resolve, 80));
     });
     expect(await screen.findByTestId('artifact-thinking-body')).toHaveTextContent('先画坐标轴');
 

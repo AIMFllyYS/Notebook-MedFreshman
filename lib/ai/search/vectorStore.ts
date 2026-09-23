@@ -29,6 +29,28 @@ interface VectorIndex {
   ids: string[];
   metaById: Map<string, ChunkRow>;
   matrix: Float32Array;
+  /** 每行向量的预计算范数（√Σy²），避免检索时对 4 万行逐行重算。 */
+  norms: Float32Array;
+  /** 与 ids 平行的 meta 数组，热循环免 Map 查找。 */
+  metaList: (ChunkRow | undefined)[];
+}
+
+/** 索引装载后统一的派生量：行范数 + 平行 meta 数组。 */
+function finalizeIndex(index: Omit<VectorIndex, "norms" | "metaList">): VectorIndex {
+  const { ids, matrix, dimension, metaById } = index;
+  const norms = new Float32Array(ids.length);
+  const metaList = new Array<ChunkRow | undefined>(ids.length);
+  for (let i = 0; i < ids.length; i++) {
+    let sum = 0;
+    const off = i * dimension;
+    for (let j = 0; j < dimension; j++) {
+      const y = matrix[off + j];
+      sum += y * y;
+    }
+    norms[i] = Math.sqrt(sum);
+    metaList[i] = metaById.get(ids[i]);
+  }
+  return { ...index, norms, metaList };
 }
 
 let _vectorIndex: VectorIndex | null = null;
@@ -156,13 +178,13 @@ function loadBinaryIndex(bin: Buffer, idsRaw: Buffer, metaById: Map<string, Chun
     return null;
   }
   const manifest = parseManifest(readLocalIndexFile(INDEX_FILES.manifest));
-  return {
+  return finalizeIndex({
     model: manifest?.embeddingModel || process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3",
     dimension,
     ids,
     metaById,
     matrix,
-  };
+  });
 }
 
 function loadLegacyJsonIndex(raw: Buffer, localMeta: Map<string, ChunkRow>): VectorIndex | null {
@@ -211,13 +233,13 @@ function loadLegacyJsonIndex(raw: Buffer, localMeta: Map<string, ChunkRow>): Vec
       }
     }
     if (!ids.length) return null;
-    return {
+    return finalizeIndex({
       model: parsed.model || process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3",
       dimension,
       ids,
       metaById,
       matrix: ids.length === chunks.length ? matrix : matrix.subarray(0, ids.length * dimension),
-    };
+    });
   } catch {
     return null;
   }
@@ -275,12 +297,27 @@ export async function vectorSearch(
   }
 
   const heap = new TopKMinHeap(topK);
-  const { ids, matrix, dimension, metaById } = index;
+  const { ids, matrix, dimension, norms, metaList } = index;
+  // 查询范数只算一次；行范数装载时已预算，内层只剩点积。
+  let qNorm = 0;
+  for (let i = 0; i < dimension; i++) {
+    const q = queryEmbedding[i];
+    qNorm += q * q;
+  }
+  qNorm = Math.sqrt(qNorm);
   for (let i = 0; i < ids.length; i++) {
-    const id = ids[i];
-    const meta = metaById.get(id);
-    if (!meta) continue;
-    if (!chunkInScope(meta.subjectId, filter)) continue;
+    const meta = metaList[i];
+    if (!meta || !chunkInScope(meta.subjectId, filter)) continue;
+    const denom = qNorm * norms[i];
+    let score = 0;
+    if (denom !== 0) {
+      const off = i * dimension;
+      let dot = 0;
+      for (let j = 0; j < dimension; j++) {
+        dot += queryEmbedding[j] * matrix[off + j];
+      }
+      score = dot / denom;
+    }
     heap.push({
       id: meta.id,
       path: meta.path,
@@ -291,7 +328,7 @@ export async function vectorSearch(
       title: meta.title,
       chunkIndex: meta.chunkIndex,
       text: meta.text,
-      score: cosineSimilarityRow(queryEmbedding, matrix, i * dimension, dimension),
+      score,
     });
   }
   return heap.toSortedDesc();

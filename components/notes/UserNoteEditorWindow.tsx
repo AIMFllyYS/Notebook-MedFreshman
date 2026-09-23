@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useCallback, useDeferredValue, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
@@ -94,7 +94,10 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
 
   if (!note) return null;
 
-  const tocItems = parseNoteToc(note.markdown);
+  // split 模式每键全量预览+TOC 是主线程税：预览/TOC 走 deferred 值，
+  // 输入优先级高于预览提交，长笔记打字不再被 KaTeX/TOC 扫描阻塞。
+  const deferredMarkdown = useDeferredValue(note.markdown);
+  const tocItems = parseNoteToc(deferredMarkdown);
   const handleTocSelect = (item: NoteTocItem) => {
     if (mode === "source" && sourceRef.current) {
       focusMarkdownLine(sourceRef.current, item.line);
@@ -109,7 +112,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   const source = (
     <NoteSourcePane refEl={sourceRef} value={note.markdown} onChange={handleMarkdown} />
   );
-  const preview = <NotePreviewPane markdown={note.markdown} />;
+  const preview = <NotePreviewPane markdown={deferredMarkdown} />;
   const wysiwyg = (
     <div ref={wysiwygHostRef} className="user-note-wysiwyg">
       <button

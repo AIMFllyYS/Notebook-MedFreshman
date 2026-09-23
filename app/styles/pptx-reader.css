@@ -24,6 +24,9 @@
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  /* 幻灯片本体渲染在固定 renderW 坐标系、靠 transform scale 适配槽宽：
+     未缩放的布局盒会伸出槽位，必须裁掉，否则撑大横向滚动区。 */
+  overflow: hidden;
 }
 
 /* 库把幻灯片写成 margin: 0 auto 10px；间距由 .pptx-pages 的 gap 统一负责。 */
