@@ -21,8 +21,10 @@ export default function LazyVisible({ children, rootMargin = "200px", placeholde
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
       // jsdom / 老浏览器：懒挂载只是优化不是正确性前提，直接全挂。
-      setVisible(true);
-      return;
+      // 放进 timer 回调（订阅外部系统）而非在 effect 体里同步 setState，
+      // 避免级联渲染；首帧仍为占位，保持与 SSR 一致的 hydration 安全。
+      const id = setTimeout(() => setVisible(true), 0);
+      return () => clearTimeout(id);
     }
     const observer = new IntersectionObserver(
       ([entry]) => {

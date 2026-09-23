@@ -6023,6 +6023,45 @@
                   "quizRef": "rec-2026-fall-021-022"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-023-024",
+              "title": "第23-24节 · 呼吸系统——鼻、咽、喉、气管与支气管、肺、胸膜与纵隔",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-023-024",
+                  "title": "课堂原文 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                },
+                {
+                  "id": "note-rec-2026-fall-023-024",
+                  "title": "课堂笔记 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                },
+                {
+                  "id": "card-rec-2026-fall-023-024",
+                  "title": "复习手卡 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                }
+              ]
             }
           ]
         },
@@ -6122,6 +6161,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-021-022",
               "quizRef": "rec-2026-fall-021-022",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-023-024",
+              "title": "课堂纪要 · 第23-24节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-023-024",
+              "quizRef": "rec-2026-fall-023-024",
               "layoutProfile": "full"
             }
           ]
@@ -6373,6 +6423,45 @@
           "keyStrategy": "category-item",
           "items": [
             {
+              "id": "rec-2026-fall-001-004",
+              "title": "第1-4节 · 小鼠原代肝细胞培养——原代培养原理、取材分离与无菌操作",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-001-004",
+                  "title": "课堂原文 · 第1-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-001-004",
+                  "quizRef": "rec-2026-fall-001-004"
+                },
+                {
+                  "id": "note-rec-2026-fall-001-004",
+                  "title": "课堂笔记 · 第1-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-001-004",
+                  "quizRef": "rec-2026-fall-001-004"
+                },
+                {
+                  "id": "card-rec-2026-fall-001-004",
+                  "title": "复习手卡 · 第1-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-001-004",
+                  "quizRef": "rec-2026-fall-001-004"
+                }
+              ]
+            },
+            {
               "id": "rec-2026-fall-005-008",
               "title": "第5-8节 · 细胞传代培养冻存与复苏",
               "type": "document",
@@ -6410,6 +6499,45 @@
                   "quizRef": "rec-2026-fall-005-008"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-009-012",
+              "title": "第9-12节 · 细胞膜的特性——细胞膜的结构、流动镶嵌与特性观察实验",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-009-012",
+                  "title": "课堂原文 · 第9-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-009-012",
+                  "quizRef": "rec-2026-fall-009-012"
+                },
+                {
+                  "id": "note-rec-2026-fall-009-012",
+                  "title": "课堂笔记 · 第9-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-009-012",
+                  "quizRef": "rec-2026-fall-009-012"
+                },
+                {
+                  "id": "card-rec-2026-fall-009-012",
+                  "title": "复习手卡 · 第9-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-009-012",
+                  "quizRef": "rec-2026-fall-009-012"
+                }
+              ]
             }
           ]
         },
@@ -6424,6 +6552,17 @@
           "layoutProfile": "article",
           "items": [
             {
+              "id": "min-rec-2026-fall-001-004",
+              "title": "课堂纪要 · 第1-4节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-001-004",
+              "quizRef": "rec-2026-fall-001-004",
+              "layoutProfile": "full"
+            },
+            {
               "id": "min-rec-2026-fall-005-008",
               "title": "课堂纪要 · 第5-8节",
               "type": "document",
@@ -6432,6 +6571,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-005-008",
               "quizRef": "rec-2026-fall-005-008",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-009-012",
+              "title": "课堂纪要 · 第9-12节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-009-012",
+              "quizRef": "rec-2026-fall-009-012",
               "layoutProfile": "full"
             }
           ]
@@ -10093,6 +10243,84 @@
                   "quizRef": "rec-2026-fall-011-012"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-013-014",
+              "title": "第13-14节 · 酶与酶促反应（二）——酶促反应动力学：底物浓度与酶浓度、温度与pH、抑制剂与激活剂",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-013-014",
+                  "title": "课堂原文 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                },
+                {
+                  "id": "note-rec-2026-fall-013-014",
+                  "title": "课堂笔记 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                },
+                {
+                  "id": "card-rec-2026-fall-013-014",
+                  "title": "复习手卡 · 第13-14节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-013-014",
+                  "quizRef": "rec-2026-fall-013-014"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-015-016",
+              "title": "第15-16节 · 糖代谢（一）——代谢篇开篇、糖的分类、消化吸收与无氧氧化（糖酵解）",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-015-016",
+                  "title": "课堂原文 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                },
+                {
+                  "id": "note-rec-2026-fall-015-016",
+                  "title": "课堂笔记 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                },
+                {
+                  "id": "card-rec-2026-fall-015-016",
+                  "title": "复习手卡 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                }
+              ]
             }
           ]
         },
@@ -10176,6 +10404,28 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-011-012",
               "quizRef": "rec-2026-fall-011-012",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-013-014",
+              "title": "课堂纪要 · 第13-14节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-013-014",
+              "quizRef": "rec-2026-fall-013-014",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-015-016",
+              "title": "课堂纪要 · 第15-16节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-015-016",
+              "quizRef": "rec-2026-fall-015-016",
               "layoutProfile": "full"
             }
           ]

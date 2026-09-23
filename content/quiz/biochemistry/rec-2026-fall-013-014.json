@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-013-014",
+  "generatedAt": "2026-09-23",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-013-014/recording.md；content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-013-014",
+    "revision": 1,
+    "recordingHash": "b67bc261b559b5dcfe15f3c8edb79236253c0b9dac2b2fc8a5817efe75eff6fc",
+    "notesTextHash": "e80c6fe2d1ff365ca2c452cc268eeb7a3e370cee3632570ca1323c3c83af8208"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "底物浓度对反应速率的影响——矩形双曲线"
+      },
+      "stem": "在其他条件不变时，随着底物浓度[S]升高，酶促反应速率的变化曲线是：",
+      "options": [
+        "始终保持一条斜率不变的直线",
+        "呈矩形双曲线：开始上升快，随后趋缓，最终接近最大速率 Vmax",
+        "先下降后上升，呈 U 形曲线",
+        "与[S]完全无关，速率恒定不变"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**底物浓度升高时反应速率升高，但斜率逐渐减小，曲线为矩形双曲线；当底物足够高时酶被饱和，速率趋于 Vmax。A错：斜率会随[S]升高而减小，并非恒定直线。C错：速率不会先下降。D错：低[S]时速率随[S]升高而增大。",
+      "hint": "酶被底物饱和，速率先快增后趋平——矩形双曲线。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "酶-底物中间复合物学说与米氏方程"
+      },
+      "stem": "米氏方程 v = Vmax[S]/(Km+[S]) 建立的关键前提（酶-底物中间复合物学说）是：",
+      "options": [
+        "酶与底物先结合形成 ES 中间复合物，再由 ES 分解生成产物",
+        "酶在反应中被完全消耗，无需与底物结合",
+        "底物不经酶即可自发分解，酶只起保温作用",
+        "酶与产物结合形成复合物后再生成底物"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**米氏方程推导基于酶 E 与底物 S 先可逆结合成中间复合物 ES，再由 ES 分解为产物并释放酶。B错：酶不被消耗且必须结合底物。C错：酶通过形成 ES 降低活化能，不是只保温。D错：结合方向是酶与底物而非产物。",
+      "hint": "E+S ⇌ ES → E+P，先有 ES 复合物。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "用米氏方程解释一级/零级反应阶段"
+      },
+      "stem": "当底物浓度[S]远小于 Km 时，酶促反应速率近似与[S]成正比，此阶段属于：",
+      "options": [
+        "零级反应（速率与[S]无关）",
+        "混合级反应",
+        "一级反应（速率正比于[S]）",
+        "二级反应（速率正比于[S]²）"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**[S]<<Km 时 Km+[S]≈Km，v≈(Vmax/Km)[S]，速率与[S]成正比，为一级反应。A错：零级反应出现在[S]>>Km、v≈Vmax 时。B错：中间段才是混合级。D错：米氏曲线低[S]段不是二级反应。",
+      "hint": "[S]很低 v∝[S] 一级；[S]很高 v≈Vmax 零级。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "Km 的物理意义"
+      },
+      "stem": "关于米氏常数 Km 的物理意义，下列叙述正确的是：",
+      "options": [
+        "Km 等于反应速率达到 Vmax 一半时的底物浓度，Km 越小酶对底物亲和力越大",
+        "Km 越大，酶对底物的亲和力越大",
+        "Km 等于完全抑制酶活性所需的抑制剂浓度",
+        "Km 是酶促反应的最适温度"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**令 v=Vmax/2 代入米氏方程可得 Km=[S]，故 Km 是速率达一半 Vmax 时的底物浓度；Km 越小，达到半饱和所需底物越低，亲和力越大。B错：方向相反，Km 小才亲和力大。C错：Km 与抑制剂无关。D错：Km 是浓度参数，不是温度。",
+      "hint": "Km=半速时[S]；Km 小，亲和力大。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "Vmax 与酶的转换数 kcat"
+      },
+      "stem": "酶的转换数 kcat（turnover number）是指：",
+      "options": [
+        "酶完全失活所需的时间",
+        "酶与底物结合的平衡常数",
+        "酶促反应的最适 pH 值",
+        "在底物饱和时，单位时间内每个酶分子（或每个活性中心）转换底物的分子数"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**kcat 是底物饱和（Vmax 条件）下单位时间内每个酶分子或活性中心催化转换底物的分子数，kcat=Vmax/[E]t。A错：与失活时间无关。B错：不是结合平衡常数。C错：kcat 是速率参数而非 pH。",
+      "hint": "kcat=Vmax/[E]，一个酶分子每秒转换几个底物。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "双倒数（Lineweaver-Burk）作图"
+      },
+      "stem": "将米氏方程取双倒数 1/v = (Km/Vmax)(1/[S]) + 1/Vmax 作图，其纵轴截距和斜率分别是：",
+      "options": [
+        "纵截距为 −1/Km，斜率为 1/Vmax",
+        "纵截距为 1/Km，斜率为 Vmax",
+        "纵截距为 Vmax，斜率为 Km",
+        "纵截距为 1/Vmax，斜率为 Km/Vmax"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**双倒数式 y=ax+b 中，以 1/v 对 1/[S] 作图，斜率 a=Km/Vmax，纵轴截距 b=1/Vmax，横轴截距为 −1/Km。A错：−1/Km 是横轴截距而非纵截距。B、C错：截距与斜率均需取倒数，对应关系错误。",
+      "hint": "1/v 对 1/[S]：斜率 Km/Vmax，纵截 1/Vmax，横截 −1/Km。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "酶浓度对反应速率的影响"
+      },
+      "stem": "当底物充足（酶被底物饱和的条件不受限制）时，酶促反应速率与酶浓度[E]之间的关系是：",
+      "options": [
+        "成反比，酶越多速率越慢",
+        "无关，速率不随酶浓度变化",
+        "成正比，酶浓度加倍速率大致加倍",
+        "呈先升后降的钟形关系"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**在底物足量时 Vmax=kcat[E]，反应速率与酶浓度成正比，酶加倍则可参与催化的活性中心加倍，速率大致加倍。A错：方向不是反比。B错：酶浓度直接决定 Vmax，并非无关。D错：在底物充足范围内速率不会下降。",
+      "hint": "底物够时，速率∝酶浓度。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "温度对酶促反应的双重影响"
+      },
+      "stem": "温度对酶活性的影响表现为“双重性”，下列说法正确的是：",
+      "options": [
+        "低温和高温都使酶发生不可逆变性",
+        "低温通常仅抑制酶活性（升温可恢复），过高温度则使酶蛋白变性失活（不可逆）",
+        "温度越高酶活性无限增大",
+        "酶活性与温度完全无关"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**低温主要降低反应速率、抑制酶活性，升温后多可恢复（故可低温保存酶、低温麻醉）；过高温度破坏酶的空间结构使其变性失活，不可逆。A错：低温一般不引起变性。C错：超过最适温度后活性下降而非无限增大。D错：酶活性明显受温度影响。",
+      "hint": "低温抑制可恢复，高温变性不可逆；有最适温度。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "pH 对酶促反应的影响与最适 pH"
+      },
+      "stem": "胃蛋白酶的最适 pH 约为 1.5～2，而人体内多数酶的最适 pH 接近中性。pH 改变影响酶活性的主要机制是：",
+      "options": [
+        "pH 改变影响酶蛋白（及底物）的解离状态与空间构象，从而影响活性",
+        "pH 只改变反应温度",
+        "pH 改变会直接增加酶的总量",
+        "酶活性与 pH 完全无关"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**酶蛋白是两性电解质，pH 改变其可解离基团的带电状态及底物解离，进而影响活性中心构象与 ES 结合，故存在最适 pH（胃蛋白酶在强酸、多数酶近中性）。B错：pH 不改变温度。C错：pH 不直接增加酶量。D错：酶活性明显受 pH 影响。",
+      "hint": "pH 改带电状态与构象；每种酶有最适 pH。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "竞争性抑制的特点"
+      },
+      "stem": "某抑制剂结构与底物相似，竞争结合酶的活性中心；增大底物浓度可减弱其抑制作用。该抑制属于，其动力学变化为：",
+      "options": [
+        "非竞争性抑制：Vmax 下降、Km 不变",
+        "反竞争性抑制：Vmax 与 Km 同比例下降",
+        "竞争性抑制：表观 Km 增大、Vmax 不变",
+        "不可逆抑制：与底物浓度无关"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**竞争性抑制剂与底物结构相似、竞争活性中心，阻碍 ES 形成，使表观 Km 增大，但不改变 Vmax；提高[S]可克服。A错：非竞争性抑制结合活性中心外，Vmax↓、Km 不变。B错：反竞争性抑制只结合 ES。D错：该抑制可逆且可被高[S]解除，不是不可逆。",
+      "hint": "竞争性：抢活性中心、Km↑、Vmax 不变、高[S]可解。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-013-014/notes.html",
+        "label": "酶原激活"
+      },
+      "stem": "胰蛋白酶原在小肠中被切去一段特定肽后转变为有活性的胰蛋白酶，这一过程称为酶原激活，其本质是：",
+      "options": [
+        "酶蛋白的可逆变性，可反复在活性/无活性间转换",
+        "通过水解部分肽段使酶的活性中心形成或暴露，由无活性酶原变为有活性酶（通常不可逆）",
+        "酶原与辅酶简单非共价结合，不发生构象变化",
+        "单纯增加酶原的浓度，不涉及结构变化"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**酶原激活是在一定条件下水解掉一个或几个特定肽段，使酶的空间构象改变、活性中心形成或暴露，从而由无活性前体变为活性酶，过程通常不可逆（如消化酶、凝血酶）。A错：不是可逆变性。C错：伴随肽段水解与构象改变，并非仅非共价结合。D错：与浓度无关，是结构激活。",
+      "hint": "酶原切去一段肽→活性中心暴露→不可逆激活。"
+    }
+  ]
+}

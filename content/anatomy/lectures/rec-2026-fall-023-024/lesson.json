@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "anatomy",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-023-024",
+  "courseName": "系统解剖学",
+  "sessionRange": { "start": 23, "end": 24 },
+  "taughtOn": "2026-09-22",
+  "topic": "呼吸系统——鼻、咽、喉、气管与支气管、肺、胸膜与纵隔",
+  "revision": 1,
+  "materials": {
+    "recording": { "file": "recording.md", "format": "text" },
+    "minutes": { "file": "minutes.md", "format": "markdown" },
+    "notes": { "file": "notes.html", "format": "html" },
+    "cards": { "file": "cards.md", "format": "markdown" }
+  },
+  "quizId": "rec-2026-fall-023-024"
+}

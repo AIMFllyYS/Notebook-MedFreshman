@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "rec-2026-fall-009-012",
+  "generatedAt": "2026-09-23",
+  "examConfig": {
+    "source": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/recording.md；content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-009-012",
+    "revision": 1,
+    "recordingHash": "f3b1bf52eac9cbc0504229b01def0253db1009220aabb92cd6cac1482e9c865f",
+    "notesTextHash": "ca8e66c6a81d0ffae27569a0e3c0391ab6d3348179befd43894b5f8b1d186160"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "实验设计理念"
+      },
+      "stem": "本堂课通过 ABO 血型鉴定、巨噬细胞吞噬观察和红细胞溶血三个实验，共同验证的核心是：",
+      "options": [
+        "细胞膜的结构与特性（识别、物质转运/通透性）",
+        "细胞核内的 DNA 复制",
+        "核糖体的蛋白质合成过程",
+        "线粒体的氧化磷酸化"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**血型鉴定体现膜上抗原与识别，吞噬体现膜的胞吞运动，溶血体现膜的选择通透性，三者围绕细胞膜的结构与特性。B、C、D 分别涉及核内复制、核糖体合成与线粒体能量代谢，均非本堂实验主题。",
+      "hint": "识别+胞吞+通透性——都在讲细胞膜。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "ABO 血型的抗原与抗体"
+      },
+      "stem": "ABO 血型由红细胞膜上的凝集原（抗原）和血清中的凝集素（抗体）决定。O 型血的特点是：",
+      "options": [
+        "红细胞膜有 A、B 两种抗原，血清中无抗体",
+        "红细胞膜有 A 抗原，血清中有抗 B",
+        "红细胞膜无 A、B 抗原，血清中同时含抗 A 和抗 B",
+        "红细胞膜有 B 抗原，血清中有抗 A"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**O 型红细胞膜上无 A、B 凝集原，血清中同时存在抗 A、抗 B 凝集素。A错：该描述是 AB 型。B错：该描述是 A 型。D错：该描述是 B 型。",
+      "hint": "O 型：膜上无抗原、血清抗A+抗B。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "凝集反应"
+      },
+      "stem": "血型鉴定时，相应抗原与抗体结合使红细胞聚集成团，这一现象称为：",
+      "options": [
+        "红细胞叠连",
+        "凝集反应（agglutination）",
+        "血液凝固",
+        "溶血"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**特异性抗体与红细胞膜抗原结合、在相邻红细胞间搭桥使其聚集成团，称为凝集反应，是血型判定的依据。A错：叠连是红细胞因电荷/血浆因素呈缗钱状，非抗原抗体特异结合。C错：凝固是纤维蛋白网络形成。D错：溶血是红细胞破裂。",
+      "hint": "抗原抗体搭桥、红细胞成团=凝集。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "ABO 血型的遗传"
+      },
+      "stem": "ABO 血型由 IA、IB、i 三个复等位基因控制，IA 与 IB 共显性、i 隐性。AB 型个体的基因型是：",
+      "options": [
+        "ii",
+        "IAIA 或 IAi",
+        "IBIB 或 IBi",
+        "IAIB"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**AB 型同时表达 A、B 抗原，基因型为 IAIB（共显性）。A错：ii 为 O 型。B错：IAIA/IAi 为 A 型。C错：IBIB/IBi 为 B 型。",
+      "hint": "AB 型=IAIB，共显性。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "血型结果判定"
+      },
+      "stem": "受检红细胞与标准抗 A 血清发生凝集、与抗 B 血清不凝集，该受检者血型为：",
+      "options": [
+        "A 型",
+        "B 型",
+        "AB 型",
+        "O 型"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**与抗 A 凝集说明红细胞膜有 A 抗原，与抗 B 不凝集说明无 B 抗原，故为 A 型。B错：B 型应与抗 B 凝集。C错：AB 型与抗 A、抗 B 都凝集。D错：O 型与两者都不凝集。",
+      "hint": "抗A凝集、抗B不凝=A型。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "胞吞作用与吞噬作用"
+      },
+      "stem": "巨噬细胞伸出伪足包裹、吞入较大固体颗粒（如鸡红细胞）的过程，属于：",
+      "options": [
+        "简单扩散",
+        "易化扩散",
+        "吞噬作用（phagocytosis，属胞吞作用的一种）",
+        "主动转运小分子的泵"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**吞噬作用是细胞吞入较大颗粒（>0.5 μm）的胞吞方式，由巨噬细胞、中性粒细胞等完成，形成吞噬体后与溶酶体融合消化。A、B错：颗粒不能经扩散跨膜。D错：吞噬是膜泡运输而非小分子泵。",
+      "hint": "巨噬细胞吞大颗粒=吞噬（胞吞的一种）。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "诱导腹腔巨噬细胞聚集"
+      },
+      "stem": "为便于观察巨噬细胞吞噬，实验前向小鼠腹腔注射淀粉肉汤（或糖原、鸡红细胞等异物），其目的是：",
+      "options": [
+        "麻醉小鼠",
+        "诱导巨噬细胞向腹腔聚集、活化，提高可观察到的吞噬细胞数量",
+        "给小鼠补充营养",
+        "杀死腹腔中的巨噬细胞"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**腹腔注射异物（淀粉肉汤等）作为刺激，可趋化、招募并活化巨噬细胞聚集到腹腔，使腹腔液中吞噬细胞增多、更易观察吞噬现象。A错：注射物不是麻醉剂。C错：目的不是营养。D错：是招募而非杀死巨噬细胞。",
+      "hint": "腹腔注异物→趋化聚集巨噬细胞→便于观察。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "鸡血红细胞与哺乳动物红细胞"
+      },
+      "stem": "实验中选用鸡红细胞作为被吞噬的颗粒材料，鸡（禽类）成熟红细胞与哺乳动物成熟红细胞的显著区别是：",
+      "options": [
+        "鸡成熟红细胞有细胞核（多为椭圆形），而哺乳动物成熟红细胞无细胞核",
+        "二者都有细胞核，无区别",
+        "鸡成熟红细胞无细胞核，哺乳动物红细胞有核",
+        "鸡红细胞没有细胞膜"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**禽类（鸡）成熟红细胞保留细胞核、多呈椭圆形；哺乳动物成熟红细胞在发育中排出细胞核，呈双凹圆盘状。B、C错：二者核的有无正相反。D错：红细胞都有细胞膜。",
+      "hint": "鸡红细胞有核、椭圆形；哺乳类成熟红细胞无核。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "镜下观察巨噬细胞吞噬"
+      },
+      "stem": "镜下观察巨噬细胞吞噬鸡红细胞时，下列最能说明吞噬正在/已经发生的是：",
+      "options": [
+        "视野中只有游离、未被包裹的鸡红细胞",
+        "巨噬细胞内部（吞噬体内）可见被吞入的鸡红细胞（核）",
+        "所有细胞都呈双凹圆盘状",
+        "视野中无任何细胞"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**鸡红细胞被包裹进巨噬细胞的吞噬体、位于巨噬细胞胞质内，是吞噬发生的直接证据（被吞细胞还可见其核）。A错：游离鸡红细胞未被吞噬。C错：巨噬细胞不是双凹圆盘状。D错：无细胞无法判断。",
+      "hint": "巨噬细胞“肚子里”有鸡红细胞（核）=吞噬。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "红细胞膜通透性与溶血原理"
+      },
+      "stem": "将红细胞放入低渗溶液（如清水）中会发生溶血，其直接机制是：",
+      "options": [
+        "溶质把细胞膜溶解成碎片",
+        "细胞外渗透压低，水进入红细胞使其膨胀，超过膜的承受限度后破裂、释出血红蛋白",
+        "红细胞主动排出全部血红蛋白",
+        "低渗使红细胞立刻凝固"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**红细胞膜对水通透，低渗时水顺渗透压差进入细胞，红细胞膨胀（由双凹变圆），最终膜破裂、血红蛋白释出而溶血。A错：是渗透吸水而非溶质溶解膜。C错：血红蛋白是被动释出而非主动排出。D错：低渗导致破裂而非凝固。",
+      "hint": "低渗→水进入→膨胀破裂→溶血。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-009-012/notes.html",
+        "label": "溶血实验结果判读"
+      },
+      "stem": "比较红细胞在不同溶液中的变化，下列判读正确的是：",
+      "options": [
+        "在 0.9% NaCl（生理盐水，等渗）中很快完全溶血",
+        "低渗溶液和某些能较快进入细胞的溶质（如甘油、尿素、铵盐）可引起溶血，而等渗 NaCl 中红细胞维持正常、不溶血；溶血时悬液由混浊变为透明红色",
+        "溶血后悬液更加混浊、不透明",
+        "任何等渗溶液都会使红细胞破裂"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**等渗 NaCl 中红细胞维持双凹圆盘、不溶血；低渗或某些可快速穿膜、改变细胞内渗透压差的溶质（甘油、尿素、铵盐等）可使水进入而溶血；溶血后血红蛋白释出，悬液由不透光的混浊红变为透光的“红墨水”样透明红。A错：生理盐水等渗不溶血。C错：溶血后变透明而非更混浊。D错：等渗且不能自由进入的溶液不引起破裂。",
+      "hint": "等渗NaCl不溶血；溶血=混浊变红透明。"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "cell-biology-lab",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-001-004",
+  "courseName": "细胞生物学实验",
+  "sessionRange": {
+    "start": 1,
+    "end": 4
+  },
+  "taughtOn": "2026-09-08",
+  "topic": "小鼠原代肝细胞培养——原代培养原理、取材分离与无菌操作",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-001-004"
+}

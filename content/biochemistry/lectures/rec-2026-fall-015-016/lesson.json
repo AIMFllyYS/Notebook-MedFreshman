@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "biochemistry",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-015-016",
+  "courseName": "生物化学与分子生物学",
+  "sessionRange": {
+    "start": 15,
+    "end": 16
+  },
+  "taughtOn": "2026-09-22",
+  "topic": "糖代谢（一）——代谢篇开篇、糖的分类、消化吸收与无氧氧化（糖酵解）",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-015-016"
+}

@@ -354,6 +354,50 @@
       }
     },
     {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-023-024",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 23,
+        "end": 24
+      },
+      "taughtOn": "2026-09-22",
+      "topic": "呼吸系统——鼻、咽、喉、气管与支气管、肺、胸膜与纵隔",
+      "revision": 1,
+      "quizId": "rec-2026-fall-023-024",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-023-024"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-023-024"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-023-024"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-023-024"
+        }
+      },
+      "hashes": {
+        "recording": "34c941acf3a1a1209e91aea04c3324abaa31bea8c004c8c166c85d4f6b2c677f",
+        "notesText": "cdabbf24a9b77ccd21eb230ff5434094fbac7a7fa43ebdcf1dc4717bbf542056"
+      }
+    },
+    {
       "subjectId": "biochemistry",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -615,6 +659,94 @@
       "hashes": {
         "recording": "438e7d049087fe5acd6f1ee5747f93a25156dd74debf3faa21afa605c52c20bd",
         "notesText": "c9a611063d20e686b492f196a38cf915ad7998e83cda158b928f65b57362d172"
+      }
+    },
+    {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-013-014",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 13,
+        "end": 14
+      },
+      "taughtOn": "2026-09-17",
+      "topic": "酶与酶促反应（二）——酶促反应动力学：底物浓度与酶浓度、温度与pH、抑制剂与激活剂",
+      "revision": 1,
+      "quizId": "rec-2026-fall-013-014",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-013-014"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-013-014"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-013-014"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-013-014"
+        }
+      },
+      "hashes": {
+        "recording": "b67bc261b559b5dcfe15f3c8edb79236253c0b9dac2b2fc8a5817efe75eff6fc",
+        "notesText": "e80c6fe2d1ff365ca2c452cc268eeb7a3e370cee3632570ca1323c3c83af8208"
+      }
+    },
+    {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-015-016",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 15,
+        "end": 16
+      },
+      "taughtOn": "2026-09-22",
+      "topic": "糖代谢（一）——代谢篇开篇、糖的分类、消化吸收与无氧氧化（糖酵解）",
+      "revision": 1,
+      "quizId": "rec-2026-fall-015-016",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-015-016"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-015-016"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-015-016"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-015-016"
+        }
+      },
+      "hashes": {
+        "recording": "6940bd4d28a2489681fe7c02ae1f24d3dddd30034c06b56cd188937ec3067958",
+        "notesText": "b039523a07928791143b4a1c08bc88104618cc48218b70c2556d527ce302d2d4"
       }
     },
     {
@@ -927,6 +1059,50 @@
     },
     {
       "subjectId": "cell-biology-lab",
+      "lessonId": "rec-2026-fall-001-004",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学实验",
+      "sessionRange": {
+        "start": 1,
+        "end": 4
+      },
+      "taughtOn": "2026-09-08",
+      "topic": "小鼠原代肝细胞培养——原代培养原理、取材分离与无菌操作",
+      "revision": 1,
+      "quizId": "rec-2026-fall-001-004",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-001-004"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-001-004"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-001-004"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-001-004"
+        }
+      },
+      "hashes": {
+        "recording": "f57b1f44b1fbed14271e3ef509d42f9b95f715a1070b370308a5970742a266d4",
+        "notesText": "775a7a33b9c4864e29df9df24e152d0692ba048863190eba4b8e3a404946c47d"
+      }
+    },
+    {
+      "subjectId": "cell-biology-lab",
       "lessonId": "rec-2026-fall-005-008",
       "courseInstanceId": "rec-2026-fall",
       "courseName": "细胞生物学实验",
@@ -967,6 +1143,50 @@
       "hashes": {
         "recording": "8e809a69cbb534a4c0bf901c1260e30d7a8c709b24fb343dd8c03baf468dd53e",
         "notesText": "ea279121a6aad0d9564d4833afe8a762ef1bf2ff228ecea22b715adf4503863d"
+      }
+    },
+    {
+      "subjectId": "cell-biology-lab",
+      "lessonId": "rec-2026-fall-009-012",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学实验",
+      "sessionRange": {
+        "start": 9,
+        "end": 12
+      },
+      "taughtOn": "2026-09-22",
+      "topic": "细胞膜的特性——细胞膜的结构、流动镶嵌与特性观察实验",
+      "revision": 1,
+      "quizId": "rec-2026-fall-009-012",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-009-012"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-009-012"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-009-012"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-009-012"
+        }
+      },
+      "hashes": {
+        "recording": "f3b1bf52eac9cbc0504229b01def0253db1009220aabb92cd6cac1482e9c865f",
+        "notesText": "ca8e66c6a81d0ffae27569a0e3c0391ab6d3348179befd43894b5f8b1d186160"
       }
     },
     {
