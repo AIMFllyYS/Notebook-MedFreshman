@@ -43,6 +43,11 @@ export default function MobileMiniChat({ chatContext }: { chatContext: ChatConte
     [sendMessage],
   );
 
+  // 稳定引用：内联箭头会让每条 ChatMessage 的 memo 在流式 tick 全失效。
+  const handleFollowUpClick = useCallback((question: string) => {
+    void sendMessage(question);
+  }, [sendMessage]);
+
   const emptyState = useMemo(
     () => (
       <div className="mobile-mini-chat-empty">
@@ -104,7 +109,7 @@ export default function MobileMiniChat({ chatContext }: { chatContext: ChatConte
                 onClearError={clearError}
                 info={info}
                 onClearInfo={clearInfo}
-                onFollowUpClick={(question) => sendMessage(question)}
+                onFollowUpClick={handleFollowUpClick}
                 hydrated={chatReady}
                 fontScale={fontScale}
                 bottomInset={composerInset}

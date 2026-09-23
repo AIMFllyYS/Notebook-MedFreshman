@@ -30,9 +30,6 @@ export default function AgentChatCenter() {
   const chatContext = useAgentChatContext();
   const centerTab = useAgentCenter((state) => state.centerTab);
   const sourcesPanelOpen = useAgentCenter((state) => state.sourcesPanelOpen);
-  const { rounds, sources } = useSessionSourceRounds();
-  const products = useSessionProducts();
-  const images = useSessionImages();
   const dockCollapsed = useStore((state) => state.agentDockCollapsed);
   const isMobile = useIsMobile();
   const activeSessionId = useChatHistory((state) => state.activeSessionId);
@@ -52,6 +49,12 @@ export default function AgentChatCenter() {
 
   const showSourcesPanel =
     !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && (totals.sources > 0 || totals.products > 0);
+
+  // 明细清单只在对应视图开着时才扫消息：流式期 messages 每 tick 换新引用，
+  // 三个 hook 无条件扫 = 每 tick 全量税（d2-P1-3）。开关用 spine 合计驱动，不吃这套扫描。
+  const { rounds, sources } = useSessionSourceRounds(undefined, centerTab === "links" || showSourcesPanel);
+  const products = useSessionProducts(undefined, showSourcesPanel);
+  const images = useSessionImages(centerTab === "images");
 
   // 「链接 / 图片 / 来源列」这类全量清单视图需要窗口外的轮次：
   // 用户点开它们才物化整段会话（窗口化的「加载更多」同一套按需语义）。

@@ -7,6 +7,7 @@ import { useSharedArtifact } from '@/components/share/ShareViewContext';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
+import { createStreamUiThrottle } from '@/lib/chat/streamUiThrottle';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
@@ -139,6 +140,9 @@ export default function ArtifactCard({
         let htmlBuf = '';
         let reasoningBuf = '';
         let terminal = false;
+        // delta/reasoning 事件按 chunk 来：与主聊天同一套 60ms 尾随节流，
+        // 大演示流式期的 <pre> 重渲被压到 ~16/s（d2-P1-4）。终态事件先 flush 保序。
+        const throttle = createStreamUiThrottle();
 
         while (true) {
           const { done: streamDone, value } = await reader.read();
@@ -154,21 +158,22 @@ export default function ArtifactCard({
               setStatus('streaming');
             } else if (event.status === 'reasoning') {
               reasoningBuf += event.delta || '';
-              setReasoning(reasoningBuf);
+              throttle.schedule(() => setReasoning(reasoningBuf));
             } else if (event.status === 'delta') {
               htmlBuf += event.delta || '';
-              setStreamHtml(htmlBuf);
-              setShowCode(true);
+              throttle.schedule(() => { setStreamHtml(htmlBuf); setShowCode(true); });
             } else if (event.status === 'done') {
               terminal = true;
               const finalHtml = event.html || htmlBuf;
               htmlBuf = finalHtml;
+              throttle.flush();
               setStreamHtml(finalHtml);
               setStatus('done');
               setShowCode(true);
               saveDone(artifactId, title, finalHtml, reasoningBuf);
             } else if (event.status === 'error') {
               terminal = true;
+              throttle.flush();
               setStatus('error');
               setError(event.message || t('window.artifact.generateFailed'));
             }

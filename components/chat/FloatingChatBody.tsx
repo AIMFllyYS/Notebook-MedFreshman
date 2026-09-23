@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@/lib/hooks/useChat";
 import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
 import { useChatReady } from "@/lib/hooks/useChatReady";
@@ -71,6 +71,11 @@ export default function FloatingChatBody({ win, chatContext, onModelChange }: Fl
     sendMessage(content, { ...opts, quotedText: quoted });
   }
 
+  // 稳定引用：内联箭头会让每条 ChatMessage 的 memo 在流式 tick 全失效。
+  const handleFollowUpClick = useCallback((question: string) => {
+    void sendMessage(question);
+  }, [sendMessage]);
+
   return (
     <div className="relative flex min-h-0 flex-1 flex-col" data-chat-surface="floating">
       <ChatThread
@@ -80,7 +85,7 @@ export default function FloatingChatBody({ win, chatContext, onModelChange }: Fl
         onClearError={clearError}
         info={info}
         onClearInfo={clearInfo}
-        onFollowUpClick={(question) => sendMessage(question)}
+        onFollowUpClick={handleFollowUpClick}
         hydrated={chatReady}
         bottomInset={composerInset}
         sessionId={win.sessionId}
