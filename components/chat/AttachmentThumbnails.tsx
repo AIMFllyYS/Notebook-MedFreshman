@@ -58,6 +58,7 @@ function openPreviewItem(attachment: AttachmentPreview, key: string) {
     mimeType: attachment.mimeType,
     kind: previewKind(name, attachment.mimeType),
     content,
+    file: attachment.file,
   });
 }
 

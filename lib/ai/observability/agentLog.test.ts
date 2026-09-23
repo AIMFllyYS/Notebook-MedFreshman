@@ -12,6 +12,7 @@ import {
   appendAgentLog,
   collectEnvSecrets,
   createAgentLifecycleHooks,
+  flushAgentLogQueue,
   redactSecrets,
   resolveAgentLogPath,
   toJsonSafe,
@@ -115,12 +116,13 @@ test("redactSecrets：字段名、Bearer、sk- 与环境变量密钥都不会留
   }
 });
 
-test("appendAgentLog：写出可 JSON.parse 的 JSONL，且不含 API key", () => {
+test("appendAgentLog：写出可 JSON.parse 的 JSONL，且不含 API key", async () => {
   const dir = mkdtempSync(path.join(tmpdir(), "agent-log-"));
   const file = path.join(dir, "out.jsonl");
   try {
     appendAgentLog("onStepStart", { stepNumber: 0, apiKey: "sk-must-not-land", headers: { Authorization: "Bearer must-not-land" } }, file);
     appendAgentLog("onToolExecutionEnd", { toolCall: { toolName: "getCurrentPage" } }, file);
+    await flushAgentLogQueue();
     const lines = readFileSync(file, "utf8").trim().split("\n");
     assert.equal(lines.length, 2);
     const parsed = lines.map((line) => JSON.parse(line) as { hook: string; data: { stepNumber?: number } });
@@ -184,6 +186,7 @@ test("createStudyAgent：一次工具循环在 JSONL 里能还原 LLM 步与工�
     const result = await agent.stream({ messages: [{ role: "user", content: "这一节讲了什么" }] });
     await convertReadableStreamToArray(result.toUIMessageStream());
     await result.steps;
+    await flushAgentLogQueue();
 
     const lines = readFileSync(file, "utf8").trim().split("\n");
     assert.ok(lines.length >= 4, `expected several JSONL lines, got ${lines.length}`);

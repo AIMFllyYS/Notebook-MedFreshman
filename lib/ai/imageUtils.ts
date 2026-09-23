@@ -376,8 +376,15 @@ export function toChatAttachments(previews: AttachmentPreview[]): ChatAttachment
 /** 释放一组 AttachmentPreview 的 blob URL，防止内存泄漏。 */
 export function revokeAttachments(previews: AttachmentPreview[]): void {
   previews.forEach((attachment) => {
-    if (attachment.type !== "document" && attachment.type !== "local-file") {
-      URL.revokeObjectURL(attachment.previewUrl);
-    }
+    // document 的 previewUrl 与 local-file 的 dataUrl 同样是 createObjectURL 产物，
+    // 以前被豁免 = 确定性泄漏。预览窗现在经 data.file 自建 URL（借据模型），
+    // 这里的 URL 归 composer 独有，可以无条件回收。
+    const url =
+      attachment.type === "document"
+        ? attachment.previewUrl
+        : attachment.type === "local-file"
+          ? attachment.dataUrl
+          : attachment.previewUrl;
+    if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
   });
 }

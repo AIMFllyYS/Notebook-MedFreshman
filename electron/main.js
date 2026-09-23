@@ -307,25 +307,6 @@ function createMainWindow() {
     delete webPreferences.preload;
   });
   mainWindow.loadURL(`http://127.0.0.1:${serverPort}/`);
-  // 首次保存自由中转后，把对话默认模型切到「自由中转」，避免仍打到内置模型 ID。
-  mainWindow.webContents.once("did-finish-load", () => {
-    const modelId = String(loadKeys().RELAY_MODEL_ID || "").trim();
-    if (!modelId) return;
-    mainWindow.webContents
-      .executeJavaScript(
-        `(() => { try {
-          const k = "gailvlun-settings-v1";
-          const s = JSON.parse(localStorage.getItem(k) || "{}");
-          if (!s._desktopCustomBound) {
-            s.selectedModelId = "custom-openai";
-            s._desktopCustomBound = true;
-            localStorage.setItem(k, JSON.stringify(s));
-            location.reload();
-          }
-        } catch (e) {} })()`,
-      )
-      .catch(() => {});
-  });
   // open external links in the system browser, keep app links internal
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (isAppUrl(url)) return { action: "allow" };
@@ -429,6 +410,13 @@ function buildMenu() {
 // setup window itself. Anything else gets nothing — not even an error string.
 const senderIsApp = (e) => isAppUrl(e.senderFrame && e.senderFrame.url);
 const senderIsSetupWindow = (e) => !!setupWindow && e.sender === setupWindow.webContents;
+
+// preload 在页面脚本前同步询问：是否需要把默认模型绑到「自由中转」。
+// 以前在 did-finish-load 里 executeJavaScript 改 localStorage 再 location.reload()，
+// 整页二次加载；现在由 preload 直接改，渲染进程无感知、不重载。
+ipcMain.on("desktop:needs-model-bind", (e) => {
+  e.returnValue = senderIsApp(e) && Boolean(String(loadKeys().RELAY_MODEL_ID || "").trim());
+});
 
 ipcMain.handle("secrets:load", (e) => (senderIsApp(e) ? loadCustomApiSecrets() : { v: 1, groups: {}, capability: {} }));
 ipcMain.handle("secrets:save", (e, payload) => (senderIsApp(e) ? saveCustomApiSecrets(payload) : { ok: false }));

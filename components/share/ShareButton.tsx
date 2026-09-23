@@ -6,6 +6,7 @@ import ShareDialog from "@/components/share/ShareDialog";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { useArtifacts } from "@/lib/stores/artifacts";
 import { useChatHistory } from "@/lib/stores/chatHistory";
+import { loadSessionMessages } from "@/lib/storage/chatStorage";
 import { useToast } from "@/lib/stores/toast";
 import { buildSharedSnapshot } from "@/lib/share/snapshot";
 import type { SharedArtifact } from "@/lib/share/types";
@@ -41,18 +42,26 @@ export default function ShareButton() {
       return;
     }
     const meta = sessionsMeta.find((item) => item.id === activeSessionId);
-    const messages = activeSessionId ? messagesById[activeSessionId] ?? [] : [];
-    if (!meta || messages.length === 0) {
+    // 窗口化后 messagesById 可能只是尾部窗口：空判看 manifest 的 messageCount。
+    if (!meta || meta.messageCount === 0) {
       showToast(t("share.empty"));
       return;
     }
     setOpen(true);
-  }, [activeSessionId, messagesById, sessionsMeta, showToast, status, t]);
+  }, [activeSessionId, sessionsMeta, showToast, status, t]);
 
   /** 弹窗按下确认后才走到这里：打快照 → POST → 把 url 交回弹窗展示（复制在弹窗里做）。 */
   const createShare = useCallback(async (): Promise<string> => {
     const meta = sessionsMeta.find((item) => item.id === activeSessionId);
-    const messages = activeSessionId ? messagesById[activeSessionId] ?? [] : [];
+    // 分享快照必须是完整会话：窗口外轮次也要进快照，直接全量装配读。
+    // 存储读不到时才退回内存窗口，且窗口必须覆盖 messageCount（证明不是尾部截断）。
+    const stored = activeSessionId ? await loadSessionMessages(activeSessionId) : null;
+    const windowMessages = (activeSessionId ? messagesById[activeSessionId] : undefined) ?? [];
+    const messages = stored?.length
+      ? stored
+      : windowMessages.length >= (meta?.messageCount ?? 0)
+        ? windowMessages
+        : [];
     if (!meta || messages.length === 0) throw new Error("empty");
     // 顶层 title / sourceClientId 由 buildSharedSnapshot 从 meta 取，不另传入参。
     const payload = buildSharedSnapshot({

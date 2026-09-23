@@ -600,6 +600,29 @@ html[data-reduce-motion="true"] *::after {
   /* 纵向滚动的列表横向一律裁剪：任何内容都不允许横着溢出对话栏。 */
   overflow-x: clip;
 }
+/* 「加载更早」：窗口化会话的顶部入口，普通文本流位置（在虚拟 sizer 之上）。 */
+.chat-load-earlier-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 4px;
+}
+.chat-load-earlier {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-soft, rgba(0, 0, 0, 0.12));
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: var(--bg-elevated, transparent);
+}
+.chat-load-earlier:hover:not(:disabled) {
+  background: var(--bg-muted);
+}
+.chat-load-earlier:disabled {
+  opacity: 0.7;
+}
 /* 消息条目：只做 paint/style 隔离，不做 size/layout 隔离——
    高度必须由 tanstack measureElement 真实测得，见 docs/plans/19。 */
 .chat-message {

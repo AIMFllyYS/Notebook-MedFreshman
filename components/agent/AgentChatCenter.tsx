@@ -11,6 +11,8 @@ import { SOURCES_PANEL_INSET, hydrateSourcesPanelSize, useAgentCenter } from "@/
 import { useSessionSourceRounds } from "@/lib/hooks/useSessionSources";
 import { useSessionProducts } from "@/lib/hooks/useSessionProducts";
 import { useSessionImages } from "@/lib/hooks/useSessionImages";
+import { useSessionDerivedTotals } from "@/lib/hooks/useSessionDerivedTotals";
+import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useStore } from "@/lib/stores/ui";
 
@@ -28,11 +30,11 @@ export default function AgentChatCenter() {
   const chatContext = useAgentChatContext();
   const centerTab = useAgentCenter((state) => state.centerTab);
   const sourcesPanelOpen = useAgentCenter((state) => state.sourcesPanelOpen);
-  const { rounds, sources } = useSessionSourceRounds();
-  const products = useSessionProducts();
-  const images = useSessionImages();
   const dockCollapsed = useStore((state) => state.agentDockCollapsed);
   const isMobile = useIsMobile();
+  const activeSessionId = useChatHistory((state) => state.activeSessionId);
+  // 「还有没有在窗口外的来源/产物」看 spine 合计：sources.length 只覆盖已加载窗口。
+  const totals = useSessionDerivedTotals();
 
   // 来源列尺寸存在 localStorage：首帧之后读回来，避免 SSR/水合不一致。
   useEffect(() => {
@@ -46,7 +48,22 @@ export default function AgentChatCenter() {
   const sourcesWidth = useAgentCenter((state) => state.sourcesPanelSize.width);
 
   const showSourcesPanel =
-    !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && (sources.length > 0 || products.length > 0);
+    !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && (totals.sources > 0 || totals.products > 0);
+
+  // 明细清单只在对应视图开着时才扫消息：流式期 messages 每 tick 换新引用，
+  // 三个 hook 无条件扫 = 每 tick 全量税（d2-P1-3）。开关用 spine 合计驱动，不吃这套扫描。
+  const { rounds, sources } = useSessionSourceRounds(undefined, centerTab === "links" || showSourcesPanel);
+  const products = useSessionProducts(undefined, showSourcesPanel);
+  const images = useSessionImages(centerTab === "images");
+
+  // 「链接 / 图片 / 来源列」这类全量清单视图需要窗口外的轮次：
+  // 用户点开它们才物化整段会话（窗口化的「加载更多」同一套按需语义）。
+  useEffect(() => {
+    const wantsFull = centerTab === "links" || centerTab === "images" || showSourcesPanel;
+    if (wantsFull && activeSessionId) {
+      void useChatHistory.getState().ensureSessionFullyLoaded(activeSessionId);
+    }
+  }, [centerTab, showSourcesPanel, activeSessionId]);
 
   useEffect(() => {
     const root = document.documentElement;

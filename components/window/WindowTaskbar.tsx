@@ -148,6 +148,7 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
         mimeType: attachment.mimeType,
         kind,
         content: previewContent(attachment),
+        file: attachment.file,
       });
     });
     if (errors.length > 0) setFileError(errors[0]);

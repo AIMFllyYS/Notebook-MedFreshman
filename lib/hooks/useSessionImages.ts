@@ -14,9 +14,10 @@ import type { ChatMessage } from "@/lib/types/chat";
 
 /** 没有对话时共用的空数组：选择器每次返回新 [] 会让 zustand 每帧都判定变化。 */
 const EMPTY_MESSAGES: ChatMessage[] = [];
+const EMPTY_IMAGES: AgentImageItem[] = [];
 
 /** 当前对话里出现过的全部图片（联网检索 + 笔记配图 + 已生成）。 */
-export function useSessionImages(): AgentImageItem[] {
+export function useSessionImages(enabled = true): AgentImageItem[] {
   const messages = useChatHistory((state) => {
     const sid = state.activeSessionId;
     return sid ? state.messagesById[sid] ?? EMPTY_MESSAGES : EMPTY_MESSAGES;
@@ -24,6 +25,8 @@ export function useSessionImages(): AgentImageItem[] {
   const sessions = useImageGen((state) => state.sessions);
 
   return useMemo(() => {
+    // 明细视图没开就不扫：流式期 messages 每 tick 换新引用，关着扫等于白付全量税。
+    if (!enabled) return EMPTY_IMAGES;
     const base = collectMessageImages(messages.flatMap((message) => message.parts));
     const generated: GeneratedImage[] = [];
     for (const message of messages) {

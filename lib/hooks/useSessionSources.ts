@@ -27,17 +27,19 @@ const EMPTY_SET: SessionSourceSet = { rounds: [], sources: [], total: 0 };
  * 上层的 useMemo / effect 依赖它才不会每帧重跑（这条是硬要求，见测试）。
  * 不在 store 上加字段——来源是从消息 parts 纯推导出来的派生数据。
  */
-export function useSessionSourceRounds(sessionId?: string): SessionSourceSet {
+export function useSessionSourceRounds(sessionId?: string, enabled = true): SessionSourceSet {
   const messages = useChatHistory((state) => {
     const sid = sessionId ?? state.activeSessionId;
     return sid ? state.messagesById[sid] ?? EMPTY_MESSAGES : EMPTY_MESSAGES;
   });
 
   return useMemo(() => {
+    // 明细视图没开就不扫：流式期 messages 每 tick 换新引用，关着扫等于白付全量税。
+    if (!enabled) return EMPTY_SET;
     const rounds = collectSessionSourceRounds(messages);
     if (!rounds.length) return EMPTY_SET;
     // 扁平视图与 rounds 共用同一批对象（不是拷贝）：面板靠 indexOf 反查条目下标。
     const sources = rounds.flatMap((round) => round.sources);
     return { rounds, sources, total: sources.length };
-  }, [messages]);
+  }, [messages, enabled]);
 }

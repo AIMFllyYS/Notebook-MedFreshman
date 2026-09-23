@@ -19,6 +19,11 @@ export default function LazyVisible({ children, rootMargin = "200px", placeholde
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      // jsdom / 老浏览器：懒挂载只是优化不是正确性前提，直接全挂。
+      setVisible(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

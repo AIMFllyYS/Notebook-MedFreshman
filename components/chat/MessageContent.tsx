@@ -170,9 +170,116 @@ interface MessageRenderContext {
   messageId?: string;
   repairModelId?: string;
   topic?: string;
-  nextCanvasBlockIndex?: () => number;
+  /** 本条消息仍在流式：markdown 块启用「安全空行边界」二级分段（静态消息单段渲染，不建多 processor）。 */
+  isStreaming?: boolean;
   /** 文案函数：由 MessageContent 的 useT() 注入，语言切换时错误边界 label 一起重算。 */
   t: Translate;
+}
+
+/* SvgDiagram 的 repairContext.blockIndex 是「全文第几个完整 SvgDiagram 标签」的序数：
+   replaceCanvasBlock 用同一条正则在原始 content 上定位。分块渲染后没有全文扫一遍的机会，
+   就在 map 时按各块源文本累计 —— 流式只增量、序数稳定，计数器不用塞进 renderContext
+   （那样 context 每 render 都变，块级 memo 会全部失效）。 */
+const SVG_DIAGRAM_TAG_RE = /<SvgDiagram\b[^>]*(?:\/>|>[\s\S]*?<\/SvgDiagram>)/gi;
+
+function countSvgDiagrams(block: ParsedBlock): number {
+  if (block.type === 'component' && block.tagName === 'SvgDiagram') return 1;
+  const text = `${block.content ?? ''}${block.childrenText ?? ''}`;
+  if (!text.includes('<SvgDiagram')) return 0;
+  SVG_DIAGRAM_TAG_RE.lastIndex = 0;
+  let count = 0;
+  while (SVG_DIAGRAM_TAG_RE.exec(text) !== null) count += 1;
+  return count;
+}
+
+/**
+ * 流式 markdown 的安全切点：只认「不在 ``` 围栏 / $$ 数学块 / <svg> 元素内」的 \n\n。
+ * 每个已完成段独立 memo，全文生命周期里只解析一次；只有尾段随 tick 重跑管线。
+ * 检测是保守的（误判只会少切不会错切）：围栏/数学/ svg 的开关判定不看行首，
+ * 行内出现的 ``` 也会当作开关——边界变少但绝不会把未闭合结构切进已完成段。
+ */
+function streamingMarkdownSegments(text: string): string[] {
+  const boundaries: number[] = [];
+  const n = text.length;
+  let inFence = false;
+  let inMath = false;
+  let inSvg = false;
+  let i = 0;
+  while (i < n) {
+    if (!inFence && !inMath) {
+      if (!inSvg && text.startsWith('<svg', i)) { inSvg = true; i += 4; continue; }
+      if (inSvg && text.startsWith('</svg>', i)) { inSvg = false; i += 6; continue; }
+    }
+    if (inSvg) { i += 1; continue; }
+    if (!inMath && text.startsWith('```', i)) { inFence = !inFence; i += 3; continue; }
+    if (!inFence && text.startsWith('$$', i)) { inMath = !inMath; i += 2; continue; }
+    if (!inFence && !inMath && text.charCodeAt(i) === 10 && text.charCodeAt(i + 1) === 10) {
+      boundaries.push(i);
+      i += 2;
+      continue;
+    }
+    i += 1;
+  }
+  if (boundaries.length === 0) return [text];
+  const segments: string[] = [];
+  let last = 0;
+  for (const boundary of boundaries) {
+    const chunk = text.slice(last, boundary);
+    if (chunk.trim()) segments.push(chunk);
+    last = boundary + 2;
+  }
+  const tail = text.slice(last);
+  if (tail.trim()) segments.push(tail);
+  return segments.length > 1 ? segments : [text];
+}
+
+/** 单个 markdown 段：text 不变就整段跳过 unified 管线（流式期每个已完成段只解析一次）。 */
+const MarkdownSegment = React.memo(
+  function MarkdownSegment({
+    text,
+    segKey,
+    remarkPlugins,
+    t,
+  }: {
+    text: string;
+    segKey: string;
+    remarkPlugins: typeof sharedRemarkPlugins;
+    t: Translate;
+  }) {
+    return <React.Fragment key={segKey}>{renderMarkdownWithSvg(text, segKey, remarkPlugins, t)}</React.Fragment>;
+  },
+  (prev, next) =>
+    prev.text === next.text &&
+    prev.segKey === next.segKey &&
+    prev.remarkPlugins === next.remarkPlugins &&
+    prev.t === next.t,
+);
+
+function renderMarkdownBlock(
+  raw: string,
+  key: string,
+  remarkPlugins: typeof sharedRemarkPlugins,
+  renderContext: MessageRenderContext,
+): React.ReactNode {
+  if (renderContext.isStreaming && raw.length > 0) {
+    const segments = streamingMarkdownSegments(raw);
+    if (segments.length > 1) {
+      return (
+        <React.Fragment key={key}>
+          {segments.map((text, index) => (
+            <MarkdownSegment
+              key={`${key}-m${index}`}
+              segKey={`${key}-m${index}`}
+              text={text}
+              remarkPlugins={remarkPlugins}
+              t={renderContext.t}
+            />
+          ))}
+        </React.Fragment>
+      );
+    }
+  }
+  return renderMarkdownWithSvg(raw, key, remarkPlugins, renderContext.t);
 }
 
 /* ---- Render parsed blocks (supports nested Answer/Thinking re-parse) ---- */
@@ -182,11 +289,65 @@ function renderBlocks(
   enableVisualizations: boolean | undefined,
   remarkPlugins: typeof sharedRemarkPlugins,
   renderContext: MessageRenderContext,
+  svgBase = 0,
 ): React.ReactNode {
-  return blocks.map((block, idx) =>
-    renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, remarkPlugins, renderContext),
-  );
+  let svgSeen = svgBase;
+  return blocks.map((block, idx) => {
+    const element = (
+      <ParsedBlockView
+        key={`${keyPrefix}-${idx}`}
+        block={block}
+        keyPrefix={`${keyPrefix}-${idx}`}
+        enableVisualizations={enableVisualizations}
+        remarkPlugins={remarkPlugins}
+        renderContext={renderContext}
+        svgBase={svgSeen}
+      />
+    );
+    svgSeen += countSvgDiagrams(block);
+    return element;
+  });
 }
+
+/**
+ * 单个解析块的 memo 壳：流式期间 blocks 数组每 tick 都重建，
+ * 但旧块的 content/tagName/childrenText 字符串不变 —— 比较字符串而不是对象引用，
+ * 未变块整段跳过 remark/rehype/KaTeX 管线（每条回答的大头开销）。
+ * compProps 由同一段源文本决定，字符串相等即隐含 props 相等。
+ */
+const ParsedBlockView = React.memo(
+  function ParsedBlockView({
+    block,
+    keyPrefix,
+    enableVisualizations,
+    remarkPlugins,
+    renderContext,
+    svgBase,
+  }: {
+    block: ParsedBlock;
+    keyPrefix: string;
+    enableVisualizations: boolean | undefined;
+    remarkPlugins: typeof sharedRemarkPlugins;
+    renderContext: MessageRenderContext;
+    svgBase: number;
+  }) {
+    return (
+      <React.Fragment key={keyPrefix}>
+        {renderParsedBlock(block, keyPrefix, enableVisualizations, remarkPlugins, renderContext, svgBase)}
+      </React.Fragment>
+    );
+  },
+  (prev, next) =>
+    prev.block.type === next.block.type &&
+    prev.block.content === next.block.content &&
+    prev.block.tagName === next.block.tagName &&
+    prev.block.childrenText === next.block.childrenText &&
+    prev.keyPrefix === next.keyPrefix &&
+    prev.svgBase === next.svgBase &&
+    prev.enableVisualizations === next.enableVisualizations &&
+    prev.remarkPlugins === next.remarkPlugins &&
+    prev.renderContext === next.renderContext,
+);
 
 /* ---- Render a single parsed block ---- */
 const renderParsedBlock = (
@@ -195,6 +356,7 @@ const renderParsedBlock = (
   enableVisualizations: boolean | undefined,
   remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins,
   renderContext: MessageRenderContext,
+  svgBase = 0,
 ) => {
   if (block.type === 'markdown') {
     const raw = block.content || '';
@@ -204,12 +366,12 @@ const renderParsedBlock = (
       if (nested.some((b) => b.type === 'component')) {
         return (
           <React.Fragment key={key}>
-            {renderBlocks(nested, key, enableVisualizations, remarkPlugins, renderContext)}
+            {renderBlocks(nested, key, enableVisualizations, remarkPlugins, renderContext, svgBase)}
           </React.Fragment>
         );
       }
     }
-    return renderMarkdownWithSvg(raw, key, remarkPlugins, renderContext.t);
+    return renderMarkdownBlock(raw, key, remarkPlugins, renderContext);
   }
 
   const { tagName, props: compProps, childrenText } = block;
@@ -220,7 +382,7 @@ const renderParsedBlock = (
       ? {
           sessionId: renderContext?.sessionId,
           messageId: renderContext?.messageId,
-          blockIndex: renderContext?.nextCanvasBlockIndex?.(),
+          blockIndex: svgBase,
           modelId: renderContext?.repairModelId,
           topic: renderContext?.topic,
         }
@@ -247,7 +409,7 @@ const renderParsedBlock = (
     const innerBlocks = parseXmlTags(childrenText || '');
     return (
       <React.Fragment key={key}>
-        {renderBlocks(innerBlocks, key, enableVisualizations, remarkPlugins, renderContext)}
+        {renderBlocks(innerBlocks, key, enableVisualizations, remarkPlugins, renderContext, svgBase)}
       </React.Fragment>
     );
   }
@@ -293,19 +455,16 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
     return plugins;
   }, [preserveLineBreaks, catalog.length]);
 
-  const rendered = useMemo(() => {
-  const canvasBlockCounter = { current: 0 };
-  const renderContext: MessageRenderContext = {
-    sessionId,
-    messageId,
-    repairModelId,
-    topic,
-    nextCanvasBlockIndex: () => canvasBlockCounter.current++,
-    t,
-  };
+  // renderContext 必须是稳定引用：它进 ParsedBlockView 的 memo 比较，
+  // 每 tick 新建会让块级 memo 全部失效（流式期的主要收益就在这个比较上）。
+  const renderContext = useMemo<MessageRenderContext>(
+    () => ({ sessionId, messageId, repairModelId, topic, isStreaming, t }),
+    [sessionId, messageId, repairModelId, topic, isStreaming, t],
+  );
 
-  return renderBlocks(blocks, 'root', enableVisualizations, remarkPlugins, renderContext);
-  }, [blocks, enableVisualizations, remarkPlugins, sessionId, messageId, repairModelId, topic, t]);
+  const rendered = useMemo(() => {
+    return renderBlocks(blocks, 'root', enableVisualizations, remarkPlugins, renderContext);
+  }, [blocks, enableVisualizations, remarkPlugins, renderContext]);
   return <CitationCatalogContext.Provider value={catalog}>{rendered}</CitationCatalogContext.Provider>;
 };
 
