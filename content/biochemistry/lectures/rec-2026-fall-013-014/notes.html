@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>生物化学与分子生物学 · 第11-12节 · 酶与酶促反应</title>
+<style>
+:root{--accent:#2E7D4F;--accent-deep:#1F5C39;--accent-tint:#E8F1EA;--paper:#FAF8F1;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;--line:#E6DECC;--mnem:#A2630C;--mnem-tint:#F8ECD3;--crimson:#B23A2E;--crimson-tint:#F7E4DF;}
+*{box-sizing:border-box;}
+body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--paper);max-width:900px;margin:0 auto;padding:40px 32px;line-height:1.8;font-size:15px;}
+h1{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:28px;border-bottom:3px solid var(--accent);padding-bottom:12px;margin-top:0;}
+h2{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:22px;background:var(--accent-tint);padding:10px 16px;border-left:5px solid var(--accent);border-radius:0 6px 6px 0;margin-top:36px;}
+h3{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:18px;margin-top:28px;border-bottom:1.5px solid var(--accent-line,#C3D9C9);padding-bottom:6px;}
+h4{color:var(--accent-deep);font-size:16px;margin-top:20px;}
+p{margin:10px 0;}
+ul,ol{margin:8px 0;padding-left:28px;}
+li{margin:5px 0;}
+blockquote{background:var(--mnem-tint);border-left:4px solid var(--mnem);padding:12px 18px;margin:16px 0;border-radius:0 6px 6px 0;color:var(--ink-soft);font-size:14px;}
+blockquote strong{color:var(--mnem);}
+table.vt{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;}
+table.vt th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left;font-weight:600;}
+table.vt td{padding:8px 12px;border-bottom:1px solid var(--line);}
+table.vt tr:nth-child(even){background:#fff;}
+table.vt tr:hover{background:var(--accent-tint);}
+code{background:#f0ebe0;padding:2px 6px;border-radius:3px;font-size:13px;color:var(--accent-deep);}
+.math{font-family:"Cambria Math","Times New Roman",serif;font-style:italic;color:var(--accent-deep);}
+hr{border:none;border-top:2px solid var(--line);margin:32px 0;}
+details.qa{background:#fff;border:1px solid var(--line);border-radius:8px;margin:14px 0;overflow:hidden;}
+details.qa summary{background:var(--accent-tint);padding:12px 18px;cursor:pointer;font-weight:600;color:var(--accent-deep);list-style:none;}
+details.qa summary::before{content:"Q ";color:var(--accent);font-weight:700;}
+details.qa[open] summary{border-bottom:1px solid var(--line);}
+.qa-answer{padding:14px 18px;color:var(--ink-soft);}
+.qa-answer p{margin:6px 0;}
+.checklist{list-style:none;padding-left:8px;}
+.checklist li{margin:6px 0;}
+.checklist input[type=checkbox]{margin-right:8px;accent-color:var(--accent);}
+strong{color:var(--accent-deep);}
+@media print{body{padding:20px;}h2{page-break-after:avoid;}table.vt,details.qa{page-break-inside:avoid;}}
+</style></head><body>
+<h1>生物化学与分子生物学 · 第11-12节</h1>
+<p><strong>课程</strong>：生物化学与分子生物学（生化）</p>
+<p><strong>节次</strong>：第11-12节（课程内累计）</p>
+<p><strong>日期</strong>：2026年9月17日（周四，下午第5-6节）</p>
+<p><strong>授课教师</strong>：郭雨松 教授</p>
+<p><strong>主题</strong>：酶与酶促反应（章节收尾课：动力学·抑制剂·调节·医学应用）</p>
+<blockquote>本笔记严格基于课堂录音完整逐字稿整理，按老师讲解顺序组织，保留推导过程、举例类比、课堂互动和老师强调标记。关键知识点经网络搜索验证，标注来源。</blockquote>
+<hr>
+<h2>课堂导入</h2>
+<p>郭老师开场："今天呢，我们将继续学习酶与酶促反应。上节课我们首先学习了酶的分子组成，也了解了酶的基本工作原理。接下来呢，我们就要来认真的分析酶促反应的动力学。"</p>
+<p><strong>什么是酶促反应动力学？</strong></p>
+<ul>
+<li>动力学（kinetics）描述的是一个<strong>速度</strong>——在多快的时间当中能够发生反应</li>
+<li>对于酶促反应来说，主要考虑的是在一系列因素影响之下，<strong>酶的反应速率</strong>如何变化</li>
+<li>六大影响因素：<strong>底物浓度、酶浓度、温度、pH、抑制剂、激活剂</strong></li>
+<li>本节课重点讨论：底物浓度和酶浓度</li>
+</ul>
+<blockquote>🔍 <strong>网络验证</strong>：酶促反应动力学（Enzyme kinetics）是生物化学的核心分支，研究酶催化反应的速率及其影响因素。六大经典影响因素确为：底物浓度、酶浓度、温度、pH、抑制剂、激活剂。来源：《生物化学》（王镜岩）第4章。</blockquote>
+<hr>
+<h2>一、底物浓度对酶促反应速率的影响</h2>
+<h3>1.1 实验设计与基本现象</h3>
+<p><strong>实验设计原则</strong>：要考察底物浓度对酶促反应速率的影响，必须<strong>保持其他所有因素不变</strong>，只改变底物浓度，测定反应速率（底物消耗或产物生成）。</p>
+<p><strong>基本现象</strong>：</p>
+<ul>
+<li>在其他条件不变的情况下，随着底物浓度升高，反应速率<strong>升高</strong></li>
+<li>但升高的<strong>斜率不一致</strong>：开始比较陡，越往后越平</li>
+<li>当底物浓度升到足够高时，反应速率<strong>不再继续升高</strong>，达到一个<strong>最大反应速率</strong>（Vmax, maximal velocity）</li>
+</ul>
+<blockquote>⭐ <strong>老师强调</strong>："V也同样是斜体的，max是下标，同样是维持了我们之前这个学术写作的规范。"</blockquote>
+<h3>1.2 矩形双曲线与三个反应阶段</h3>
+<p>这样一条曲线叫做<strong>矩形双曲线</strong>（rectangular hyperbola），呈现出三个不同的反应阶段：</p>
+<table class="vt">
+<tr><th>阶段</th><th>底物浓度</th><th>反应特征</th><th>反应级数</th></tr>
+<tr><td>第一段（低浓度）</td><td>[S] << Km</td><td>反应速率与底物浓度成正比，像一条直线</td><td><strong>一级反应</strong></td></tr>
+<tr><td>中间段</td><td>[S] ≈ Km</td><td>介于一级和零级之间</td><td><strong>混合级反应</strong></td></tr>
+<tr><td>第三段（高浓度）</td><td>[S] >> Km</td><td>不管底物浓度怎么变，反应速率都不变</td><td><strong>零级反应</strong></td></tr>
+</table>
+<blockquote>🔍 <strong>网络验证</strong>：米氏方程描述的底物浓度-反应速率曲线确为矩形双曲线，三个阶段（一级、混合级、零级）是标准表述。来源：Lehninger Principles of Biochemistry, Chapter 6。</blockquote>
+<h3>1.3 米氏方程的推导</h3>
+<h4>关键假设：酶-底物中间复合物学说</h4>
+<p>米氏方程（Michaelis equation）基于以下简化模型：</p>
+<p><code>`</code></p>
+<p>E + S ⇌ ES → E + P</p>
+<p>k₁      k₃</p>
+<p>k₂</p>
+<p><code>`</code></p>
+<ul>
+<li><strong>E</strong> = enzyme（酶），<strong>S</strong> = substrate（底物）</li>
+<li><strong>ES</strong> = 酶-底物复合物</li>
+<li><strong>P</strong> = product（产物）</li>
+<li><strong>k₁</strong> = E + S → ES 的速率常数</li>
+<li><strong>k₂</strong> = ES → E + S 的解离速率常数</li>
+<li><strong>k₃</strong> = ES → E + P 的催化速率常数（单向）</li>
+</ul>
+<blockquote>⭐ <strong>老师强调</strong>："形成复合体我们可以用一个反应速率常数K1来描述这个过程，同时呢，这个反应是可逆的，所以复合体还可以再次解聚，以K2的这样一个速率进行解聚。而这样的复合体形成之后，它可以自发的来生成产物，所以这个过程是单向的，它有个反应速率是K3。"</blockquote>
+<h4>推导基础</h4>
+<ul>
+<li>基于<strong>酶-底物中间复合物学说</strong></li>
+<li>针对<strong>单底物</strong>简化模型（多底物情况方程更复杂）</li>
+<li>详细推导见教材42页</li>
+</ul>
+<h4>米氏方程</h4>
+<p><span class="math">$v = \frac{V_{max} \cdot [S]}{K_m + [S]}</span>$</p>
+<p>其中：</p>
+<ul>
+<li><strong>v</strong> = 反应速率</li>
+<li><strong>Vmax</strong> = 最大反应速率（常数）</li>
+<li><strong>[S]</strong> = 底物浓度</li>
+<li><strong>Km</strong> = 米氏常数（Michaelis constant，常数）</li>
+</ul>
+<blockquote>🔍 <strong>网络验证</strong>：米氏方程确为 v = Vmax[S]/(Km + [S])，由Leonor Michaelis和Maud Menten于1913年提出。来源：Lehninger Principles of Biochemistry, 7th ed., p.199。</blockquote>
+<h3>1.4 用米氏方程解释三个阶段</h3>
+<h4>第一段：[S] << Km（一级反应）</h4>
+<p>当底物浓度远小于Km时，分母中[S]可忽略：</p>
+<p><span class="math">$v \approx \frac{V_{max}}{K_m} \cdot [S]</span>$</p>
+<p>v与[S]呈<strong>线性关系</strong>，前面是整体常数（直线斜率），因此是一级反应。</p>
+<h4>第三段：[S] >> Km（零级反应）</h4>
+<p>当底物浓度远大于Km时，分母中Km可忽略：</p>
+<p><span class="math">$v \approx \frac{V_{max} \cdot [S]}{[S]} = V_{max}</span>$</p>
+<p>v = Vmax，反应速率达到最大值，与底物浓度无关，因此是零级反应。</p>
+<h4>中间段：混合级反应</h4>
+<p>两个过程同时起作用，米氏方程在数学上精确描述了实验观察到的现象。</p>
+<h3>1.5 Km的物理意义与应用价值</h3>
+<h4>Km的物理意义</h4>
+<p>当反应速率为最大反应速率一半时（v = ½Vmax），代入米氏方程：</p>
+<p><span class="math">$\frac{1}{2}V_{max} = \frac{V_{max} \cdot [S]}{K_m + [S]}</span>$</p>
+<p>整理得：<strong>Km = [S]</strong></p>
+<blockquote>⭐ <strong>老师强调</strong>："Km这个值所代表的就是我们的反应速率在最大反应速率一半的时候，它所对应的底物浓度。"</blockquote>
+<p>即：<strong>Km = 酶促反应速率达到最大反应速率一半时的底物浓度</strong>。</p>
+<h4>Km的应用价值</h4>
+<p><strong>① 酶的特征性常数</strong></p>
+<ul>
+<li>不同的酶，Km值可能不同</li>
+<li>Km与酶本身浓度无关——只要是这个酶，Km就是这个常数，哪怕酶浓度变化，Km也不变</li>
+</ul>
+<p><strong>② Km与酶对底物亲和力的关系</strong></p>
+<p>从反应过程推导：</p>
+<p><span class="math">$K_m = \frac{k_2 + k_3}{k_1}</span>$</p>
+<p>在真实生理条件下，<strong>k₃ << k₂</strong>（复合体形成后，大概率重新解离，而不是形成产物——产物生成是限速步骤），因此：</p>
+<p><span class="math">$K_m \approx \frac{k_2}{k_1} = K_s</span>$</p>
+<p>其中Ks是酶和底物的<strong>解离常数</strong>（dissociation constant），描述酶和底物结合的亲和力。</p>
+<blockquote>⭐ <strong>老师强调</strong>："Km这个值在很多情况之下，我们都可以直接把它认为是酶和底物的这么一个亲和力。"</blockquote>
+<p><strong>关键结论</strong>：</p>
+<ul>
+<li><strong>Km越大 → 酶对底物亲和力越小</strong>（需要更多底物才能达到半饱和）</li>
+<li><strong>Km越小 → 酶对底物亲和力越大</strong>（较少底物即可达到半饱和）</li>
+</ul>
+<blockquote>⚠️ <strong>易错点</strong>：Km与亲和力的关系与直觉相反——Km越大，亲和力越小。老师特别提醒："这个值越大，意味着酶对底物的亲和力怎么样啊？是越小的。"</blockquote>
+<p><strong>③ 比较不同酶的亲和力</strong></p>
+<ul>
+<li>教材43页表2-6列出了一系列酶对底物的Km值</li>
+<li>大部分酶的Km在<strong>微摩尔到毫摩尔</strong>范围之间</li>
+<li>可用于比较催化相似反应的不同酶对底物的亲和力差异</li>
+</ul>
+<blockquote>🔍 <strong>网络验证</strong>：Km的物理意义确为"反应速率为Vmax一半时的底物浓度"；当kcat << k-1时，Km ≈ Ks（解离常数），可反映酶对底物的亲和力。Km越大，亲和力越低。来源：Lehninger Principles of Biochemistry, 7th ed., pp.200-201。</blockquote>
+<h3>1.6 Vmax与酶的转换数</h3>
+<h4>Vmax的物理含义</h4>
+<ul>
+<li>Vmax = 酶被底物<strong>完全饱和</strong>时的反应速率</li>
+<li>此时所有酶都在"辛辛苦苦地工作"，不停地有底物过来</li>
+<li>Vmax与k₃直接相等，表示酶的<strong>转换数</strong>（turnover number）</li>
+</ul>
+<h4>转换数（kcat / turnover number）</h4>
+<ul>
+<li>定义：单位时间内，<strong>每一个酶分子</strong>能够催化底物转化成产物的分子数</li>
+<li>单位：每秒（s⁻¹）</li>
+<li>转换数越大 → 酶催化效率越高 → 单位时间产生产物越多</li>
+<li>公式：<span class="math">$k_{cat} = \frac{V_{max}}{[E]_{total}}</span>$</li>
+</ul>
+<blockquote>🔍 <strong>网络验证</strong>：转换数（turnover number, kcat）确为单位时间内每个酶分子催化底物转化为产物的分子数，kcat = Vmax/[E]total。常见酶的kcat范围为1-10⁴ s⁻¹。来源：Lehninger Principles of Biochemistry, 7th ed., p.202。</blockquote>
+<h3>1.7 双倒数作图法（林贝作图法）</h3>
+<h4>为什么需要作图法？</h4>
+<p>用米氏方程描述矩形双曲线虽然意思明确，但<strong>不能直接从实验数据精确算出Km和Vmax</strong>——要取到Vmax值，再取它一半时的底物浓度，并不直观。</p>
+<h4>双倒数作图法（Lineweaver-Burk plot）</h4>
+<p>对米氏方程两边<strong>同时取倒数</strong>：</p>
+<p><span class="math">$\frac{1}{v} = \frac{K_m}{V_{max}} \cdot \frac{1}{[S]} + \frac{1}{V_{max}}</span>$</p>
+<p>这是一条<strong>直线方程</strong>（y = ax + b）：</p>
+<ul>
+<li>纵坐标：1/v（反应速率的倒数）</li>
+<li>横坐标：1/[S]（底物浓度的倒数）</li>
+<li><strong>斜率</strong>：Km/Vmax</li>
+<li><strong>Y轴截距</strong>：1/Vmax</li>
+<li><strong>X轴截距</strong>：-1/Km</li>
+</ul>
+<blockquote>⭐ <strong>老师强调</strong>："直线是很好操作的，直线我们只要有两个点就可以去看这条直线的所有的方程表示了。"</blockquote>
+<p>通过实验数据作图得到直线后，可从截距和斜率<strong>精确计算</strong>Vmax和Km。</p>
+<blockquote>🔍 <strong>网络验证</strong>：双倒数作图法（Lineweaver-Burk plot）确为对米氏方程取倒数得到的线性方程，Y轴截距=1/Vmax，X轴截距=-1/Km，斜率=Km/Vmax。由Hans Lineweaver和Dean Burk于1934年提出。来源：Lehninger Principles of Biochemistry, 7th ed., p.203。</blockquote>
+<hr>
+<h2>二、酶浓度对酶促反应速率的影响</h2>
+<h3>2.1 正比关系</h3>
+<p><strong>实验条件</strong>：其他条件不变，只增加酶浓度；且<strong>底物浓度远远大于酶浓度</strong>（底物充足，这也是实验室和体内常见场景）。</p>
+<p><strong>实验结果</strong>：随着酶浓度升高，反应速率<strong>呈直线正比关系</strong>升高——酶越多，反应速率越高。</p>
+<blockquote>⭐ <strong>老师举例</strong>："将来同学们在实验室当中如果要设计实验，你想设计的一个反应，觉得它太慢的话，很简单的一个做法就是我们多加一点酶，它就会在底物充足情况下，它就会以这样的直线正比的关系来帮助大家提高反应速率啊，也就是节省更多的实验时间，大家可以更快的从实验室回家了。"</blockquote>
+<h3>2.2 与底物浓度影响的对比</h3>
+<ul>
+<li>底物浓度影响：矩形双曲线（复杂，有饱和效应）</li>
+<li>酶浓度影响：简单正比关系（底物充足时）</li>
+</ul>
+<hr>
+<h2>三、温度对酶促反应的影响</h2>
+<h3>3.1 双重性影响</h3>
+<p>温度对酶促反应是<strong>双重性</strong>的影响，源于两个因素的共同作用：</p>
+<table class="vt">
+<tr><th>因素</th><th>温度升高的效果</th><th>曲线</th></tr>
+<tr><td>化学反应速率</td><td>温度升高→分子运动加快→碰撞机会增多→反应速率升高</td><td>蓝色上升曲线</td></tr>
+<tr><td>蛋白质变性</td><td>温度超过一定阈值→蛋白质空间结构破坏→酶丧失功能</td><td>红色下降曲线</td></tr>
+</table>
+<p>两条曲线综合 → <strong>山峰形曲线</strong>，峰值对应<strong>最适温度</strong>（optimal temperature）。</p>
+<h3>3.2 最适温度</h3>
+<ul>
+<li>大多数人体酶的最适温度约为<strong>37°C</strong>（与体温一致）</li>
+<li>原因：酶在体温环境中发挥作用，进化适应了这个温度</li>
+</ul>
+<blockquote>🔍 <strong>网络验证</strong>：人体酶的最适温度确为37°C左右；温度对酶活性的影响呈钟形曲线，低温时反应速率随温度升高而增加，超过最适温度后酶蛋白变性导致活性下降。来源：《生物化学》（王镜岩）第4章。</blockquote>
+<h3>3.3 临床与技术应用</h3>
+<h4>① 低温麻醉</h4>
+<ul>
+<li>场景：大型心脏手术</li>
+<li>方法：将病人体温降到约<strong>30°C</strong></li>
+<li>原理：各器官组织在更低代谢水平下工作，能接受更长时间的手术操作</li>
+<li>区别：与"冬眠去未来"不同（那需要降到零下100多度），目前只是低温麻醉</li>
+</ul>
+<h4>② 嗜热菌与Taq DNA聚合酶</h4>
+<ul>
+<li>场景：海底热泉、陆地温泉中的嗜热菌，可在70-100°C生存</li>
+<li>典型：黄石公园发现的<strong>Taq DNA聚合酶</strong>，最适温度很高</li>
+<li>意义：Taq酶的发现是<strong>PCR技术</strong>的关键突破</li>
+<li>在Taq酶之前：PCR需要3个水浴锅，每个循环都要重新加大肠杆菌DNA聚合酶（因为高温变性时酶也失活了）</li>
+<li>有了Taq酶：耐高温（95°C不变性），工作温度60-70°C，一次加酶可完成30个循环</li>
+<li>配合自动化温度调控仪器，PCR变得简单高效</li>
+</ul>
+<blockquote>⭐ <strong>老师强调</strong>："更重要的就是我们一个可以耐高温的酶，哪怕到了95度这样的温度，这个酶依然可以保持，首先它不会死掉，另外呢，它的工作温度也比较高啊，一般在六七十度。"</blockquote>
+<blockquote>🔍 <strong>网络验证</strong>：Taq DNA聚合酶确为从嗜热菌Thermus aquaticus中分离，最适温度75-80°C，95°C半衰期约40分钟，是PCR技术的核心工具酶。来源：Lehninger Principles of Biochemistry, 7th ed., p.307。</blockquote>
+<hr>
+<h2>四、pH对酶促反应的影响</h2>
+<h3>4.1 机制：蛋白质两性解离</h3>
+<p>pH影响酶活性的根本原因：<strong>酶的本质是蛋白质</strong>，蛋白质要进行<strong>两性解离</strong>，而两性解离会随环境pH发生变化。</p>
+<p>可解离基团的电荷状态直接影响：</p>
+<ul>
+<li>酶的催化机制（能否供应电子、能否供应氢）</li>
+<li>底物结合（活性中心的电荷状态）</li>
+</ul>
+<h3>4.2 最适pH</h3>
+<p>不同的酶有不同的<strong>最适pH</strong>（optimal pH），取决于活性中心氨基酸的解离特性。</p>
+<blockquote>⭐ <strong>老师强调</strong>："并不是这些酶去适应这个环境，改变它们的最适pH。从结构上来说到底是因为什么呢？它从序列上就会不一样，那会让它这些在活性中心的这些氨基酸会在这一个对应的pH之下，能够达到它所想要的一个解离效果，这才是它的一个结构本质。"</blockquote>
+<h3>4.3 典型酶的最适pH</h3>
+<table class="vt">
+<tr><th>酶</th><th>最适pH</th><th>工作环境</th><th>原因</th></tr>
+<tr><td><strong>胃蛋白酶</strong>（pepsin）</td><td>~2</td><td>胃（胃酸环境）</td><td>适应强酸环境</td></tr>
+<tr><td><strong>唾液淀粉酶</strong>（salivary amylase）</td><td>~6.8</td><td>口腔</td><td>中性偏酸</td></tr>
+<tr><td><strong>胰蛋白酶</strong>（trypsin）</td><td>~7.8-8.5</td><td>小肠（胰液偏碱）</td><td>适应偏碱环境</td></tr>
+</table>
+<blockquote>🔍 <strong>网络验证</strong>：胃蛋白酶最适pH确为1.5-2.5，胰蛋白酶最适pH约为7.8-8.5，唾液淀粉酶最适pH约为6.8。这些酶的最适pH与其生理工作环境一致。来源：《生物化学》（王镜岩）第4章。</blockquote>
+<hr>
+<h2>五、抑制剂对酶促反应的影响</h2>
+<h3>5.1 抑制剂的概念与分类</h3>
+<p><strong>抑制剂</strong>（inhibitor）：直接抑制酶的活性，或使酶活性彻底丧失的物质。</p>
+<blockquote>⚠️ <strong>重要区分</strong>：强酸、强碱、有机溶剂虽然也能使酶活性丧失，但它们直接使酶蛋白变性，<strong>不能叫做酶的抑制剂</strong>——酶的抑制剂有一个前提条件：不使酶蛋白变性，而是特异性地作用于酶的活性中心或调节位点。</blockquote>
+<p><strong>两大分类</strong>：</p>
+<ol>
+<li><strong>不可逆抑制剂</strong>（irreversible inhibitor）</li>
+<li><strong>可逆性抑制剂</strong>（reversible inhibitor）</li>
+</ul>
+<h3>5.2 不可逆抑制剂</h3>
+<h4>特点</h4>
+<ul>
+<li>与酶形成<strong>共价结合</strong></li>
+<li>常规物理手段不能使其脱离，体内也不能自由解离</li>
+<li>结合位置：酶的<strong>活性中心必需基团</strong>（结合基团、催化基团）</li>
+<li>共价结合后，酶无法发生催化</li>
+</ul>
+<h4>典型例子</h4>
+<p><strong>① 有机磷农药 → 胆碱酯酶</strong></p>
+<ul>
+<li>胆碱酯酶活性中心：丝氨酸残基上的<strong>羟基</strong>（活泼）</li>
+<li>正常功能：降解乙酰胆碱（神经递质），使其活性丧失</li>
+<li>有机磷作用：与丝氨酸羟基<strong>共价结合</strong>，使胆碱酯酶无法分解乙酰胆碱</li>
+<li>中毒症状：乙酰胆碱持续刺激神经元 → 神经系统相关症状（肌肉震颤、流涎、瞳孔缩小等）</li>
+<li>解毒：需加入解毒剂（如<strong>阿托品、解磷定</strong>），通过化学反应打断共价键，恢复羟基</li>
+</ul>
+<blockquote>🔍 <strong>网络验证</strong>：有机磷农药确为胆碱酯酶的不可逆抑制剂，通过磷酸化酶活性中心的丝氨酸羟基而抑制酶活性；解磷定（PAM）可通过亲核攻击使酶脱磷酸化而复活。来源：Lehninger Principles of Biochemistry, 7th ed., p.214。</blockquote>
+<p><strong>② 重金属离子 → 巯基酶</strong></p>
+<ul>
+<li>巯基（-SH）比羟基更活泼，在很多酶中发挥重要作用</li>
+<li>重金属离子（如砷、汞、铅）与巯基<strong>共价结合</strong>，使巯基酶活性丧失</li>
+<li>解毒：<strong>二巯丙醇</strong>（BAL）——丙醇的两个羟基被替换成巯基，活性很高，可与砷或重金属离子结合，释放被共价结合的巯基酶</li>
+</ul>
+<h3>5.3 可逆性抑制剂</h3>
+<h4>特点</h4>
+<ul>
+<li><strong>非共价结合</strong>（氢键、离子键、疏水作用等）</li>
+<li>在生理环境下可结合、可自发解离</li>
+<li>遵循米氏方程，可通过米氏方程推导分析</li>
+</ul>
+<h4>三种类型</h4>
+<table class="vt">
+<tr><th>类型</th><th>结合位点</th><th>Vmax变化</th><th>Km变化</th><th>亲和力变化</th></tr>
+<tr><td><strong>竞争性抑制</strong></td><td>活性中心（与底物竞争）</td><td>不变</td><td>增大</td><td>降低</td></tr>
+<tr><td><strong>非竞争性抑制</strong></td><td>活性中心外调节位点（始终存在）</td><td>降低</td><td>不变</td><td>不变</td></tr>
+<tr><td><strong>反竞争性抑制</strong></td><td>仅结合ES复合物（底物诱导产生）</td><td>降低</td><td>减小</td><td>升高</td></tr>
+</table>
+<hr>
+<h4>5.3.1 竞争性抑制（competitive inhibition）</h4>
+<p><strong>机制</strong>：抑制剂与底物<strong>结构相似</strong>，都要结合酶的<strong>同一个活性中心口袋</strong>——直接竞争同一个位置。</p>
+<p><strong>典型案例：伊马替尼（格列卫）治疗慢性髓性白血病（CML）</strong></p>
+<ul>
+<li>病因：90%以上的CML由<strong>BCR-ABL融合蛋白</strong>导致</li>
+<li>BCR-ABL是一种异常激活的酪氨酸激酶，以ATP为供体，将底物酪氨酸残基磷酸化，启动下游信号转导，导致细胞过度增殖</li>
+<li>药物设计：找到一个与<strong>ATP结构相似</strong>的小分子（伊马替尼/Imatinib，商品名格列卫），结合到ATP结合口袋中</li>
+<li>效果：底物蛋白仍可结合，但不会被磷酸化→下游增殖信号被阻断→肿瘤被抑制</li>
+<li>这就是电影《我不是药神》中的"神药"本体</li>
+</ul>
+<blockquote>⭐ <strong>老师强调</strong>："这是一个非常直接的，我们的小分子药物作为竞争性抑制剂来抑制我们不喜欢的酶的活性，从而治疗疾病。"</blockquote>
+<p><strong>米氏方程分析</strong>：</p>
+<p>加入竞争性抑制剂后，新的米氏方程中Km项多了一个修饰因子（1 + [I]/Ki）：</p>
+<ul>
+<li><strong>Vmax不变</strong>（Y轴截距不变）——只要底物足够多，可以把抑制剂挤出去，最终仍能达到最大反应速率</li>
+<li><strong>表观Km增大</strong>（斜率变大，X轴截距绝对值变小）——酶不仅要跟底物结合，还有可能跟抑制剂结合，需要更多底物才能达到同等结合程度</li>
+<li><strong>酶对底物亲和力降低</strong></li>
+</ul>
+<p><strong>抑制程度取决于</strong>：</p>
+<ul>
+<li>抑制剂与酶的亲和力（Ki）</li>
+<li>抑制剂与底物的浓度相对比例</li>
+</ul>
+<blockquote>⭐ <strong>临床启示</strong>："如果我们把竞争性抑制剂作为药物的话，通常需要保持在血液当中一个比较高的浓度，才能够发挥相关的作用。"</blockquote>
+<blockquote>🔍 <strong>网络验证</strong>：竞争性抑制剂确为与底物竞争酶活性中心，Vmax不变，Km增大；伊马替尼（格列卫）确为BCR-ABL酪氨酸激酶的竞争性ATP抑制剂，用于治疗CML。来源：Lehninger Principles of Biochemistry, 7th ed., pp.210-211。</blockquote>
+<hr>
+<h4>5.3.2 非竞争性抑制（noncompetitive inhibition）</h4>
+<p><strong>机制</strong>：抑制剂结合在<strong>活性中心之外的调节位点</strong>，这个位点始终存在。抑制剂结合后不影响底物结合，但会影响酶的催化活性。</p>
+<p><strong>反应过程</strong>：</p>
+<ul>
+<li>酶可以结合抑制剂 → EI复合物</li>
+<li>酶-底物复合物也可以结合抑制剂 → ESI三元复合物</li>
+<li>ESI三元复合物不能有效产生产物</li>
+</ul>
+<p><strong>米氏方程分析</strong>：</p>
+<ul>
+<li><strong>Vmax降低</strong>（Y轴截距增大）——能够产生产物的ES复合物被抑制剂消耗，形成无活性的ESI三元复合物，因此最大反应速率降低</li>
+<li><strong>Km不变</strong>（X轴截距不变）——抑制剂结合的是另外一个位置，不影响酶与底物的亲和力</li>
+<li><strong>酶对底物亲和力不变</strong></li>
+</ul>
+<p><strong>抑制程度取决于</strong>：抑制剂与酶的亲和力、抑制剂浓度（浓度起更重要作用）</p>
+<blockquote>🔍 <strong>网络验证</strong>：非竞争性抑制剂确为结合酶活性中心以外的位点，不影响底物结合但降低催化效率，Vmax降低，Km不变。来源：Lehninger Principles of Biochemistry, 7th ed., p.212。</blockquote>
+<hr>
+<h4>5.3.3 反竞争性抑制（uncompetitive inhibition）</h4>
+<p><strong>机制</strong>：抑制剂结合的位点<strong>在底物结合之后才产生</strong>——只有当酶与底物形成ES复合物后，酶的构象变化才暴露出抑制剂结合位点。因此抑制剂只能结合ES复合物，不能结合游离酶。</p>
+<blockquote>⭐ <strong>老师解释</strong>："看起来他们本来是对立的，但是似乎呢，又像是一个反贼或是内奸一样啊。所以呢，起到这么一个反作用。"</blockquote>
+<p><strong>名称辨析</strong>：</p>
+<ul>
+<li>competitive = 竞争性（竞争同一位置）</li>
+<li>noncompetitive = 非竞争性（不竞争，结合其他位置，位点始终存在）</li>
+<li>uncompetitive = 反竞争性（不竞争，但位点是底物结合后才诱导产生的）</li>
+</ul>
+<p><strong>米氏方程分析</strong>：</p>
+<ul>
+<li>双倒数作图：直线与无抑制剂时<strong>平行</strong>（斜率相同）</li>
+<li><strong>Vmax降低</strong>（Y轴截距增大）——ES复合物被消耗形成ESI，产生产物的有效ES减少</li>
+<li><strong>表观Km减小</strong>（X轴截距绝对值增大）——ES复合物被消耗，反应平衡向右移动，更多底物结合到酶上，表现为亲和力升高</li>
+<li><strong>酶对底物亲和力升高</strong></li>
+</ul>
+<blockquote>⚠️ <strong>易错点</strong>：反竞争性抑制中Km减小→亲和力升高，这与直觉相反。老师特别分析："同样也是因为这个酶底物复合体现在被消耗，所以呢它会使得这个反应整体会往右边移动，它的反应这个平衡常数往右边移动，所以呢我会有更多的底物能够现在结合到酶之上，所以表现出来的就是酶和底物的亲和力现在是要上升的。"</blockquote>
+<blockquote>🔍 <strong>网络验证</strong>：反竞争性抑制剂确为仅结合ES复合物，Vmax和Km均降低（Km降低意味着表观亲和力升高），双倒数作图为平行线。来源：Lehninger Principles of Biochemistry, 7th ed., p.213。</blockquote>
+<hr>
+<h3>5.4 三种可逆抑制剂的矩形双曲线图</h3>
+<p>老师让同学们课堂练习：根据Vmax和Km的变化，画出三种抑制剂的矩形双曲线（反应速率vs底物浓度）。</p>
+<p><strong>结果分析</strong>：</p>
+<ul>
+<li><strong>竞争性抑制</strong>（红色）：Vmax不变（最终达到相同高度），Km增大（达到半饱和需要更高底物浓度）→ 曲线右移，更平缓</li>
+<li><strong>非竞争性抑制</strong>（蓝色）：Vmax降低（最大高度降低），Km不变（半饱和时底物浓度不变）→ 曲线整体下移</li>
+<li><strong>反竞争性抑制</strong>（灰绿色）：Vmax降低，Km减小（更快达到半饱和）→ 曲线在低底物浓度时快速上升，但最大高度降低</li>
+</ul>
+<hr>
+<h2>六、激活剂对酶促反应的影响</h2>
+<h3>6.1 概念</h3>
+<p><strong>激活剂</strong>（activator）：可以使酶活性增加的物质。</p>
+<h3>6.2 典型例子：己糖激酶与Mg²⁺</h3>
+<ul>
+<li>己糖激酶（hexokinase）：激酶类，给底物增加磷酸基团（磷酸通常来自ATP）</li>
+<li>辅因子（cofactor）：<strong>镁离子（Mg²⁺）</strong></li>
+<li>很多酶的激活剂都是<strong>金属离子</strong></li>
+</ul>
+<h3>6.3 分类</h3>
+<table class="vt">
+<tr><th>类型</th><th>定义</th><th>例子</th></tr>
+<tr><td><strong>必须激活剂</strong>（essential activator）</td><td>没有激活剂，酶就没有活性；有了之后才能发挥功能</td><td>Mg²⁺对己糖激酶</td></tr>
+<tr><td><strong>非必须激活剂</strong>（nonessential activator）</td><td>酶本身已有活性，加上激活剂后活性更高</td><td>很多激活剂属于此类</td></tr>
+</table>
+<h3>6.4 金属激活酶 vs 金属酶</h3>
+<blockquote>⭐ <strong>老师回顾</strong>："还记得我们说这个金属离子是酶激活剂的时候，有一个概念大家还有没有印象？叫做金属激活酶，它跟金属酶有什么差异啊？它们结合的紧密程度不一样，金属激活酶呢，就是这个金属离子作为激活剂，它可能结合是比较疏松的，而金属酶的这个金属离子结合会更加紧密一些。"</blockquote>
+<table class="vt">
+<tr><th>类型</th><th>金属离子结合紧密度</th></tr>
+<tr><td>金属激活酶</td><td>结合疏松（金属离子作为激活剂）</td></tr>
+<tr><td>金属酶</td><td>结合紧密（金属离子是酶的固有组成部分）</td></tr>
+</table>
+<hr>
+<h2>七、酶的调节</h2>
+<p>酶与一般催化剂相比的三大特点：</p>
+<ol>
+<li>反应速率更快</li>
+<li>常温常压、中性pH条件下发挥作用</li>
+<li><strong>可以被调节</strong>（这是酶特别重要的特点）</li>
+</ul>
+<p>酶的调节分为两个层次：</p>
+<ul>
+<li><strong>酶活性的调节</strong>（快速，秒-分钟级）</li>
+<li><strong>酶含量的调节</strong>（慢而长效，小时-天级）</li>
+</ul>
+<h3>7.1 酶活性的调节（快速调节）</h3>
+<h4>7.1.1 别构调节（allosteric regulation）</h4>
+<p><strong>概念</strong>：调节剂结合到酶的<strong>活性中心之外的非催化位点</strong>（别构位点），通过非共价结合调节酶的功能。</p>
+<blockquote>⭐ <strong>词源</strong>："别构这个词本身的意思，也就是它结合到了别的位置上。"</blockquote>
+<p><strong>分类</strong>：</p>
+<ul>
+<li>别构激活剂（allosteric activator）</li>
+<li>别构抑制剂（allosteric inhibitor）</li>
+</ul>
+<p><strong>典型案例①：cAMP激活蛋白激酶A（PKA）</strong></p>
+<ul>
+<li>PKA结构：2个催化亚基 + 2个调节亚基</li>
+<li>cAMP结合<strong>调节亚基</strong>（不是催化亚基本身）</li>
+<li>结合后使整个酶发生构象变化，催化亚基被释放出来，从而具有活性</li>
+<li>这是一个<strong>别构激活</strong>的例子</li>
+</ul>
+<p><strong>典型案例②：终产物反馈抑制（代谢途径）</strong></p>
+<ul>
+<li>代谢途径由一连串酶催化完成（如糖代谢、脂代谢）</li>
+<li>最终产物通常是途径中<strong>第一个酶</strong>的别构抑制剂</li>
+<li>机制：终产物意味着反应已充分进行，前面酶的活性可以降低</li>
+<li>形象比喻：终产物像"小书夹子"，夹在酶（"大夹子"）的尾巴上，不结合催化位点，但通过结合别的位点使酶活性下降</li>
+</ul>
+<p><strong>别构酶的S型曲线</strong>：</p>
+<ul>
+<li>如果别构调节剂本身是底物，且存在<strong>正协同效应</strong>（一个底物结合后，使其他亚基对底物的亲和力增加），则反应速率-底物浓度曲线不再是矩形双曲线，而是<strong>S型曲线</strong></li>
+<li>这与血红蛋白的氧结合曲线非常相似（肌红蛋白是矩形双曲线，血红蛋白是S型）</li>
+<li>原理：别构调节的正协同激活作用</li>
+</ul>
+<blockquote>🔍 <strong>网络验证</strong>：别构调节确为调节剂结合酶活性中心以外的位点引起构象变化而调节活性；别构酶的底物-反应速率曲线常呈S型（正协同），与血红蛋白氧结合曲线类似。来源：Lehninger Principles of Biochemistry, 7th ed., pp.217-219。</blockquote>
+<hr>
+<h4>7.1.2 化学修饰（chemical modification）</h4>
+<p><strong>概念</strong>：通过共价结合的方式将不同化学基团结合到酶上，调节酶的活性。</p>
+<p><strong>重点：磷酸化（phosphorylation）</strong></p>
+<ul>
+<li>可被磷酸化的氨基酸残基：<strong>酪氨酸、丝氨酸、苏氨酸</strong>（都带羟基）</li>
+<li>磷酸来源：ATP</li>
+<li>催化酶：<strong>激酶</strong>（kinase）</li>
+<li>逆反应：<strong>磷酸酶</strong>（phosphatase）去除磷酸基团</li>
+<li>过程是<strong>可逆的</strong>、动态的</li>
+</ul>
+<blockquote>⚠️ <strong>重要</strong>：并不是磷酸化后酶活性就一定增加——有些酶磷酸化后活性增加，有些酶磷酸化后活性下降。磷酸化是<strong>双向调节</strong>，具体方向取决于酶本身。</blockquote>
+<blockquote>⭐ <strong>老师强调</strong>："虽然这个酶叫激酶，听起来就像把它给激活了一样，但是并不是磷酸化之后，一定这个酶的活性是要增加的，它是一种双向都可以产生的，对酶活性的调节。"</blockquote>
+<blockquote>🔍 <strong>网络验证</strong>：酶的共价修饰确以磷酸化/去磷酸化为最常见，由激酶和磷酸酶催化；磷酸化可激活或抑制酶活性，取决于具体酶。来源：Lehninger Principles of Biochemistry, 7th ed., pp.220-221。</blockquote>
+<hr>
+<h4>7.1.3 酶原激活（zymogen activation）</h4>
+<p><strong>概念</strong>：有些酶刚产生时没有活性，以<strong>前体（酶原，zymogen）</strong>形式存在，在特定条件下被激活后才具有活性。</p>
+<p><strong>典型案例：胰蛋白酶原→胰蛋白酶</strong></p>
+<ul>
+<li>胰蛋白酶最初以<strong>胰蛋白酶原</strong>形式产生</li>
+<li>结构：氨基末端有一段额外序列</li>
+<li>激活条件：<strong>肠激酶</strong>或<strong>已活化的胰蛋白酶</strong>切割肽链（胰蛋白酶识别碱性氨基酸进行切割）</li>
+<li>切割后：氨基末端6个氨基酸残基被去除，剩余部分发生构象改变，组氨酸、丝氨酸、甘氨酸等关键残基重新排列，<strong>形成活性中心</strong></li>
+<li>本质：酶原激活 = <strong>酶的活性中心形成或暴露</strong></li>
+</ul>
+<p><strong>为什么需要酶原？</strong></p>
+<ul>
+<li>胰腺产生的消化酶（胰蛋白酶、胰凝乳蛋白酶、弹性蛋白酶、羧肽酶等）都以酶原形式产生</li>
+<li>只有分泌到<strong>小肠（十二指肠）</strong>后才被激活，消化食物</li>
+<li>如果在胰腺内就激活，会把胰腺自身消化掉</li>
+</ul>
+<p><strong>病理：急性胰腺炎</strong></p>
+<ul>
+<li>诱因：胆结石阻塞胰液排出、酗酒、暴饮暴食等</li>
+<li>机制：胰酶原在<strong>胰腺细胞内提前激活</strong>（胞内激活）</li>
+<li>后果：胰腺细胞凋亡/坏死 → 释放大量炎症因子 → 重症胰腺炎死亡率很高</li>
+<li>本质：酶原的<strong>错误激活/提前激活</strong></li>
+</ul>
+<blockquote>⭐ <strong>老师提醒</strong>："这也提醒大家，该注意去注意啊，比如说不要酗酒啊，这个胆结石要控制啊，也不要暴饮暴食等等。当然背后的原因实际上就是一个酶原的错误激活，或者说它提前激活了。"</blockquote>
+<blockquote>🔍 <strong>网络验证</strong>：酶原激活确为无活性的酶原经蛋白水解切割后形成或暴露活性中心；胰蛋白酶原由肠激酶或胰蛋白酶自身激活；急性胰腺炎的发病机制确为胰酶原在胰腺内提前激活导致自身消化。来源：Lehninger Principles of Biochemistry, 7th ed., p.222。</blockquote>
+<hr>
+<h3>7.2 酶含量的调节（慢而长效）</h3>
+<p>酶的本质是蛋白质，其含量可以在<strong>转录和翻译水平</strong>上被调节。</p>
+<h4>7.2.1 酶合成的诱导与阻遏</h4>
+<table class="vt">
+<tr><th>调节方式</th><th>机制</th><th>效果</th></tr>
+<tr><td><strong>诱导作用</strong>（induction）</td><td>促进编码酶的基因表达（转录水平），DNA→mRNA增加</td><td>酶水平增加</td></tr>
+<tr><td><strong>阻遏作用</strong>（repression）</td><td>抑制基因转录，减少mRNA产生</td><td>酶水平降低</td></tr>
+</table>
+<p>详细机制将在"基因表达调控"章节学习。</p>
+<h4>7.2.2 酶降解的调节</h4>
+<p>酶的降解与其他蛋白质降解相同，有两条主要途径：</p>
+<table class="vt">
+<tr><th>途径</th><th>机制</th></tr>
+<tr><td><strong>溶酶体途径</strong></td><td>自噬体包裹待降解物 → 与溶酶体融合 → 自噬溶酶体消化成小分子</td></tr>
+<tr><td><strong>泛素-蛋白酶体途径</strong></td><td>给待降解蛋白加泛素化标签 → 蛋白酶体识别 → 切成小分子</td></tr>
+</table>
+<h4>7.2.3 活性调节 vs 含量调节的对比</h4>
+<table class="vt">
+<tr><th>特征</th><th>酶活性调节</th><th>酶含量调节</th></tr>
+<tr><td>速度</td><td>快速（秒-分钟）</td><td>慢（小时-天）</td></tr>
+<tr><td>时效</td><td>短暂</td><td>长效</td></tr>
+<tr><td>机制</td><td>别构、化学修饰、酶原激活</td><td>转录/翻译调控、蛋白质降解</td></tr>
+<tr><td>能量消耗</td><td>低</td><td>高（需要合成新蛋白）</td></tr>
+</table>
+<blockquote>⭐ <strong>老师总结</strong>："相对来说，这些酶活性调节是一个快速的反应，而酶的含量调节是一个比较慢，同时又很长效，因为我们一旦产生mRNA之后，它可以产生好多好多蛋白。所以啊，它是两种不同层次的，针对我们不同情形的酶的调节，所以在我们体内是可以很好的有机结合起来的。"</blockquote>
+<hr>
+<h2>八、酶的分类和命名</h2>
+<h3>8.1 六大类酶</h3>
+<p>按催化反应类型，酶分为六大类：</p>
+<table class="vt">
+<tr><th>类别</th><th>催化反应类型</th><th>典型例子/关联辅酶</th></tr>
+<tr><td><strong>氧化还原酶</strong>（oxidoreductase）</td><td>氧化还原反应</td><td>递氢体、NAD⁺/FAD</td></tr>
+<tr><td><strong>转移酶</strong>（transferase）</td><td>基团转移</td><td>转移羧基/醛基/氨基/一碳单位，辅酶参与</td></tr>
+<tr><td><strong>水解酶</strong>（hydrolase）</td><td>水解反应</td><td>蛋白酶、消化酶（本章重点）</td></tr>
+<tr><td><strong>裂合酶</strong>（lyase）</td><td>非水解性断裂/加成</td><td>代谢中常见</td></tr>
+<tr><td><strong>异构酶</strong>（isomerase）</td><td>分子内异构化</td><td>拓扑异构酶（DNA超螺旋处理）</td></tr>
+<tr><td><strong>连接酶</strong>（ligase）</td><td>连接两个分子（消耗ATP）</td><td>DNA连接酶</td></tr>
+</table>
+<h3>8.2 命名方式</h3>
+<table class="vt">
+<tr><th>命名类型</th><th>特点</th><th>例子</th></tr>
+<tr><td><strong>系统名称</strong>（systematic name）</td><td>包含详细底物和反应性质，用冒号分隔，很长</td><td>L-乳酸:NAD⁺氧化还原酶</td></tr>
+<tr><td><strong>推荐名称</strong>（recommended name）</td><td>简便，文献和教材常用</td><td>L-乳酸脱氢酶</td></tr>
+<tr><td><strong>编号</strong></td><td>层级分类编号（EC编号）</td><td>EC 1.1.1.27</td></tr>
+</table>
+<blockquote>🔍 <strong>网络验证</strong>：酶的国际分类确为六大类（氧化还原酶、转移酶、水解酶、裂合酶、异构酶、连接酶），由国际生物化学与分子生物学联盟（IUBMB）命名委员会制定，每种酶有唯一EC编号。来源：Lehninger Principles of Biochemistry, 7th ed., p.188。</blockquote>
+<hr>
+<h2>九、酶在医学中的应用</h2>
+<h3>9.1 酶异常导致疾病</h3>
+<h4>① 先天性酶缺陷</h4>
+<ul>
+<li>例子1：鸟氨酸氨甲酰转移酶缺陷 → 血氨水平升高 → 可能需要肝移植；新基因疗法可补充相关酶基因</li>
+<li>例子2：葡萄糖-6-磷酸脱氢酶（G6PD）缺陷 → <strong>蚕豆病</strong>（磷酸戊糖途径章节会讲）</li>
+</ul>
+<h4>② 酶活性异常</h4>
+<ul>
+<li>例子：<strong>急性胰腺炎</strong>——酶本身正常，但酶原错误激活导致严重疾病</li>
+</ul>
+<h4>③ 凝血功能异常</h4>
+<ul>
+<li>维生素K缺乏 → 凝血因子激活所需的酶异常 → 凝血功能障碍</li>
+<li>新生儿常规注射维生素K</li>
+</ul>
+<h3>9.2 酶作为诊断指标</h3>
+<h4>① 组织损伤释放酶</h4>
+<ul>
+<li>组织器官损伤 → 组织特异性酶释放到血液</li>
+<li>通过检测血液中酶水平判断器官功能</li>
+<li>典型：<strong>肝功能检查中的转氨酶</strong>（ALT/AST）——肝损伤时转氨酶从肝细胞释放到血液</li>
+</ul>
+<h4>② 同工酶（isoenzyme）谱分析</h4>
+<p><strong>同工酶概念</strong>：不同的蛋白质，但可以催化<strong>相同的化学反应</strong>——序列不同，但活性中心三维结构非常相似，因此功能相同。</p>
+<p><strong>典型例子①：乳酸脱氢酶（LDH）</strong></p>
+<ul>
+<li>两个不同基因表达两种亚基（H型和M型）</li>
+<li>亚基可随机组合成5种四聚体（LDH1-LDH5）</li>
+<li>不同组织器官中组合形式不同 → 可通过同工酶谱定位损伤组织</li>
+</ul>
+<p><strong>典型例子②：肌酸激酶（CK）</strong></p>
+<ul>
+<li>三种亚型：<strong>CK-MB</strong>（心肌）、<strong>CK-MM</strong>（骨骼肌）、<strong>CK-BB</strong>（大脑）</li>
+<li>心肌梗死时：CK-MB水平升高，且随病程有动态变化</li>
+<li>通过检测同工酶谱判断疾病发展</li>
+</ul>
+<blockquote>⭐ <strong>老师亲身经历</strong>："为什么专门提这个例子呢？因为这是我真实碰到的啊，大家将来可能也会有亲戚朋友去做了什么体检之后，发现自己有某个指标发生异常，就来问你。这个异常实际上就是他当时做了一个心肌酶谱，发现同工酶啊，这个MB，诶，有一个异常的箭头，就过来问。"</blockquote>
+<blockquote>🔍 <strong>网络验证</strong>：同工酶确为催化相同反应但蛋白质结构不同的一组酶；LDH有5种同工酶，CK有3种同工酶（CK-MM、CK-MB、CK-BB）；CK-MB是心肌梗死的重要诊断标志物。来源：Lehninger Principles of Biochemistry, 7th ed., p.224。</blockquote>
+<h3>9.3 酶作为药物</h3>
+<table class="vt">
+<tr><th>应用</th><th>酶/药物</th><th>注意事项</th></tr>
+<tr><td>助消化</td><td>消化酶制剂</td><td>补充消化酶帮助消化</td></tr>
+<tr><td>清创抗炎</td><td>蛋白酶制剂</td><td>清洁伤口、局部清理</td></tr>
+<tr><td>溶栓</td><td><strong>尿激酶</strong>、链激酶</td><td>除溶解血栓外，会使整体凝血功能降低 → 需严格监控，避免出血风险</td></tr>
+</table>
+<h3>9.4 酶作为药物靶点</h3>
+<p><strong>典型案例：新冠病毒主蛋白酶（Mpro/3CLpro）抑制剂</strong></p>
+<ul>
+<li>新冠病毒进入细胞后需要完整复制过程，其中<strong>主蛋白酶</strong>发挥关键功能</li>
+<li>药物设计：针对蛋白酶活性中心设计<strong>竞争性抑制小分子</strong>，结合到活性中心使蛋白酶不能发挥正常功能</li>
+<li>研发过程：设计→实验验证→优化→最终上市</li>
+<li>成果：中国科学家团队完成了从结构到药物设计到优化到上市的完整流程（如阿兹夫定、先诺欣等）</li>
+</ul>
+<blockquote>⭐ <strong>老师鼓励</strong>："我相信我们很多同学实际上都很希望能够参与到这么一个非常直接的从基础到临床的研究过程当中的。"</blockquote>
+<h3>9.5 酶在实验室中的应用</h3>
+<h4>① 酶偶联测定法（enzyme-coupled assay）</h4>
+<ul>
+<li>不直接测定目标物质，而是通过酶的级联反应最终产生便于检测的物质</li>
+<li>例子：血糖测定</li>
+<li>葡萄糖 + O₂ →（葡萄糖氧化酶）→ 葡萄糖酸 + H₂O₂</li>
+<li>H₂O₂ + 色原底物 →（过氧化物酶）→ 有色物质</li>
+<li>通过检测有色物质的吸光度间接测定葡萄糖含量</li>
+<li>优点：更灵敏、更易于检测</li>
+</ul>
+<h4>② ELISA（酶联免疫吸附测定）</h4>
+<ul>
+<li>原理：特异性抗体结合目标抗原/蛋白质，抗体上连接了酶，酶将底物转化为可检测的荧光分子或有色物质</li>
+<li>应用：实验室中非常常用的蛋白检测技术</li>
+</ul>
+<h4>③ 工具酶（基因工程/重组DNA）</h4>
+<p>整个基因工程过程中各个环节都用到酶：</p>
+<table class="vt">
+<tr><th>步骤</th><th>工具酶</th><th>功能</th></tr>
+<tr><td>mRNA→DNA</td><td><strong>逆转录酶</strong></td><td>反转录合成cDNA</td></tr>
+<tr><td>DNA扩增</td><td><strong>DNA聚合酶</strong>（Taq酶）</td><td>PCR扩增</td></tr>
+<tr><td>DNA切割</td><td><strong>限制性内切酶</strong></td><td>特异性切割DNA</td></tr>
+<tr><td>DNA连接</td><td><strong>DNA连接酶</strong></td><td>连接DNA片段</td></tr>
+</table>
+<blockquote>⭐ <strong>老师调侃</strong>："这个大家将来应该都会是用的都，可能用的都不想用了。"</blockquote>
+<hr>
+<h2>十、课堂总结与随堂测验</h2>
+<h3>10.1 本章内容回顾</h3>
+<p>本节课是"酶与酶促反应"章节的<strong>收尾课</strong>，郭老师也是给这个班上的<strong>最后一节生化课</strong>。</p>
+<p>完整章节内容包括：</p>
+<ol>
+<li>酶的分子组成（上节课）</li>
+<li>酶的工作原理/催化机制（上节课）</li>
+<li><strong>酶促反应动力学</strong>（本节课重点）</li>
+<li><strong>抑制剂与激活剂</strong>（本节课）</li>
+<li><strong>酶的调节</strong>（本节课）</li>
+<li>酶的分类和命名</li>
+<li>酶在医学中的应用</li>
+</ul>
+<h3>10.2 随堂测验（微助教天天快答）</h3>
+<p>郭老师通过4道题进行重点知识梳理：</p>
+<p><strong>第1题：酶的分子组成</strong></p>
+<ul>
+<li>考点：金属激活酶vs金属酶的区别（金属激活酶中金属离子结合疏松，金属酶中结合紧密）</li>
+<li>其他正确选项：H⁺可作为辅因子稳定酶构象、NAD⁺作为辅酶参与氧化还原、生物素与酶蛋白共价结合转移羧基</li>
+</ul>
+<p><strong>第2题：酶的催化机制</strong></p>
+<ul>
+<li>正确选项：丝氨酸亲核攻击使肽键断裂（胰蛋白酶催化机制）</li>
+<li>错误选项：酶不能提供能量降低活化能；诱导契合学说中酶构象<strong>会</strong>发生变化；邻近效应是使分子间反应更像分子内反应（距离更近）</li>
+</ul>
+<p><strong>第3题：酶促反应动力学——抑制剂类型</strong></p>
+<ul>
+<li>题目关键信息：Km减小，Vmax降低</li>
+<li>正确答案：<strong>反竞争性抑制</strong></li>
+<li>（竞争性：Vmax不变，Km增大；非竞争性：Vmax降低，Km不变；反竞争性：Vmax降低，Km减小）</li>
+</ul>
+<p><strong>第4题：酶的调节——别构酶</strong></p>
+<ul>
+<li>正确答案：B</li>
+<li>错误选项：别构酶<strong>含</strong>活性中心；别构调节剂<strong>不与底物竞争</strong>结合；别构酶呈S型曲线的核心原因是<strong>调节剂为底物本身且正协同</strong>，不是米氏常数改变</li>
+</ul>
+<h3>10.3 颁奖与合影</h3>
+<ul>
+<li>本次4道题全对前三名：王子轩、秦浩天、刘灿</li>
+<li>四次课总成绩前三名：秦浩天（第1名）、蒲慧颖（第2名）、蔡一博（第3名）</li>
+<li>奖品：郭老师推荐的"天才捕手计划"系列医学相关书籍（法医、ICU医生、非洲医生、罕见病医生各一本）</li>
+<li>全班合影留念</li>
+</ul>
+<hr>
+<h2>老师强调的重点/考点汇总</h2>
+<ol>
+<li>⭐ <strong>米氏方程</strong>及各参数含义（Vmax、Km）——本节课最核心内容</li>
+<li>⭐ <strong>Km与亲和力的反比关系</strong>——Km越大，亲和力越小（易错）</li>
+<li>⭐ <strong>双倒数作图法</strong>——截距和斜率的含义</li>
+<li>⭐ <strong>三种可逆抑制剂的对比</strong>——Vmax和Km的变化是考试重点</li>
+<li>⭐ <strong>竞争性抑制的临床案例</strong>——伊马替尼/格列卫</li>
+<li>⭐ <strong>酶原激活的机制与病理</strong>——胰蛋白酶原、急性胰腺炎</li>
+<li>⭐ <strong>别构调节的S型曲线</strong>——与血红蛋白类比</li>
+<li>⭐ <strong>磷酸化的双向调节</strong>——不是一定激活</li>
+<li>⭐ <strong>同工酶的临床诊断价值</strong>——CK-MB与心肌梗死</li>
+<li>⭐ <strong>温度和pH的双重性影响</strong>——最适温度和最适pH</li>
+</ul>
+<hr>
+<h2>课程间关联汇总</h2>
+<table class="vt">
+<tr><th>关联课程/章节</th><th>关联内容</th></tr>
+<tr><td><strong>蛋白质化学</strong></td><td>酶的本质是蛋白质；两性解离与pH影响；蛋白质变性与温度影响</td></tr>
+<tr><td><strong>维生素</strong></td><td>维生素K与凝血因子激活；生物素作为辅酶转移羧基</td></tr>
+<tr><td><strong>糖代谢</strong></td><td>己糖激酶；别构调节在代谢途径中的应用（终产物反馈抑制）</td></tr>
+<tr><td><strong>磷酸戊糖途径</strong></td><td>G6PD缺陷→蚕豆病（后续章节）</td></tr>
+<tr><td><strong>基因表达调控</strong></td><td>酶含量的诱导/阻遏调节（后续章节）</td></tr>
+<tr><td><strong>DNA重组技术</strong></td><td>工具酶：逆转录酶、DNA聚合酶、限制性内切酶、DNA连接酶</td></tr>
+<tr><td><strong>生理学</strong></td><td>乙酰胆碱与神经递质；胆碱酯酶与有机磷中毒</td></tr>
+<tr><td><strong>病理学/内科学</strong></td><td>急性胰腺炎；心肌梗死与CK-MB；CML与伊马替尼</td></tr>
+<tr><td><strong>分析化学</strong></td><td>酶偶联测定法与吸光度检测；ELISA</td></tr>
+</table>
+<hr>
+<h2>复习清单</h2>
+<ul class="checklist">
+<li><input type="checkbox"  disabled> 默写米氏方程，说明Vmax和Km的物理意义</li>
+<li><input type="checkbox"  disabled> 解释Km与酶对底物亲和力的关系（为什么Km越大亲和力越小？）</li>
+<li><input type="checkbox"  disabled> 用米氏方程推导三个反应阶段（一级、混合级、零级）</li>
+<li><input type="checkbox"  disabled> 画出双倒数作图，标注截距和斜率的含义</li>
+<li><input type="checkbox"  disabled> 列表对比三种可逆抑制剂（结合位点、Vmax变化、Km变化、亲和力变化）</li>
+<li><input type="checkbox"  disabled> 解释竞争性抑制的临床案例（伊马替尼治疗CML）</li>
+<li><input type="checkbox"  disabled> 说明酶原激活的机制和生理意义（胰蛋白酶原为例）</li>
+<li><input type="checkbox"  disabled> 解释急性胰腺炎的发病机制（酶原错误激活）</li>
+<li><input type="checkbox"  disabled> 说明别构调节的机制和S型曲线的成因</li>
+<li><input type="checkbox"  disabled> 说明磷酸化调节的双向性</li>
+<li><input type="checkbox"  disabled> 对比酶活性调节和酶含量调节的特点</li>
+<li><input type="checkbox"  disabled> 列举六大类酶并各举一例</li>
+<li><input type="checkbox"  disabled> 解释同工酶的概念和临床诊断价值（CK-MB为例）</li>
+<li><input type="checkbox"  disabled> 说明酶在医学中的三大应用方向（诊断、药物、药物靶点）</li>
+</ul>
+<hr>
+<h2>主动回忆题</h2>
+<p><strong>问题1</strong>：请写出米氏方程，并解释当底物浓度远小于Km和远大于Km时，反应速率分别呈现什么特征？</p>
+<ul>
+<li>当[S] << Km时：分母中[S]可忽略，v ≈ (Vmax/Km)·[S]，反应速率与底物浓度成正比，呈<strong>一级反应</strong>特征。</li>
+<li>当[S] >> Km时：分母中Km可忽略，v ≈ Vmax，反应速率达到最大值且与底物浓度无关，呈<strong>零级反应</strong>特征。</li>
+<li>中间段为混合级反应。</li>
+</ul>
+<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>米氏方程：v = Vmax·[S]/(Km + [S])</p></div></details>
+<p><strong>问题2</strong>：Km的物理意义是什么？为什么Km可以反映酶对底物的亲和力？Km越大，亲和力越大还是越小？</p>
+<ul>
+<li>Km的物理意义：<strong>酶促反应速率达到最大反应速率一半时的底物浓度</strong>。</li>
+<li>推导：Km = (k₂ + k₃)/k₁。生理条件下k₃ << k₂，因此Km ≈ k₂/k₁ = Ks（解离常数）。</li>
+<li>Ks描述酶和底物的解离倾向：Ks越大，越容易解离，亲和力越低。</li>
+<li>因此：<strong>Km越大，酶对底物的亲和力越小</strong>（与直觉相反，需特别注意）。</li>
+</ul>
+<details class="qa"><summary>答案要点</summary><div class="qa-answer"></div></details>
+<p><strong>问题3</strong>：请列表比较竞争性、非竞争性和反竞争性抑制的特点（结合位点、对Vmax的影响、对Km的影响、对亲和力的影响），并各举一个临床或生活中的例子。</p>
+<table class="vt">
+<tr><th>类型</th><th>结合位点</th><th>Vmax</th><th>Km</th><th>亲和力</th><th>例子</th></tr>
+<tr><td>竞争性</td><td>活性中心（与底物竞争）</td><td>不变</td><td>增大</td><td>降低</td><td>伊马替尼抑制BCR-ABL激酶（CML治疗）</td></tr>
+<tr><td>非竞争性</td><td>活性中心外调节位点（始终存在）</td><td>降低</td><td>不变</td><td>不变</td><td>某些重金属离子对酶的抑制</td></tr>
+<tr><td>反竞争性</td><td>仅结合ES复合物（底物诱导产生）</td><td>降低</td><td>减小</td><td>升高</td><td>某些药物对特定酶的抑制</td></tr>
+</table>
+<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>双倒数作图特征：竞争性→Y截距不变、斜率增大；非竞争性→Y截距增大、斜率增大、X截距不变；反竞争性→直线平行（斜率不变）、两截距均增大。</p></div></details>
+<p><strong>问题4</strong>：什么是酶原激活？以胰蛋白酶为例说明其机制和生理意义。急性胰腺炎与酶原激活有什么关系？</p>
+<ul>
+<li>酶原激活：某些酶刚合成时以无活性的前体（酶原）形式存在，在特定条件下经蛋白水解切割后形成或暴露活性中心，转变为有活性的酶。</li>
+<li>胰蛋白酶原激活机制：在十二指肠中，肠激酶或已活化的胰蛋白酶切割胰蛋白酶原氨基末端的6个氨基酸残基，剩余部分发生构象改变，组氨酸、丝氨酸等关键残基重新排列形成活性中心，成为有活性的胰蛋白酶。</li>
+<li>生理意义：胰腺产生的消化酶以酶原形式分泌，避免在胰腺内被提前激活而消化胰腺自身组织；只有到达小肠后才被激活，正常消化食物。</li>
+<li>急性胰腺炎：胆结石阻塞胰液排出、酗酒、暴饮暴食等诱因导致胰酶原在<strong>胰腺细胞内提前激活</strong>（胞内激活），激活的消化酶消化胰腺自身组织，导致胰腺细胞凋亡/坏死，释放炎症因子，重症胰腺炎死亡率很高。</li>
+</ul>
+<details class="qa"><summary>答案要点</summary><div class="qa-answer"></div></details>
+<p><strong>问题5</strong>：酶的调节分为哪两个层次？各包括哪些调节方式？它们在速度和时效上有什么区别？</p>
+<ul>
+<li>别构调节：调节剂结合活性中心外位点，引起构象变化调节活性（如cAMP激活PKA、终产物反馈抑制）</li>
+<li>化学修饰：以磷酸化/去磷酸化为代表，激酶和磷酸酶催化，可逆且双向调节</li>
+<li>酶原激活：无活性酶原经切割后形成/暴露活性中心</li>
+</ul>
+<ul>
+<li>酶合成调节：诱导作用（促进基因转录）和阻遏作用（抑制基因转录）</li>
+<li>酶降解调节：溶酶体途径、泛素-蛋白酶体途径</li>
+</ul>
+<ul>
+<li>速度：活性调节快（秒-分钟），含量调节慢（小时-天）</li>
+<li>时效：活性调节短暂，含量调节长效（mRNA可翻译多个蛋白）</li>
+<li>能量：活性调节能耗低，含量调节能耗高（需合成新蛋白）</li>
+<li>两者在体内有机结合，应对不同生理需求</li>
+</ul>
+<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>酶的调节分为两个层次：</p><p><strong>① 酶活性的调节（快速调节，秒-分钟级）</strong></p><p><strong>② 酶含量的调节（慢而长效，小时-天级）</strong></p><p><strong>对比</strong>：</p></div></details>
+<hr>
+<blockquote><strong>笔记说明</strong>：本笔记基于2026年9月17日郭雨松教授《生物化学与分子生物学》第11-12节课课堂录音完整逐字稿（95,286字节，506行）整理，按老师讲解顺序组织。关键知识点经《Lehninger Principles of Biochemistry》（第7版）和《生物化学》（王镜岩）等权威教材验证。本笔记为"酶与酶促反应"章节的收尾课，涵盖动力学、抑制剂、激活剂、酶的调节、分类命名和医学应用全部内容。</blockquote>
+</body></html>

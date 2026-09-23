@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { before, test } from 'node:test';
 import { generateText } from 'ai';
 import type { LanguageModelV4CallOptions } from '@ai-sdk/provider';
-import { buildCustomModelRegistryId, type CustomApiGroup } from '@/lib/ai/models';
+import { buildCustomModelRegistryId, normalizeRegistryId, type CustomApiGroup } from '@/lib/ai/models';
 
 let resolve: typeof import('@/lib/ai/sdk/languageModel')['resolveLanguageModel'];
 before(async () => {
@@ -23,7 +23,7 @@ for (const id of ['deepseek/deepseek-v4.1-flash', 'kimi-k3', 'mimo-v2.5']) {
     });
     const model = resolve(id);
     await generateText({ model: model.model, prompt: 'Hi', temperature: 0.2, topP: 0.5, maxRetries: 0, ...model.thinkingSettings('max') });
-    assert.equal(body.model, id);
+    assert.equal(body.model, normalizeRegistryId(id));
     assert.equal(body.temperature, id === 'kimi-k3' ? 1 : undefined);
     assert.equal(body.top_p, undefined);
     for (const field of ['thinking', 'thinking_level', 'thinking_budget', 'enable_thinking']) assert.equal(body[field], undefined);

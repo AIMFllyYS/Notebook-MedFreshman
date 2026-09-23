@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "rec-2026-fall-001-004",
+  "generatedAt": "2026-09-23",
+  "examConfig": {
+    "source": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/recording.md；content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-001-004",
+    "revision": 1,
+    "recordingHash": "f57b1f44b1fbed14271e3ef509d42f9b95f715a1070b370308a5970742a266d4",
+    "notesTextHash": "775a7a33b9c4864e29df9df24e152d0692ba048863190eba4b8e3a404946c47d"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "课程定位与核心要求"
+      },
+      "stem": "细胞生物学实验课最核心、贯穿始终的训练目标是：",
+      "options": [
+        "建立并严格执行无菌操作（无菌观念），保证细胞培养不被污染",
+        "记忆大量细胞生物学理论名词",
+        "熟练掌握解剖大型动物",
+        "学习电镜切片的制作"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**细胞培养实验首要且贯穿全程的是无菌观念与无菌操作，一旦污染细胞即无法继续。B错：实验课重在操作而非单纯记忆名词。C错：本实验对象为小鼠与培养细胞，不解剖大型动物。D错：本课不涉及电镜超薄切片。",
+      "hint": "细胞培养第一课——无菌、无菌、无菌。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "无菌操作技术"
+      },
+      "stem": "在超净（无菌）工作台中进行细胞操作时，下列做法错误的是：",
+      "options": [
+        "操作前用紫外灯照射并用酒精擦拭台面、双手",
+        "器械经火焰灼烧/灭菌后使用，试剂瓶开口靠近火焰",
+        "操作时大声交谈、频繁来回走动，并将已灭菌物品随意放在不洁区",
+        "不同试剂专管专用，避免交叉污染"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确（即该项是错误做法）。**操作时交谈、走动会增加气流中的微生物污染，灭菌物品必须保持在无菌区，不能放到不洁处。A、B、D 都是正确的无菌操作：紫外+酒精消毒、火焰灭菌、专管专用。",
+      "hint": "不交谈、不走动、灭菌物不出无菌区。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "原代培养的概念"
+      },
+      "stem": "直接从机体取出组织、分散后进行的首次培养称为：",
+      "options": [
+        "传代培养",
+        "原代培养（primary culture）",
+        "细胞系的长期保存",
+        "克隆化培养"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**从供体取出组织、分散成细胞后进行的首次培养称原代培养，细胞较好保留来源组织特性；将原代细胞转接至新培养瓶继续培养才称传代培养。A错：传代培养是原代之后的转接。C、D错：首次培养既非长期保种也非克隆筛选。",
+      "hint": "取材后第一次培养=原代培养；转接后=传代。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "实验小鼠的处死方法"
+      },
+      "stem": "本实验中小鼠常用且符合动物伦理、迅速致死的处死方法是：",
+      "options": [
+        "颈椎脱臼法",
+        "溺水法",
+        "冷冻法",
+        "饥饿法"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**颈椎脱臼法可迅速断开脊髓、使小鼠快速死亡，是实验小鼠最常用的人道处死方法。B、C、D 均处死缓慢、增加动物痛苦，不符合实验动物伦理要求。",
+      "hint": "小鼠标准处死——颈椎脱臼法。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "组织取材与漂洗"
+      },
+      "stem": "取出肝组织后，用缓冲液（如 PBS）反复漂洗的主要目的是：",
+      "options": [
+        "洗去血液、血细胞及杂质，减少对后续消化和培养的影响",
+        "使肝细胞立即死亡",
+        "给组织染色便于观察",
+        "增加组织中的细菌数量"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**PBS 漂洗可去除组织表面的血液、血细胞及碎片，红细胞等会影响胰酶消化与培养，故需反复漂洗至较干净。B错：漂洗要保持细胞活性，不是致死。C错：漂洗不含染料。D错：无菌操作要减少而非增加微生物。",
+      "hint": "PBS 漂洗=去血、去污、保活性。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "胰蛋白酶消化"
+      },
+      "stem": "用胰蛋白酶（trypsin，常配合 EDTA）处理剪碎组织的主要作用是：",
+      "options": [
+        "为细胞提供营养",
+        "水解细胞间/细胞与基质间的蛋白质并螯合 Ca²⁺、Mg²⁺，使细胞相互分散",
+        "给细胞染色",
+        "杀灭所有细胞"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**胰蛋白酶水解细胞间及细胞-基质间起黏附作用的蛋白质，EDTA 螯合维持黏附所需的 Ca²⁺、Mg²⁺，二者配合使细胞松散、便于吹打成单细胞。A错：胰酶是消化酶而非营养。C错：无染色作用。D错：在控制时间温度下是为了分散活细胞，而非杀灭。",
+      "hint": "胰酶解黏附蛋白 + EDTA 螯合 Ca/Mg → 细胞分散。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "消化终止"
+      },
+      "stem": "胰蛋白酶消化达到适宜程度后，需要及时终止消化，常用方法是：",
+      "options": [
+        "继续延长胰酶作用时间",
+        "加入大量清水稀释",
+        "提高温度至沸腾",
+        "加入含血清的完全培养基（血清中含胰蛋白酶抑制剂）"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**血清中含有抑制胰蛋白酶活性的成分，加入含血清完全培养基可及时终止消化，避免细胞被过度消化而损伤。A错：过度消化会损伤细胞。B错：低渗水会破坏细胞。C错：高温使细胞和蛋白变性。",
+      "hint": "加含血清培养基——血清抑胰酶，终止消化。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "吹打分散"
+      },
+      "stem": "消化后用吸管反复、轻柔吹打细胞悬液的主要目的是：",
+      "options": [
+        "使松散的细胞团进一步分散成单细胞悬液",
+        "让细胞凝集得更紧",
+        "给细胞通入氧气以杀死细胞",
+        "增加液体中的杂质"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**轻柔吹打借助液体剪切力把消化后松散的细胞团打散成单细胞悬液，利于均匀计数与接种；动作要轻柔以免损伤细胞。B错：目的是分散而非凝集。C、D错：吹打不是为了杀细胞或增加杂质。",
+      "hint": "轻柔吹打→打散细胞团→单细胞悬液。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "离心收集细胞"
+      },
+      "stem": "将吹打后的细胞悬液离心，其主要目的是：",
+      "options": [
+        "使细胞沉淀，与含消化酶/碎片的上清分离，便于换液重悬",
+        "使细胞裂解",
+        "给细胞降温冷冻",
+        "让细胞染色"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**适宜转速离心使活细胞沉淀，弃去含残留胰酶、碎片的上清，再用新鲜培养基重悬，从而洗涤、收集细胞。B错：常规离心转速不致使细胞裂解。C错：离心不是冷冻手段。D错：与染色无关。",
+      "hint": "离心沉淀细胞、弃上清去酶去碎片、再重悬。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "细胞计数（血球计数板）"
+      },
+      "stem": "用血球计数板计数时，通常计数计数室四角的 4 个大方格，并遵循“压线细胞计上不计下、计左不计右”。若四大格细胞总数为 N、稀释倍数为 d，则每毫升细胞数为：",
+      "options": [
+        "(N/4) × d × 10⁴ /mL",
+        "N × d × 10⁸ /mL",
+        "(N/4) × d /mL",
+        "N × d /mL"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**每个大方格面积 1 mm²、盖片与计数板间距 0.1 mm，故体积为 0.1 mm³=10⁻⁴ mL；四大格平均 N/4 再除以 10⁻⁴ mL 并乘稀释倍数 d，即 (N/4)×d×10⁴ /mL。B错：10⁸ 与体积换算不符。C、D错：漏乘了 10⁴ 的体积换算因子。",
+      "hint": "(四大格总数÷4)×稀释倍数×10⁴ = 个/mL。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology-lab/lectures/rec-2026-fall-001-004/notes.html",
+        "label": "培养体系配置与培养条件"
+      },
+      "stem": "将肝细胞按适宜浓度接种后，培养箱通常设定的条件是：",
+      "options": [
+        "4 ℃、无氧、干燥环境",
+        "37 ℃、约 5% CO₂、饱和湿度（CO₂ 维持培养基 pH）",
+        "60 ℃、高浓度 CO₂、干燥",
+        "室温、纯氧、无湿度要求"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**哺乳动物细胞培养箱一般设 37 ℃（体温）、约 5% CO₂ 与饱和湿度；CO₂ 与培养基中的碳酸氢钠缓冲体系共同维持 pH，湿度防止培养液蒸发。A错：4 ℃是保存而非培养温度，且细胞需氧。C错：60 ℃会致细胞死亡。D错：温度、气体与湿度均不满足培养要求。",
+      "hint": "37 ℃ + 5% CO₂ + 饱和湿度。"
+    }
+  ]
+}

@@ -86,6 +86,10 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   const refreshWysiwyg = useCallback(() => setWysiwygRev((n) => n + 1), []);
 
   const noteMarkdown = note?.markdown ?? "";
+  // split 模式每键全量预览+TOC 是主线程税：预览/TOC 走 deferred 值，
+  // 输入优先级高于预览提交，长笔记打字不再被 KaTeX/TOC 扫描阻塞。
+  // 必须在下方「if (!note) return null」之前调用，保证 hook 顺序在每次渲染恒定。
+  const deferredMarkdown = useDeferredValue(note?.markdown ?? "");
   useEffect(() => {
     if (noteMarkdown === lastEmitted.current) return;
     lastEmitted.current = noteMarkdown;
@@ -94,9 +98,6 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
 
   if (!note) return null;
 
-  // split 模式每键全量预览+TOC 是主线程税：预览/TOC 走 deferred 值，
-  // 输入优先级高于预览提交，长笔记打字不再被 KaTeX/TOC 扫描阻塞。
-  const deferredMarkdown = useDeferredValue(note.markdown);
   const tocItems = parseNoteToc(deferredMarkdown);
   const handleTocSelect = (item: NoteTocItem) => {
     if (mode === "source" && sourceRef.current) {

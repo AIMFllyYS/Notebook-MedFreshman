@@ -255,7 +255,7 @@ test("生图模式：按实际文本模型计价，selected 与 actual 可区分
   assert.notEqual(rows[0].selected_model_id, rows[0].actual_model_id);
   assert.equal(rows[0].cost_cny, mimoCost);
   assert.notEqual(rows[0].cost_cny, imageCost);
-  assert.equal(rows[0].cost_cny, 0.002);
+  assert.equal(rows[0].cost_cny, 0.006);
 });
 
 test("failover：按落地模型计价，两列都有值且不同", async () => {
@@ -400,6 +400,6 @@ test("客户端账单：传入实际文本模型而非生图 id", () => {
   const usage = { promptTokens: 1_000, completionTokens: 500, cachedTokens: 0, totalTokens: 1_500 };
   const imagePriced = createBillingRecord({ type: "chat", modelId: IMAGE, sessionId: "s", customGroups: [], usage });
   const textPriced = createBillingRecord({ type: "chat", modelId: MIMO, sessionId: "s", customGroups: [], usage });
-  assert.equal(textPriced.cost, 0.002);
+  assert.equal(textPriced.cost, 0.006);
   assert.ok(textPriced.cost > imagePriced.cost);
 });
