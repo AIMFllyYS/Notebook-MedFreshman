@@ -465,20 +465,20 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       if (!target) return state;
       const updated = { ...target, ...updates };
       const messages = prev.map((m) => (m.id === messageId ? updated : m));
+      // 流式期每 tick 都会走这里：只在 artifactIds 真变化时才新建 meta/数组——
+      // 否则 sessionsMeta 每 tick 都是新引用，侧栏/历史层/项目 chip 全量重渲。
       let shouldSaveManifest = false;
-      const sessionsMeta = state.sessionsMeta.map((s) =>
-        {
-          if (s.id !== sessionId) return s;
-          const artifactIds = mergeArtifactIds(s.artifactIds, [updated]);
-          if (!sameStringArray(s.artifactIds, artifactIds)) {
-            shouldSaveManifest = true;
-          }
-          return {
-            ...s,
-            updatedAt: Date.now(),
-            artifactIds,
-          };
-        });
+      let sessionsMeta = state.sessionsMeta;
+      const metaIndex = state.sessionsMeta.findIndex((s) => s.id === sessionId);
+      if (metaIndex >= 0) {
+        const meta = state.sessionsMeta[metaIndex];
+        const artifactIds = mergeArtifactIds(meta.artifactIds, [updated]);
+        if (!sameStringArray(meta.artifactIds, artifactIds)) {
+          sessionsMeta = state.sessionsMeta.slice();
+          sessionsMeta[metaIndex] = { ...meta, updatedAt: Date.now(), artifactIds };
+          shouldSaveManifest = true;
+        }
+      }
       saveSessionMessages(sessionId, messages);
       if (shouldSaveManifest) {
         persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));

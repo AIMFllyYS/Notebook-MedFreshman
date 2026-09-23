@@ -133,8 +133,14 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
   const remove = useCallback((idx: number) => {
     setAttachments((prev) => {
       const attachment = prev[idx];
-      if (attachment && attachment.type !== "document" && attachment.type !== "local-file") {
-        URL.revokeObjectURL(attachment.previewUrl);
+      if (attachment) {
+        const url =
+          attachment.type === "document"
+            ? attachment.previewUrl
+            : attachment.type === "local-file"
+              ? attachment.dataUrl
+              : attachment.previewUrl;
+        if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
       }
       return prev.filter((_, i) => i !== idx);
     });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { Download, Globe, GlobeLock, Presentation } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
@@ -104,7 +104,18 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
   const t = useT();
   const data = managed?.data as AttachmentPreviewData | undefined;
   const kind = data ? attachmentPreviewKind(data) : "text";
-  const content = data?.content ?? "";
+  // content 里的 blob: URL 归 composer 所有、随时会被回收；预览窗拿到原始 File 时
+  // 自建 object URL，窗口卸载即释放——不再借用上游 URL（借据模型，修 object URL 泄漏）。
+  const rawContent = data?.content ?? "";
+  const file = data?.file;
+  const ownedUrl = useMemo(
+    () => (file && rawContent.startsWith("blob:") ? URL.createObjectURL(file) : null),
+    [file, rawContent],
+  );
+  useEffect(() => () => {
+    if (ownedUrl) URL.revokeObjectURL(ownedUrl);
+  }, [ownedUrl]);
+  const content = ownedUrl ?? rawContent;
   // 联网开关放在窗口这一层：最小化会卸载 children，状态留在子组件里就会被重置回「仅本地」。
   const [network, setNetwork] = useState(false);
   const localHtml = useMemo(
@@ -168,11 +179,11 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
     >
       {kind === "image" ? (
         // eslint-disable-next-line @next/next/no-img-element -- local data URLs are intentionally kept out of remote loaders.
-        <img src={data.content} alt={data.name} className="h-full w-full object-contain p-4" />
+        <img src={content} alt={data.name} className="h-full w-full object-contain p-4" />
       ) : kind === "pdf" ? (
-        <PdfDocumentPane src={data.content} name={data.name} />
+        <PdfDocumentPane src={content} name={data.name} />
       ) : kind === "docx" ? (
-        <DocxDocumentPane src={data.content} name={data.name} />
+        <DocxDocumentPane src={content} name={data.name} />
       ) : kind === "html" ? (
         // key 跟着联网开关走：srcDoc 里的 CSP 只在文档加载时生效，切换策略必须重建 iframe。
         <iframe
@@ -183,10 +194,10 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
           className="h-full w-full border-0 bg-white"
         />
       ) : kind === "markdown" ? (
-        <MarkdownPreviewPane content={data.content} />
+        <MarkdownPreviewPane content={content} />
       ) : kind === "ppt" ? (
         isOpenXmlPptx(data) ? (
-          <PptxDocumentPane src={data.content} name={data.name} />
+          <PptxDocumentPane src={content} name={data.name} />
         ) : (
           <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
             <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />
@@ -197,7 +208,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
           </div>
         )
       ) : (
-        <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{data.content}</pre>
+        <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{content}</pre>
       )}
     </ManagedWindow>
   );

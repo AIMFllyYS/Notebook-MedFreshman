@@ -42,13 +42,17 @@ import RightPanel from "./RightPanel";
 import ModeSwitcher from "./ModeSwitcher";
 import { AgentCenterTabsLive } from "@/components/agent/AgentCenterTabs";
 import { useT } from "@/lib/i18n";
-import MobileTopBar from "./MobileTopBar";
-import MobileBottomNav from "./MobileBottomNav";
-import MobileChapterPicker from "./MobileChapterPicker";
-import MobileReviewHub from "./MobileReviewHub";
-import MobileSettingsPanel from "./MobileSettingsPanel";
-import MobileSidebarDrawer from "./MobileSidebarDrawer";
-import MobileMiniChat from "./MobileMiniChat";
+// 移动端组件全部 dynamic：它们只在 isMobile 分支渲染，静态导入会把整套
+// 移动壳（尤其 MobileMiniChat → ChatThread → react-markdown/KaTeX/ai SDK）
+// 拉进所有路由的 eager chunk（实测 /login 也载 3.5MB）。ssr:false 无损失——
+// isMobile 是客户端判定，SSR 从不渲染这些分支。
+const MobileTopBar = dynamic(() => import("./MobileTopBar"), { ssr: false });
+const MobileBottomNav = dynamic(() => import("./MobileBottomNav"), { ssr: false });
+const MobileChapterPicker = dynamic(() => import("./MobileChapterPicker"), { ssr: false });
+const MobileReviewHub = dynamic(() => import("./MobileReviewHub"), { ssr: false });
+const MobileSettingsPanel = dynamic(() => import("./MobileSettingsPanel"), { ssr: false });
+const MobileSidebarDrawer = dynamic(() => import("./MobileSidebarDrawer"), { ssr: false });
+const MobileMiniChat = dynamic(() => import("./MobileMiniChat"), { ssr: false });
 import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import GlobalSearchButton from "@/components/search/GlobalSearchButton";

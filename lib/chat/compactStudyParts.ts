@@ -16,6 +16,12 @@ const STUB_TEXT_TOOLS = new Set([
   "getOutline",
   "useSkill",
   "getArtifact",
+  // 这三个工具的 output.text 是大正文（项目切片全文/图表规格/文件索引），
+  // 此前不在任何压缩集合 = 原样落盘并随请求重发，是长会话体积的头号驱动。
+  // 均可用原参数重新调用取回全文，与其余 STUB 工具同一回灌语义。
+  "readProjectSlices",
+  "drawDiagram",
+  "getProjectFiles",
 ]);
 
 const SEARCH_TOOLS = new Set([
