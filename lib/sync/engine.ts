@@ -161,6 +161,9 @@ function jobKey(kind: CloudSyncKind, clientId: string): string {
 
 export function __setCloudSyncStoresForTests(next: CloudSyncStores | null): void {
   stores = next ?? createDefaultStores();
+  // 本地状态整体换了一套：远端 updated_at 基线随之失效，
+  // 否则「远端未变」短路会跳过把数据灌进这套新 stores。
+  baseline.clear();
 }
 
 export function __setSyncClientForTests(client: SyncDocumentsApi | null): void {
@@ -856,8 +859,8 @@ function forgetCardInZustand(id: string): void {
 }
 
 async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
-  rememberBaseline(row.kind, row.client_id, row.updated_at);
   if (row.deleted) {
+    rememberBaseline(row.kind, row.client_id, row.updated_at);
     if (row.kind === "chat-session") stores.forgetSession(row.client_id);
     else if (row.kind === "artifact") stores.forgetArtifact(row.client_id);
     else if (row.kind === "document") stores.forgetDocument(row.client_id);
@@ -866,6 +869,11 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
     else stores.forgetProject(row.client_id);
     return;
   }
+  // 远端版本未前进（周期拉取里占绝大多数）：整行跳过，
+  // 尤其对 chat-session 免去全量装配 + 合并 + v3 全量重写。
+  const known = baseline.get(jobKey(row.kind, row.client_id));
+  if (known && !isRemoteNewer(row.updated_at, known)) return;
+  rememberBaseline(row.kind, row.client_id, row.updated_at);
   if (row.kind === "chat-session") {
     const remote = asChatPayload(row.payload);
     if (!remote) return;
@@ -875,7 +883,10 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
         { v: 1, meta: local.meta, messages: local.messages },
         remote,
       );
-      stores.applySession(merged.payload);
+      // 字节相等短路：合并结果与本地一致时跳过全量落盘 + 窗口/派生重算。
+      if (JSON.stringify(merged.payload) !== JSON.stringify({ v: 1, meta: local.meta, messages: local.messages })) {
+        stores.applySession(merged.payload);
+      }
       if (merged.added > 0) reportMerged();
     } else {
       stores.applySession(remote);
@@ -925,16 +936,28 @@ async function pullFromCloud(api: SyncDocumentsApi): Promise<void> {
   for (const row of live) await applyRemoteRow(row);
 }
 
+const PUSH_CONCURRENCY = 6;
+
 async function pushAllLocal(api: SyncDocumentsApi): Promise<void> {
-  for (const meta of stores.listSessionMetas()) {
-    if (isSessionStreaming(meta.id)) continue;
-    await pushOne(api, "chat-session", meta.id);
-  }
-  for (const id of stores.listArtifactIds()) await pushOne(api, "artifact", id);
-  for (const id of stores.listDocumentIds()) await pushOne(api, "document", id);
-  for (const id of stores.listNoteIds()) await pushOne(api, "user-note", id);
-  for (const id of stores.listCardIds()) await pushOne(api, "review-card", id);
-  for (const id of stores.listProjectIds()) await pushOne(api, "chat-project", id);
+  // 每条 pushOne 内含一次 api.get：串行时 N 条 = N 个 RTT。并发池压到 ≤6。
+  const jobs: Array<() => Promise<void>> = [
+    ...stores.listSessionMetas()
+      .filter((meta) => !isSessionStreaming(meta.id))
+      .map((meta) => () => pushOne(api, "chat-session", meta.id)),
+    ...stores.listArtifactIds().map((id) => () => pushOne(api, "artifact", id)),
+    ...stores.listDocumentIds().map((id) => () => pushOne(api, "document", id)),
+    ...stores.listNoteIds().map((id) => () => pushOne(api, "user-note", id)),
+    ...stores.listCardIds().map((id) => () => pushOne(api, "review-card", id)),
+    ...stores.listProjectIds().map((id) => () => pushOne(api, "chat-project", id)),
+  ];
+  let next = 0;
+  const workers = Array.from({ length: Math.min(PUSH_CONCURRENCY, jobs.length) }, async () => {
+    while (next < jobs.length) {
+      const job = jobs[next++];
+      await job();
+    }
+  });
+  await Promise.all(workers);
 }
 
 export async function pullAndPushAll(): Promise<void> {

@@ -230,8 +230,7 @@ async function retrieve(
   filter: SearchFilter,
   mode: SearchMode,
 ): Promise<{ hits: MultiSearchHit[]; diagnostics: Omit<SearchDiagnostics, "ms" | "filter" | "mode"> }> {
-  const hasVectorIndex = await isVectorIndexLoaded();
-  const hasBM25Index = await isBM25IndexLoaded();
+  const [hasVectorIndex, hasBM25Index] = await Promise.all([isVectorIndexLoaded(), isBM25IndexLoaded()]);
   if (!hasVectorIndex && !hasBM25Index) {
     return {
       hits: [],
@@ -239,37 +238,64 @@ async function retrieve(
     };
   }
 
+  // preferSubjectId 的原语义是「先科目限定检索、不足 3 条再全量」——两遍各付一次
+  // embed+rerank RTT。改成单遍：BM25/向量是本地索引，全局榜与科目榜并行各扫一份（纯 CPU），
+  // embed 两榜共用一次，候选取两榜并集后一次 rerank，最后仍按「科目命中 ≥3」取集。
+  const preferSubject = !filter.subjectId ? filter.preferSubjectId : undefined;
+  const prefFilter: SearchFilter | undefined = preferSubject
+    ? { ...filter, subjectId: preferSubject, preferSubjectId: undefined }
+    : undefined;
+
   const rankings: ScoredChunk[][] = [];
+  const prefRankings: ScoredChunk[][] = [];
   let bm25Hits = 0;
   let vecHits = 0;
   let embedError: string | undefined;
   let rerankError: string | undefined;
 
-  if (mode !== "vector" && hasBM25Index) {
-    const bm25Results = await bm25Search(retrievalQuery, 40, filter);
+  const wantVector = mode !== "keyword" && hasVectorIndex;
+  const embedOnce = wantVector
+    ? (async () => {
+        const indexModel = await getVectorIndexModel();
+        const embeddingClient = getQueryEmbeddingClient(indexModel);
+        return embeddingClient.embed(vectorQuery);
+      })()
+    : null;
+  const vecSearch = (f: SearchFilter) =>
+    embedOnce!.then((q) => vectorSearch(q, 40, f)).then(
+      (results) => ({ ok: true as const, results }),
+      (error: unknown) => ({ ok: false as const, error }),
+    );
+
+  const [bm25Results, prefBm25, vecOutcome, prefVecOutcome] = await Promise.all([
+    mode !== "vector" && hasBM25Index ? bm25Search(retrievalQuery, 40, filter) : Promise.resolve(null),
+    mode !== "vector" && hasBM25Index && prefFilter ? bm25Search(retrievalQuery, 40, prefFilter) : Promise.resolve(null),
+    wantVector ? vecSearch(filter) : Promise.resolve(null),
+    wantVector && prefFilter ? vecSearch(prefFilter) : Promise.resolve(null),
+  ]);
+
+  if (bm25Results) {
     bm25Hits = bm25Results.length;
     if (bm25Results.length) rankings.push(bm25Results);
   }
+  if (prefBm25?.length) prefRankings.push(prefBm25);
 
-  if (mode !== "keyword" && hasVectorIndex) {
-    try {
-      const indexModel = await getVectorIndexModel();
-      const embeddingClient = getQueryEmbeddingClient(indexModel);
-      const queryVector = await embeddingClient.embed(vectorQuery);
-      const vecResults = await vectorSearch(queryVector, 40, filter);
-      vecHits = vecResults.length;
-      if (vecResults.length) rankings.push(vecResults);
-    } catch (err) {
-      embedError = err instanceof Error ? err.message : String(err);
-      const statusMatch = embedError.match(/\b(\d{3})\b/);
-      searchLog.error("search.embed.error", {
-        model: await getVectorIndexModel(),
-        status: statusMatch ? Number(statusMatch[1]) : undefined,
-        message: embedError,
-        queryLen: vectorQuery.length,
-      });
-    }
+  const vecError = vecOutcome && !vecOutcome.ok ? vecOutcome.error : prefVecOutcome && !prefVecOutcome.ok ? prefVecOutcome.error : null;
+  if (vecError != null) {
+    embedError = vecError instanceof Error ? vecError.message : String(vecError);
+    const statusMatch = embedError.match(/\b(\d{3})\b/);
+    searchLog.error("search.embed.error", {
+      model: await getVectorIndexModel(),
+      status: statusMatch ? Number(statusMatch[1]) : undefined,
+      message: embedError,
+      queryLen: vectorQuery.length,
+    });
   }
+  if (vecOutcome?.ok) {
+    vecHits = vecOutcome.results.length;
+    if (vecOutcome.results.length) rankings.push(vecOutcome.results);
+  }
+  if (prefVecOutcome?.ok && prefVecOutcome.results.length) prefRankings.push(prefVecOutcome.results);
 
   if (!rankings.length) {
     return {
@@ -287,8 +313,23 @@ async function retrieve(
   }
 
   const merged = rrfMerge(rankings);
-  const candidates = merged.slice(0, 40);
-  let finalChunks: ScoredChunk[];
+  // 候选 = 全局榜前 40 ∪ 科目榜前 40（科目榜是原「科目限定轮」的候选来源）。
+  const candidates: ScoredChunk[] = [];
+  const seenIds = new Set<string>();
+  for (const chunk of merged.slice(0, 40)) {
+    seenIds.add(chunk.id);
+    candidates.push(chunk);
+  }
+  if (prefFilter) {
+    for (const chunk of rrfMerge(prefRankings).slice(0, 40)) {
+      if (!seenIds.has(chunk.id)) {
+        seenIds.add(chunk.id);
+        candidates.push(chunk);
+      }
+    }
+  }
+
+  let scoredPool: ScoredChunk[];
   let reranked = 0;
 
   if (mode !== "keyword") {
@@ -296,13 +337,13 @@ async function retrieve(
       const rerankResults = await rerank(
         retrievalQuery,
         candidates.map((c) => `${shortTitleForIndex(c.title)}\n${c.text}`),
-        Math.max(topK, 8),
+        preferSubject ? Math.max(topK, 8) * 2 : Math.max(topK, 8),
       );
-      finalChunks = rerankResults.map((r) => ({
+      scoredPool = rerankResults.map((r) => ({
         ...candidates[r.index],
         score: r.relevance_score,
       }));
-      reranked = finalChunks.length;
+      reranked = scoredPool.length;
     } catch (err) {
       rerankError = err instanceof Error ? err.message : String(err);
       const statusMatch = rerankError.match(/\b(\d{3})\b/);
@@ -312,11 +353,19 @@ async function retrieve(
         message: rerankError,
         candidates: candidates.length,
       });
-      finalChunks = candidates.slice(0, topK);
+      scoredPool = candidates;
     }
   } else {
-    finalChunks = candidates.slice(0, topK);
+    scoredPool = candidates;
   }
+
+  // 原「科目限定轮」规则：首选科目命中 ≥3 则结果只取该科目，否则用全量结果。
+  let finalChunks = scoredPool;
+  if (preferSubject) {
+    const prefScored = scoredPool.filter((c) => c.subjectId === preferSubject);
+    if (prefScored.length >= PREFER_SUBJECT_MIN_HITS) finalChunks = prefScored;
+  }
+  finalChunks = finalChunks.slice(0, Math.max(topK, 8));
 
   const hits = toHits(finalChunks, topK);
   return {
@@ -346,13 +395,7 @@ export async function hybridSearch(
 
   const run = (nextFilter: SearchFilter) => retrieve(retrievalQuery, vectorQuery, topK, nextFilter, mode);
 
-  let result;
-  if (filter.preferSubjectId && !filter.subjectId) {
-    const preferred = await run({ ...filter, subjectId: filter.preferSubjectId, preferSubjectId: undefined });
-    result = preferred.hits.length >= PREFER_SUBJECT_MIN_HITS ? preferred : await run(filter);
-  } else {
-    result = await run(filter);
-  }
+  const result = await run(filter);
 
   lastDiagnostics = {
     mode,

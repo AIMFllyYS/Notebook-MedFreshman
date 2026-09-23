@@ -113,14 +113,90 @@ export function redactSecrets(value: unknown, extraSecrets: string[] = []): unkn
   return walk(value);
 }
 
+// ── 异步批量落盘 ──
+// 热路径（step/tool/llm 每轮 ~10+ 次）不再逐条同步 appendFileSync：
+// 先排入内存队列，25ms 内合批后一次异步写；进程退出前把残余同步补落。
+
+const pendingLines: { filePath: string; line: string }[] = [];
+const dirsReady = new Set<string>();
+let flushTimer: NodeJS.Timeout | null = null;
+let writing = false;
+let exitHookBound = false;
+
+function scheduleFlush(): void {
+  if (flushTimer) return;
+  flushTimer = setTimeout(() => {
+    flushTimer = null;
+    void flushQueue();
+  }, 25);
+  flushTimer.unref?.();
+}
+
+async function flushQueue(): Promise<void> {
+  if (writing) {
+    scheduleFlush();
+    return;
+  }
+  writing = true;
+  try {
+    while (pendingLines.length) {
+      const batch = pendingLines.splice(0, pendingLines.length);
+      const byPath = new Map<string, string[]>();
+      for (const item of batch) {
+        const arr = byPath.get(item.filePath) ?? [];
+        arr.push(item.line);
+        byPath.set(item.filePath, arr);
+      }
+      for (const [filePath, lines] of byPath) {
+        const dir = path.dirname(filePath);
+        if (!dirsReady.has(dir)) {
+          await fs.promises.mkdir(dir, { recursive: true });
+          dirsReady.add(dir);
+        }
+        await fs.promises.appendFile(filePath, lines.join(""), "utf8");
+      }
+    }
+  } catch {
+    // 日志失败不得打断对话
+  } finally {
+    writing = false;
+    if (pendingLines.length) scheduleFlush();
+  }
+}
+
+/** 测试/关闭路径：立即排空队列（等异步写真正落盘）。 */
+export function flushAgentLogQueue(): Promise<void> {
+  if (flushTimer) {
+    clearTimeout(flushTimer);
+    flushTimer = null;
+  }
+  return flushQueue();
+}
+
+function bindExitFlush(): void {
+  if (exitHookBound) return;
+  exitHookBound = true;
+  process.on("beforeExit", () => {
+    for (const { filePath, line } of pendingLines.splice(0)) {
+      try {
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+        fs.appendFileSync(filePath, line, "utf8");
+      } catch {
+        // 退出期尽力而为
+      }
+    }
+  });
+}
+
 export function appendAgentLog(hook: string, data: unknown, filePath = resolveAgentLogPath()): void {
   const record: AgentLogRecord = {
     ts: new Date().toISOString(),
     hook,
     data: redactSecrets(toJsonSafe(data)),
   };
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.appendFileSync(filePath, `${JSON.stringify(record)}\n`, "utf8");
+  bindExitFlush();
+  pendingLines.push({ filePath, line: `${JSON.stringify(record)}\n` });
+  scheduleFlush();
 }
 
 function defaultWrite(hook: string, data: unknown): void {
