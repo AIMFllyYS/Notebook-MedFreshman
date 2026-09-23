@@ -7,6 +7,7 @@ import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useStore } from "@/lib/stores/ui";
+import { useChatUI } from "@/lib/stores/chatUI";
 import { getMessageText } from "@/lib/chat/messageParts";
 
 vi.mock("@/lib/storage/idbStorage", async (importOriginal) => ({
@@ -28,9 +29,16 @@ vi.mock("@/components/chat/ChatThread", () => ({
   ),
 }));
 vi.mock("@/components/chat/ChatInput", () => ({
-  default: ({ onSend, disableQuote }: { onSend: (text: string) => void; disableQuote?: boolean }) => (
+  default: ({ onSend, disableQuote, quoteText, onClearQuote }: {
+    onSend: (text: string) => void;
+    disableQuote?: boolean;
+    quoteText?: string | null;
+    onClearQuote?: () => void;
+  }) => (
     <div>
       <span data-testid="note-agent-quote">{String(disableQuote)}</span>
+      <span data-testid="note-agent-quotetext">{quoteText ?? ""}</span>
+      <button type="button" onClick={() => onClearQuote?.()}>清除引用</button>
       <button type="button" onClick={() => onSend("把分类补全")}>发送笔记对话</button>
     </div>
   ),
@@ -96,6 +104,7 @@ describe("NoteAgentPanel", () => {
       noteAgentOpenIds: [],
       noteAgentSessionById: {},
     });
+    useChatUI.setState({ quotedText: null, noteQuotes: {} });
     const noteId = useUserNotes.getState().createNote("anatomy", {
       title: "被覆上皮",
       markdown: "# 被覆上皮\n\n旧稿",
@@ -146,5 +155,17 @@ describe("NoteAgentPanel", () => {
     });
     expect(getMessageText(useChatHistory.getState().messagesById["note-s"][0])).toBe("把分类补全");
     expect(getMessageText(useChatHistory.getState().messagesById.main[0])).toBe("主对话还在");
+  });
+
+  it("把按笔记写入的引用槽传给输入框，且清除只清这篇笔记", () => {
+    const noteId = useUserNotes.getState().order[0];
+    useChatUI.getState().setNoteQuote(noteId, "上皮组织覆盖体表");
+    useChatUI.getState().setQuotedText("主对话引用不应串入");
+    render(<NoteAgentPanel noteId={noteId} sessionId="note-s" />);
+    expect(screen.getByTestId("note-agent-quotetext")).toHaveTextContent("上皮组织覆盖体表");
+    fireEvent.click(screen.getByRole("button", { name: "清除引用" }));
+    expect(useChatUI.getState().noteQuotes[noteId]).toBeUndefined();
+    // 全局引用槽不受笔记面板影响
+    expect(useChatUI.getState().quotedText).toBe("主对话引用不应串入");
   });
 });

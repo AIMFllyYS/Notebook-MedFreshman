@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Crepe } from "@milkdown/crepe";
 import { keepEditorShortcut } from "@/lib/notes/editorShortcuts";
+import { guardListEnterKeydown, type GuardEditorView, type GuardKeyEvent } from "@/lib/notes/milkdownListGuards";
 import { translateNow, useT, type Translate } from "@/lib/i18n";
 import "@milkdown/crepe/theme/common/style.css";
 import "@milkdown/crepe/theme/frame.css";
@@ -57,6 +58,22 @@ function applyHeading(ctx: unknown, level: number): void {
   }
 }
 
+/** 从编辑器 ctx 里取当前选区文本（跨段落用换行连接）。 */
+function selectedText(ctx: unknown): string {
+  const state = (ctx as CtxLike)?.get?.("editorState") as
+    | {
+        selection?: { empty?: boolean; from?: number; to?: number };
+        doc?: { textBetween?: (from: number, to: number, sep?: string) => string };
+      }
+    | undefined;
+  const sel = state?.selection;
+  if (!sel || sel.empty || typeof sel.from !== "number" || typeof sel.to !== "number") return "";
+  return state?.doc?.textBetween?.(sel.from, sel.to, "\n")?.trim() ?? "";
+}
+
+/** 划词工具栏「引用」按钮的图标（引号形状，与标题按钮同为内联 SVG 字符串）。 */
+const QUOTE_ICON = `<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>`;
+
 /** Crepe 没从公开入口导出 GroupBuilder / ToolbarItem 类型，这里按结构声明最小形状。 */
 interface ToolbarBuilderLike {
   addGroup: (
@@ -70,7 +87,7 @@ interface ToolbarBuilderLike {
   };
 }
 
-function buildNoteToolbar(builder: ToolbarBuilderLike): void {
+function buildNoteToolbar(builder: ToolbarBuilderLike, onQuote?: (text: string) => void): void {
   // 工具栏在挂载时一次性建好，拿不到组件的 t：直接按当前语言取词。
   const t: Translate = translateNow;
   const group = builder.addGroup("note-heading", t("window.note.milkdown.headingGroup"));
@@ -88,24 +105,41 @@ function buildNoteToolbar(builder: ToolbarBuilderLike): void {
     active: ((ctx: unknown) => currentNode(ctx)?.name === "paragraph") as never,
     onRun: ((ctx: unknown) => applyHeading(ctx, 0)) as never,
   });
+  if (onQuote) {
+    const agentGroup = builder.addGroup("note-agent", t("window.note.milkdown.agentGroup"));
+    agentGroup.addItem("quote", {
+      icon: QUOTE_ICON,
+      label: t("menu.selection.quote"),
+      active: (() => false) as never,
+      onRun: ((ctx: unknown) => {
+        const text = selectedText(ctx);
+        if (text) onQuote(text);
+      }) as never,
+    });
+  }
 }
 export default function MilkdownNoteEditor({
   value,
   onChange,
   compact = false,
+  onQuote,
 }: {
   value: string;
   onChange: (markdown: string) => void;
   compact?: boolean;
+  /** 提供时在划词工具栏追加「引用」按钮，参数为当前选中文本。 */
+  onQuote?: (text: string) => void;
 }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const onChangeRef = useRef(onChange);
+  const onQuoteRef = useRef(onQuote);
   const [failed, setFailed] = useState(false);
   const t = useT();
 
   useEffect(() => {
     onChangeRef.current = onChange;
-  }, [onChange]);
+    onQuoteRef.current = onQuote;
+  }, [onChange, onQuote]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -134,8 +168,30 @@ export default function MilkdownNoteEditor({
               mode: "doc",
             },
             // 划词工具栏出厂只有加粗/斜体/删除线/行内代码/链接，没有标题层级。
-            [Crepe.Feature.Toolbar]: { buildToolbar: buildNoteToolbar } as never,
+            [Crepe.Feature.Toolbar]: {
+              buildToolbar: (builder: ToolbarBuilderLike) =>
+                buildNoteToolbar(builder, (text) => onQuoteRef.current?.(text)),
+            } as never,
           },
+        });
+        // 列表 Enter 修复挂进 view 直传 props：someProp 顺序里 handleKeyDown 先于
+        // 所有 keymap 插件执行，清洗掉 list_item 里的脏块后原生退出链才轮得到。
+        // config 回调在 create() 期间、EditorView 构造前执行（ConfigReady < InitReady），
+        // 这里 set 的 options 会被展开进 new EditorView 的 props。
+        crepe.editor.config((ctx) => {
+          try {
+            const options = (ctx as CtxLike)?.get?.("editorViewOptions") as
+              | { handleKeyDown?: (view: unknown, event: GuardKeyEvent) => boolean }
+              | undefined;
+            const prev = options?.handleKeyDown;
+            (ctx as { set?: (key: string, value: unknown) => void })?.set?.("editorViewOptions", {
+              ...options,
+              handleKeyDown: (view: unknown, event: GuardKeyEvent) =>
+                guardListEnterKeydown(view as GuardEditorView, event) || (prev?.(view, event) ?? false),
+            });
+          } catch {
+            /* ctx 缺 slice 时静默降级：回到原生 Enter 行为，不影响编辑 */
+          }
         });
         crepe.on((listener) => {
           listener.markdownUpdated((_ctx, markdown) => {

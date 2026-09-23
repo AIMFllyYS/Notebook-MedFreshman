@@ -5,6 +5,8 @@ import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerInt
 
 export interface SendMessageOptions {
   quotedText?: string;
+  /** 引用导语（不含冒号）：默认「针对当前页面这段原文」，笔记会话用「针对这篇笔记这段原文」。 */
+  quoteIntro?: string;
   enableThinking?: boolean;
   thinkingEffort?: ThinkingEffort;
   enableSearch?: boolean;

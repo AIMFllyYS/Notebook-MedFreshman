@@ -235,6 +235,7 @@ export const windowZh = {
     },
     milkdown: {
       headingGroup: "标题",
+      agentGroup: "Agent",
       headingLevel: "标题 {level}",
       paragraph: "正文",
       paragraphIcon: "正文",

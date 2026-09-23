@@ -14,6 +14,7 @@ import NoteTocSidebar from "@/components/notes/NoteTocSidebar";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useUserNotes } from "@/lib/stores/userNotes";
+import { useChatUI } from "@/lib/stores/chatUI";
 import { downloadAsMarkdown } from "@/lib/documents/export";
 import { citeUserNoteToMainAgent, openAgentForUserNote } from "@/lib/notes/openUserNote";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
@@ -84,6 +85,15 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
     [noteId, updateNote],
   );
   const refreshWysiwyg = useCallback(() => setWysiwygRev((n) => n + 1), []);
+  // 划词工具栏「引用」：打开这篇笔记自己的「笔记对话」并写入它的引用槽，
+  // 不走全局 quotedText（那条会落进右侧主对话）。
+  const handleQuoteToNoteAgent = useCallback(
+    (text: string) => {
+      if (!openAgentForUserNote(noteId)) return;
+      useChatUI.getState().setNoteQuote(noteId, text);
+    },
+    [noteId],
+  );
 
   const noteMarkdown = note?.markdown ?? "";
   // split 模式每键全量预览+TOC 是主线程税：预览/TOC 走 deferred 值，
@@ -132,6 +142,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
           key={`${noteId}:${mode}:${wysiwygRev}`}
           value={note.markdown}
           onChange={handleMarkdown}
+          onQuote={handleQuoteToNoteAgent}
         />
       ) : (
         <NotePreviewPane markdown={note.markdown} />

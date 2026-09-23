@@ -10,7 +10,7 @@ export const SESSION_TITLE_SYSTEM_PROMPT =
   `你是学习软件的会话标题生成器。根据用户的第一句提问，生成一个中文标题，${SESSION_TITLE_MIN_CHARS}~${SESSION_TITLE_MAX_CHARS} 个字。
 要求：只输出标题本身；不要任何标点或符号（不要逗号、顿号、冒号、引号、书名号、括号、emoji）；不要编号；不要换行；不要 Markdown；不要解释。`;
 
-const LEADING_CONTEXT_RE = /^针对当前页面这段原文：\s*/;
+const LEADING_CONTEXT_RE = /^针对(?:当前页面|这篇笔记)这段原文：\s*/;
 
 export function sanitizeSessionTitle(raw: string, fallback = "新对话"): string {
   const cleaned = raw

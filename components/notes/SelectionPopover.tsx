@@ -5,6 +5,8 @@ import { createPortal } from "react-dom";
 import { Check } from "lucide-react";
 import { useChatUI } from "@/lib/hooks/useChatUI";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
+import { useStore } from "@/lib/stores/ui";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
 import { copyTextToClipboard, shouldInterceptSelectionCopy } from "@/lib/clipboard/copyText";
@@ -227,6 +229,12 @@ export default function SelectionPopover({
     if (!pop) return;
     actionTakenRef.current = true;
     setQuotedText(pop.text);
+    // 「引用」必须看得见：切到右栏 ai tab 并展开右栏，与 citeUserNoteToMainAgent 一致。
+    // Agent 档位下引用进的是中央主对话，不动 Studio 档位的右栏开合。
+    const ui = useStore.getState();
+    ui.setRightTab("ai");
+    ui.setMobileTab("ai");
+    if (!isAgentWorkspace()) ui.setRightCollapsedForProfile(ui.layoutProfile, false);
     setCopied(false);
     setPop(null);
     cleanupMarks();
