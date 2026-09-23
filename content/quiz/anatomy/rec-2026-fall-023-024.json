@@ -1,0 +1,260 @@
+{
+  "subjectId": "anatomy",
+  "chapterId": "rec-2026-fall-023-024",
+  "generatedAt": "2026-09-23",
+  "examConfig": {
+    "source": "content/anatomy/lectures/rec-2026-fall-023-024/recording.md；content/anatomy/lectures/rec-2026-fall-023-024/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-023-024",
+    "revision": 1,
+    "recordingHash": "34c941acf3a1a1209e91aea04c3324abaa31bea8c004c8c166c85d4f6b2c677f",
+    "notesTextHash": "cdabbf24a9b77ccd21eb230ff5434094fbac7a7fa43ebdcf1dc4717bbf542056"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "鼻旁窦四组名称"
+      },
+      "stem": "鼻旁窦是鼻腔周围颅骨内含气的空腔，共四组。下列哪一组是它们的正确名称？",
+      "options": [
+        "额窦、筛窦、蝶窦、上颌窦",
+        "额窦、筛窦、乳突窦、上颌窦",
+        "额窦、蝶窦、上颌窦、乙状窦",
+        "筛窦、蝶窦、上颌窦、海绵窦"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**鼻旁窦共四组：额窦、筛窦、蝶窦、上颌窦，内衬黏膜与鼻腔黏膜移行。B错：乳突窦属于中耳乳突区，不是鼻旁窦。C错：乙状窦是硬脑膜静脉窦，不是鼻旁窦。D错：海绵窦也是硬脑膜静脉窦，不属于鼻旁窦。",
+      "hint": "额、筛、蝶、上颌，共4对。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "喉软骨不成对与成对"
+      },
+      "stem": "关于喉软骨的组成，下列哪项配对正确？",
+      "options": [
+        "不成对：甲状软骨、杓状软骨；成对：环状软骨、会厌软骨",
+        "不成对：甲状软骨、会厌软骨、小角软骨；成对：环状软骨",
+        "不成对：甲状软骨、环状软骨、会厌软骨；成对：杓状软骨、小角软骨、楔状软骨",
+        "全部成对，包括甲状软骨和环状软骨"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**喉软骨中不成对的有甲状软骨、环状软骨、会厌软骨三个；成对的有杓状软骨、小角软骨、楔状软骨。A错：杓状软骨成对，环状软骨、会厌软骨不成对，正好配对颠倒。B错：环状软骨不成对，小角软骨才成对。D错：甲状软骨和环状软骨都不成对。",
+      "hint": "单块甲环会，成对杓小角楔。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "环状软骨唯一完整软骨环"
+      },
+      "stem": "关于环状软骨，下列描述正确的是？",
+      "options": [
+        "是喉软骨中最小的软骨，平对第4颈椎",
+        "是喉软骨中唯一完整的软骨环，平对第6颈椎，支撑呼吸道防止塌陷",
+        "是一对成对的软骨，参与构成声门",
+        "呈树叶状，吞咽时关闭喉口"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**环状软骨是喉软骨中唯一完整的软骨环，前窄后宽（前为环状软骨弓、后为环状软骨板），平对第6颈椎，作用是支撑呼吸道、防止吸气时塌陷。A错：它不是最小软骨，且平对第6颈椎而非第4颈椎。C错：环状软骨不成对。D错：树叶状、吞咽时关闭喉口的是会厌软骨，不是环状软骨。",
+      "hint": "唯一完整软骨环，第6颈椎，撑住气道。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "左右主支气管差异与异物坠入"
+      },
+      "stem": "异物经喉坠入下呼吸道时，通常易落入哪一侧主支气管，原因是？",
+      "options": [
+        "左主支气管，因其较短、较粗、走行较陡直",
+        "左主支气管，因其较长、较细、走行较倾斜",
+        "右主支气管，因其较长、较细、走行较倾斜",
+        "右主支气管，因其较短、较粗、走行较陡直"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**右主支气管短、粗、与中线急下角小、走行较陡直，故异物多坠入右侧。A错：左主支气管长而倾斜，不是异物易落侧。B错：左主支气管细长倾斜，与异物落入无关。C错：把右主支气管说成细长倾斜，正好说反了。",
+      "hint": "右主支气管短粗直，异物靠右。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "鼻钮（鼻易出血区）位置"
+      },
+      "stem": "临床上的“鼻钮”（鼻易出血区）位于何处？",
+      "options": [
+        "鼻中隔前下方，血管丰富、位置表浅",
+        "鼻腔顶壁，筛骨筛板处",
+        "上鼻甲后端的蝶筛隐窝",
+        "下鼻道前部，鼻泪管开口处"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**鼻钮位于鼻中隔前下方，该处血管丰富、位置表浅，外伤后容易出血，是鼻出血好发部位。B错：鼻腔顶壁筛板处有嗅神经通过，不是易出血区。C错：蝶筛隐窝是蝶窦开口、鼻咽癌好发区，不是易出血区。D错：下鼻道前部是鼻泪管开口，与鼻出血区无关。",
+      "hint": "鼻中隔前下方，血管丰富表浅。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "上颌窦开口高于窦底引流困难"
+      },
+      "stem": "上颌窦炎症积液时，为何正常体位不易引流、常需特殊体位或穿刺？",
+      "options": [
+        "因为上颌窦体积最小，积液很快胀满",
+        "因为上颌窦开口于上鼻道，位置太低",
+        "因为上颌窦开口（半月裂孔）高于窦底，直立时开口反在上方",
+        "因为上颌窦与牙槽突不相通，缺乏引流通道"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**上颌窦是体积最大的鼻旁窦（约15mL），其开口在半月裂孔、位置高于窦底，直立时开口反在上方，积液无法自然引流，需倒立体位或经下鼻道穿刺引流。A错：上颌窦是体积最大而非最小。B错：上颌窦开口于中鼻道的半月裂孔，不在上鼻道。D错：上颌窦底壁邻上颌牙槽突，牙根感染可波及，并非不相通。",
+      "hint": "开口高、窦底低，积液引不出来。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "环甲肌收缩使声带紧张机制"
+      },
+      "stem": "环甲肌收缩时声带发生何种变化？其机制是？",
+      "options": [
+        "声带松弛——环甲肌收缩使甲状软骨后倾，声韧带变松",
+        "声带紧张——环甲肌收缩使甲状软骨以环甲关节为支点前倾，声韧带绷紧",
+        "声门开大——环甲肌收缩使杓状软骨旋外",
+        "声带缩短——环甲肌直接牵拉声襞缩短"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**环甲肌位于环状软骨与甲状软骨之间，收缩时以环甲关节（联动关节）为支点使甲状软骨前倾，甲状软骨前脚与杓状软骨间距增大，声韧带绷紧，声带紧张。A错：前倾才紧张，后倾复位才松弛。C错：使声门开大的是杓状软骨沿环杓关节旋外，不是环甲肌。D错：环甲肌作用于甲状软骨前倾、拉长声韧带，并非缩短声带。",
+      "hint": "环甲肌→甲状软骨前倾→声韧带绷紧→声带紧张。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "声门结构链层次"
+      },
+      "stem": "下列关于声门构成的层次关系，哪项正确？",
+      "options": [
+        "声门=声襞+声韧带；声襞=声带肌+黏膜",
+        "声门=声带+声门裂；声韧带=方形膜下缘游离增厚",
+        "声门=前庭襞+前庭裂；声带=声襞+前庭韧带",
+        "声门=声带+声门裂；声带=声襞+声带肌；声襞=声韧带+黏膜"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**声门由声带和声门裂构成；声带由声襞和声带肌构成；声襞由声韧带和表面黏膜构成；声韧带是弹性圆锥上缘游离增厚的部分；声门裂分前2/3膜间部、后1/3软骨间部。A错：把声门说成声襞+声韧带，层次错误。B错：声韧带是弹性圆锥上缘游离增厚，不是方形膜下缘（那是前庭韧带）。C错：前庭襞、前庭韧带属于喉前庭，与声门无关。",
+      "hint": "声门=声带+声门裂；声韧带+黏膜=声襞；+声带肌=声带。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "肋膈隐窝与胸腔积液"
+      },
+      "stem": "胸膜腔积液时，液体首先积聚在何处？",
+      "options": [
+        "肋膈隐窝——肋胸膜与膈胸膜反折处，直立时位置最低",
+        "肋纵隔隐窝——靠近胸骨心包缘",
+        "膈纵隔隐窝——靠近纵隔下部",
+        "胸膜顶——高出锁骨上方处"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**肋膈隐窝由肋胸膜与膈胸膜反折形成，是胸膜隐窝中容量最大、直立时位置最低者，故胸膜腔积液首先积聚于此。B错：肋纵隔隐窝较小，不是最低位。C错：膈纵隔隐窝位置较高，不首先积液。D错：胸膜顶在锁骨上方，不可能积聚低位积液。",
+      "hint": "肋膈隐窝最低，积液先到。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "鼻腔外侧壁开口定位"
+      },
+      "stem": "切除中鼻甲后，中鼻道上筛泡、半月裂孔、筛漏斗分别通连哪个鼻旁窦？",
+      "options": [
+        "筛泡→额窦；半月裂孔→前筛窦；筛漏斗→上颌窦",
+        "筛泡→蝶窦；半月裂孔→上颌窦；筛漏斗→额窦",
+        "筛泡→中筛窦；半月裂孔→上颌窦；筛漏斗→额窦和前筛窦",
+        "筛泡→前筛窦；半月裂孔→蝶窦；筛漏斗→上颌窦"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**切除中鼻甲后，中鼻道上筛泡是中筛窦的开口，其前下方的半月裂孔是上颌窦开口，再前方的筛漏斗通额窦和前筛窦；另蝶筛隐窝通蝶窦，下鼻道前部通鼻泪管。A错：把筛泡、半月裂孔、筛漏斗的通连全说反了。B错：筛泡不通蝶窦（蝶窦开口于蝶筛隐窝）。D错：半月裂孔不通蝶窦，筛漏斗也不通上颌窦。",
+      "hint": "筛泡=中筛窦，半月裂孔=上颌窦，筛漏斗=额窦+前筛窦。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "左剑肋角心包穿刺安全区"
+      },
+      "stem": "临床心包穿刺通常选择左剑肋角（心包三角区），其解剖学理由是？",
+      "options": [
+        "该处皮肤薄、神经少，穿刺不疼",
+        "该处心包前方无胸膜覆盖，穿刺不会损伤胸膜造成气胸",
+        "该处距右心室最近，可直接刺入心腔",
+        "该处纵隔最宽，可避开所有大血管"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**左侧第4-5肋软骨后方、胸骨体左缘的心包三角区（左剑肋角）无胸膜覆盖，是心包穿刺的安全区，在此穿刺不会刺破胸膜引起气胸。A错：安全与否与皮肤厚薄、疼痛无关。C错：心包穿刺目的是抽取心包腔内液体，并非直接刺入心腔，优势也不是离心室近。D错：理由是局部无胸膜，不是纵隔最宽。",
+      "hint": "左剑肋角=无胸膜覆盖，穿刺安全防气胸。"
+    }
+  ]
+}

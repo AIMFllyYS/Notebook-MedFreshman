@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "cell-biology-lab",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-009-012",
+  "courseName": "细胞生物学实验",
+  "sessionRange": {
+    "start": 9,
+    "end": 12
+  },
+  "taughtOn": "2026-09-22",
+  "topic": "细胞膜的特性——细胞膜的结构、流动镶嵌与特性观察实验",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-009-012"
+}

@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-015-016",
+  "generatedAt": "2026-09-23",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-015-016/recording.md；content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-015-016",
+    "revision": 1,
+    "recordingHash": "6940bd4d28a2489681fe7c02ae1f24d3dddd30034c06b56cd188937ec3067958",
+    "notesTextHash": "b039523a07928791143b4a1c08bc88104618cc48218b70c2556d527ce302d2d4"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "新陈代谢的概念与发生场所"
+      },
+      "stem": "新陈代谢（metabolism）是生物体内全部化学反应的总称，其进行的主要场所是：",
+      "options": [
+        "细胞（在胞质及线粒体等细胞器中由酶催化进行）",
+        "细胞外液中自发进行，无需细胞参与",
+        "仅在消化道管腔中进行",
+        "仅在细胞核外的血浆中进行"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**代谢是在活细胞内、由一系列酶催化的反应网络，主要发生在胞质（如糖酵解）与线粒体（如三羧酸循环、氧化磷酸化）等部位。B错：细胞外液缺乏完整酶系，不能进行系统代谢。C错：消化只是分解的预处理，并非代谢主体。D错：血浆中不进行细胞内代谢。",
+      "hint": "代谢在活细胞内、由酶催化（胞质+线粒体）。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "合成代谢与分解代谢"
+      },
+      "stem": "关于合成代谢（anabolism）与分解代谢（catabolism），下列对应正确的是：",
+      "options": [
+        "合成代谢释放能量，分解代谢消耗能量",
+        "二者都只释放能量，不消耗能量",
+        "合成代谢由小分子合成大分子、通常消耗能量；分解代谢将大分子分解为小分子、释放能量",
+        "二者都只消耗能量，不释放能量"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**合成代谢（如糖原、蛋白质合成）由小分子组装成大分子，一般需输入 ATP；分解代谢（如糖氧化）将大分子降解，释放并捕获能量。A错：能量方向说反。B、D错：两类代谢一耗一释，并非同向。",
+      "hint": "合成耗能、分解释能，二者对立统一。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "糖的分类（按水解产物）"
+      },
+      "stem": "按能否水解及水解产物，糖类可分为单糖、寡糖（含二糖）和多糖。下列属于单糖的是：",
+      "options": [
+        "蔗糖和麦芽糖",
+        "葡萄糖、果糖和半乳糖",
+        "淀粉和糖原",
+        "乳糖和纤维素"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**葡萄糖、果糖、半乳糖是不能再水解的单糖。A错：蔗糖、麦芽糖是二糖（蔗糖=葡萄糖+果糖，麦芽糖=葡萄糖+葡萄糖）。C错：淀粉、糖原是多糖。D错：乳糖是二糖（葡萄糖+半乳糖），纤维素是多糖。",
+      "hint": "单糖=葡萄糖/果糖/半乳糖；蔗糖/麦芽糖/乳糖是二糖。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "重要多糖的结构区别"
+      },
+      "stem": "淀粉、糖原与纤维素的主要区别，下列叙述正确的是：",
+      "options": [
+        "三者糖苷键完全相同，人体都能消化",
+        "纤维素由 α-1,4 糖苷键连接，人体最易消化",
+        "糖原是植物的主要储能多糖",
+        "淀粉与糖原主要以 α 糖苷键连接（人体可消化），纤维素以 β-1,4 糖苷键连接，人体缺乏相应酶不能消化"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**淀粉（直链 α-1,4、支链另含 α-1,6）和糖原（α 键、分支更多）可被人体酶水解；纤维素为 β-1,4 糖苷键，人体无纤维素酶，不能消化。A错：纤维素的 β 键人体不能水解。B错：纤维素是 β-1,4 而非 α。C错：糖原是动物（肝/肌）储能多糖，植物储能为淀粉。",
+      "hint": "淀粉/糖原 α 键可消化；纤维素 β-1,4 人不能消化。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "糖的生理功能"
+      },
+      "stem": "下列哪一项不属于糖类在人体内的主要生理功能：",
+      "options": [
+        "作为主要能源物质，氧化供能",
+        "参与构成糖蛋白、糖脂及细胞识别（糖被）",
+        "作为生物遗传信息的主要储存物质（遗传物质）",
+        "提供合成其他物质（如某些氨基酸、脂类）的碳骨架"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确（即该项不属于糖的功能）。**遗传信息的主要储存物质是核酸（DNA/RNA），不是糖。A、B、D 都是糖的功能：糖是主要能源，参与糖蛋白/糖脂与细胞识别，并提供碳骨架。",
+      "hint": "糖供能、参与识别、给碳骨架；遗传信息靠核酸。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "糖的消化过程"
+      },
+      "stem": "食物中淀粉的消化，作用最强、最主要的部位和酶是：",
+      "options": [
+        "口腔，唾液淀粉酶（完成绝大部分消化）",
+        "胃，胃蛋白酶",
+        "小肠，胰淀粉酶（是淀粉消化最主要的酶）",
+        "大肠，肠道细菌的酶"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**淀粉消化虽始于口腔唾液淀粉酶，但食物在口腔停留短，最主要的消化在小肠由胰淀粉酶完成，再由肠黏膜刷状缘的二糖酶水解为单糖。A错：唾液淀粉酶作用时间有限，不是主力。B错：胃蛋白酶消化蛋白质，且胃酸使淀粉酶失活。D错：大肠主要吸收水分，正常情况下淀粉在小肠已消化。",
+      "hint": "淀粉消化主力在小肠——胰淀粉酶。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "小肠葡萄糖吸收——SGLT"
+      },
+      "stem": "小肠上皮细胞吸收葡萄糖（和半乳糖）主要通过 SGLT（钠-葡萄糖协同转运体），其转运方式属于：",
+      "options": [
+        "单纯的易化扩散，顺浓度且不耗能",
+        "继发性主动转运：借助 Na⁺ 的电化学梯度逆浓度转运葡萄糖（间接消耗 ATP）",
+        "自由扩散，直接穿过脂质双层",
+        "胞吞作用"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**SGLT 利用 Na⁺-K⁺-ATP 酶维持的 Na⁺ 电化学梯度，将 Na⁺ 顺梯度内流与葡萄糖逆梯度转运相偶联，属于继发性主动转运（能量间接来自 ATP）。A错：易化扩散顺浓度、不能逆浓度，指的是 GLUT。C错：葡萄糖亲水，不能自由扩散过双层。D错：单糖吸收不经胞吞。",
+      "hint": "SGLT=钠-葡萄糖偶联，继发性主动转运（靠 Na⁺ 梯度）。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "GLUT4 的胰岛素调控"
+      },
+      "stem": "GLUT4 主要分布于骨骼肌和脂肪组织，胰岛素促进这些组织摄取葡萄糖的机制是：",
+      "options": [
+        "胰岛素直接为葡萄糖转运提供 ATP",
+        "胰岛素使细胞内储存 GLUT4 的囊泡转位并融合到细胞膜，增加膜上 GLUT4 数量",
+        "胰岛素在膜上打孔让葡萄糖自由进入",
+        "胰岛素把 SGLT 转运到肌肉细胞膜"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**静息时 GLUT4 主要储存在细胞内囊泡膜上；胰岛素结合受体后经信号通路使含 GLUT4 的囊泡转位、融合到质膜，膜上转运体增多从而加速葡萄糖的易化扩散摄取。A错：GLUT4 是易化扩散，不直接耗 ATP。C错：靠转运体而非打孔。D错：肌肉/脂肪用 GLUT4，不是 SGLT。",
+      "hint": "胰岛素→GLUT4 囊泡上膜→葡萄糖摄取增加。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "乳糖不耐受"
+      },
+      "stem": "有些人饮用牛奶后出现腹胀、腹泻等“乳糖不耐受”症状，其直接原因是：",
+      "options": [
+        "肠黏膜乳糖酶缺乏（或活性低），未消化的乳糖进入大肠被细菌发酵",
+        "牛奶中的蛋白质引起胃酸过多",
+        "牛奶温度过低刺激胃肠",
+        "肠道对葡萄糖的主动转运过强"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**乳糖需由小肠刷状缘的乳糖酶水解为葡萄糖和半乳糖后吸收；乳糖酶不足时乳糖进入结肠被菌群发酵，产生气体和短链酸，引起腹胀、腹泻、肠鸣。B、C错：不是蛋白质或温度的根本原因。D错：与葡萄糖主动转运强弱无关。",
+      "hint": "乳糖酶少→乳糖不被消化→大肠发酵→腹胀腹泻。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "血糖稳态调控——肝脏"
+      },
+      "stem": "在血糖稳态调节中起核心作用的器官及其在饥饿时的主要变化是：",
+      "options": [
+        "肾脏；饥饿时大量滤过葡萄糖",
+        "肌肉；饥饿时持续向血液释放葡萄糖",
+        "肝脏；饥饿时肝糖原分解并进行糖异生，向血液释放葡萄糖以维持血糖",
+        "脑；饥饿时停止利用葡萄糖"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**肝脏是血糖稳态的核心器官：进食后摄取葡萄糖合成糖原、糖酵解或转脂；饥饿时肝糖原分解、并经糖异生释放游离葡萄糖入血（肌肉因缺乏葡萄糖-6-磷酸酶不能直接释放葡萄糖）。A错：肾脏主要经糖异生辅助，并非核心缓冲器官。B错：肌糖原仅供肌肉自身，不能补充血糖。D错：脑持续依赖葡萄糖（饥饿后期才改用酮体）。",
+      "hint": "肝脏是血糖核心：进食储糖、饥饿放糖（糖原分解+糖异生）。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "糖无氧氧化与糖酵解的概念区分"
+      },
+      "stem": "关于“糖酵解”与“糖无氧氧化”的关系，下列叙述正确的是：",
+      "options": [
+        "二者完全无关，是两条独立途径",
+        "糖无氧氧化包括糖酵解（葡萄糖→丙酮酸）以及丙酮酸在无氧条件下还原为乳酸的过程，终产物为乳酸",
+        "糖酵解必须有氧才能进行",
+        "糖无氧氧化的终产物是 CO₂ 和 H₂O"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**糖酵解指胞质中葡萄糖分解为丙酮酸（产生少量 ATP、NADH）；糖无氧氧化是在缺氧时糖酵解后丙酮酸再被 NADH 还原为乳酸，故糖无氧氧化=糖酵解+乳酸生成，终产物乳酸。A错：糖酵解是无氧氧化的前段。C错：糖酵解本身不需氧。D错：彻底氧化为 CO₂、H₂O 是有氧氧化，不是无氧氧化。",
+      "hint": "糖酵解=葡萄糖→丙酮酸；无氧氧化=糖酵解+丙酮酸→乳酸。"
+    }
+  ]
+}
