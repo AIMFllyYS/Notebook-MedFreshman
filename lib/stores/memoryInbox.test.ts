@@ -36,6 +36,11 @@ function noteCommitMessage(title: string): ChatMessage {
   };
 }
 
+/** confirm → sessionForMessage（全量读）→ runMemoryCommit 是多段 await：宏任务一轮排空整条微任务链。 */
+async function flushAsync() {
+  await new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 function flashcardCommitMessage(mode: RecordMode): ChatMessage {
   return {
     ...createAssistantPlaceholder("side-f", {}),
@@ -195,8 +200,7 @@ test("confirm note 不走 sendToChat，旁路仍带上下文和 memoryCommit", a
   });
   useMemoryInbox.getState().confirm("prop_1");
   assert.equal(useStore.getState().outbound, null);
-  await Promise.resolve();
-  await Promise.resolve();
+  await flushAsync();
   assert.ok(seen);
   assert.equal(seen?.title, "渗透压");
   assert.equal(seen?.historyMessages.length, 2);
@@ -216,8 +220,7 @@ test("confirm note 成功后关云并打开笔记窗，主 thread 仍干净", as
     titleHint: "渗透压",
   });
   useMemoryInbox.getState().confirm("prop_1");
-  await Promise.resolve();
-  await Promise.resolve();
+  await flushAsync();
   assert.equal(useStore.getState().outbound, null);
   assert.equal(useMemoryInbox.getState().byId.prop_1?.status, "dismissed");
   assert.ok(useWindowManager.getState().windows.some((win) => win.type === "user-note-editor"));
@@ -238,8 +241,7 @@ test("confirm note 失败时云内报错，主 thread 仍干净", async () => {
     titleHint: "渗透压",
   });
   useMemoryInbox.getState().confirm("prop_1");
-  await Promise.resolve();
-  await Promise.resolve();
+  await flushAsync();
   assert.equal(useStore.getState().outbound, null);
   assert.equal(useMemoryInbox.getState().byId.prop_1?.status, "proposed");
   assert.match(useMemoryInbox.getState().byId.prop_1?.error ?? "", /模型超时/);
@@ -268,8 +270,7 @@ test("confirm flashcard 不走 sendToChat，旁路仍带历史和 memoryCommit=f
     });
     useMemoryInbox.getState().confirm("prop_f");
     assert.equal(useStore.getState().outbound, null);
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushAsync();
     assert.ok(seen);
     assert.equal(seen?.memoryCommit, "flashcards");
     assert.equal(seen?.mode, "cloze");
@@ -301,8 +302,7 @@ test("confirm flashcard 成功后关云并打开成卡预览，主 thread 仍干
       suggestedMode: "quiz",
     });
     useMemoryInbox.getState().confirm("prop_f");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushAsync();
     assert.equal(useStore.getState().outbound, null);
     assert.equal(useMemoryInbox.getState().byId.prop_f?.status, "dismissed");
     assert.ok(useWindowManager.getState().windows.some((win) => win.type === "record-preview"));
@@ -328,8 +328,7 @@ test("confirm flashcard 失败时云内报错，主 thread 仍干净", async () 
     suggestedMode: "cloze",
   });
   useMemoryInbox.getState().confirm("prop_f");
-  await Promise.resolve();
-  await Promise.resolve();
+  await flushAsync();
   assert.equal(useStore.getState().outbound, null);
   assert.equal(useMemoryInbox.getState().byId.prop_f?.status, "proposed");
   assert.match(useMemoryInbox.getState().byId.prop_f?.error ?? "", /模型超时/);
@@ -353,8 +352,7 @@ test("confirm flashcard 没有工具输出时云内报错，主 thread 仍干净
     suggestedMode: "cloze",
   });
   useMemoryInbox.getState().confirm("prop_f");
-  await Promise.resolve();
-  await Promise.resolve();
+  await flushAsync();
   assert.equal(useStore.getState().outbound, null);
   assert.equal(useMemoryInbox.getState().byId.prop_f?.status, "proposed");
   assert.match(useMemoryInbox.getState().byId.prop_f?.error ?? "", /没有写出闪卡/);

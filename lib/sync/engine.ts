@@ -22,6 +22,7 @@ import type { ChatMessage } from "@/lib/types/chat";
 import { createSupabaseSyncClient } from "./client";
 import { isRemoteNewer, mergeChatSessionPayloads } from "./merge";
 import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
+import { tailWindowSlice } from "@/lib/chat/turnSpine";
 import {
   buildArtifactPayload,
   buildChatProjectPayload,
@@ -101,8 +102,9 @@ function createDefaultStores(): CloudSyncStores {
     async loadSession(id) {
       const meta = useChatHistory.getState().sessionsMeta.find((item) => item.id === id);
       if (!meta) return null;
-      const memory = useChatHistory.getState().messagesById[id];
-      const messages = memory ?? (await loadSessionMessages(id)) ?? [];
+      // 窗口化后 messagesById 只是尾部窗口，上行 payload 必须全量装配，
+      // 否则云端拿到的就是「只剩最近几轮」的截断会话。
+      const messages = (await loadSessionMessages(id)) ?? [];
       return { meta, messages };
     },
     applySession: applyChatPayloadToZustand,
@@ -669,9 +671,25 @@ async function applyChatPayloadToZustand(payload: ChatSessionSyncPayload): Promi
     // 走 manifestFrom 统一构造：手写字段漏掉 folders 会把用户的对话项目整批清空
     // （2026-09-20 核实：云端拉取一次就丢一次，会话的 folderId 全变悬空）。
     saveManifest(manifestFrom(state, { activeSessionId: state.activeSessionId ?? meta.id, sessions: sessionsMeta }));
+    // 拉取只入尾部窗口 + 登记 loadedSessionIds：
+    // 以前整段正文进 messagesById 且永不进 LRU，长会话 pull 一次就永久占内存。
+    const sliced = tailWindowSlice(messages);
+    const nextWindows = { ...state.sessionWindowById };
+    nextWindows[meta.id] = {
+      startTurn: sliced.startTurn,
+      startIndex: sliced.startIndex,
+      turnCount: sliced.spine.length,
+      messageCount: messages.length,
+      spine: sliced.spine,
+    };
     useChatHistory.setState({
       sessionsMeta,
-      messagesById: { ...state.messagesById, [meta.id]: messages },
+      messagesById: { ...state.messagesById, [meta.id]: sliced.messages },
+      sessionWindowById: nextWindows,
+      loadedSessionIds: [
+        ...state.loadedSessionIds.filter((item) => item !== meta.id),
+        meta.id,
+      ],
     });
   });
 }
@@ -685,12 +703,18 @@ async function forgetLocalSessionInZustand(id: string): Promise<void> {
     const sessionsMeta = state.sessionsMeta.filter((item) => item.id !== id);
     const messagesById = { ...state.messagesById };
     delete messagesById[id];
+    const sessionWindowById = { ...state.sessionWindowById };
+    delete sessionWindowById[id];
+    const sessionLoadState = { ...state.sessionLoadState };
+    delete sessionLoadState[id];
     const deletedActive = state.activeSessionId === id;
     const activeSessionId = deletedActive ? sessionsMeta[0]?.id ?? null : state.activeSessionId;
     saveManifest(manifestFrom(state, { activeSessionId, sessions: sessionsMeta }));
     useChatHistory.setState({
       sessionsMeta,
       messagesById,
+      sessionWindowById,
+      sessionLoadState,
       activeSessionId,
       loadedSessionIds: state.loadedSessionIds.filter((item) => item !== id),
     });

@@ -191,6 +191,13 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     }
   }, [compacting, floatingSessionId, recompute]);
 
+  // 面板打开 = 用户明确要看全量上下文：物化整段会话，估算才覆盖更早轮次。
+  useEffect(() => {
+    if (!open) return;
+    const sid = floatingSessionId ?? useChatHistory.getState().activeSessionId;
+    if (sid) void useChatHistory.getState().ensureSessionFullyLoaded(sid).then(recompute);
+  }, [open, floatingSessionId, recompute]);
+
   // 始终定时刷新上下文估算（面板开关均运行），确保按钮数字实时更新。
   useEffect(() => {
     recompute();

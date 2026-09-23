@@ -15,6 +15,7 @@ import {
   runMemoryCommitWithRuntime,
 } from "@/lib/memory/runMemoryCommit";
 import { classifySendError } from "@/lib/chat/classifySendError";
+import { loadSessionMessages } from "@/lib/storage/chatStorage";
 import { memoryProposalWindowId } from "@/lib/notes/userNote";
 import type { MemoryKind } from "@/lib/ai/agent/tools/proposeMemory/types";
 import type { ChatMessage } from "@/lib/types/chat";
@@ -30,6 +31,8 @@ export interface MemoryProposal {
   suggestedMode?: RecordMode;
   messageId: string;
   toolCallId: string;
+  /** 提案归属的会话：commit 用它全量装配上下文（旧条目可能没有，退回扫描+活跃会话兜底）。 */
+  sessionId?: string;
   status: MemoryProposalStatus;
   titleDraft: string;
   modeDraft: RecordMode;
@@ -79,15 +82,27 @@ function cloudGeometry(index: number) {
 
 const memoryCommitAborts = new Map<string, AbortController>();
 
-function sessionForMessage(messageId: string): { sessionId: string | null; messages: ChatMessage[] } {
+async function sessionForMessage(
+  messageId: string,
+  knownSessionId?: string,
+): Promise<{ sessionId: string | null; messages: ChatMessage[] }> {
   const history = useChatHistory.getState();
-  for (const [sessionId, messages] of Object.entries(history.messagesById)) {
-    if (messages.some((message) => message.id === messageId)) {
-      return { sessionId, messages };
+  let sessionId = knownSessionId ?? null;
+  if (!sessionId) {
+    for (const [sid, messages] of Object.entries(history.messagesById)) {
+      if (messages.some((message) => message.id === messageId)) {
+        sessionId = sid;
+        break;
+      }
     }
   }
-  const sessionId = history.activeSessionId;
-  return { sessionId, messages: sessionId ? history.messagesById[sessionId] ?? [] : [] };
+  if (!sessionId) sessionId = history.activeSessionId;
+  // commit 的上下文必须是整段会话：messagesById 只是尾部窗口，直接全量装配读。
+  // 读不到（非浏览器/存储损坏）退回内存窗口——比空上下文强。
+  const messages = sessionId
+    ? (await loadSessionMessages(sessionId)) ?? useChatHistory.getState().messagesById[sessionId] ?? []
+    : [];
+  return { sessionId, messages };
 }
 
 function uniquePush(list: string[], ids: readonly string[]): string[] {
@@ -114,7 +129,7 @@ async function startMemoryCommit(id: string): Promise<void> {
   memoryCommitAborts.get(id)?.abort();
   const abortController = new AbortController();
   memoryCommitAborts.set(id, abortController);
-  const { sessionId, messages } = sessionForMessage(prev.messageId);
+  const { sessionId, messages } = await sessionForMessage(prev.messageId, prev.sessionId);
 
   try {
     const result = await runMemoryCommitWithRuntime({
@@ -223,6 +238,7 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
       suggestedMode: event.suggestedMode,
       messageId: event.messageId,
       toolCallId: event.toolCallId,
+      sessionId: event.sessionId,
       status: "proposed",
       titleDraft: event.titleHint || "",
       modeDraft: event.suggestedMode || "cloze",
@@ -334,7 +350,7 @@ export function syncMemoryInboxFromSessions(
   const inbox = useMemoryInbox.getState();
   for (const [sessionId, messages] of Object.entries(messagesById)) {
     if (!messages) continue;
-    const { proposals, commits } = collectMemoryToolEvents(messages);
+    const { proposals, commits } = collectMemoryToolEvents(messages, sessionId);
     if (!acknowledgedSessionIds.has(sessionId)) {
       inbox.acknowledgeHistory(proposals, commits);
       acknowledgedSessionIds.add(sessionId);

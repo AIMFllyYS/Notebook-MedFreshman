@@ -109,7 +109,7 @@ test("migrateFromV1IfNeeded：v2 写入失败时保留 legacy 以便重试", asy
   };
   const legacyRaw = JSON.stringify(v1);
   storage.set(PERSIST_KEYS.chatHistory, legacyRaw);
-  failSetItemForPrefix = "chat-session:";
+  failSetItemForPrefix = "chat-s3:";
 
   const { migrateFromV1IfNeeded, loadManifest } = await import("./chatStorage.ts");
 

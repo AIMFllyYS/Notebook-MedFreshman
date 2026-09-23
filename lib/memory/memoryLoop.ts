@@ -27,6 +27,8 @@ export interface MemoryProposalEvent {
   reason: string;
   titleHint?: string;
   suggestedMode?: RecordMode;
+  /** 提案来自哪条会话（ingest 时盖戳）：commit 要按它取整段上下文，窗口化后不能靠扫已加载消息猜。 */
+  sessionId?: string;
 }
 
 export interface MemoryCommitEvent {
@@ -37,7 +39,7 @@ export interface MemoryCommitEvent {
   flashcards?: CommitFlashcardsOutput;
 }
 
-export function collectMemoryToolEvents(messages: readonly ChatMessage[]): {
+export function collectMemoryToolEvents(messages: readonly ChatMessage[], sessionId?: string): {
   proposals: MemoryProposalEvent[];
   commits: MemoryCommitEvent[];
 } {
@@ -57,6 +59,7 @@ export function collectMemoryToolEvents(messages: readonly ChatMessage[]): {
         reason: output.reason,
         titleHint: output.titleHint,
         suggestedMode: output.suggestedMode,
+        sessionId,
       });
     }
 
