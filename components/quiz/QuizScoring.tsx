@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { useQuizStore, computeBreakdown } from "@/lib/quiz-store";
 import QuizQuestion from "./QuizQuestion";
+import LazyVisible from "@/components/ui/LazyVisible";
 import { useT } from "@/lib/i18n";
 
 /** 主观题自评滑块。 */
@@ -121,31 +122,34 @@ export default function QuizScoring() {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+        {/* 每题 review 模式 = 6-12 个独立 Markdown 管线实例；交卷瞬间全量同步挂载会卡秒级。
+            LazyVisible 让首屏只实例化视口附近的题，其余滚到再挂。 */}
         {results.map((r, i) => (
-          <motion.div
-            key={r.question.id}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: Math.min(i * 0.02, 0.3) }}
-            style={{
-              padding: "18px 20px",
-              borderRadius: "var(--md-sys-shape-corner-large)",
-              background: "var(--md-sys-color-surface-container-low)",
-              border: "1px solid var(--md-sys-color-outline-variant)",
-            }}
-          >
-            <QuizQuestion
-              question={r.question}
-              index={i}
-              total={results.length}
-              mode="review"
-              answer={answers[r.question.id] ?? null}
-              result={r}
-            />
-            {!r.objective && (
-              <SelfScoreSlider id={r.question.id} awarded={r.awarded} max={r.max} />
-            )}
-          </motion.div>
+          <LazyVisible key={r.question.id} rootMargin="400px" placeholder={<div style={{ height: 280 }} />}>
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25 }}
+              style={{
+                padding: "18px 20px",
+                borderRadius: "var(--md-sys-shape-corner-large)",
+                background: "var(--md-sys-color-surface-container-low)",
+                border: "1px solid var(--md-sys-color-outline-variant)",
+              }}
+            >
+              <QuizQuestion
+                question={r.question}
+                index={i}
+                total={results.length}
+                mode="review"
+                answer={answers[r.question.id] ?? null}
+                result={r}
+              />
+              {!r.objective && (
+                <SelfScoreSlider id={r.question.id} awarded={r.awarded} max={r.max} />
+              )}
+            </motion.div>
+          </LazyVisible>
         ))}
       </div>
 

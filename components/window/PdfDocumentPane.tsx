@@ -102,6 +102,8 @@ const PAGE_GUTTER = 24;
 const MIN_DISPLAY_WIDTH = 160;
 /** 视口上下各多挂 600px：滑动时下一页通常已经画好了。 */
 const LAZY_ROOT_MARGIN = "600px 0px";
+/** 画布驻留上限：视口(含 margin)约 2-6 页，余量覆盖快速滚动往返；超出即摘最远不可见页。 */
+const MAX_MOUNTED_PAGES = 24;
 /** 定位时页顶留一点空隙，免得页首文字贴着工具栏。 */
 const SCROLL_TOP_OFFSET = 8;
 /** 尺寸抖动小于 1% 就当没变，避免每次缩放都重渲染整条页流。 */
@@ -220,7 +222,9 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
     setFailedPages((prev) => (prev[pageNumber] === message ? prev : { ...prev, [pageNumber]: message }));
   }, []);
 
-  // 只有进过视口的页才挂画布；挂上就不再摘，避免来回滚动反复重渲染。
+  // 进过视口的页才挂画布；挂载数有界——远离视口的页摘回占位（位图+textLayer 随组件卸载释放，
+  // 长 PDF 的内存占用不再随页数线性增长，d5/B5-1）。可见页永不摘，避免视口里留白洞。
+  const visiblePagesRef = useRef<Set<number>>(new Set());
   useEffect(() => {
     if (!doc) return;
     const body = bodyRef.current;
@@ -231,18 +235,37 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
       mountAll();
       return;
     }
+    const visible = visiblePagesRef.current;
+    visible.clear();
     const observer = new IntersectionObserver(
       (entries) => {
+        for (const entry of entries) {
+          const pageNumber = Number((entry.target as HTMLElement).dataset.pdfPage);
+          if (!Number.isFinite(pageNumber)) continue;
+          if (entry.isIntersecting) visible.add(pageNumber);
+          else visible.delete(pageNumber);
+        }
         setMountedPages((prev) => {
-          let next: Set<number> | null = null;
-          for (const entry of entries) {
-            if (!entry.isIntersecting) continue;
-            const pageNumber = Number((entry.target as HTMLElement).dataset.pdfPage);
-            if (!Number.isFinite(pageNumber) || prev.has(pageNumber)) continue;
-            next ??= new Set(prev);
+          const next = new Set(prev);
+          let dirty = false;
+          for (const pageNumber of visible) {
+            if (next.has(pageNumber)) continue;
             next.add(pageNumber);
+            dirty = true;
           }
-          return next ?? prev;
+          // 超上限时摘「离当前可视区最远的不可见页」：页码距离是滚动距离的良好代理，
+          // pageSizes 缓存让占位高度不变，滚动位置不跳。
+          if (next.size > MAX_MOUNTED_PAGES) {
+            const anchor = visible.size ? Math.min(...visible) : 1;
+            const evictable = [...next]
+              .filter((pageNumber) => !visible.has(pageNumber))
+              .sort((a, b) => Math.abs(b - anchor) - Math.abs(a - anchor));
+            while (next.size > MAX_MOUNTED_PAGES && evictable.length > 0) {
+              next.delete(evictable.shift()!);
+              dirty = true;
+            }
+          }
+          return dirty ? next : prev;
         });
       },
       { root: body, rootMargin: LAZY_ROOT_MARGIN },

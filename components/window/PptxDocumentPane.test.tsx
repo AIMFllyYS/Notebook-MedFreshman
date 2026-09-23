@@ -283,24 +283,36 @@ describe("PptxDocumentPane", () => {
     expect(container.querySelector(".pptx-page-slot .pptx-preview-slide-wrapper-1")).not.toBeNull();
   });
 
-  it("正文容器宽度变化超过 8px 才重建预览器，并按新宽度重铺槽位", async () => {
+  it("宽度变化走 CSS 缩放不重建；放大超阈值才真重建预览器", async () => {
     const { container } = renderPane();
     await waitForSlots(container);
+    await act(async () => {
+      FakeIntersectionObserver.intersectAll();
+    });
     const [firstCall] = harness.init.mock.calls as [HTMLElement, { width: number }][];
+    const renderW = firstCall[1].width;
 
     const body = container.querySelector<HTMLElement>(".document-workspace-body");
     expect(body).not.toBeNull();
+    // 876 相对渲染宽 < 1.5×：不重建，槽位跟宽、幻灯片 CSS scale。
     Object.defineProperty(body, "clientWidth", { value: 900, configurable: true });
     await act(async () => {
       FakeResizeObserver.triggerFor(body as HTMLElement);
     });
 
+    await waitFor(() => expect(slotList(container)[0].style.width).toBe(`${900 - 24}px`));
+    expect(harness.init).toHaveBeenCalledTimes(1);
+    const slide = slotList(container)[0].querySelector<HTMLElement>(".pptx-preview-slide-wrapper-0");
+    expect(slide?.style.transform).toBe(`scale(${(900 - 24) / renderW})`);
+
+    // 放大超阈值才真重建（清晰度兜底），且按新宽度重铺。
+    Object.defineProperty(body, "clientWidth", { value: Math.ceil(renderW * 1.6) + 24, configurable: true });
+    await act(async () => {
+      FakeResizeObserver.triggerFor(body as HTMLElement);
+    });
     await waitFor(() => expect(harness.init).toHaveBeenCalledTimes(2), { timeout: 3000 });
     const calls = harness.init.mock.calls as [HTMLElement, { width: number }][];
-    // 扣掉 .pptx-pages 两侧各 12px 的 padding，槽位才不会被容器撑出横向滚动。
-    expect(calls[1][1].width).toBe(900 - 24);
-    expect(calls[1][1].width).not.toBe(firstCall[1].width);
+    expect(calls[1][1].width).not.toBe(renderW);
     await waitForSlots(container);
-    expect(slotList(container)[0].style.width).toBe(`${900 - 24}px`);
   });
 });

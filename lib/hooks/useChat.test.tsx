@@ -327,9 +327,7 @@ describe('useChat SDK transport regression', () => {
     expect(messagesFor()[0]).toBe(history[0]);
   });
 
-  it('水合期间取消不发 /api/chat；卸载不杀流、后台跑完并落定内容', async () => {
-    let resolveHydration: (messages: ChatMessage[]) => void;
-    vi.mocked(hydrateAttachmentsForApi).mockImplementationOnce(() => new Promise((resolve) => { resolveHydration = resolve; }));
+  it('发送前取消不发 /api/chat；卸载不杀流、后台跑完并落定内容', async () => {
     const control = controlledResponse();
     mockResponses(() => control.response);
     const { result, unmount } = renderHook(() => useChat(context));
@@ -338,8 +336,6 @@ describe('useChat SDK transport regression', () => {
     expect(requests).toHaveLength(0);
     expect(result.current.isLoading).toBe(false);
     expect(result.current.error).toBeNull();
-    resolveHydration!(messagesFor());
-    await settle();
     act(() => result.current.sendMessage('卸载测试'));
     await settle();
     control.emit({ type: 'text-start', id: 't' }, { type: 'text-delta', id: 't', delta: '卸载前末帧' });

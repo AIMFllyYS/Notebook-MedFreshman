@@ -54,7 +54,14 @@ export default function ShareButton() {
   const createShare = useCallback(async (): Promise<string> => {
     const meta = sessionsMeta.find((item) => item.id === activeSessionId);
     // 分享快照必须是完整会话：窗口外轮次也要进快照，直接全量装配读。
-    const messages = activeSessionId ? (await loadSessionMessages(activeSessionId)) ?? [] : [];
+    // 存储读不到时才退回内存窗口，且窗口必须覆盖 messageCount（证明不是尾部截断）。
+    const stored = activeSessionId ? await loadSessionMessages(activeSessionId) : null;
+    const windowMessages = (activeSessionId ? messagesById[activeSessionId] : undefined) ?? [];
+    const messages = stored?.length
+      ? stored
+      : windowMessages.length >= (meta?.messageCount ?? 0)
+        ? windowMessages
+        : [];
     if (!meta || messages.length === 0) throw new Error("empty");
     // 顶层 title / sourceClientId 由 buildSharedSnapshot 从 meta 取，不另传入参。
     const payload = buildSharedSnapshot({
