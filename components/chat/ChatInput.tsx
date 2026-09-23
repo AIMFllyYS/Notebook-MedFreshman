@@ -67,6 +67,13 @@ export interface ChatInputProps {
   floatingSessionId?: string;
   /** 禁用「引用到输入框」（划词浮窗传 true，避免全局选区引用串入浮窗）。默认 false。 */
   disableQuote?: boolean;
+  /**
+   * 局部引用槽：提供时优先于全局 quotedText（disableQuote 只屏蔽全局那条）。
+   * 笔记内嵌 Agent 等独立会话用它隔离引用，不串进主对话。
+   */
+  quoteText?: string | null;
+  /** 局部引用槽的清除回调；不传则走全局 clearQuotedText。 */
+  onClearQuote?: () => void;
   /** 浮动输入区占用的底部安全距离（高度 + 实际底距 + 呼吸间距），供会话滚动区避让。 */
   onComposerInsetChange?: (inset: number) => void;
   /** 可选上下文警告等内容：与输入区一起测量，避免被底部浮层遮住。 */
@@ -106,7 +113,7 @@ function countCharacters(text: string) {
 /** 输入框最大高度（与 `.chat-input-textarea` 的 CSS max-height 保持一致）。 */
 const MAX_TEXTAREA_HEIGHT = 120;
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessionId, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, focusSignal, showProjectPicker = false, chatContext }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessionId, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, quoteText, onClearQuote, onComposerInsetChange, notice, focusSignal, showProjectPicker = false, chatContext }) => {
   const t = useT();
   const [input, setInput] = useState('');
   const [queuedMessages, setQueuedMessages] = useState<QueuedMessage[]>([]);
@@ -169,7 +176,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
     : thinkingEffort;
   const effectiveEnableThinking = (enableThinking || !!selectedModelInfo?.thinkingRequired) && thinkingSupported;
   const effectiveThinkingEffort = effectiveEnableThinking ? displayEffort : undefined;
-  const effectiveQuote = disableQuote ? null : quotedText;
+  const effectiveQuote = quoteText !== undefined ? quoteText : (disableQuote ? null : quotedText);
+  const clearQuote = onClearQuote ?? clearQuotedText;
   const sendShortcutEnabled = useKeyboardSettings((s) => s.isEnabled('chat.send'));
   const {
     attachments,
@@ -326,8 +334,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
     setInput('');
     clearAttachments();
     setAttachedFiles([]);
-    if (effectiveQuote) clearQuotedText();
-  }, [clearAttachments, effectiveQuote, clearQuotedText]);
+    if (effectiveQuote) clearQuote();
+  }, [clearAttachments, effectiveQuote, clearQuote]);
 
   const handleSend = useCallback(() => {
     if (overLimit) { setShowLimitDialog(true); return; }
@@ -538,7 +546,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
             {effectiveQuote}
           </div>
           <button
-            onClick={clearQuotedText}
+            onClick={clearQuote}
             className="chat-input-quote-close"
             title={t('menu.chatInput.quote.remove')}
           >

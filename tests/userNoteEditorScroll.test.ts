@@ -73,8 +73,17 @@ test("classroom sticky notes left-align full Milkdown, not a textarea", () => {
   assert.match(editor, /\[Crepe\.Feature\.Latex\]:\s*true/);
   assert.match(editor, /\[Crepe\.Feature\.Toolbar\]:\s*true/);
   // 划词工具栏补标题层级：出厂只有加粗/斜体/删除线/代码/链接。
-  assert.match(editor, /\[Crepe\.Feature\.Toolbar\]: \{ buildToolbar: buildNoteToolbar \}/);
+  assert.match(editor, /\[Crepe\.Feature\.Toolbar\]: \{/);
+  assert.match(
+    editor,
+    /buildToolbar:[\s\S]{0,120}?buildNoteToolbar\(builder, \(text\) => onQuoteRef\.current\?\.\(text\)\)/,
+  );
   assert.match(editor, /commands\?\.call\?\.\("WrapInHeading", level\)/);
+  // 列表 Enter 自锁修复必须挂在 view 直传 props 上：someProp 里它先于所有 keymap 插件。
+  assert.match(
+    editor,
+    /handleKeyDown: \(view: unknown, event: GuardKeyEvent\) =>[\s\S]{0,120}?guardListEnterKeydown\(view as GuardEditorView, event\)/,
+  );
   assert.doesNotMatch(editor, /BlockEdit\]:\s*!compact/);
   assert.match(sticky, /MilkdownNoteEditor/);
   assert.match(sticky, /compact/);

@@ -97,8 +97,9 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const sessionId = explicitSessionId ?? history.activeSessionId ?? history.createSession(chatContext);
     // 并发单位是「会话」而不是「这个 hook」：同一条会话已在跑才拒发，别的会话在跑不拦。
     if (useSessionRuns.getState().byId[sessionId]?.phase === 'running') return false;
+    const quoteIntro = sendOptions?.quoteIntro ?? "针对当前页面这段原文";
     const userContent = sendOptions?.quotedText
-      ? `针对当前页面这段原文：\n\n> ${sendOptions.quotedText}\n\n${content}` : content;
+      ? `${quoteIntro}：\n\n> ${sendOptions.quotedText}\n\n${content}` : content;
     const userMessage = createUserMessage(crypto.randomUUID(), userContent, { attachments: sendOptions?.attachments });
     // 「首条消息」看 manifest 计数而不是窗口长度：窗口外有更早轮次时长度>0，
     // 但真正空会话的 meta.messageCount 才是 0（标题生成只认这个）。

@@ -233,6 +233,7 @@ export const windowEn = {
     },
     milkdown: {
       headingGroup: "Heading",
+      agentGroup: "Agent",
       headingLevel: "Heading {level}",
       paragraph: "Body",
       paragraphIcon: "¶",

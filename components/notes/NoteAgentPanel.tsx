@@ -7,6 +7,7 @@ import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatH
 import { useChatReady } from "@/lib/hooks/useChatReady";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { useStore } from "@/lib/stores/ui";
+import { useChatUI } from "@/lib/stores/chatUI";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import ChatThread from "@/components/chat/ChatThread";
 import ChatInput from "@/components/chat/ChatInput";
@@ -28,6 +29,8 @@ export default function NoteAgentPanel({
   onSettled?: () => void;
 }) {
   const closePanel = useUserNotes((s) => s.setNoteAgentOpen);
+  const noteQuote = useChatUI((s) => s.noteQuotes[noteId] ?? null);
+  const clearNoteQuote = useChatUI((s) => s.clearNoteQuote);
   const activeSubjectId = useStore((s) => s.activeSubjectId);
   const activeCategoryId = useStore((s) => s.activeCategoryId);
   const activeItemId = useStore((s) => s.activeItemId);
@@ -107,13 +110,16 @@ export default function NoteAgentPanel({
           }
         />
         <ChatInput
-          onSend={(content: string, opts?: SendMessageOptions) => sendMessage(content, opts)}
+          onSend={(content: string, opts?: SendMessageOptions) =>
+            sendMessage(content, opts?.quotedText ? { ...opts, quoteIntro: "针对这篇笔记这段原文" } : opts)}
           onStop={stopGeneration}
           isLoading={isLoading || !chatReady}
           chatContext={chatContext}
           showTokenDashboard={false}
           floatingSessionId={sessionId}
           disableQuote
+          quoteText={noteQuote}
+          onClearQuote={() => clearNoteQuote(noteId)}
           onComposerInsetChange={setComposerInset}
         />
       </div>
