@@ -1,0 +1,194 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "rec-2026-fall-007-008",
+  "generatedAt": "2026-09-25",
+  "examConfig": {
+    "source": "content/medical-english/lectures/rec-2026-fall-007-008/recording.md；content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+    "totalPoints": 80,
+    "timeLimit": 30
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-007-008",
+    "revision": 1,
+    "recordingHash": "b13231b87de2b18c28dc6d2ed849dd79ae9c5b2f7586120c6fe8269841d75f06",
+    "notesTextHash": "707b638490b1c84743bfda4cc2eb3dad3640627c0e62911c0dc902210f963ef5"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "医学英语六种构词方式"
+      },
+      "stem": "下列医学英语构词方式中，最常见、由“词根+前缀+后缀”构成新词的是：",
+      "options": [
+        "截短法（clipping）",
+        "逆构法（back-formation）",
+        "派生法（derivation）",
+        "拼缀法（blending）"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**派生法通过词根加上前缀、后缀构成新词，是医学英语最常见的构词方式。截短法如 flu←influenza；逆构法如 diagnose(v.)←diagnosis(n.)；拼缀法如 genome=gene+chromosome。",
+      "hint": "词根+前缀+后缀=派生法。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "cyst 词族后缀含义"
+      },
+      "stem": "在 cyst 词族中，cystitis、cystoscopy、cystectomy、cystotomy 的后缀依次表示：",
+      "options": [
+        "炎症、镜检查、切除术、切开/造口术",
+        "切除术、炎症、切开术、镜检查",
+        "镜检查、切开术、炎症、切除术",
+        "切开术、切除术、镜检查、炎症"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**-itis 表示炎症（cystitis 膀胱炎）；-scopy 表示（内镜）检查（cystoscopy 膀胱镜检查）；-ectomy 表示切除术（cystectomy 膀胱切除术）；-tomy 表示切开/造口术（cystotomy 膀胱造口术）。",
+      "hint": "-itis炎、-scopy镜、-ectomy切、-tomy切开口。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "常见词根含义"
+      },
+      "stem": "词根/前缀 electro-、cardio-、-gram、gen- 的含义对应正确的是：",
+      "options": [
+        "电、心、记录/图、基因",
+        "心、电、治疗、产生",
+        "记录、电、心、火",
+        "向外、电、记录、生长"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**electro-=电，cardio-=心，-gram=记录/图（如 ECG/electrocardiogram 心电图），gen-=基因/产生。-logist/-ist 表示“研究者/从事……的人”，ex-=向外，troph=生长/营养。",
+      "hint": "electro电、cardio心、-gram图、gen基因。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "逆构法与截短法举例"
+      },
+      "stem": "下列构词举例与方式对应错误的是：",
+      "options": [
+        "diagnose(v.) ← diagnosis(n.) —— 逆构法",
+        "flu ← influenza —— 截短法",
+        "genome = gene + chromosome —— 拼缀法",
+        "contract 作“合同”与“患病”讲 —— 派生法"
+      ],
+      "answer": 3,
+      "explanation": "**D 错误（即本题答案）。**contract 兼有“合同”与“患（病）”（contract a disease）是同形异义/多义词（词义转换），并非“词根+前后缀”的派生法。A、B、C 的逆构、截短、拼缀举例均正确。",
+      "hint": "contract 多义是词义转换，不是派生法。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "Unit 1 关于 AI 与医生的核心主旨"
+      },
+      "stem": "Unit 1 关于人工智能与医生关系的核心观点，正确的表述是：",
+      "options": [
+        "AI will fully substitute for human doctors in diagnosis",
+        "AI is a complement rather than a substitute for human doctors（AI 是补充而非替代，诊断核心权限不应完全移交 AI）",
+        "Doctors should leave all decisions to AI",
+        "AI has no place in clinical practice"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**课文主旨强调 AI 是医生的补充（complement）而非替代（substitute），医生不能把诊断核心权限完全交给 AI。A、C 主张 AI 完全替代/包办，与主旨相反；D 完全否定 AI 的临床价值，也与课文不符。",
+      "hint": "complement not substitute。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "pneumonia 与 UTI 构词"
+      },
+      "stem": "pneumonia 与 UTI（urinary tract infection）的构词/缩写解读正确的是：",
+      "options": [
+        "pneumonia = pneumon（肺）+ -ia（疾病状态）；UTI = 尿路感染",
+        "pneumonia = pneum（气）+ -onia（炎症的缩写）",
+        "UTI = 上呼吸道感染（upper tract infection）",
+        "pneumonia 是由 cardio（心）构成的心脏病"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**pneumonia（肺炎）由词根 pneumon（肺）加后缀 -ia（表示疾病状态）构成；UTI = urinary tract infection 即尿路感染。C 错：UTI 是泌尿（urinary）而非呼吸道。D 错：pneumo-/pneumon 与肺/气相关，与 cardio（心）无关。",
+      "hint": "pneumon肺+-ia病；UTI=尿路感染。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "医生与 AI 协作的三项技能"
+      },
+      "stem": "要把 AI 正确整合到临床实践中，医生需要具备的三项关键能力是：",
+      "options": [
+        "背诵全部医学指南、手写病历、参加会诊",
+        "概率化思维（probabilistic thinking）、了解 AI 所依据的训练数据（understand the data AI uses）、将 AI 整合进临床实践（integrate AI into clinical practice）",
+        "完全依赖 AI 出报告、不再查房、不做体格检查",
+        "自行编写 AI 算法、替换放射科、关闭 AI 解释功能"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**课文提出医生与 AI 协作需三技能：概率化思维、了解 AI 训练数据的局限、把 AI 合理整合进临床实践，医生始终掌握判断与决策权。A 与题目所指无关；C、D 走向全盘依赖或排斥两个极端，均与“AI 是补充”主旨相悖。",
+      "hint": "概率思维+懂数据+整合进临床。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "exstrophy 膀胱外翻的构词"
+      },
+      "stem": "Unit 5 导入的膀胱外翻（bladder exstrophy）一词中，exstrophy 的构词拆解正确的是：",
+      "options": [
+        "ex-（向内）+ strophy（关闭）",
+        "ex-（向外）+ strophy（翻转），指膀胱外翻于腹腔外的罕见先天畸形",
+        "ex-（前）+ strophy（生长），指膀胱过度生长",
+        "ex-（无）+ strophy（炎症），指膀胱无炎症"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**exstrophy = ex-（向外）+ strophy（翻转），膀胱外翻是一种罕见先天畸形，膀胱位于腹腔外，常需多次手术，并涉及再生工程（regenerative engineering）与细胞生物学、工程学、医学的跨学科治疗。A、C、D 对 ex- 与 strophy 的释义均不正确。",
+      "hint": "ex向外+strophy翻转=膀胱外翻。"
+    }
+  ]
+}

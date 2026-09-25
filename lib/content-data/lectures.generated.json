@@ -750,6 +750,50 @@
       }
     },
     {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-017-018",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 17,
+        "end": 18
+      },
+      "taughtOn": "2026-09-23",
+      "topic": "糖代谢（二）——糖无氧氧化、糖有氧氧化与三羧酸循环、磷酸戊糖途径",
+      "revision": 1,
+      "quizId": "rec-2026-fall-017-018",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-017-018"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-017-018"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-017-018"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-017-018"
+        }
+      },
+      "hashes": {
+        "recording": "dcb3e8ade5882ac0b628bcf6985cf26cf7002b57533ea7344cbe9f9c07bb223f",
+        "notesText": "eeec4303d883db339a6ae85589c427531be6f39c38b5207fc22f3d04343e1f1c"
+      }
+    },
+    {
       "subjectId": "cell-biology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -1050,6 +1094,50 @@
           "file": "cards.md",
           "format": "markdown",
           "articleId": "card-rec-2026-fall-013-014"
+        }
+      },
+      "hashes": {
+        "recording": "3f89079cf4e34e2e5b95d0a29e6a7b69aabee7820dfeb2f37e92df3bf74845ef",
+        "notesText": "e8a298fe94d9efb19be791ac6db3a040519cac758ccce7217b5915a9f7e9a228"
+      }
+    },
+    {
+      "subjectId": "cell-biology",
+      "lessonId": "rec-2026-fall-019-020",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学",
+      "sessionRange": {
+        "start": 19,
+        "end": 20
+      },
+      "taughtOn": "2026-09-21",
+      "topic": "线粒体与细胞的能量转换（二）——电子传递链与氧化磷酸化、线粒体疾病与母系遗传、溶酶体",
+      "revision": 1,
+      "quizId": "rec-2026-fall-019-020",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-019-020"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-019-020"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-019-020"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-019-020"
         }
       },
       "hashes": {
@@ -1762,6 +1850,50 @@
       }
     },
     {
+      "subjectId": "instrumental-analysis",
+      "lessonId": "rec-2026-fall-015-016",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "分析化学",
+      "sessionRange": {
+        "start": 15,
+        "end": 16
+      },
+      "taughtOn": "2026-09-24",
+      "topic": "分子发光分析法——荧光分析法：荧光与磷光的产生、荧光定量分析、影响因素、荧光仪器及化学发光",
+      "revision": 1,
+      "quizId": "rec-2026-fall-015-016",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-015-016"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-015-016"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-015-016"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-015-016"
+        }
+      },
+      "hashes": {
+        "recording": "b2c0d99fadb26d2b9117d8d369ea4eeb6129d19f855daa07baab12957e24aef9",
+        "notesText": "25dab3eb2d15e7f035e191a886b335eb5d33977048a9a3678dd5855ba6b75dbb"
+      }
+    },
+    {
       "subjectId": "medical-english",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -1891,6 +2023,50 @@
       "hashes": {
         "recording": "8b9f217858e300c77fe4dbc3cf5fdac7ae03c93a039114e99908397937740f36",
         "notesText": "5570ecc858ddb77454f29122f73a66ea9e18ea4b58750bc2eb1dfa0101c656c2"
+      }
+    },
+    {
+      "subjectId": "medical-english",
+      "lessonId": "rec-2026-fall-007-008",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "医学英语",
+      "sessionRange": {
+        "start": 7,
+        "end": 8
+      },
+      "taughtOn": "2026-09-23",
+      "topic": "Unit 2 Guardians of Public Health Discussion：学生词汇展示点评、Unit 1 收尾（构词法与 AI 辅助诊断主旨）与 Unit 5 导入（膀胱外翻与再生工程）",
+      "revision": 1,
+      "quizId": "rec-2026-fall-007-008",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-007-008"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-007-008"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-007-008"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-007-008"
+        }
+      },
+      "hashes": {
+        "recording": "b13231b87de2b18c28dc6d2ed849dd79ae9c5b2f7586120c6fe8269841d75f06",
+        "notesText": "707b638490b1c84743bfda4cc2eb3dad3640627c0e62911c0dc902210f963ef5"
       }
     }
   ]
