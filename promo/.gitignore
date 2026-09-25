@@ -13,4 +13,5 @@ rects.json
 srcrects.json
 *.log
 *.mp4
+!studysolo-promo.mp4
 *.wav
