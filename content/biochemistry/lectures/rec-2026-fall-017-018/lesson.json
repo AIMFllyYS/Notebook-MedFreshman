@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "biochemistry",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-017-018",
+  "courseName": "生物化学与分子生物学",
+  "sessionRange": {
+    "start": 17,
+    "end": 18
+  },
+  "taughtOn": "2026-09-23",
+  "topic": "糖代谢（二）——糖无氧氧化、糖有氧氧化与三羧酸循环、磷酸戊糖途径",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-017-018"
+}

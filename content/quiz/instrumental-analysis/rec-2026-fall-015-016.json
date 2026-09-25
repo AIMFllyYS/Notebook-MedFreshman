@@ -1,0 +1,260 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "rec-2026-fall-015-016",
+  "generatedAt": "2026-09-25",
+  "examConfig": {
+    "source": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-015-016",
+    "revision": 1,
+    "recordingHash": "b2c0d99fadb26d2b9117d8d369ea4eeb6129d19f855daa07baab12957e24aef9",
+    "notesTextHash": "25dab3eb2d15e7f035e191a886b335eb5d33977048a9a3678dd5855ba6b75dbb"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "荧光与磷光的能级起源"
+      },
+      "stem": "关于荧光与磷光的跃迁来源，下列叙述正确的是：",
+      "options": [
+        "荧光是 T₁→S₀ 的辐射跃迁，磷光是 S₁→S₀ 的辐射跃迁",
+        "荧光是 S₁(v=0)→S₀ 各振动能级的辐射跃迁；磷光是经系间窜越到 T₁ 后 T₁→S₀ 的辐射跃迁",
+        "荧光与磷光都来自 S₁→S₀，只是强度不同",
+        "磷光波长比荧光更短"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**分子吸光后经振动弛豫/内转换等无辐射跃迁落到 S₁(v=0)，再以发光形式回 S₀ 即荧光；若发生系间窜越落到三线态 T₁，再发光回 S₀ 即磷光。三线态能量更低，故波长顺序为磷光>荧光>激发（吸收）光。A错：把荧光与磷光跃迁说反。C错：磷光来自三线态。D错：磷光波长更长而非更短。",
+      "hint": "荧光 S1→S0；磷光经系间窜越 T1→S0，波长更长。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "荧光仪器的结构特点"
+      },
+      "stem": "荧光分光光度计在仪器结构上区别于紫外-可见分光光度计的三个典型特点是：",
+      "options": [
+        "一个单色器、检测器与激发光同轴(0°)、弱光源",
+        "两个单色器（激发侧+发射侧）、检测器与激发光呈 90° 直角检测、使用强光源",
+        "无单色器、检测器从正面检测、使用白炽灯",
+        "两个单色器、检测器正面透射检测、使用钠灯"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**荧光仪有激发侧与发射侧两个单色器；由于透射光沿直线前进而荧光四面八方发射，在与激发光成 90° 侧面检测可彻底避免透射光进入检测器；并使用氙灯等强光源以提高荧光强度。A、C、D错：均不符合直角检测、双单色器、强光源的结构。",
+      "hint": "两个单色器、直角(90°)检测、强光源。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "荧光比色皿与检测器"
+      },
+      "stem": "荧光分析所用比色皿和常用检测器通常是：",
+      "options": [
+        "两面透光两面毛的玻璃比色皿；光电管",
+        "四面透光的石英比色皿；光电倍增管(PMT)",
+        "四面透光的玻璃比色皿；感光胶片",
+        "两面透光的石英比色皿；热电偶"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**荧光比色皿四面透光（激发光从一面进、直角侧面出），材质为石英（常需紫外激发）；检测器普遍用光电倍增管（PMT）以获得高灵敏度。A、C、D错：玻璃不能透紫外、单面透光不满足直角光路，检测器也不用光电管/胶片/热电偶做主检测器。",
+      "hint": "四面透光石英皿+PMT。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "化学发光与荧光的能量来源区别"
+      },
+      "stem": "化学发光分析区别于荧光分析的根本点是：",
+      "options": [
+        "化学发光由化学反应提供能量激发分子（非光致发光），仪器无需光源，检出限可达约 10⁻¹⁷ mol/L",
+        "化学发光必须用强光源照射才能发光",
+        "化学发光本质就是荧光，只是叫法不同",
+        "化学发光的灵敏度远低于紫外-可见法"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**化学发光由化学反应释放的能量把分子激发至激发态再跃迁发光（非光致发光），故仪器无需光源、装置简单、灵敏度极高（检出限可达约 10⁻¹⁷ mol/L），但发光试剂种类有限、机理较复杂。B错：不需要外光源。C错：能量来源不同。D错：化学发光灵敏度极高而非更低。",
+      "hint": "化学反应供能、无光源、检出限极低。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "荧光发射光谱形状与激发波长的关系"
+      },
+      "stem": "关于荧光发射光谱的形状与荧光强度随激发波长的变化，正确的是：",
+      "options": [
+        "发射光谱形状和荧光强度都随激发波长改变",
+        "发射光谱形状不随激发波长改变，但荧光强度随激发波长不同而不同",
+        "发射光谱形状随激发波长改变，但强度不变",
+        "两者都与激发波长完全无关"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**无论从哪个吸收带激发，分子最终都弛豫到 S₁(v=0) 再发射，发射起点固定，故发射光谱形状不随激发波长改变；但不同激发波长处摩尔吸光系数 ε 不同、吸收光量不同，故荧光强度随激发波长变化。A、C错：形状与强度的变化规律说反。D错：强度仍与激发波长有关。",
+      "hint": "形状不随激发波长变，强度会变。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "取代基对荧光强度的影响"
+      },
+      "stem": "取代基对分子荧光的影响，下列对应正确的是：",
+      "options": [
+        "给电子基(如-NH₂)淬灭荧光，吸电子基(如-NO₂)增强荧光",
+        "给电子基(如苯胺的-NH₂)增强荧光；吸电子基(如硝基苯的-NO₂)淬灭荧光；Br/I 等重原子促进系间窜越使荧光↓、磷光↑",
+        "所有取代基都同等程度增强荧光",
+        "重原子(Br/I)会增强荧光而完全抑制磷光"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**给电子基增大共轭电子云密度、利于 π→π* 辐射跃迁，增强荧光（苯胺发蓝色荧光）；吸电子基束缚电子使辐射跃迁难发生而淬灭荧光（硝基苯几乎无荧光）；Br/I 等重原子增大自旋-轨道耦合，促进 S₁→T₁ 系间窜越，使荧光减弱、磷光增强。A错：作用说反。C错：并非都增强。D错：重原子促进磷光而非抑制。",
+      "hint": "给电发、吸电灭，重原子窜到三线态。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "荧光定量公式与线性条件"
+      },
+      "stem": "荧光定量分析中，低浓度下荧光强度与浓度呈线性关系 F=Kc，其成立的浓度条件及 K 的含义是：",
+      "options": [
+        "任何浓度下都严格 F=Kc；K 只与检测器增益有关",
+        "在线性条件 εbc<0.05（通常 c<10⁻⁶ mol/L）下成立；K 中包含光源强度 I₀ 和荧光量子效率 Φ 等因子",
+        "只有高浓度时才 F=Kc；K 与 I₀、Φ 无关",
+        "F=Kc 只在吸光度 A>1 时成立"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**完整式 F=K·I₀·Φ·ε·b·c，由朗伯-比尔定律在低浓度（εbc<0.05，通常 c<10⁻⁶ mol/L）将 10^(-εbc) 泰勒展开、略去高次项后化简得 F=Kc；K 中包含 I₀（光源强度）与 Φ（荧光量子效率）等，这正是荧光法可通过强光源提高灵敏度的原因。A错：并非任意浓度。C、D错：线性区在低浓度而非高浓度/A>1。",
+      "hint": "εbc<0.05 才线性；K 含 I₀ 与 Φ。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "高浓度下荧光偏离线性的原因"
+      },
+      "stem": "高浓度时荧光强度偏离（甚至低于）线性关系，下列哪一组属于其典型原因：",
+      "options": [
+        "前端吸收、自熄灭(self-quenching)、自吸收",
+        "光源不稳定、检测器漂移、温度恒定",
+        "单色器分辨率过高、狭缝过宽、石英皿反光",
+        "瑞利散射、拉曼散射、化学发光"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**高浓度下三类偏差：前端吸收（光在样品池前沿被大量吸收、后段样品照不到）、自熄灭（分子碰撞增多、非辐射失活增加）、自吸收（发射光谱与吸收光谱重叠段荧光被同类分子再吸收）；解决办法是稀释到 εbc<0.05 范围。B、C错：属仪器/操作因素，不是高浓度浓度效应。D错：散射与化学发光是另外的干扰/方法，不是浓度偏离主因。",
+      "hint": "前端吸收+自熄灭+自吸收，稀释解决。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "荧光法灵敏度高于紫外-可见法的原因"
+      },
+      "stem": "为什么在相同条件下荧光分析法灵敏度通常高于紫外-可见吸收法？",
+      "options": [
+        "因为荧光法的吸光系数比吸收法大",
+        "因为荧光 F 正比于光源强度 I₀，可用强光源(如激光)直接提高信号；而紫外-可见 A=log(I₀/I_T)，增大 I₀ 时 I_T 同比增大、A 不变",
+        "因为荧光法不需要单色器",
+        "因为荧光法的比色皿更薄"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**荧光信号 F 正比于 I₀·Φ，Φ<1 固定，增大光源强度 I₀（或用激光、提高检测器放大倍数）可直接提高荧光信号与灵敏度；而吸光度 A=log(I₀/I_T)，当 I₀ 增大时透射光 I_T 同比增大，A 并不改变，故换强光源对吸收法无增益。A错：εb 在相同物质/皿下相同。C、D错：均非灵敏度差异本质。",
+      "hint": "荧光靠灯强提灵敏；紫外 A 与 I₀ 无关。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "溶剂与环境因素对荧光的影响"
+      },
+      "stem": "关于溶剂与环境因素对荧光强度的影响，下列组合正确的是：",
+      "options": [
+        "溶剂极性增大使荧光蓝移；温度升高荧光增强；pH 增大荧光一定增强",
+        "溶剂极性增大常使 π→π* 红移、荧光红移且增强；溶剂粘度增大、温度降低都减少非辐射失活而使荧光增强；pH 随分子存在形式变化、无统一规律",
+        "温度降低使荧光淬灭；粘度增大使荧光淬灭",
+        "溶剂极性、粘度、温度、pH 对荧光均无影响"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**溶剂极性增大常使 π→π* 跃迁红移、荧光波长红移并增强；粘度增大、温度降低都减少分子碰撞与热耗散（非辐射失活），从而增强荧光（故有低温荧光技术）；pH 通过改变分子质子化/成盐状态影响荧光，须逐分子判断、无统一规律。A错：把极性/温度影响说反。C错：降温、增粘应增强而非淬灭。D错：这些因素均明显影响荧光。",
+      "hint": "极性红移、粘大温低荧光强，pH 无规。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
+        "label": "复杂基质的背景荧光扣除"
+      },
+      "stem": "在复杂基质（如牛奶测核黄素）中用荧光法定量时，为消除基质本底荧光应采取的做法是：",
+      "options": [
+        "直接以纯溶剂空白为零点，不扣除基质荧光",
+        "先测样品总荧光 F，再测扣除目标物后的空白荧光 F₀（如加还原剂把核黄素荧光熄灭，剩余基质荧光即 F₀），以 F−F₀=Kc 定量",
+        "把样品无限稀释到没有任何荧光",
+        "改用紫外-可见法即可自动扣除背景"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**复杂基质中除目标物外其他组分也有微弱荧光，必须扣除背景：测总荧光 F，再设法消除目标物荧光得到基质空白 F₀（如核黄素有氧化性，加还原剂可将其荧光熄灭，剩余基质荧光即 F₀），以 F−F₀=Kc 定量。A错：不扣本底会系统偏高。C错：无限稀释不现实且会损失灵敏度。D错：紫外法并不能自动扣除该类背景荧光。",
+      "hint": "测 F 与 F₀，用 F−F₀=Kc。"
+    }
+  ]
+}

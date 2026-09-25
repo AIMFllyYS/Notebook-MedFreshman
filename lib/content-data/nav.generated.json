@@ -4196,6 +4196,45 @@
                   "quizRef": "rec-2026-fall-005-006"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-007-008",
+              "title": "第7-8节 · Unit 2 Guardians of Public Health Discussion：学生词汇展示点评、Unit 1 收尾（构词法与 AI 辅助诊断主旨）与 Unit 5 导入（膀胱外翻与再生工程）",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-007-008",
+                  "title": "课堂原文 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                },
+                {
+                  "id": "note-rec-2026-fall-007-008",
+                  "title": "课堂笔记 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                },
+                {
+                  "id": "card-rec-2026-fall-007-008",
+                  "title": "复习手卡 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                }
+              ]
             }
           ]
         },
@@ -4240,6 +4279,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-005-006",
               "quizRef": "rec-2026-fall-005-006",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-007-008",
+              "title": "课堂纪要 · 第7-8节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-007-008",
+              "quizRef": "rec-2026-fall-007-008",
               "layoutProfile": "full"
             }
           ]
@@ -5202,6 +5252,45 @@
                   "quizRef": "rec-2026-fall-013-014"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-015-016",
+              "title": "第15-16节 · 分子发光分析法——荧光分析法：荧光与磷光的产生、荧光定量分析、影响因素、荧光仪器及化学发光",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-015-016",
+                  "title": "课堂原文 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                },
+                {
+                  "id": "note-rec-2026-fall-015-016",
+                  "title": "课堂笔记 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                },
+                {
+                  "id": "card-rec-2026-fall-015-016",
+                  "title": "复习手卡 · 第15-16节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-015-016",
+                  "quizRef": "rec-2026-fall-015-016"
+                }
+              ]
             }
           ]
         },
@@ -5290,6 +5379,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-013-014",
               "quizRef": "rec-2026-fall-013-014",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-015-016",
+              "title": "课堂纪要 · 第15-16节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-015-016",
+              "quizRef": "rec-2026-fall-015-016",
               "layoutProfile": "full"
             }
           ]
@@ -7502,6 +7602,45 @@
                   "quizRef": "rec-2026-fall-013-014"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-019-020",
+              "title": "第19-20节 · 线粒体与细胞的能量转换（二）——电子传递链与氧化磷酸化、线粒体疾病与母系遗传、溶酶体",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-019-020",
+                  "title": "课堂原文 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                },
+                {
+                  "id": "note-rec-2026-fall-019-020",
+                  "title": "课堂笔记 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                },
+                {
+                  "id": "card-rec-2026-fall-019-020",
+                  "title": "复习手卡 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                }
+              ]
             }
           ]
         },
@@ -7590,6 +7729,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-013-014",
               "quizRef": "rec-2026-fall-013-014",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-019-020",
+              "title": "课堂纪要 · 第19-20节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-019-020",
+              "quizRef": "rec-2026-fall-019-020",
               "layoutProfile": "full"
             }
           ]
@@ -10321,6 +10471,45 @@
                   "quizRef": "rec-2026-fall-015-016"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-017-018",
+              "title": "第17-18节 · 糖代谢（二）——糖无氧氧化、糖有氧氧化与三羧酸循环、磷酸戊糖途径",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-017-018",
+                  "title": "课堂原文 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                },
+                {
+                  "id": "note-rec-2026-fall-017-018",
+                  "title": "课堂笔记 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                },
+                {
+                  "id": "card-rec-2026-fall-017-018",
+                  "title": "复习手卡 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                }
+              ]
             }
           ]
         },
@@ -10426,6 +10615,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-015-016",
               "quizRef": "rec-2026-fall-015-016",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-017-018",
+              "title": "课堂纪要 · 第17-18节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-017-018",
+              "quizRef": "rec-2026-fall-017-018",
               "layoutProfile": "full"
             }
           ]
