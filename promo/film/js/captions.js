@@ -7,6 +7,9 @@ const STYLES = {
   light: { zh: { font: '700 60px "Noto Serif SC"', color: "#f4f1ea", ls: "0.04em" }, en: { font: '300 21px "Inter"', color: "rgba(236,238,245,0.58)", ls: "0.28em", upper: true }, accent: "#ff7a5c" },
   lightSm: { zh: { font: '600 44px "Noto Serif SC"', color: "#f4f1ea", ls: "0.04em" }, en: { font: '300 18px "Inter"', color: "rgba(236,238,245,0.55)", ls: "0.26em", upper: true }, accent: "#8ab4ff" },
   hero: { zh: { font: '900 92px "Noto Serif SC"', color: "#f7f4ee", ls: "0.03em" }, en: { font: '300 24px "Inter"', color: "rgba(236,238,245,0.6)", ls: "0.3em", upper: true }, accent: "#ff7a5c" },
+  dark: { zh: { font: '700 60px "Noto Serif SC"', color: "#11151d", ls: "0.04em" }, en: { font: '400 20px "Inter"', color: "rgba(20,28,48,0.55)", ls: "0.28em", upper: true }, accent: "#e0523a" },
+  darkSm: { zh: { font: '700 44px "Noto Serif SC"', color: "#11151d", ls: "0.04em" }, en: { font: '400 18px "Inter"', color: "rgba(20,28,48,0.55)", ls: "0.26em", upper: true }, accent: "#2f5bea" },
+  heroDark: { zh: { font: '900 92px "Noto Serif SC"', color: "#0e1219", ls: "0.03em" }, en: { font: '400 22px "Inter"', color: "rgba(20,28,48,0.55)", ls: "0.3em", upper: true }, accent: "#e0523a" },
   sans: { zh: { font: '800 64px "Noto Sans SC"', color: "#ffffff", ls: "0.02em" }, en: { font: '400 20px "Inter"', color: "rgba(255,255,255,0.6)", ls: "0.24em", upper: true }, accent: "#8ab4ff" },
 };
 

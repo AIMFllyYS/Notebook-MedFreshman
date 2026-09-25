@@ -20,27 +20,27 @@ function ecgOffset(x) {
 
 export class Hook {
   constructor(parent, lineParent) {
-    this.root = el("div", { class: "layer", style: { background: "radial-gradient(ellipse at 50% 62%, #0d1a22 0%, #06080c 60%, #040507 100%)" } }, parent);
+    this.root = el("div", { class: "layer", style: { background: "radial-gradient(ellipse at 50% 62%, #ffffff 0%, #f6f4ef 58%, #ebe6dc 100%)" } }, parent);
     this.grid = el("div", { class: "layer", style: {
-      backgroundImage: "linear-gradient(rgba(90,220,190,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(90,220,190,0.07) 1px, transparent 1px)",
+      backgroundImage: "linear-gradient(rgba(20,120,100,0.09) 1px, transparent 1px), linear-gradient(90deg, rgba(20,120,100,0.09) 1px, transparent 1px)",
       backgroundSize: "48px 48px", maskImage: "radial-gradient(ellipse at 50% 65%, #000 20%, transparent 75%)", WebkitMaskImage: "radial-gradient(ellipse at 50% 65%, #000 20%, transparent 75%)" } }, this.root);
-    this.hud = el("div", { class: "abs mono", style: { left: "64px", top: "56px", color: "rgba(120,235,205,0.75)", fontSize: "18px", letterSpacing: "0.18em" } }, this.root);
-    this.hud.innerHTML = `<div>LEAD II · 25 mm/s</div><div style="margin-top:8px;font-size:40px;letter-spacing:0.04em;color:#7cf0cf">HR <span id="hr">72</span></div>`;
-    this.hud2 = el("div", { class: "abs mono", style: { right: "64px", top: "56px", color: "rgba(255,255,255,0.35)", fontSize: "16px", letterSpacing: "0.22em", textAlign: "right" } }, this.root);
-    this.hud2.innerHTML = `CASE 01 · ENDOCRINE<br><span style="color:rgba(255,255,255,0.22)">一个医学生的问题</span>`;
+    this.hud = el("div", { class: "abs mono", style: { left: "64px", top: "56px", color: "rgba(14,120,98,0.8)", fontSize: "18px", letterSpacing: "0.18em" } }, this.root);
+    this.hud.innerHTML = `<div>LEAD II · 25 mm/s</div><div style="margin-top:8px;font-size:40px;letter-spacing:0.04em;color:#0e8f74">HR <span id="hr">72</span></div>`;
+    this.hud2 = el("div", { class: "abs mono", style: { right: "64px", top: "56px", color: "rgba(20,28,48,0.45)", fontSize: "16px", letterSpacing: "0.22em", textAlign: "right" } }, this.root);
+    this.hud2.innerHTML = `CASE 01 · ENDOCRINE<br><span style="color:rgba(20,28,48,0.35)">一个医学生的问题</span>`;
     this.svg = svg("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`, style: "position:absolute;left:0;top:0" }, lineParent);
     const defs = svg("defs", {}, this.svg);
     const f = svg("filter", { id: "ecgGlow", x: "-20%", y: "-50%", width: "140%", height: "200%" }, defs);
     svg("feGaussianBlur", { stdDeviation: "7" }, f);
     const lg = svg("linearGradient", { id: "ecgFade", x1: 0, y1: 0, x2: 1, y2: 0, gradientUnits: "userSpaceOnUse" }, defs);
-    this.fadeA = svg("stop", { offset: "0", "stop-color": "#7cf0cf", "stop-opacity": "0.15" }, lg);
-    this.fadeB = svg("stop", { offset: "0.9", "stop-color": "#b9fff0", "stop-opacity": "1" }, lg);
-    this.fadeC = svg("stop", { offset: "1", "stop-color": "#ffffff", "stop-opacity": "1" }, lg);
+    this.fadeA = svg("stop", { offset: "0", "stop-color": "#0e8f74", "stop-opacity": "0.18" }, lg);
+    this.fadeB = svg("stop", { offset: "0.9", "stop-color": "#0e8f74", "stop-opacity": "1" }, lg);
+    this.fadeC = svg("stop", { offset: "1", "stop-color": "#0a4f42", "stop-opacity": "1" }, lg);
     this.gradEnd = lg;
-    this.glow = svg("path", { fill: "none", stroke: "#4fe6c0", "stroke-width": 10, filter: "url(#ecgGlow)", opacity: 0.7 }, this.svg);
+    this.glow = svg("path", { fill: "none", stroke: "#3fd1b0", "stroke-width": 10, filter: "url(#ecgGlow)", opacity: 0.35 }, this.svg);
     this.line = svg("path", { fill: "none", stroke: "url(#ecgFade)", "stroke-width": 3.4, "stroke-linejoin": "round", "stroke-linecap": "round" }, this.svg);
-    this.dot = svg("circle", { r: 7, fill: "#fff", filter: "url(#ecgGlow)" }, this.svg);
-    this.dot2 = svg("circle", { r: 3.5, fill: "#fff" }, this.svg);
+    this.dot = svg("circle", { r: 8, fill: "#3fd1b0", filter: "url(#ecgGlow)" }, this.svg);
+    this.dot2 = svg("circle", { r: 4, fill: "#0a4f42" }, this.svg);
     this.svgRoot = this.svg;
     for (const x of PEAKS) ev(0.25 + ((x - 2 + 40) / 2000) * 2.15, "beep");
   }
@@ -66,9 +66,9 @@ export class Hook {
     this.gradEnd.setAttribute("x2", String(xh + 1));
     const done = t > 2.4;
     const inkP = ease(t, 3.6, 4.1);
-    this.line.setAttribute("stroke", inkP > 0 ? mixColor("#bff5e8", "#2a2119", inkP) : "url(#ecgFade)");
+    this.line.setAttribute("stroke", inkP > 0 ? mixColor("#0e8f74", "#2a2119", inkP) : "url(#ecgFade)");
     this.line.setAttribute("stroke-width", String(lerp(3.4, 4.2, inkP)));
-    this.glow.setAttribute("opacity", String(0.7 * (1 - inkP) * (done ? 0.75 + 0.25 * Math.sin(t * 6) : 1)));
+    this.glow.setAttribute("opacity", String(0.35 * (1 - inkP) * (done ? 0.75 + 0.25 * Math.sin(t * 6) : 1)));
     const hy = ECG_Y + ecgOffset(xh) * amp;
     for (const dt of [this.dot, this.dot2]) { dt.setAttribute("cx", String(xh)); dt.setAttribute("cy", String(hy)); dt.setAttribute("opacity", String(done ? 0 : 1)); }
     const gridO = ease(t, 0.0, 1.0) * (1 - ease(t, 3.4, 3.9));

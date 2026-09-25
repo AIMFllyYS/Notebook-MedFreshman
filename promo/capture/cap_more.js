@@ -4,6 +4,7 @@ const HIDE = `nextjs-portal{display:none!important}`;
 (async () => {
   const b = await chromium.launch();
   const ctx = await b.newContext({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 2 });
+  await ctx.addInitScript(require('./lightinit.js')(process.env.THEME || 'light', process.env.MODE || 'default'));
   await ctx.addInitScript(require('./inject.js'));
   const p = await ctx.newPage();
   const go = async (u, w=2500) => { await p.goto('http://localhost:35349'+u, { waitUntil:'networkidle', timeout:240000 }); await p.addStyleTag({content:HIDE}); await p.waitForTimeout(w); };

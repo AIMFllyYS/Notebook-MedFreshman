@@ -34,6 +34,12 @@ im = Image.open("seq/agent/0168.jpg")
 for i, (x, y, w, h) in enumerate([[1297, 105, 281, 111], [1297, 223, 281, 95], [1297, 325, 281, 80], [1297, 412, 281, 68]]):
     im.crop((x * 2, y * 2, (x + w) * 2, (y + h) * 2)).save(f"{A}/card{i + 1}.jpg", quality=95)
 
+# 2b. flashcard faces for the in-film 3D flip (card rect in UI css px, frames from capture/cap_new.js)
+x, y, w, h = 374, 204, 660, 558
+for name, (fa, fb) in {"A": (0, 11), "B": (12, 23), "C": (24, 35)}.items():
+    for side, i in (("front", fa), ("back", fb)):
+        Image.open(f"seq/cards/{i:04d}.jpg").crop((2 * x, 2 * y, 2 * (x + w), 2 * (y + h))).save(f"{A}/flip-{name}-{side}.jpg", quality=94)
+
 # 3. procedural paper texture
 rs = np.random.RandomState(7)
 Wd, Ht = 2600, 1500

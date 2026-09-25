@@ -1,5 +1,5 @@
 // Director: builds all layers and exposes window.renderAt(t, frame) for deterministic capture.
-import { el, clamp, seg, E, ease, lerp, EVENTS, ev, W, H } from "./core.js";
+import { el, clamp, seg, E, ease, lerp, EVENTS, ev, W, H, LATE } from "./core.js";
 import { Hook, ECG_Y } from "./hook.js";
 import { PastScene, pastCamera, pagesFlipped, pastMinutes, PAST_CUTS } from "./past.js";
 import { Captions } from "./captions.js";
@@ -41,7 +41,7 @@ const stats = new Stats(lStats);
 const finale = new Finale(lFinale);
 
 const caps = new Captions(lCap, [
-  { t0: 2.15, t1: 3.95, style: "light", y: 400, zh: ["为什么糖尿病人的呼吸，", "会有[烂苹果味]？"], en: "Why does a diabetic's breath smell like rotten apples?", zhFont: '700 70px "Noto Serif SC"', glow: true, stagger: 0.045 },
+  { t0: 2.15, t1: 3.95, style: "dark", y: 400, zh: ["为什么糖尿病人的呼吸，", "会有[烂苹果味]？"], en: "Why does a diabetic's breath smell like rotten apples?", zhFont: '700 70px "Noto Serif SC"', stagger: 0.045 },
   { t0: 4.6, t1: 5.95, style: "ink", x: 960, y: 930, zh: "一个问题——", en: "one question —" },
   { t0: 6.05, t1: 8.3, style: "ink", x: 960, y: 930, zh: "藏在 [3] 本教材、[4] 个章节里。", en: "hidden across 3 textbooks and 4 chapters." },
   { t0: 8.45, t1: 10.35, style: "ink", x: 960, y: 930, zh: "翻目录。查索引。再翻回来。", en: "contents. index. back again." , stagger: 0.05 },
@@ -56,16 +56,16 @@ const fx = new FX(lFx);
 fx.addFlash(15.0, 0.45, 0.85);
 fx.addLeak(14.6, 15.8, 0.55, 1);
 fx.addFlash(33.0, 0.3, 0.5);
-fx.addFlash(47.0, 0.5, 0.9);
-fx.addLeak(46.6, 48.0, 0.6, -1);
-fx.addBlack(56.2, 57.0, 0, 1);
+fx.addFlash(47.0 + LATE, 0.5, 0.9);
+fx.addLeak(46.6 + LATE, 48.0 + LATE, 0.6, -1);
+fx.addBlack(56.2 + LATE, 57.0 + LATE, 0, 1);
 fx.addBlack(0, 0.35, 1, 0);
 
 // Sound events owned by the director
 ev(15.0, "impact"); ev(14.3, "riser", { dur: 0.7 });
 for (const c of PAST_CUTS) if (c > 12.4 && c < 13.6) ev(c, "tick");
 
-export const DURATION = 57.0;
+export const DURATION = 57.0 + LATE;
 
 window.renderAt = async function renderAt(t, frame) {
   // ---- Act I / II
@@ -98,11 +98,11 @@ window.renderAt = async function renderAt(t, frame) {
   await s3d.render(t, frame);
   await montage.render(t, frame);
   // ---- stats + finale
-  stats.render(t, frame);
-  await finale.render(t, frame);
+  stats.render(t - LATE, frame);
+  await finale.render(t - LATE, frame);
 
   caps.render(t);
-  fx.render(t, frame, { grain: t > 3.6 && t < 15 ? 0.11 : 0.075 });
+  fx.render(t, frame, { grain: t > 3.6 && t < 15 ? 0.1 : 0.055 });
 };
 
 // Preload fonts + images so every frame is complete.

@@ -17,8 +17,8 @@ export class FX {
     this.leakA = el("div", { class: "abs", style: { width: "1400px", height: "1400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,150,70,0.85) 0%, rgba(255,90,60,0.35) 35%, rgba(255,60,60,0) 70%)", filter: "blur(40px)" } }, this.leak);
     this.leakB = el("div", { class: "abs", style: { width: "1100px", height: "1100px", borderRadius: "50%", background: "radial-gradient(circle, rgba(120,170,255,0.8) 0%, rgba(90,120,255,0.3) 40%, rgba(0,0,0,0) 70%)", filter: "blur(50px)" } }, this.leak);
     this.flash = el("div", { class: "layer", style: { background: "#fff", opacity: 0 } }, this.root);
-    this.black = el("div", { class: "layer", style: { background: "#000", opacity: 0 } }, this.root);
-    this.vig = el("div", { class: "layer", style: { background: "radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%)" } }, this.root);
+    this.black = el("div", { class: "layer", style: { background: "#f7f5f0", opacity: 0 } }, this.root);
+    this.vig = el("div", { class: "layer", style: { background: "radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 60%, rgba(40,30,20,0.22) 100%)" } }, this.root);
     this.grain = el("div", { class: "layer", style: { mixBlendMode: "overlay", opacity: 0.085 } }, this.root);
     this.flashes = []; this.leaks = []; this.blacks = [];
   }

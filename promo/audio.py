@@ -5,7 +5,8 @@ from scipy.signal import butter, sosfilt, fftconvolve
 from scipy.io import wavfile
 
 SR = 48000
-DUR = 57.4
+DUR = 60.4
+LS = 3.0  # stats + finale run 3s later than the first cut
 N = int(SR * DUR)
 rs = np.random.RandomState(1234)
 BEAT = 0.5
@@ -314,7 +315,10 @@ for e in ev:
     elif k == "heartbeat":
         put(sfx, heartbeat(), t, 0.9, 0, send=0.15)
     elif k == "tick-soft":
-        put(sfx, bell(hz(m(["C6", "D6", "E6", "G6", "A6", "C7"][int(round((t - 52.35) / 0.1)) % 6])), 1.2), t, 0.1, (rs.rand() - 0.5), send=0.6)
+        put(sfx, bell(hz(m(["C6", "D6", "E6", "G6", "A6", "C7"][int(round(t * 10)) % 6])), 1.2), t, 0.1, (rs.rand() - 0.5), send=0.6)
+    elif k == "cardflip":
+        put(sfx, whoosh(0.28), t - 0.05, 0.3, 0.2, send=0.2)
+        put(sfx, paper_flip(1.2), t + 0.12, 0.35, 0.2, send=0.2)
     elif k == "logo":
         put(sfx, reverse_crash(0.7), t - 0.7, 0.3)
     elif k == "logo-land":
@@ -383,9 +387,9 @@ NOW = [(15.0, ["F3", "A3", "C4", "E4"], "F2"), (17.0, ["G3", "B3", "D4", "E4"], 
        (21.0, ["A3", "C4", "E4", "G4"], "A2"), (23.0, ["F3", "A3", "C4", "E4"], "F2"), (25.0, ["C4", "E4", "G4", "B4"], "C3"),
        (27.0, ["G3", "B3", "D4", "G4"], "G2"), (29.0, ["A3", "C4", "E4", "G4"], "A2"), (31.0, ["F3", "A3", "C4", "E4"], "F2"),
        (33.0, ["F3", "A3", "C4", "E4"], "F2"), (35.0, ["G3", "B3", "D4", "G4"], "G2"), (37.0, ["A3", "C4", "E4", "G4"], "A2"),
-       (39.0, ["E3", "G3", "B3", "D4"], "E2"), (41.0, ["F3", "A3", "C4", "E4"], "F2"), (43.0, ["G3", "B3", "D4", "F4"], "G2")]
+       (39.0, ["E3", "G3", "B3", "D4"], "E2"), (41.0, ["F3", "A3", "C4", "E4"], "F2"), (43.0, ["G3", "B3", "D4", "F4"], "G2"), (45.0, ["A3", "C4", "E4", "G4"], "A2")]
 for i, (t0, ch, root) in enumerate(NOW):
-    t1 = NOW[i + 1][0] if i + 1 < len(NOW) else 44.0
+    t1 = NOW[i + 1][0] if i + 1 < len(NOW) else 47.0
     cut = 900 + 2600 * np.clip((t0 - 15) / 18, 0, 1)
     put(music, pad(chord_notes(ch), t1 - t0 + 0.8, cut, 0.25 if t0 != 15 else 0.05, 0.7, 1.1), t0, 0.5, send=0.35)
     # bass
@@ -427,22 +431,22 @@ put(sfx, reverse_crash(1.0), 32.0, 0.35)
 # drop
 put(sfx, sub_boom(2.0, 60, 30), 33.0, 0.8)
 put(sfx, crash(2.5), 33.0, 0.5, send=0.4)
-drum_bar(33.0, 44.0, kick_on=True, hats=16, clap_on=True)
+drum_bar(33.0, 47.0, kick_on=True, hats=16, clap_on=True)
 # stats: half-time hits handled by slam events; hold pad
-put(music, pad(chord_notes(["C4", "E4", "G4", "B4"]), 3.2, 2500, 0.3, 1.0, 0.9), 44.0, 0.35, send=0.4)
-put(sfx, riser(0.8), 46.2, 0.3)
-put(sfx, reverse_crash(0.6), 46.4, 0.35)
+put(music, pad(chord_notes(["C4", "E4", "G4", "B4"]), 3.2, 2500, 0.3, 1.0, 0.9), 44.0 + LS, 0.35, send=0.4)
+put(sfx, riser(0.8), 46.2 + LS, 0.3)
+put(sfx, reverse_crash(0.6), 46.4 + LS, 0.35)
 # finale: solo piano (C major) + warm pad
 for i, nn in enumerate(["C3", "G3", "C4", "E4", "G4", "E4", "C4", "G3", "F3", "C4", "F4", "A4", "C5", "A4", "F4", "C4"]):
-    put(music, piano(hz(m(nn)), 2.2, 0.6), 47.05 + i * 0.25, 0.34, (-0.3 + 0.6 * (i % 8) / 7), send=0.5)
-put(music, pad(chord_notes(["C3", "G3", "E4"]), 2.2, 900, 0.5, 0.8, 0.7), 47.0, 0.3, send=0.5)
-put(music, pad(chord_notes(["F3", "C4", "A4"]), 2.4, 900, 0.5, 0.8, 0.7), 49.0, 0.3, send=0.5)
-put(sfx, riser(1.2), 49.6, 0.3, send=0.4)
-put(sfx, reverse_crash(0.9), 49.9, 0.35)
+    put(music, piano(hz(m(nn)), 2.2, 0.6), 47.05 + LS + i * 0.25, 0.34, (-0.3 + 0.6 * (i % 8) / 7), send=0.5)
+put(music, pad(chord_notes(["C3", "G3", "E4"]), 2.2, 900, 0.5, 0.8, 0.7), 47.0 + LS, 0.3, send=0.5)
+put(music, pad(chord_notes(["F3", "C4", "A4"]), 2.4, 900, 0.5, 0.8, 0.7), 49.0 + LS, 0.3, send=0.5)
+put(sfx, riser(1.2), 49.6 + LS, 0.3, send=0.4)
+put(sfx, reverse_crash(0.9), 49.9 + LS, 0.35)
 # end: sustained chord after logo lands + echo of the motif
-put(music, pad(chord_notes(["C2", "G2", "C3", "E3", "G3", "D4"]), 4.4, 1600, 0.05, 2.5, 1.2), 53.05, 0.55, send=0.6)
+put(music, pad(chord_notes(["C2", "G2", "C3", "E3", "G3", "D4"]), 4.4, 1600, 0.05, 2.5, 1.2), 53.05 + LS, 0.55, send=0.6)
 for i, nn in enumerate(["E5", "G5", "C6", "D6", "E6"]):
-    put(music, piano(hz(m(nn)), 2.5, 0.5), 54.0 + i * 0.5, 0.25, (-0.4 + 0.2 * i), send=0.7)
+    put(music, piano(hz(m(nn)), 2.5, 0.5), 54.0 + LS + i * 0.5, 0.25, (-0.4 + 0.2 * i), send=0.7)
 
 # ---------------- mix ----------------
 # sidechain music to kicks
@@ -468,7 +472,7 @@ mix = hp(mix.T, 25).T
 # gentle master: soft clip + fade out
 mix = np.tanh(mix * 1.15) / np.tanh(1.15)
 fade = np.ones(N)
-fs = int(56.2 * SR)
+fs = int((56.2 + LS) * SR)
 fade[fs:] = np.linspace(1, 0, N - fs) ** 1.5
 fade[: int(0.02 * SR)] = np.linspace(0, 1, int(0.02 * SR))
 mix *= fade[:, None]

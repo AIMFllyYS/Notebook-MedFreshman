@@ -1,6 +1,8 @@
 // Deterministic motion toolkit: everything is a pure function of time t (seconds).
 export const W = 1920, H = 1080, FPS = 60;
 export const BPM = 120, BEAT = 60 / BPM;
+// Everything after the feature montage (stats, finale) runs this many seconds later than first cut.
+export const LATE = 3;
 
 export const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 export const lerp = (a, b, t) => a + (b - a) * t;

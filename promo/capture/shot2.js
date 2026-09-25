@@ -3,6 +3,7 @@ const HIDE = `nextjs-portal, [data-nextjs-toast], #__next-build-watcher {display
 (async () => {
   const b = await chromium.launch();
   const ctx = await b.newContext({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 2 });
+  await ctx.addInitScript(require('./lightinit.js')(process.env.THEME || 'light', process.env.MODE || 'default'));
   const p = await ctx.newPage();
   const list = JSON.parse(process.argv[2]);
   for (const [name, u, wait] of list) {

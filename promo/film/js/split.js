@@ -29,32 +29,33 @@ export class Split {
     this.past = past;
     this.root = el("div", { class: "layer", style: { display: "none" } }, parent);
     // right pane (clipped by divider)
-    this.pane = el("div", { class: "layer", style: { background: "radial-gradient(ellipse at 70% 30%, #13203d 0%, #0a0f1d 45%, #06080e 100%)" } }, this.root);
-    this.blobA = el("div", { class: "abs", style: { width: "900px", height: "900px", borderRadius: "50%", background: "radial-gradient(circle, rgba(76,120,255,0.38), rgba(76,120,255,0) 65%)", filter: "blur(30px)" } }, this.pane);
-    this.blobB = el("div", { class: "abs", style: { width: "800px", height: "800px", borderRadius: "50%", background: "radial-gradient(circle, rgba(140,90,255,0.3), rgba(140,90,255,0) 65%)", filter: "blur(30px)" } }, this.pane);
-    this.dots = el("div", { class: "layer", style: { backgroundImage: "radial-gradient(rgba(170,200,255,0.12) 1.2px, transparent 1.4px)", backgroundSize: "34px 34px", maskImage: "linear-gradient(180deg, #000 0%, transparent 85%)", WebkitMaskImage: "linear-gradient(180deg, #000 0%, transparent 85%)" } }, this.pane);
+    this.pane = el("div", { class: "layer", style: { background: "radial-gradient(ellipse at 70% 30%, #ffffff 0%, #eef2f9 55%, #e2e8f3 100%)" } }, this.root);
+    this.blobA = el("div", { class: "abs", style: { width: "900px", height: "900px", borderRadius: "50%", background: "radial-gradient(circle, rgba(76,120,255,0.20), rgba(76,120,255,0) 65%)", filter: "blur(30px)" } }, this.pane);
+    this.blobB = el("div", { class: "abs", style: { width: "800px", height: "800px", borderRadius: "50%", background: "radial-gradient(circle, rgba(160,110,255,0.16), rgba(160,110,255,0) 65%)", filter: "blur(30px)" } }, this.pane);
+    this.dots = el("div", { class: "layer", style: { backgroundImage: "radial-gradient(rgba(40,60,120,0.13) 1.2px, transparent 1.4px)", backgroundSize: "34px 34px", maskImage: "linear-gradient(180deg, #000 0%, transparent 85%)", WebkitMaskImage: "linear-gradient(180deg, #000 0%, transparent 85%)" } }, this.pane);
     // UI window
-    this.win = el("div", { class: "abs", style: { borderRadius: "18px", overflow: "hidden", background: "#131318", boxShadow: "0 60px 140px -30px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.10), 0 0 80px rgba(80,130,255,0.18)" } }, this.pane);
+    this.win = el("div", { class: "abs", style: { borderRadius: "18px", overflow: "hidden", background: "#ffffff", boxShadow: "0 50px 120px -30px rgba(25,35,80,0.38), 0 0 0 1px rgba(20,30,60,0.10), 0 0 80px rgba(80,130,255,0.12)" } }, this.pane);
     this.img = el("img", { class: "abs", style: { left: "0", top: "0", transformOrigin: "0 0" } }, this.win);
+    this.frost = el("div", { class: "layer", style: { background: "#f7f9fc", opacity: 0, zIndex: 2 } }, this.win);
     this.sheen = el("div", { class: "layer", style: { background: "linear-gradient(115deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0) 60%)", mixBlendMode: "screen" } }, this.win);
     // header chip + agent steps
     this.chip = el("div", { class: "abs", style: { top: "46px", display: "flex", alignItems: "center", gap: "14px" } }, this.pane);
     this.chip.innerHTML = `
       <svg width="40" height="40" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#f4efe6"/><g fill="none" stroke="#d9542c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 H18 L23 11 V26 H9 Z"/><path d="M18 6 V11 H23"/><line x1="12" y1="16" x2="20" y2="16"/><line x1="12" y1="20" x2="17" y2="20"/></g></svg>
-      <div><div class="sans" style="font-size:34px;font-weight:800;color:#f4f1ea;line-height:1">现在 <span class="inter" style="font-weight:600;color:#8ab4ff;margin-left:6px">StudySolo</span></div>
-      <div class="inter" style="font-size:15px;letter-spacing:0.3em;color:rgba(230,236,255,0.5);margin-top:8px">NOW · ONE QUESTION</div></div>`;
+      <div><div class="sans" style="font-size:34px;font-weight:800;color:#0e1219;line-height:1">现在 <span class="inter" style="font-weight:600;color:#2f5bea;margin-left:6px">StudySolo</span></div>
+      <div class="inter" style="font-size:15px;letter-spacing:0.3em;color:rgba(20,28,48,0.5);margin-top:8px">NOW · ONE QUESTION</div></div>`;
     this.steps = el("div", { class: "abs", style: { top: "58px", display: "flex", gap: "10px" } }, this.pane);
     this.stepEls = [["思考", "THINK", 17.35], ["检索 3 本教材", "SEARCH", 18.3], ["作答", "ANSWER", 18.6], ["标注出处", "CITE", 21.4]].map(([zh, en, t]) => {
-      const s = el("div", { class: "sans", style: { padding: "9px 16px", borderRadius: "999px", fontSize: "19px", fontWeight: "600", color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.03)", whiteSpace: "nowrap" } }, this.steps);
+      const s = el("div", { class: "sans", style: { padding: "9px 16px", borderRadius: "999px", fontSize: "19px", fontWeight: "600", color: "rgba(20,28,48,0.4)", border: "1px solid rgba(20,30,60,0.12)", background: "rgba(255,255,255,0.03)", whiteSpace: "nowrap" } }, this.steps);
       s.innerHTML = `<span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:9px;vertical-align:2px"></span>${zh}`;
       return { s, t };
     });
     // timers
-    this.timerR = el("div", { class: "abs mono", style: { bottom: "40px", fontSize: "56px", color: "#eaf1ff", letterSpacing: "0.02em", textShadow: "0 0 30px rgba(120,170,255,0.55)" } }, this.pane);
-    this.timerRLabel = el("div", { class: "abs inter", style: { bottom: "108px", fontSize: "15px", letterSpacing: "0.32em", color: "rgba(230,236,255,0.5)" }, text: "耗时 · ELAPSED" }, this.pane);
+    this.timerR = el("div", { class: "abs mono", style: { bottom: "40px", fontSize: "56px", color: "#0e1219", letterSpacing: "0.02em", textShadow: "0 8px 30px rgba(47,91,234,0.22)" } }, this.pane);
+    this.timerRLabel = el("div", { class: "abs inter", style: { bottom: "108px", fontSize: "15px", letterSpacing: "0.32em", color: "rgba(20,28,48,0.5)" }, text: "耗时 · ELAPSED" }, this.pane);
     // callout
-    this.callout = el("div", { class: "abs", style: { padding: "18px 24px", borderRadius: "16px", background: "rgba(12,18,34,0.78)", border: "1px solid rgba(138,180,255,0.45)", boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(80,130,255,0.25)", backdropFilter: "blur(8px)" } }, this.pane);
-    this.callout.innerHTML = `<div class="sans" style="font-size:34px;font-weight:800;color:#fff;white-space:nowrap">4 条出处 · <span style="color:#8ab4ff">3 本教材</span></div><div class="inter" style="font-size:15px;letter-spacing:0.26em;color:rgba(230,236,255,0.55);margin-top:8px">4 SOURCES · SEARCHED AT ONCE</div>`;
+    this.callout = el("div", { class: "abs", style: { padding: "18px 24px", borderRadius: "16px", background: "rgba(255,255,255,0.95)", border: "1px solid rgba(47,91,234,0.4)", boxShadow: "0 20px 60px rgba(25,35,80,0.22), 0 0 40px rgba(80,130,255,0.15)", backdropFilter: "blur(8px)" } }, this.pane);
+    this.callout.innerHTML = `<div class="sans" style="font-size:34px;font-weight:800;color:#0e1219;white-space:nowrap">4 条出处 · <span style="color:#2f5bea">3 本教材</span></div><div class="inter" style="font-size:15px;letter-spacing:0.26em;color:rgba(20,28,48,0.55);margin-top:8px">4 SOURCES · SEARCHED AT ONCE</div>`;
 
     // left pane overlays (on top of the past layer, but inside this root → positioned left)
     this.leftTag = el("div", { class: "abs", style: { left: "54px", top: "46px" } }, this.root);
@@ -65,7 +66,7 @@ export class Split {
     this.circleP = svg("path", { d: "M40,110 C20,40 200,10 330,30 C420,48 400,140 260,150 C140,160 30,140 60,70", fill: "none", stroke: "#e0503c", "stroke-width": 6, "stroke-linecap": "round", pathLength: 1 }, this.circle);
 
     // divider
-    this.divider = el("div", { class: "abs", style: { top: "0", width: "4px", height: "1080px", background: "#fff", boxShadow: "0 0 18px 4px rgba(138,180,255,0.9), 0 0 60px 12px rgba(80,130,255,0.5)" } }, this.root);
+    this.divider = el("div", { class: "abs", style: { top: "0", width: "4px", height: "1080px", background: "#2f5bea", boxShadow: "0 0 16px 3px rgba(47,91,234,0.55), 0 0 50px 10px rgba(80,130,255,0.3)" } }, this.root);
     this.pulse = el("div", { class: "abs", style: { width: "10px", height: "220px", borderRadius: "10px", background: "linear-gradient(180deg, rgba(255,255,255,0), #fff, rgba(255,255,255,0))", filter: "blur(2px)" } }, this.root);
 
     // sound events
@@ -83,7 +84,7 @@ export class Split {
   src(f) { return `assets/seq/agent/${String(f).padStart(4, "0")}.jpg`; }
   captions() {
     return [
-      { t0: 22.55, t1: 23.85, style: "hero", x: 960, y: 548, zh: "从[翻找]，到[理解]。", en: "from searching to understanding", shadow: "0 6px 40px rgba(0,0,0,0.85)", zhFont: '900 104px "Noto Serif SC"' },
+      { t0: 22.55, t1: 23.85, style: "heroDark", x: 960, y: 548, zh: "从[翻找]，到[理解]。", en: "from searching to understanding", shadow: "0 4px 40px rgba(255,255,255,0.95)", zhFont: '900 104px "Noto Serif SC"' },
     ];
   }
   pastCamera(t, div) {
@@ -128,7 +129,8 @@ export class Split {
     const src = this.src(f);
     if (src !== this.lastSrc) { this.img.src = src; this.lastSrc = src; await this.img.decode().catch(() => {}); }
     const dim = ease(t, 22.45, 22.75) * (1 - ease(t, 23.75, 24.0));
-    this.win.style.filter = dim > 0.01 ? `brightness(${(1 - 0.62 * dim).toFixed(3)}) blur(${(5 * dim).toFixed(2)}px)` : 'none';
+    this.win.style.filter = dim > 0.01 ? `blur(${(6 * dim).toFixed(2)}px) saturate(${(1 - 0.4 * dim).toFixed(3)})` : 'none';
+    this.frost.style.opacity = (0.62 * dim).toFixed(3);
     this.sheen.style.transform = `translateX(${lerp(-1400, 1400, seg(t, 16.8, 18.0)).toFixed(0)}px)`;
     // blobs drift
     this.blobA.style.transform = `translate(${(div + 300 + Math.sin(t * 0.7) * 120).toFixed(0)}px, ${(-200 + Math.cos(t * 0.5) * 80).toFixed(0)}px)`;
@@ -141,10 +143,10 @@ export class Split {
     for (const { s, t: st } of this.stepEls) {
       const a = t >= st;
       const pop = a ? E.outBack(seg(t, st, st + 0.3)) : 0;
-      s.style.color = a ? "#dbe6ff" : "rgba(255,255,255,0.35)";
-      s.style.borderColor = a ? "rgba(138,180,255,0.75)" : "rgba(255,255,255,0.12)";
-      s.style.background = a ? "rgba(70,110,220,0.28)" : "rgba(255,255,255,0.03)";
-      s.style.boxShadow = a ? `0 0 ${Math.round(24 * (1 - seg(t, st, st + 0.8)) + 8)}px rgba(100,150,255,0.45)` : "none";
+      s.style.color = a ? "#1d3fb8" : "rgba(20,28,48,0.38)";
+      s.style.borderColor = a ? "rgba(47,91,234,0.6)" : "rgba(20,30,60,0.12)";
+      s.style.background = a ? "rgba(47,91,234,0.10)" : "rgba(255,255,255,0.6)";
+      s.style.boxShadow = a ? `0 0 ${Math.round(24 * (1 - seg(t, st, st + 0.8)) + 8)}px rgba(47,91,234,0.25)` : "none";
       s.style.transform = `scale(${(1 + 0.12 * Math.sin(pop * Math.PI)).toFixed(3)})`;
     }
     // timers
@@ -155,7 +157,7 @@ export class Split {
     this.timerR.style.right = "70px"; this.timerR.style.opacity = tO.toFixed(3);
     this.timerRLabel.style.right = "72px"; this.timerRLabel.style.opacity = (tO * 0.9).toFixed(3);
     const doneGlow = t > 21.4 ? 1 - seg(t, 21.4, 22.2) : 0;
-    this.timerR.style.color = doneGlow > 0 ? "#bcd4ff" : "#eaf1ff";
+    this.timerR.style.color = doneGlow > 0 ? "#2f5bea" : "#0e1219";
     this.timerR.style.transform = `scale(${(1 + 0.18 * Math.sin(Math.PI * seg(t, 21.4, 21.8))).toFixed(3)})`;
     this.timerR.style.transformOrigin = "100% 100%";
     // left timer (elapsed since 14:00)

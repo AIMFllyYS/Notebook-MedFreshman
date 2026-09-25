@@ -1,5 +1,6 @@
 // Finale — the same desk, but today the sun is still up. Then the heartbeat becomes the brand.
-import { el, svg, clamp, seg, E, ease, lerp, ev, noise1, W, H } from "./core.js";
+import { el, svg, clamp, seg, E, ease, lerp, ev as ev0, noise1, W, H, LATE } from "./core.js";
+const ev = (t, type, extra) => ev0(t + LATE, type, extra);
 import { PastScene } from "./past.js";
 
 const MARKS = [
@@ -33,27 +34,27 @@ export class Finale {
     this.past = new PastScene(this.sceneL, { id: "fin", variant: "finale" });
     this.white = el("div", { class: "layer", style: { background: "radial-gradient(circle at 50% 50%, #fffdf6 0%, #fff4d6 60%, #ffe2a8 100%)", opacity: 0 } }, this.root);
     // end card
-    this.end = el("div", { class: "layer", style: { background: "radial-gradient(ellipse at 50% 55%, #121a30 0%, #070a12 55%, #030407 100%)", opacity: 0 } }, this.root);
-    this.endGlow = el("div", { class: "abs", style: { left: "560px", top: "160px", width: "800px", height: "800px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,138,107,0.22), rgba(90,130,255,0.12) 45%, transparent 70%)", filter: "blur(20px)" } }, this.end);
+    this.end = el("div", { class: "layer", style: { background: "radial-gradient(ellipse at 50% 50%, #ffffff 0%, #f7f3ec 58%, #ece4d6 100%)", opacity: 0 } }, this.root);
+    this.endGlow = el("div", { class: "abs", style: { left: "560px", top: "160px", width: "800px", height: "800px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,138,107,0.28), rgba(90,130,255,0.12) 45%, transparent 70%)", filter: "blur(20px)" } }, this.end);
     this.svg = svg("svg", { width: W, height: H, style: "position:absolute;left:0;top:0" }, this.end);
     const defs = svg("defs", {}, this.svg);
     const f = svg("filter", { id: "finGlow", x: "-20%", y: "-50%", width: "140%", height: "200%" }, defs);
     svg("feGaussianBlur", { stdDeviation: "6" }, f);
-    this.glowLine = svg("path", { fill: "none", stroke: "#ff8a6b", "stroke-width": 9, filter: "url(#finGlow)", opacity: 0.8 }, this.svg);
-    this.line = svg("path", { fill: "none", stroke: "#ffe9e0", "stroke-width": 3.2, "stroke-linejoin": "round", "stroke-linecap": "round" }, this.svg);
-    this.dot = svg("circle", { r: 8, fill: "#fff", filter: "url(#finGlow)" }, this.svg);
+    this.glowLine = svg("path", { fill: "none", stroke: "#ff8a6b", "stroke-width": 9, filter: "url(#finGlow)", opacity: 0.45 }, this.svg);
+    this.line = svg("path", { fill: "none", stroke: "#e0523a", "stroke-width": 3.4, "stroke-linejoin": "round", "stroke-linecap": "round" }, this.svg);
+    this.dot = svg("circle", { r: 8, fill: "#e0523a", filter: "url(#finGlow)" }, this.svg);
     // logo lockup
     this.lock = el("div", { class: "abs", style: { left: "0", top: "0", width: "1920px", height: "1080px" } }, this.end);
-    this.icon = el("div", { class: "abs", style: { width: "150px", height: "150px", borderRadius: "36px", background: "#f4efe6", boxShadow: "0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(255,138,107,0.35)", overflow: "hidden" } }, this.lock);
+    this.icon = el("div", { class: "abs", style: { width: "150px", height: "150px", borderRadius: "36px", background: "#f4efe6", boxShadow: "0 30px 70px rgba(120,70,30,0.28), 0 0 0 1px rgba(60,40,20,0.08), 0 0 60px rgba(255,138,107,0.3)", overflow: "hidden" } }, this.lock);
     this.iconSvg = el("div", { class: "abs", style: { left: "0", top: "0", width: "150px", height: "150px" } }, this.icon);
     this.iconDark = el("div", { class: "abs", style: { left: "0", top: "0", width: "150px", height: "150px", background: "#141a2c" } }, this.icon);
     this.markSvgs = MARKS.map((m) => { const d = el("div", { class: "abs", style: { left: "15px", top: "15px", width: "120px", height: "120px" }, html: `<svg viewBox="0 0 24 24" width="120" height="120">${m}</svg>` }, this.iconDark); return d; });
     this.iconSvg.innerHTML = `<svg viewBox="0 0 32 32" width="150" height="150"><g fill="none" stroke="#d9542c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 H18 L23 11 V26 H9 Z"/><path d="M18 6 V11 H23"/><line x1="12" y1="16" x2="20" y2="16"/><line x1="12" y1="20" x2="17" y2="20"/></g></svg>`;
-    this.word = el("div", { class: "abs inter", style: { fontSize: "150px", fontWeight: "800", color: "#fff", letterSpacing: "-0.035em", lineHeight: "1", whiteSpace: "nowrap" } }, this.lock);
+    this.word = el("div", { class: "abs inter", style: { fontSize: "150px", fontWeight: "800", color: "#0e1219", letterSpacing: "-0.035em", lineHeight: "1", whiteSpace: "nowrap" } }, this.lock);
     this.wordSpans = [..."StudySolo"].map((c) => el("span", { class: "char", text: c }, this.word));
-    this.tag = el("div", { class: "abs serif", style: { left: "0", width: "1920px", textAlign: "center", fontSize: "56px", fontWeight: "900", color: "#f4f1ea", letterSpacing: "0.08em" } }, this.lock);
+    this.tag = el("div", { class: "abs serif", style: { left: "0", width: "1920px", textAlign: "center", fontSize: "56px", fontWeight: "900", color: "#0e1219", letterSpacing: "0.08em" } }, this.lock);
     this.tagSpans = [..."把书海，变成一次提问。"].map((c) => el("span", { class: "char", text: c }, this.tag));
-    this.tagEn = el("div", { class: "abs inter", text: "TURN AN OCEAN OF BOOKS INTO A SINGLE QUESTION", style: { left: "0", width: "1920px", textAlign: "center", fontSize: "19px", fontWeight: "300", color: "rgba(236,238,245,0.55)", letterSpacing: "0.34em" } }, this.lock);
+    this.tagEn = el("div", { class: "abs inter", text: "TURN AN OCEAN OF BOOKS INTO A SINGLE QUESTION", style: { left: "0", width: "1920px", textAlign: "center", fontSize: "19px", fontWeight: "300", color: "rgba(20,28,48,0.55)", letterSpacing: "0.34em" } }, this.lock);
     this.cta = el("div", { class: "abs", style: { left: "50%", padding: "22px 44px", borderRadius: "999px", background: "linear-gradient(135deg, #ff8a6b 0%, #d9542c 100%)", boxShadow: "0 20px 60px rgba(217,84,44,0.45), inset 0 1px 0 rgba(255,255,255,0.35)", overflow: "hidden", whiteSpace: "nowrap" } }, this.lock);
     this.cta.innerHTML = `<span class="sans" style="font-size:34px;font-weight:800;color:#fff;letter-spacing:0.04em">开通会员 · 问出你的第一个问题</span><span class="inter" style="font-size:34px;font-weight:600;color:#fff;margin-left:16px">→</span>`;
     this.shine = el("div", { class: "abs", style: { top: "-20px", left: "0", width: "120px", height: "140px", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)", transform: "skewX(-20deg)" } }, this.cta);
@@ -63,8 +64,8 @@ export class Finale {
   }
   captions() {
     return [
-      { t0: 47.35, t1: 49.15, style: "ink", x: 960, y: 930, zh: "今天，太阳还没落山。", en: "today, the sun hasn't set yet." },
-      { t0: 49.2, t1: 50.55, style: "ink", x: 960, y: 930, zh: "把时间，还给[理解]。", en: "give your time back to understanding." },
+      { t0: 47.35 + LATE, t1: 49.15 + LATE, style: "ink", x: 960, y: 930, zh: "今天，太阳还没落山。", en: "today, the sun hasn't set yet." },
+      { t0: 49.2 + LATE, t1: 50.55 + LATE, style: "ink", x: 960, y: 930, zh: "把时间，还给[理解]。", en: "give your time back to understanding." },
     ];
   }
   async render(t, frame) {
@@ -97,7 +98,7 @@ export class Finale {
     for (let x = x0; x <= xh; x += 3) d += (d ? " L" : "M") + x.toFixed(1) + "," + (Y + ecg(x, peaks, 1 - collapse)).toFixed(1);
     this.line.setAttribute("d", d); this.glowLine.setAttribute("d", d);
     const lo = 1 - ease(t, 52.35, 52.5);
-    this.line.setAttribute("opacity", lo.toFixed(3)); this.glowLine.setAttribute("opacity", (0.8 * lo).toFixed(3));
+    this.line.setAttribute("opacity", lo.toFixed(3)); this.glowLine.setAttribute("opacity", (0.45 * lo).toFixed(3));
     this.dot.setAttribute("cx", xh.toFixed(1)); this.dot.setAttribute("cy", (Y + ecg(xh, peaks, 1 - collapse)).toFixed(1));
     this.dot.setAttribute("opacity", (lo * (t > 50.85 ? 1 : 0)).toFixed(3));
     // icon: pops at 52.35, cycles marks, lands on the brand icon at 53.05, then slides left for the wordmark
@@ -116,7 +117,7 @@ export class Finale {
     this.wordSpans.forEach((s, i) => {
       const p = E.outCubic(seg(t, 53.45 + i * 0.04, 53.85 + i * 0.04));
       s.style.opacity = p.toFixed(3); s.style.transform = `translateX(${((1 - p) * -30).toFixed(1)}px)`; s.style.filter = p < 1 ? `blur(${((1 - p) * 10).toFixed(1)}px)` : "none";
-      s.style.color = i >= 5 ? "#ff8a6b" : "#fff";
+      s.style.color = i >= 5 ? "#e0523a" : "#0e1219";
     });
     this.tag.style.top = "560px";
     this.tagSpans.forEach((s, i) => {

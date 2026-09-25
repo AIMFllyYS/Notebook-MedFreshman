@@ -1,8 +1,8 @@
 # StudySolo 宣传片 · 生成器
 
-57 秒 · 1920×1080 · 60fps 的品牌宣传片，全部由代码生成：真实页面采集 → 逐帧确定性渲染（SVG 手绘 + three.js + DOM 动效）→ 程序化配乐与音效。
+60 秒 · 1920×1080 · 60fps 的浅色品牌宣传片，全部由代码生成：真实页面采集 → 逐帧确定性渲染（SVG 手绘 + three.js + DOM 动效）→ 程序化配乐与音效。
 
-成片：[`studysolo-promo.mp4`](studysolo-promo.mp4)（84MB）。其余中间产物不入库，按下方步骤可完整复现。
+成片：[`studysolo-promo.mp4`](studysolo-promo.mp4)（60MB，v2 浅色版）。其余中间产物不入库，按下方步骤可完整复现。
 
 ## 叙事结构
 
@@ -10,13 +10,13 @@
 
 | 时间 | 幕 | 画面 |
 |---|---|---|
-| 0–4s | 开场 | 心电线在黑色监护屏上跳动，问题浮现；心电基线变成书桌边缘 |
+| 0–4s | 开场 | 心电线在浅色监护屏上跳动，问题浮现；心电基线变成书桌边缘 |
 | 4–15s | 过去 | 手绘书桌：翻页加速、书越堆越高、便利贴与红色问号、钟表飞转、夕阳落山、台灯亮起 |
-| 15–24s | 过去 \| 现在 | 分屏对比：左侧仍在翻书（7 小时+），右侧真实 Agent 界面 6 秒跨三本教材作答并给出 4 条出处 |
+| 15–24s | 过去 \| 现在 | 分屏对比：左侧仍在翻书（7 小时+），右侧真实 Agent 界面（浅色主题）6 秒跨三本教材作答并给出 4 条出处 |
 | 24–33s | 那根线 | 4 张来源卡片飞出界面、展开成真实教材页，一条发光的线在三维空间里把因果链逐节点串起 |
-| 33–44s | 功能 | 卡点蒙太奇：划词提问、全局搜索、题目测试、例题、可交互、课堂原文、详解、插件市场、书架 |
-| 44–47s | 数字 | 13 门学科 · 1,187 章节 · 5,454 道题 · 339 段动画 · 3,590 万字（均取自仓库真实统计） |
-| 47–57s | 结尾 | 同一张书桌，今天太阳还没落山；心跳线收束成品牌标志、口号与开通会员 CTA |
+| 33–47s | 功能 | 11 个卡点镜头：划词提问、全局搜索、复习卡片翻面、题目测试、可交互、课堂原文、详解、六大系列模型、21 种 Agent 工具、六套主题快切（含深色）、书架 |
+| 47–50s | 数字 | 13 门学科 · 1,187 章节 · 5,454 道题 · 339 段动画 · 3,590 万字（均取自仓库真实统计） |
+| 50–60s | 结尾 | 同一张书桌，今天太阳还没落山；心跳线收束成品牌标志、口号与开通会员 CTA |
 
 ## 复现
 
@@ -35,13 +35,15 @@ node capture/cap_inter.js      # 方差可交互组件逐帧
 node capture/cap_quiz.js && node capture/cap_quiz2.js
 node capture/cap_agent.js agent    # Agent 流式回答逐帧（脚本化 UI 消息流，界面为真实渲染）
 node capture/cap_agent.js studio   # 划词 → 解释 → 右侧面板作答
+node capture/cap_new.js            # 复习卡片（预置 IndexedDB）、模型菜单、工具面板、主题切换
+# 采集默认浅色主题；THEME=dark 或 MODE=anthropic 等环境变量可切换（见 capture/lightinit.js）
 
 # 2. 素材：缩图、来源卡裁切、纸张纹理、本地字体
 python3 make_assets.py
 
 # 3. 渲染（静态服务 film/，逐帧截图；可并行分段）
 (cd film && python3 -m http.server 8765 &)
-node render.js 0 1140 frames & node render.js 1140 2280 frames & node render.js 2280 3420 frames
+node render.js 0 1200 frames & node render.js 1200 2400 frames & node render.js 2400 3600 frames
 python3 audio.py               # 读取 events.json，合成 score.wav
 
 # 4. 合成

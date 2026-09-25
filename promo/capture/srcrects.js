@@ -3,6 +3,7 @@ const fs = require('fs');
 (async () => {
   const b = await chromium.launch();
   const ctx = await b.newContext({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 2 });
+  await ctx.addInitScript(require('./lightinit.js')(process.env.THEME || 'light', process.env.MODE || 'default'));
   const p = await ctx.newPage();
   const scrollTo = async (text, frac) => { await p.evaluate(([text, frac]) => {
       const w = document.createTreeWalker(document.querySelector('main')||document.body, NodeFilter.SHOW_TEXT);

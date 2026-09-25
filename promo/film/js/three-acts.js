@@ -3,7 +3,6 @@
 import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { el, clamp, seg, E, ease, lerp, rng, ev, noise1, W, H } from "./core.js";
 import { WIN_FULL } from "./split.js";
@@ -49,6 +48,12 @@ function roundedAlpha(w, h, rad) {
   g.beginPath(); g.roundRect(0, 0, w, h, rad); g.fill();
   return new THREE.CanvasTexture(c);
 }
+function shadowTex() {
+  const c = document.createElement("canvas"); c.width = 512; c.height = 300;
+  const g = c.getContext("2d"); g.filter = "blur(18px)"; g.fillStyle = "rgba(20,30,60,0.55)";
+  g.beginPath(); g.roundRect(40, 40, 432, 220, 16); g.fill();
+  return new THREE.CanvasTexture(c);
+}
 function glowTex(inner = "rgba(255,255,255,1)", mid = "rgba(140,190,255,0.5)") {
   const c = document.createElement("canvas"); c.width = c.height = 128;
   const g = c.getContext("2d"); const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
@@ -72,15 +77,13 @@ export class Stage3D {
     this.labels = el("div", { class: "layer" }, this.root);
 
     const scene = (this.scene = new THREE.Scene());
-    scene.background = new THREE.Color("#04060b");
-    scene.fog = new THREE.FogExp2("#04060b", 0.00011);
+    scene.background = new THREE.Color("#eef1f6");
+    scene.fog = new THREE.FogExp2("#eef1f6", 0.00009);
     this.camera = new THREE.PerspectiveCamera(FOV, W / H, 1, 20000);
     this.camera.position.set(0, 0, D);
 
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(scene, this.camera));
-    this.bloom = new UnrealBloomPass(new THREE.Vector2(W, H), 0.9, 0.55, 0.92);
-    this.composer.addPass(this.bloom);
     this.composer.addPass(new OutputPass());
 
     const loader = new THREE.TextureLoader();
@@ -91,10 +94,10 @@ export class Stage3D {
     const N = 1800, pos = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) { pos[i * 3] = (r() - 0.5) * 6000; pos[i * 3 + 1] = (r() - 0.5) * 3600; pos[i * 3 + 2] = 1200 - r() * 9000; }
     const pg = new THREE.BufferGeometry(); pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    this.dust = new THREE.Points(pg, new THREE.PointsMaterial({ size: 9, map: glowTex("rgba(255,255,255,0.9)", "rgba(150,190,255,0.25)"), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, color: new THREE.Color(0.55, 0.65, 0.9), opacity: 0.55 }));
+    this.dust = new THREE.Points(pg, new THREE.PointsMaterial({ size: 9, map: glowTex("rgba(255,255,255,0.9)", "rgba(150,190,255,0.25)"), transparent: true, depthWrite: false, color: new THREE.Color(0.35, 0.42, 0.62), opacity: 0.35 }));
     scene.add(this.dust);
 
-    this.glow = glowTex(); this.ring = ringTex();
+    this.glow = glowTex(); this.ring = ringTex(); this.shadow = shadowTex();
     this.ready = (async () => {
       const uiT = await tex("assets/seq/agent/0168.jpg");
       this.uiMat = new THREE.MeshBasicMaterial({ map: uiT, alphaMap: roundedAlpha(1760, 990, 18), transparent: true });
@@ -105,10 +108,12 @@ export class Stage3D {
         const t = await tex(P.img);
         const g = new THREE.Group(); g.position.set(...P.pos); g.rotation.y = P.ry;
         const mat = new THREE.MeshBasicMaterial({ map: t, alphaMap: roundedAlpha(1600, 900, 14), transparent: true, opacity: 0 });
+        const sh = new THREE.Mesh(new THREE.PlaneGeometry(1600 * PS * 1.19, 900 * PS * 1.36), new THREE.MeshBasicMaterial({ map: this.shadow, transparent: true, opacity: 0, depthWrite: false }));
+        sh.position.set(0, -26, -6); g.add(sh);
         const m = new THREE.Mesh(new THREE.PlaneGeometry(1600 * PS, 900 * PS), mat); g.add(m);
-        const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1600 * PS, 900 * PS)), new THREE.LineBasicMaterial({ color: new THREE.Color(0.5, 0.7, 1.4), transparent: true, opacity: 0 }));
+        const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1600 * PS, 900 * PS)), new THREE.LineBasicMaterial({ color: new THREE.Color(0.62, 0.69, 0.82), transparent: true, opacity: 0 }));
         edge.position.z = 1; g.add(edge);
-        scene.add(g); this.pages.push({ g, mat, edge, P });
+        scene.add(g); this.pages.push({ g, mat, edge, P, sh });
       }
       this.cards = [];
       for (const C of CARDS) {
@@ -126,16 +131,16 @@ export class Stage3D {
         const world = local.clone().applyMatrix4(pg.g.matrixWorld);
         const hw = n.r[2] * PS / 2 + 14, hh = n.r[3] * PS / 2 + 10;
         const box = new THREE.Group(); box.position.copy(local); pg.g.add(box);
-        const col = n.final ? new THREE.Color(3.2, 1.3, 0.9) : new THREE.Color(1.3, 2.0, 3.4);
+        const col = n.final ? new THREE.Color(0xe0523a) : new THREE.Color(0x2f5bea);
         const outline = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-hw, -hh, 0), new THREE.Vector3(hw, -hh, 0), new THREE.Vector3(hw, hh, 0), new THREE.Vector3(-hw, hh, 0)]), new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0 }));
-        const fill = new THREE.Mesh(new THREE.PlaneGeometry(hw * 2, hh * 2), new THREE.MeshBasicMaterial({ color: n.final ? 0xff6a4a : 0x5a8cff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+        const fill = new THREE.Mesh(new THREE.PlaneGeometry(hw * 2, hh * 2), new THREE.MeshBasicMaterial({ color: n.final ? 0xff6a4a : 0x5a8cff, transparent: true, opacity: 0, depthWrite: false }));
         box.add(fill); box.add(outline);
-        const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow, color: n.final ? new THREE.Color(3, 1.2, 0.8) : new THREE.Color(1.6, 2.2, 3.5), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 }));
+        const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow, color: n.final ? new THREE.Color(0xe0523a) : new THREE.Color(0x2f5bea), transparent: true, depthWrite: false, opacity: 0 }));
         spr.position.copy(world); scene.add(spr);
-        const ring = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.ring, color: n.final ? new THREE.Color(2.5, 1.0, 0.7) : new THREE.Color(1.2, 1.7, 3), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 }));
+        const ring = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.ring, color: n.final ? new THREE.Color(0xe0523a) : new THREE.Color(0x2f5bea), transparent: true, depthWrite: false, opacity: 0 }));
         ring.position.copy(world); scene.add(ring);
-        const lab = el("div", { class: "abs", style: { left: "0", top: "0", padding: "14px 20px 14px 18px", borderRadius: "14px", background: "rgba(8,12,24,0.84)", border: `1px solid ${n.final ? "rgba(255,120,90,0.85)" : "rgba(138,180,255,0.6)"}`, boxShadow: `0 16px 50px rgba(0,0,0,0.6), 0 0 30px ${n.final ? "rgba(255,110,80,0.35)" : "rgba(90,140,255,0.3)"}`, whiteSpace: "nowrap", opacity: 0 } }, this.labels);
-        lab.innerHTML = `<div class="inter" style="font-size:15px;font-weight:600;letter-spacing:0.08em;color:${n.final ? "#ffb4a0" : "#9dbcff"}">${n.tag}</div><div class="sans" style="font-size:${n.final ? 40 : 32}px;font-weight:800;color:#fff;margin-top:6px">${n.zh}</div>`;
+        const lab = el("div", { class: "abs", style: { left: "0", top: "0", padding: "14px 20px 14px 18px", borderRadius: "14px", background: "rgba(255,255,255,0.96)", border: `1.5px solid ${n.final ? "rgba(224,82,58,0.85)" : "rgba(47,91,234,0.55)"}`, boxShadow: `0 16px 44px rgba(25,35,80,0.2), 0 0 26px ${n.final ? "rgba(255,110,80,0.25)" : "rgba(90,140,255,0.18)"}`, whiteSpace: "nowrap", opacity: 0 } }, this.labels);
+        lab.innerHTML = `<div class="inter" style="font-size:15px;font-weight:600;letter-spacing:0.08em;color:${n.final ? "#e0523a" : "#2f5bea"}">${n.tag}</div><div class="sans" style="font-size:${n.final ? 40 : 32}px;font-weight:800;color:#0e1219;margin-top:6px">${n.zh}</div>`;
         ev(n.t, n.final ? "node-final" : "node", { i: idx });
         return { n, world, outline, fill, spr, ring, lab, box };
       });
@@ -147,24 +152,24 @@ export class Stage3D {
       const M = 1400;
       this.tube = new THREE.TubeGeometry(this.curve, M, 3.2, 8, false);
       this.tubeM = M;
-      this.thread = new THREE.Mesh(this.tube, new THREE.MeshBasicMaterial({ color: new THREE.Color(1.8, 2.4, 4.0) }));
+      this.thread = new THREE.Mesh(this.tube, new THREE.MeshBasicMaterial({ color: new THREE.Color(0x2f5bea) }));
       scene.add(this.thread);
       this.glowTube = new THREE.TubeGeometry(this.curve, M, 13, 8, false);
-      this.threadGlow = new THREE.Mesh(this.glowTube, new THREE.MeshBasicMaterial({ color: new THREE.Color(0.25, 0.4, 1.0), transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false }));
+      this.threadGlow = new THREE.Mesh(this.glowTube, new THREE.MeshBasicMaterial({ color: new THREE.Color(0x7ea2ff), transparent: true, opacity: 0.22, depthWrite: false }));
       scene.add(this.threadGlow);
       // TubeGeometry samples by arc length; build a lookup from index-space param → arc fraction
       const S = 3000; this.cum = [0]; let prev = this.curve.getPoint(0), tot = 0;
       for (let i = 1; i <= S; i++) { const p = this.curve.getPoint(i / S); tot += p.distanceTo(prev); this.cum.push(tot); prev = p; }
       this.total = tot;
-      this.head = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow, color: new THREE.Color(1.6, 1.9, 2.6), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+      this.head = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow, color: new THREE.Color(0x2f5bea), transparent: true, depthWrite: false }));
       this.head.scale.set(150, 150, 1); scene.add(this.head);
       this.renderer.compile(scene, this.camera);
     })();
   }
   captions() {
     return [
-      { t0: 26.1, t1: 28.75, style: "lightSm", x: 960, y: 985, zh: "不只给答案——把[因果]，一环一环接上。", en: "not just an answer — every link of the why", shadow: "0 4px 24px rgba(0,0,0,0.9)" },
-      { t0: 31.15, t1: 32.75, style: "hero", x: 960, y: 520, zh: "每一句，都回到你的[课本]。", en: "every sentence traces back to your own textbooks", accent: "#8ab4ff", shadow: "0 6px 40px rgba(0,0,0,0.9)", zhFont: '900 84px "Noto Serif SC"' },
+      { t0: 26.1, t1: 28.75, style: "darkSm", x: 960, y: 985, zh: "不只给答案——把[因果]，一环一环接上。", en: "not just an answer — every link of the why", shadow: "0 2px 18px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,0.9)" },
+      { t0: 31.15, t1: 32.75, style: "heroDark", x: 960, y: 520, zh: "每一句，都回到你的[课本]。", en: "every sentence traces back to your own textbooks", accent: "#2f5bea", shadow: "0 2px 30px rgba(255,255,255,1), 0 0 60px rgba(255,255,255,0.9)", zhFont: '900 84px "Noto Serif SC"' },
     ];
   }
   arcFrac(s) { const i = clamp(s) * (this.cum.length - 1); const a = Math.floor(i), b = Math.min(a + 1, this.cum.length - 1); return lerp(this.cum[a], this.cum[b], i - a) / this.total; }
@@ -243,10 +248,11 @@ export class Stage3D {
       } else { pg.g.position.set(...pg.P.pos); pg.g.rotation.set(0, pg.P.ry, 0); pg.g.scale.set(1, 1, 1); }
       const o = f ? (t < 24.9 ? 0 : f.o) : ease(t, 28.9, 29.3);
       pg.mat.opacity = o; pg.g.visible = o > 0.01;
-      pg.edge.material.opacity = o * 0.5;
+      pg.edge.material.opacity = o * 0.8;
+      pg.sh.material.opacity = o * 0.8;
     });
     this.dust.rotation.y = t * 0.01;
-    this.dust.material.opacity = 0.55 * ease(t, 24.2, 25.2);
+    this.dust.material.opacity = 0.35 * ease(t, 24.2, 25.2);
 
     const s = this.progressAt(t);
     const count = Math.floor(this.arcFrac(s) * this.tubeM) * 8 * 6;
@@ -273,7 +279,6 @@ export class Stage3D {
       nd.lab.style.opacity = lo.toFixed(3);
       nd.lab.style.transform = `translate(${(x + 36).toFixed(1)}px, ${(y - 120 + (1 - k) * 20).toFixed(1)}px) scale(${(0.92 + 0.08 * k).toFixed(3)})`;
     }
-    this.bloom.strength = 0.75 + 0.35 * Math.max(0, 1 - Math.abs(t - 30.5) * 2);
     this.composer.render();
   }
 }

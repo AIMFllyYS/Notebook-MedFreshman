@@ -7,6 +7,7 @@ const out = `seq/${mode}`; fs.mkdirSync(out, { recursive: true });
 (async () => {
   const b = await chromium.launch();
   const ctx = await b.newContext({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 2 });
+  await ctx.addInitScript(require('./lightinit.js')(process.env.THEME || 'light', process.env.MODE || 'default'));
   await ctx.addInitScript(require('./inject.js'));
   const p = await ctx.newPage();
   const man = []; let f = 0;
