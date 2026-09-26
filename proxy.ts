@@ -1,3 +1,4 @@
+import {AUTH_ACCESS_COOKIE} from "@/lib/auth/sessionCookie";
 import { NextResponse, type NextRequest } from "next/server";
 import { decideAiGate, TRUSTED_PROXY_USER_HEADER } from "@/lib/auth/aiGate";
 
@@ -15,6 +16,14 @@ export const config = {
 };
 
 export async function proxy(request: NextRequest) {
+  // Authenticated cookie mutations require the actual browser origin. Explicit
+  // Bearer APIs are non-ambient; the backend still validates their token.
+  if (!["GET","HEAD","OPTIONS"].includes(request.method) && request.cookies.has(AUTH_ACCESS_COOKIE) && !request.headers.get("authorization")) {
+    const origin=request.headers.get("origin");
+    const configured=(process.env.APP_ALLOWED_ORIGINS || process.env.NEXT_PUBLIC_APP_URL || "https://notebook1b.husteread.icu,https://study.1037solo.com,https://studysolo.1037solo.com").split(",").map(v=>v.trim());
+    if(process.env.NODE_ENV!=="production")configured.push("http://localhost:35349","http://127.0.0.1:35349");
+    if(!origin || !configured.includes(origin))return NextResponse.json({error:"Trusted request origin required"},{status:403});
+  }
   const decision = await decideAiGate({
     pathname: request.nextUrl.pathname,
     method: request.method,

@@ -56,7 +56,7 @@ function firstSegment(pathname: string): string | undefined {
 
 /** `/login` 不参与模式路由，避免登录页改写 persist。 */
 export function isAuthPath(pathname: string): boolean {
-  return firstSegment(pathname) === "login";
+  return firstSegment(pathname) === "login" || pathname.startsWith("/auth/");
 }
 
 /** 不套 Studio 顶栏 + 左栏 + 右栏的路径：`/c/<id>` 与 `/agent` 共用同一个工作区外壳。 */

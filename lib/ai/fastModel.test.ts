@@ -1,5 +1,6 @@
+import { test, mockPaidFetch } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
-import { afterEach, test } from "node:test";
+import { afterEach, } from "node:test";
 import { FAST_MODEL_TIMEOUT_MS, callFastModel, fastModelConfig } from "./fastModel.ts";
 
 const KEYS = ["AI_FAST_BASE_URL", "AI_FAST_API_KEY", "AI_FAST_MODEL", "QINIU_BASE_URL", "QINIU_API_KEY"] as const;
@@ -54,10 +55,10 @@ test("callFastModel：未配置 / 上游非 2xx / 网络异常都返回 null，�
   assert.equal(await callFastModel({ system: "s", user: "u", maxTokens: 8 }), null);
 
   setEnv({ QINIU_BASE_URL: "https://api.qnaigc.com/v1", QINIU_API_KEY: "sk" });
-  t.mock.method(globalThis, "fetch", async () => new Response("nope", { status: 500 }));
+  mockPaidFetch(t, async () => new Response("nope", { status: 500 }));
   assert.equal(await callFastModel({ system: "s", user: "u", maxTokens: 8 }), null);
 
-  t.mock.method(globalThis, "fetch", async () => {
+  mockPaidFetch(t, async () => {
     throw new Error("network down");
   });
   assert.equal(await callFastModel({ system: "s", user: "u", maxTokens: 8 }), null);
@@ -66,7 +67,7 @@ test("callFastModel：未配置 / 上游非 2xx / 网络异常都返回 null，�
 test("callFastModel：请求体是极简结构化调用（关思考 + temperature 0 + 小 max_tokens）", async (t) => {
   setEnv({ QINIU_BASE_URL: "https://api.qnaigc.com/v1", QINIU_API_KEY: "sk-qiniu" });
   let captured: { url: string; body: Record<string, unknown>; auth: string | null } | null = null;
-  t.mock.method(globalThis, "fetch", async (url: unknown, init?: RequestInit) => {
+  mockPaidFetch(t, async (url: unknown, init?: RequestInit) => {
     captured = {
       url: String(url),
       body: JSON.parse(String(init?.body)) as Record<string, unknown>,

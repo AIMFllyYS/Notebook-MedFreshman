@@ -1,3 +1,4 @@
+import { billableJsonFetch } from "@/lib/billing/billableFetch";
 // 极轻量「快速模型」调用（服务端）：只服务内部调度——自动路由选模型、标签页命名。
 //
 // 为什么不用 AI SDK 走一遍：这类调用要的是**确定性**——必须真正关掉思考、temperature 0、
@@ -70,7 +71,7 @@ export async function callFastModel(input: CallFastModelInput): Promise<FastMode
   const timeoutMs = input.timeoutMs ?? FAST_MODEL_TIMEOUT_MS;
   const startedAt = Date.now();
   try {
-    const res = await fetch(`${config.baseUrl.replace(/\/+$/, "")}/chat/completions`, {
+    const res = await billableJsonFetch(`${config.baseUrl.replace(/\/+$/, "")}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +89,7 @@ export async function callFastModel(input: CallFastModelInput): Promise<FastMode
         ...(input.json ? { response_format: { type: "json_object" } } : {}),
       }),
       signal: AbortSignal.timeout(timeoutMs),
-    });
+    }, { model: config.model, kind: "llm" });
     if (!res.ok) return null;
     const data = (await res.json().catch(() => null)) as Record<string, unknown> | null;
     if (!data) return null;

@@ -4,12 +4,28 @@ import {
   normalizeAnthropicBaseUrl,
   applyThinkingCallSettings,
   buildThinkingSettings,
-  resolveLanguageModel,
+  resolveLanguageModel as resolveProductionLanguageModel,
   UPSTREAM_PROVIDER_NAME,
 } from "./languageModel.ts";
 import type { ResolvedProvider } from "./../provider.ts";
 import { buildCustomModelRegistryId, getModelInfo, type CustomApiGroup } from "./../models.ts";
 import type { LanguageModelV4StreamPart } from "@ai-sdk/provider";
+
+import { runPaidContext } from "@/lib/billing/paidContext";
+import type { CreditDriver } from "@/lib/billing/providerAdmission";
+const fixtureCredits: CreditDriver = {
+  async reserve(userId,requestKey,amount,metadata){return {userId,requestKey,reserved:Math.ceil(amount*1e6),metadata};},
+  async settleMicro(){}, async cancel(){},
+};
+function resolveLanguageModel(...args: Parameters<typeof resolveProductionLanguageModel>) {
+  const result = resolveProductionLanguageModel(args[0],args[1],{...args[2],creditDriver:fixtureCredits});
+  const model=result.model;
+  const context=()=>({userId:"00000000-0000-4000-8000-000000000001",requestId:crypto.randomUUID(),route:"test",sequence:0,reservedCny:0});
+  return {...result,model:{...model,
+    doGenerate:(params:Parameters<typeof model.doGenerate>[0])=>runPaidContext(context(),()=>model.doGenerate(params)),
+    doStream:(params:Parameters<typeof model.doStream>[0])=>runPaidContext(context(),()=>model.doStream(params)),
+  }};
+}
 
 function fixtureModel(reasoningField?: string) {
   const groups: CustomApiGroup[] = [{

@@ -20,10 +20,10 @@ export type { ThemeMode };
 
 const LS_KEY = "gailvlun-theme";
 
-/** 读 DOM 上当前生效的主题（无 data-theme 时默认深色，见 globals.css :root）。 */
+/** 读 DOM 上当前生效的主题（无 data-theme 时默认浅色，见 globals.css :root）。 */
 function domTheme(): ThemeMode {
-  if (typeof document === "undefined") return "dark";
-  return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  if (typeof document === "undefined") return "light";
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 }
 
 function apply(mode: ThemeMode): void {
@@ -67,7 +67,7 @@ interface ThemeState {
 }
 
 export const useTheme = create<ThemeState>((set, get) => ({
-  theme: "dark",
+  theme: "light",
   hydrated: false,
   appearance: DEFAULT_APPEARANCE_SETTINGS,
   setTheme: (mode) => {

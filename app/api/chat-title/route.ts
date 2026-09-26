@@ -1,3 +1,4 @@
+import { withPaidRequest } from "@/lib/billing/paidRequest";
 import type { NextRequest } from "next/server";
 import { generateText } from "ai";
 import {
@@ -34,7 +35,7 @@ function titleProvider() {
   };
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const content = String(body.content ?? "");
   const fallback = buildFallbackSessionTitle(content);
@@ -125,3 +126,5 @@ export async function POST(req: NextRequest) {
     return Response.json({ title: fallback, generated: false, model: provider.model });
   }
 }
+
+export const POST = withPaidRequest(handlePOST, "/api/chat-title");

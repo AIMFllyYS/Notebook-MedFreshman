@@ -1,0 +1,26 @@
+@theme inline {
+  --color-background: var(--class-background, var(--bg-app));
+  --color-foreground: var(--class-foreground, var(--ink));
+  --color-muted-foreground: var(--ink-soft);
+  --color-border: var(--line);
+  --color-primary: var(--md-sys-color-primary);
+  --color-primary-foreground: white;
+  --color-secondary: var(--bg-muted);
+  --color-secondary-foreground: var(--ink);
+  --color-card: var(--bg-panel);
+  --color-card-foreground: var(--ink);
+  --color-muted: var(--bg-muted);
+  --color-accent: var(--bg-muted);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: #b42318;
+  --color-ring: var(--md-sys-color-primary);
+  --color-input: var(--line);
+}
+.ss-class-workbench{background:var(--bg-app);color:var(--ink);--class-background:var(--bg-app);--class-foreground:var(--ink);}
+.ss-class-workbench .class-action{border:1px solid var(--line);border-radius:.65rem;padding:.45rem .7rem;font-size:.8rem;background:var(--bg-panel);}
+.ss-class-workbench .class-action:hover{background:var(--bg-muted);}
+.ss-class-workbench .class-action:disabled{opacity:.45;cursor:not-allowed;}
+.ss-class-workbench .glass-panel{background:var(--bg-panel);border:1px solid var(--line);box-shadow:0 8px 32px #00000015;}
+.ss-class-workbench .node-paper-bg{background:var(--bg-panel);}
+.ss-class-workbench :focus-visible{outline:2px solid var(--md-sys-color-primary);outline-offset:2px;}
+.ss-class-workbench .react-flow__attribution{font-size:9px;}

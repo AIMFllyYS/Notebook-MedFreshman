@@ -112,3 +112,6 @@ docs/plans/**/verify/
 
 # Supabase CLI 的临时态（db query/push 会写 project ref 与版本号，不是真相源）
 supabase/.temp/
+
+# Preserved dependency snapshot
+.local-archive/

@@ -1,6 +1,6 @@
 /** First-party cookie that mirrors the Supabase access token for the AI gate. */
 
-export const AUTH_ACCESS_COOKIE = "srp-access-token";
+export const AUTH_ACCESS_COOKIE = process.env.SUPABASE_OAUTH_CLIENT_ID ? "ss_access_token" : "access_token";
 
 const BEARER_RE = /^Bearer\s+(\S+)/i;
 
@@ -62,11 +62,5 @@ export function extractAccessToken(headers: { get(name: string): string | null }
   return readAccessTokenFromCookieHeader(headers.get("cookie"));
 }
 
-export function applySessionCookie(session: unknown): void {
-  if (typeof document === "undefined") return;
-  const secure = typeof location !== "undefined" && location.protocol === "https:";
-  const token = sessionAccessToken(session);
-  document.cookie = token
-    ? serializeAccessTokenCookie(token, { secure })
-    : serializeClearedAccessTokenCookie({ secure });
-}
+/** Compatibility no-op: only Account may write shared HttpOnly session cookies. */
+export function applySessionCookie(_session: unknown): void { void _session; }

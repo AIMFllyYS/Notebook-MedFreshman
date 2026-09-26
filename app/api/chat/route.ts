@@ -1,3 +1,4 @@
+import { withPaidRequest } from "@/lib/billing/paidRequest";
 import type { NextRequest } from "next/server";
 import {
   convertToModelMessages,
@@ -87,7 +88,7 @@ async function toModelMessages(
   return convertToModelMessages(uiMessages, { ignoreIncompleteToolCalls: true });
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
   let body: ChatRequest;
   try {
     body = parseChatRequest(await req.json().catch(() => ({})));
@@ -419,3 +420,5 @@ export async function POST(req: NextRequest) {
     { keepaliveWhileIdle: true },
   );
 }
+
+export const POST = withPaidRequest(handlePOST, "/api/chat");

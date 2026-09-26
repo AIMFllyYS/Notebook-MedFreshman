@@ -14,6 +14,7 @@ import { pathToFileURL } from "node:url";
 
 const SKIP_DIRS = new Set([
   "node_modules",
+  ".local-archive",
   ".next",
   ".git",
   "build",

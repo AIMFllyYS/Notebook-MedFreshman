@@ -44,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html lang="zh-CN" data-theme="light" suppressHydrationWarning>
       <head>
         {/* 在 paint 前应用本地保存的主题与布局状态，避免首屏闪烁。 */}
         <script

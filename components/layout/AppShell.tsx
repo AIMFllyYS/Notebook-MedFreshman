@@ -87,6 +87,7 @@ function TopBar({
   itemId,
   hideWindowTaskbar = false,
   agentMode = false,
+  classMode = false,
   dockOpen = false,
   onToggleDock,
   showCenterTabs = false,
@@ -97,6 +98,7 @@ function TopBar({
   hideWindowTaskbar?: boolean;
   /** Agent 工作区：顶栏只留品牌 + 全屏 + 右侧工作区开关，面包屑/全局搜索/收起顶栏都不在这里。 */
   agentMode?: boolean;
+  classMode?: boolean;
   /** 右侧工作区当前是否展开（Agent 模式）。 */
   dockOpen?: boolean;
   onToggleDock?: () => void;
@@ -117,7 +119,7 @@ function TopBar({
    * 所以不能沿用 Studio 那个会落盘的收起态：从 Studio 收着顶栏切到 Agent，
    * h-0 会把这两个键一起吃掉——既没有面板开关，也没有全屏入口（Esc 之外无路可回）。
    */
-  const barCollapsed = !agentMode && topBarCollapsed;
+  const barCollapsed = !agentMode && !classMode && topBarCollapsed;
 
   const subject = getSubject(subjectId);
   const category = getCategory(subjectId, categoryId);
@@ -127,6 +129,7 @@ function TopBar({
     <header
       data-topbar
       data-agent-bar={agentMode ? "true" : undefined}
+      data-class-bar={classMode ? "true" : undefined}
       className={clsx(
         "relative flex shrink-0 items-center gap-3 bg-[var(--bg-panel)] px-3 transition-all duration-300 ease-out overflow-hidden",
         barCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line-soft)]",
@@ -134,7 +137,7 @@ function TopBar({
     >
       {/* 侧边栏开合：Studio 与 Agent 共用一个开关、同一个落点（LOGO 左侧）。
           Agent 收起后**没有**第二个入口——中间那块不再浮一个「展开对话栏」按钮。 */}
-      <button
+      {!classMode && <button
         onClick={toggleSidebar}
         title={
           sidebarShortcutEnabled
@@ -151,9 +154,9 @@ function TopBar({
           <line x1="3" y1="12" x2="21" y2="12" />
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
-      </button>
+      </button>}
       <ModeSwitcher />
-      {!agentMode && <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
+      {!agentMode && !classMode && <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
         {subject && (
           <>
             <span className="shrink-0">·</span>
@@ -187,7 +190,7 @@ function TopBar({
             {!hideWindowTaskbar && <WindowTaskbar host="topbar" />}
           </div>
         )}
-        {!agentMode && (
+        {!agentMode && !classMode && (
           <button
             onClick={toggleTopBar}
             title={topBarCollapsed ? t("app.topbar.expandTopBar") : t("app.topbar.collapseTopBar")}
@@ -616,6 +619,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         itemId={route?.itemId ?? ""}
         hideWindowTaskbar={resolvedMode === "agent"}
         agentMode={resolvedMode === "agent"}
+        classMode={resolvedMode === "class"}
       />
       {!studioChrome ? (
       <div className="min-h-0 flex-1">
