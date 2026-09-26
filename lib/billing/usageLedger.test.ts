@@ -21,7 +21,7 @@ import { BYOK_OVERHEAD_CNY_PER_MILLION } from "./usagePool.ts";
 
 const DEEPSEEK = "deepseek/deepseek-v4-flash";
 const IMAGE = "Tongyi-MAI/Z-Image-Turbo";
-const MIMO = "mimo-v2.5";
+const MIMO = "mimo-v2.6-pro";
 const GLM = "z-ai/glm-5.3-flash";
 const USER = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
 const tokenUsage = { inputTokens: 1_000, outputTokens: 500, totalTokens: 1_500 };

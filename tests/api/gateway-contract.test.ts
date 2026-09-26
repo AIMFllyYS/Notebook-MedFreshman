@@ -11,7 +11,7 @@ before(async () => {
   ({ resolveLanguageModel: resolve } = await import('@/lib/ai/sdk/languageModel'));
 });
 
-for (const id of ['deepseek/deepseek-v4.1-flash', 'kimi-k3', 'mimo-v2.5']) {
+for (const id of ['deepseek/deepseek-v4.1-flash', 'kimi-k3', 'mimo-v2.6-pro']) {
   test(`gateway wire contract: ${id}`, async (t) => {
     let body: Record<string, unknown> = {};
     t.mock.method(globalThis, 'fetch', async (input: unknown, init?: RequestInit) => {
