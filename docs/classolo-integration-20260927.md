@@ -2,6 +2,16 @@
 
 Date: 2026-09-27. Status: stage approved for commit; local build/tests passed; production not deployed; release acceptance pending.
 
+## Coordinating-agent verification update
+
+The initial implementation below was committed as ea79583. Subsequent real RootSolo classroom API tests passed save/load, transcript retry deduplication, account-switch rejection, archival and retained storage accounting (769 synthetic bytes). Earlier network failures are retained evidence, no longer the current connectivity conclusion.
+
+ASR is now explicitly configured in protected local and production environments: SiliconFlow `Qwen/Qwen3-ASR-1.7B`, with a verified free rate of 0. The earlier statements below about absent ASR configuration describe the initial handoff. Missing or invalid rates still disable the service; explicit zero uses the same identity/admission/idempotency path and settles zero credits.
+
+A preserved 6.575-second built-in synthetic TTS recording was recognized correctly through the application in 7.361 seconds, and a repeated request was rejected with409. The ledger/admission record was settled with0 microcredits charged. A SenseVoice trial had excessive latency and is not the selected default; one earlier uncertain timeout reservation remains for reconciliation. No real classroom audio was used. Browser microphone capture, long-running/noisy/Chinese classroom use and production release remain unverified.
+
+The auxiliary model catalog and pricing evidence are in the Ecosystem `migration-20260927/ai-provider-verification.md`. Current-rate source: [SiliconFlow pricing](https://siliconflow.cn/pricing); transport contract: [official transcription API](https://docs.siliconflow.cn/docs/api/audio-transcriptions-post).
+
 ## Target
 
 Replace StudySolo `/class` placeholder with the existing Classolo transcript capture, note organizer, mindmap, render-module and classroom-chat capabilities inside the host shell. Preserve original Classolo working tree; copied code is namespaced under this repository and recorded with provenance. Heavy graph/render modules load only with Class mode, following vercel-react-best-practices.
