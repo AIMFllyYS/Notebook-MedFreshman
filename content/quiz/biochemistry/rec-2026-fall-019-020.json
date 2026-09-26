@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-019-020",
+  "generatedAt": "2026-09-26",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-019-020/recording.md；content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-019-020",
+    "revision": 1,
+    "recordingHash": "cf88d111d629d708ddc96b676c83d53771f3b10c7d6f5fdc7bfb2c3a4b4900a6",
+    "notesTextHash": "45567cc1c56fd08c806a5ee72acedb37e7500d302db274ee208b0f1b85f4ac64"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "磷酸戊糖途径关键酶"
+      },
+      "stem": "磷酸戊糖途径的限速酶（关键酶）是：",
+      "options": [
+        "己糖激酶",
+        "6-磷酸葡萄糖脱氢酶（G6PD）",
+        "糖原合酶",
+        "磷酸果糖激酶-1"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**磷酸戊糖途径的限速酶是6-磷酸葡萄糖脱氢酶（G6PD），催化第一步脱氢反应，生成第一个NADPH。A错：己糖激酶属糖酵解第一步。C错：糖原合酶属糖原合成。D错：PFK-1是糖酵解最核心限速酶。",
+      "hint": "PPP的限速酶=G6PD（脱氢酶）。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "NADPH与NADH功能区别"
+      },
+      "stem": "磷酸戊糖途径生成的NADPH的主要功能是：",
+      "options": [
+        "进入呼吸链经氧化磷酸化生成ATP",
+        "作为合成代谢的还原当量（供氢体），参与脂肪酸、胆固醇合成及维持谷胱甘肽还原态",
+        "直接分解生成二氧化碳和水",
+        "作为糖原合成的葡萄糖供体"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**NADPH是合成代谢的还原当量/供氢体，参与脂类合成、生物转化羟化反应及维持谷胱甘肽（GSH）还原态。A错：进入呼吸链产ATP的是NADH/FADH₂，不是NADPH。C错：NADPH不是代谢废物。D错：糖原合成的葡萄糖供体是UDPG，不是NADPH。",
+      "hint": "NADPH管合成/抗氧化；NADH/FADH₂管呼吸链产能。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "PPP调节因素"
+      },
+      "stem": "磷酸戊糖途径的关键酶G6PD受下列哪种因素调节？",
+      "options": [
+        "ATP/ADP比值",
+        "NADPH/NADP⁺比值",
+        "胰岛素/胰高血糖素比值",
+        "cAMP/cGMP比值"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**G6PD受NADPH/NADP⁺比值别构调节：NADPH多（比值高）时抑制G6PD；NADP⁺多（比值低）时激活G6PD。A错：ATP/AMP比值主要调节糖酵解和TCA关键酶。C错：胰岛素/胰高血糖素主要调节糖原代谢和血糖。D错：cAMP是激素信号通路中的第二信使。",
+      "hint": "PPP的调节=NADPH/NADP⁺比值。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "糖原糖苷键类型"
+      },
+      "stem": "糖原分子中，直链和支链分别通过哪种糖苷键连接？",
+      "options": [
+        "直链α-1,6糖苷键；支链α-1,4糖苷键",
+        "直链α-1,4糖苷键；支链α-1,6糖苷键",
+        "直链β-1,4糖苷键；支链β-1,6糖苷键",
+        "直链α-1,2糖苷键；支链α-1,6糖苷键"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**糖原直链以α-1,4糖苷键相连，支链以α-1,6糖苷键（1号碳与6号碳之间）相连。A错：把直链和支链说反。C错：糖原是α型糖苷键，不是β型（β型是纤维素）。D错：不存在α-1,2糖苷键作为糖原连接键。",
+      "hint": "直链1,4；支链1,6。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "蚕豆病病因"
+      },
+      "stem": "蚕豆病（G6PD缺乏症）的发病机制是：",
+      "options": [
+        "6-磷酸葡萄糖脱氢酶缺陷导致NADPH不足，不能维持谷胱甘肽还原态，红细胞膜受氧化损伤而溶血",
+        "己糖激酶缺陷导致糖原不能合成",
+        "糖原磷酸化酶缺陷导致糖原不能分解",
+        "葡萄糖-6-磷酸酶缺陷导致血糖升高"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**G6PD缺乏导致PPP不能正常产生NADPH，而NADPH是维持谷胱甘肽（GSH）还原态所必需的。GSH不足时红细胞膜易受氧化损伤，导致急性溶血（尤其在食用蚕豆等氧化剂后）。B错：己糖激酶缺陷与蚕豆病无关。C错：糖原磷酸化酶缺陷导致的是糖原贮积症，不是蚕豆病。D错：葡萄糖-6-磷酸酶缺陷影响肝糖原分解补血糖，与蚕豆病无关。",
+      "hint": "蚕豆病=G6PD缺→NADPH缺→GSH不还原→溶血。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "肌糖原与肝糖原分解终产物区别"
+      },
+      "stem": "关于肌糖原和肝糖原分解的终产物，下列叙述正确的是：",
+      "options": [
+        "二者分解终产物都是游离葡萄糖",
+        "肌糖原分解终产物为乳酸（肌肉无葡萄糖-6-磷酸酶）；肝糖原分解终产物为葡萄糖（肝脏有葡萄糖-6-磷酸酶）",
+        "肌糖原分解终产物为葡萄糖；肝糖原分解终产物为乳酸",
+        "二者分解终产物都是丙酮酸"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**肌肉组织缺乏葡萄糖-6-磷酸酶，糖原分解产生的6-磷酸葡萄糖不能脱磷酸生成游离葡萄糖，只能沿糖酵解途径生成丙酮酸，无氧下生成乳酸。肝脏有葡萄糖-6-磷酸酶，可将6-磷酸葡萄糖脱磷酸生成游离葡萄糖释放入血补充血糖。A错：肌糖原不能直接释放葡萄糖。C错：说反了。D错：丙酮酸只是中间产物，不是终产物。",
+      "hint": "肝有6-磷酸酶→葡萄糖；肌无→乳酸。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "糖原合成活性供体与关键酶"
+      },
+      "stem": "糖原合成中，活性葡萄糖供体和关键酶分别是：",
+      "options": [
+        "葡萄糖-6-磷酸；己糖激酶",
+        "UDPG（尿苷二磷酸葡萄糖）；糖原合酶",
+        "1-磷酸葡萄糖；变位酶",
+        "GDPG；分支酶"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**糖原合成的活性葡萄糖供体是UDPG（尿苷二磷酸葡萄糖），由1-磷酸葡萄糖与UTP在UDPG焦磷酸化酶催化下生成。糖原合成的关键酶是糖原合酶，在已有引物的非还原端以α-1,4糖苷键延长糖链。A错：己糖激酶只是第一步磷酸化，不是糖原合成关键酶。C错：变位酶只是磷酸基团移位，不是关键酶。D错：UDPG不是GDPG，分支酶是形成分支的酶不是糖原合酶。",
+      "hint": "UDPG供葡萄糖，糖原合酶是关键酶。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "糖原分解关键酶与磷酸解"
+      },
+      "stem": "糖原分解的关键酶及其催化的反应类型是：",
+      "options": [
+        "糖原合酶；水解α-1,4糖苷键",
+        "糖原磷酸化酶；磷酸解α-1,4糖苷键生成1-磷酸葡萄糖",
+        "分支酶；水解α-1,6糖苷键",
+        "脱支酶；直接水解α-1,4糖苷键"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**糖原分解的关键酶是糖原磷酸化酶，它从糖原非还原端直接进行磷酸解（而非水解），催化α-1,4糖苷键断裂，需要游离磷酸根参与，生成1-磷酸葡萄糖。A错：糖原合酶是合成酶不是分解酶。C错：分支酶是合成中加分支的酶。D错：脱支酶的主要作用是去分支（转移3个糖+水解α-1,6键），不是磷酸解α-1,4键的关键酶。",
+      "hint": "磷酸化酶=磷酸解，产物是1-磷酸葡萄糖。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "分支酶与脱支酶的多功能性"
+      },
+      "stem": "关于糖原代谢中的分支酶和脱支酶，下列叙述正确的是：",
+      "options": [
+        "分支酶和脱支酶都是单功能酶，各只有一种催化活性",
+        "分支酶兼具水解α-1,4糖苷键和形成α-1,6糖苷键两种活性；脱支酶兼具葡聚糖转移酶和α-1,6糖苷酶两种活性",
+        "分支酶只负责形成α-1,6糖苷键，不具有水解活性",
+        "脱支酶只水解α-1,4糖苷键，不涉及α-1,6键"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**分支酶是多功能酶：先水解一段约7个葡萄糖的α-1,4糖苷键，再将这段以α-1,6糖苷键连接形成分支。脱支酶也是多功能酶：先将分支末端剩余4个葡萄糖中的3个转移到直链（葡聚糖转移酶活性），再水解剩余那个α-1,6糖苷键（α-1,6糖苷酶活性）。A错：两者都是多功能酶。C错：分支酶必须先水解α-1,4键才能切下糖链。D错：脱支酶的核心作用就是水解α-1,6键。",
+      "hint": "分支酶和脱支酶都是多功能酶。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "糖原合酶与磷酸化酶的反向调节"
+      },
+      "stem": "当胰高血糖素通过信号通路激活PKA后，糖原合酶和糖原磷酸化酶的活性变化分别是：",
+      "options": [
+        "糖原合酶激活，糖原磷酸化酶抑制",
+        "糖原合酶磷酸化后被抑制；糖原磷酸化酶经磷酸化酶b激酶磷酸化后被激活",
+        "两者都被磷酸化激活",
+        "两者都被去磷酸化抑制"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**胰高血糖素/肾上腺素→信号传递→PKA活化。PKA一方面使糖原合酶磷酸化→抑制合成；另一方面使磷酸化酶b激酶磷酸化激活→后者再使糖原磷酸化酶磷酸化→激活分解。同一激素通过同一激酶对两个关键酶产生相反方向的调节，保证糖原代谢单向进行。A错：说反了。C错：磷酸化对糖原合酶是抑制不是激活。D错：不是去磷酸化，而是磷酸化。",
+      "hint": "PKA一来：磷酸化酶激活，糖原合酶抑制——两路相反。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "糖原引物与UDPG活化逻辑"
+      },
+      "stem": "关于糖原合成中的糖原引物和UDPG，下列叙述错误的是：",
+      "options": [
+        "游离的葡萄糖分子不能直接两两聚合形成α-1,4糖苷键，必须先活化为UDPG",
+        "糖原引物由糖原蛋白（glycogenin）自身催化合成，约8个葡萄糖单体",
+        "糖原合酶可以从游离葡萄糖开始从头合成糖链，不需要引物",
+        "UDPG由1-磷酸葡萄糖与UTP在UDPG焦磷酸化酶催化下生成，需要耗能"
+      ],
+      "answer": 2,
+      "explanation": "**C 错误（本题选错误项）。**糖原合酶不能从游离葡萄糖从头合成糖链，它只能在已有的糖原引物（约8个葡萄糖的短链）的非还原端上继续延长。A、B、D叙述均正确：游离葡萄糖需先活化为UDPG；引物由糖原蛋白自身糖基化催化合成约8个葡萄糖；UDPG生成需要UTP供能。",
+      "hint": "糖原合酶只能延长，不能从头合成——必须先有引物。"
+    }
+  ]
+}

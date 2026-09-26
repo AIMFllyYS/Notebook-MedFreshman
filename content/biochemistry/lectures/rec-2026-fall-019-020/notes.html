@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>糖代谢3 · 可视化笔记</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;background:#FAF8F1;color:#24201A;line-height:1.7;font-size:11pt;padding:20px}
+.hero{background:linear-gradient(135deg,#7B4F2C,#3E2715);color:#FBF7EC;padding:40px 30px;border-radius:12px;margin-bottom:24px}
+.hero h1{font-size:24px;margin-bottom:8px}
+.hero .meta{font-size:10pt;opacity:.85}
+.section{background:#fff;border:1px solid #EDE4D8;border-radius:10px;padding:20px 24px;margin-bottom:16px}
+.section h2{color:#6B4226;font-size:15pt;border-bottom:2px solid #D9C9B3;padding-bottom:6px;margin-bottom:12px}
+.section h3{color:#8B5E3C;font-size:12pt;margin:12px 0 6px}
+.key{background:#F5E6D0;border-left:4px solid #A2630C;padding:10px 14px;border-radius:4px;margin:8px 0}
+.warn{background:#F7E4DF;border-left:4px solid #B23A2E;padding:10px 14px;border-radius:4px;margin:8px 0;color:#7E2A20}
+table{width:100%;border-collapse:collapse;margin:10px 0}
+th,td{border:1px solid #D9C9B3;padding:6px 10px;text-align:left;font-size:10pt}
+th{background:#F5E6D0;color:#6B4226}
+ul{padding-left:20px;margin:6px 0}
+li{margin:3px 0}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.flow .step{background:#F5E6D0;border:1px solid #D9C9B3;border-radius:6px;padding:6px 12px;font-size:10pt}
+.flow .arrow{color:#8B5E3C;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>糖代谢3 · 可视化笔记</h1>
+<div class="meta">生物化学与分子生物学 · 第19-20节 · 2026-09-24 · 陈娟教授</div>
+</div>
+
+<div class="section">
+<h2>一、磷酸戊糖途径（PPP）总览</h2>
+<div class="flow">
+<span class="step">6-磷酸葡萄糖</span><span class="arrow">→</span>
+<span class="step">G6PD（限速酶）</span><span class="arrow">→</span>
+<span class="step">2 NADPH + CO₂ + 5-磷酸核糖</span><span class="arrow">→</span>
+<span class="step">基团转移</span><span class="arrow">→</span>
+<span class="step">3-磷酸甘油醛 + 6-磷酸果糖</span>
+</div>
+<div class="key">
+<b>两大意义：</b>①NADPH=合成代谢还原当量（≠NADH！NADH管呼吸链产ATP）；②5-磷酸核糖=核苷酸原料<br>
+<b>主要功能：</b>提供NADPH（机体对核糖需求远小于还原当量）<br>
+<b>调节：</b>NADPH/NADP⁺比值别构调节G6PD
+</div>
+</div>
+
+<div class="section">
+<h2>二、蚕豆病 = G6PD缺乏症</h2>
+<table>
+<tr><th>项目</th><th>内容</th></tr>
+<tr><td>病因酶</td><td>6-磷酸葡萄糖脱氢酶（G6PD）缺陷</td></tr>
+<tr><td>机制</td><td>NADPH不足→不能维持GSH还原态→红细胞膜氧化损伤→急性溶血</td></tr>
+<tr><td>好发</td><td>长江以南多见，男性占90%（X连锁隐性遗传）</td></tr>
+<tr><td>诱因</td><td>新鲜蚕豆、樟脑丸、氧化类药物</td></tr>
+<tr><td>筛查</td><td>G6PD活性定量测定；水泡红细胞、咬唇红细胞</td></tr>
+<tr><td>防治</td><td>遗传疾病无法根治，重在预防</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>三、糖原结构与组织分布</h2>
+<div class="flow">
+<span class="step">葡萄糖单体</span><span class="arrow">→</span>
+<span class="step">α-1,4糖苷键（直链）</span><span class="arrow">+</span>
+<span class="step">α-1,6糖苷键（支链）</span><span class="arrow">→</span>
+<span class="step">12级分支成熟糖原</span>
+</div>
+<table>
+<tr><th>组织</th><th>含量</th><th>功能</th><th>分解终产物</th><th>关键区别</th></tr>
+<tr><td>肌肉（肌糖原）</td><td>180~300g（多）</td><td>肌肉收缩供能</td><td><b>乳酸</b></td><td>无葡萄糖-6-磷酸酶</td></tr>
+<tr><td>肝脏（肝糖原）</td><td>70~100g（少）</td><td>维持血糖恒定</td><td><b>葡萄糖</b></td><td><b>有</b>葡萄糖-6-磷酸酶</td></tr>
+</table>
+<div class="warn"><b>⚠ 选择题考点：</b>问肝糖原还是肌糖原，答终产物不同！肌糖原→乳酸；肝糖原→葡萄糖补血糖。</div>
+</div>
+
+<div class="section">
+<h2>四、糖原合成（Glycogenesis）</h2>
+<div class="flow">
+<span class="step">葡萄糖</span><span class="arrow">→己糖激酶</span>
+<span class="step">6-磷酸葡萄糖</span><span class="arrow">变位酶</span>
+<span class="step">1-磷酸葡萄糖</span><span class="arrow">+UTP</span>
+<span class="step">UDPG（活性供体）</span><span class="arrow">糖原合酶</span>
+<span class="step">糖链延长</span><span class="arrow">分支酶</span>
+<span class="step">分支</span>
+</div>
+<table>
+<tr><th>步骤</th><th>酶/关键物</th><th>要点</th></tr>
+<tr><td>活化</td><td>己糖激酶→变位酶→UDPG焦磷酸化酶</td><td>耗能（ATP+UTP）；UDPG=活性葡萄糖供体</td></tr>
+<tr><td>引物</td><td>糖原蛋白（glycogenin）</td><td>自身催化酪氨酸残基上加葡萄糖，延伸至8个</td></tr>
+<tr><td>延长</td><td><b>糖原合酶（关键酶）</b></td><td>引物非还原端以α-1,4键延长至~15个</td></tr>
+<tr><td>分支</td><td><b>分支酶（多功能酶）</b></td><td>水解α-1,4切下7个→以α-1,6键连接成分支</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>五、糖原分解（Glycogenolysis）</h2>
+<div class="flow">
+<span class="step">糖原Gn+1</span><span class="arrow">磷酸化酶（关键酶）</span>
+<span class="step">1-磷酸葡萄糖</span><span class="arrow">变位酶</span>
+<span class="step">6-磷酸葡萄糖</span>
+</div>
+<table>
+<tr><th>组织</th><th>酶</th><th>去向</th></tr>
+<tr><td>肝脏</td><td>葡萄糖-6-磷酸酶</td><td>脱磷酸→<b>游离葡萄糖</b>→补充血糖</td></tr>
+<tr><td>肌肉</td><td>无此酶</td><td>糖酵解→丙酮酸→<b>乳酸</b></td></tr>
+</table>
+<div class="key">
+<b>脱支酶（多功能酶）：</b>①葡聚糖转移酶活性——转移分支末端3个葡萄糖到直链；②α-1,6糖苷酶活性——水解剩余单个葡萄糖的α-1,6键
+</div>
+</div>
+
+<div class="section">
+<h2>六、合成与分解的反向调节</h2>
+<table>
+<tr><th>关键酶</th><th>磷酸化后</th><th>方向</th></tr>
+<tr><td>糖原磷酸化酶</td><td><b>激活</b></td><td>糖原分解↑</td></tr>
+<tr><td>糖原合酶</td><td><b>抑制</b></td><td>糖原合成↓</td></tr>
+</table>
+<div class="key">
+<b>激素通路：</b>胰高血糖素/肾上腺素 → PKA活化 → 磷酸化酶b激酶激活 → 磷酸化酶激活<br>
+<b>同时：</b>PKA → 糖原合酶磷酸化 → 抑制<br>
+<b>结果：</b>糖原代谢只能单向进行（要么合成要么分解）
+</div>
+</div>
+
+<div class="section">
+<h2>复习清单</h2>
+<ul>
+<li>PPP：G6PD限速酶、NADPH/NADP⁺调节、2NADPH+CO₂+5-磷酸核糖、终产物3-PG+6-PG</li>
+<li>蚕豆病=G6PD缺乏症、NADPH不足→GSH不能维持→溶血</li>
+<li>糖原结构：α-1,4直链/α-1,6支链/12级分支/多非还原端快速动员</li>
+<li>肌糖原→乳酸（无6-磷酸酶）；肝糖原→葡萄糖（有6-磷酸酶）</li>
+<li>糖原合成：UDPG活性供体→8碳引物→糖原合酶延长→分支酶打分支</li>
+<li>糖原分解：磷酸化酶磷酸解→1-磷酸葡萄糖；脱支酶双活性</li>
+<li>反向调节：PKA使磷酸化酶激活+糖原合酶抑制</li>
+</ul>
+</div>
+</body>
+</html>

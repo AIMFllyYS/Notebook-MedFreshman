@@ -10510,6 +10510,45 @@
                   "quizRef": "rec-2026-fall-017-018"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-019-020",
+              "title": "第19-20节 · 磷酸戊糖途径收尾与糖原合成分解开篇",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-019-020",
+                  "title": "课堂原文 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                },
+                {
+                  "id": "note-rec-2026-fall-019-020",
+                  "title": "课堂笔记 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                },
+                {
+                  "id": "card-rec-2026-fall-019-020",
+                  "title": "复习手卡 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                }
+              ]
             }
           ]
         },
@@ -10626,6 +10665,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-017-018",
               "quizRef": "rec-2026-fall-017-018",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-019-020",
+              "title": "课堂纪要 · 第19-20节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-019-020",
+              "quizRef": "rec-2026-fall-019-020",
               "layoutProfile": "full"
             }
           ]

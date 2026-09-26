@@ -794,6 +794,50 @@
       }
     },
     {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-019-020",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 19,
+        "end": 20
+      },
+      "taughtOn": "2026-09-24",
+      "topic": "磷酸戊糖途径收尾与糖原合成分解开篇",
+      "revision": 1,
+      "quizId": "rec-2026-fall-019-020",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-019-020"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-019-020"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-019-020"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-019-020"
+        }
+      },
+      "hashes": {
+        "recording": "cf88d111d629d708ddc96b676c83d53771f3b10c7d6f5fdc7bfb2c3a4b4900a6",
+        "notesText": "45567cc1c56fd08c806a5ee72acedb37e7500d302db274ee208b0f1b85f4ac64"
+      }
+    },
+    {
       "subjectId": "cell-biology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
